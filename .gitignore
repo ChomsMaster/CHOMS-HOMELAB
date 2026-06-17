@@ -1,0 +1,25 @@
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+
+# Secrets
+*.key
+*.pem
+*.env
+.env
+secrets/
+private/
+
+# Backups
+*.bak
+*.backup
+*.tar.gz
+*.zip
+
+# Logs
+*.log
+logs/
