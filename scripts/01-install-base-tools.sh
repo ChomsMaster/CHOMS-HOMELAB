@@ -1,8 +1,7 @@
 #!/bin/bash
-
 set -e
 
-echo "=== Installing base tools ==="
+echo "Installing base tools..."
 
 sudo apt update
 
@@ -16,12 +15,14 @@ sudo apt install -y \
   ufw \
   fail2ban \
   wireguard \
+  wireguard-tools \
   qrencode \
   traceroute \
   dnsutils \
   htop \
   unzip \
   ca-certificates \
-  gnupg
+  gnupg \
+  lsb-release
 
-echo "=== Base tools installed ==="
+echo "Base tools installed."
