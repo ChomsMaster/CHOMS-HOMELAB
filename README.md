@@ -1,85 +1,102 @@
 # CHOMS-HOMELAB
 
-Self-hosted infrastructure project developed and maintained by **Oscar Salcedo**, founder of **CHOMS Master Technology Services**.
+> Self-hosted Infrastructure & Technology Platform
 
-## Background
+CHOMS-HOMELAB is a self-hosted infrastructure platform designed and maintained as a real-world systems administration and backend engineering project.
 
-CHOMS Master previously relied on traditional hosting services for its online presence. After discontinuing those services for financial reasons, the project was rebuilt from scratch using affordable hardware and open-source technologies.
+Originally created to replace recurring hosting costs, the platform evolved into a complete on-premise environment that centralizes networking, infrastructure, web services, databases, secure remote access and future cloud services.
 
-The initial goal was simple: recover control over basic services such as web hosting and remote access without depending entirely on external hosting providers.
+Rather than being a collection of software installations, the objective is to build, document and maintain a production-inspired environment following professional engineering practices.
 
-The result is a small but functional homelab environment used for infrastructure learning, service hosting, backend development and future business services.
+---
 
-## Objectives
+# Project Goals
 
-- Build a low-cost self-hosted infrastructure.
-- Provide secure remote access through VPN.
-- Host internal and public-facing services.
-- Use Docker for service deployment.
-- Maintain clear technical documentation.
-- Create a practical portfolio for backend, Linux and infrastructure work.
+* Build a secure self-hosted infrastructure.
+* Replace traditional shared hosting with owned infrastructure.
+* Learn through real implementations instead of isolated labs.
+* Centralize personal and business services.
+* Create a long-term technical portfolio.
+* Document every architectural decision.
 
-## Current Stack
+---
 
-- Debian 13
-- Docker
-- Docker Compose
-- Nginx
-- WireGuard
-- Pi-hole
-- PostgreSQL 17
-- UFW
-- Fail2ban
-- GitHub CLI
+# Current Platform
 
-## Current Services
+## Operating System
 
-- VPN access with WireGuard
-- DNS filtering with Pi-hole
-- Web service test with Nginx
-- PostgreSQL database service
-- Firewall and intrusion protection
-- GitHub-based documentation
+* Debian 13 (Trixie)
 
-## Hardware
+## Infrastructure
 
-Current deployment runs on:
+* Docker
+* Docker Compose
+* WireGuard VPN
+* Pi-hole
+* Nginx
+* PostgreSQL 17
 
-- ACEPC AK2 Mini PC
-- Intel Celeron J3455
-- 6 GB RAM
-- 128 GB SSD for the operating system
-- 120 GB SSD for service data
+## Security
 
-## Documentation
+* UFW
+* Fail2ban
 
-Technical documentation is available in the `docs/` directory:
+---
 
-- `01-overview.md`
-- `02-hardware.md`
-- `03-network.md`
-- `04-security.md`
-- `05-wireguard.md`
-- `06-pihole.md`
-- `07-docker-services.md`
-- `08-postgresql.md`
-- `09-backup.md`
-- `10-roadmap.md`
+# Hardware
 
-## Roadmap
+| Component   | Specification       |
+| ----------- | ------------------- |
+| Platform    | ACEPC AK2 Mini PC   |
+| CPU         | Intel Celeron J3455 |
+| Memory      | 6 GB DDR3           |
+| System Disk | 128 GB SSD          |
+| Data Disk   | 120 GB SSD          |
 
-Planned improvements include:
+---
 
-- CHOMS Master website
-- Corporate email using the CHOMS Master domain
-- Private cloud services
-- FastAPI backend environment
-- Monitoring and automation
-- Infrastructure support for future projects such as ShiftCore
+# Project Documentation
 
-## Author
+Detailed documentation is available inside the **docs/** directory.
 
-**Oscar Salcedo**  
-Founder, CHOMS Master Technology Services  
-GitHub: https://github.com/ChomsMaster  
-Email: Oscar.Salcedo@chomsmaster.com
+| Document | Description          |
+| -------- | -------------------- |
+| 01       | Project Overview     |
+| 02       | Hardware             |
+| 03       | Network Architecture |
+| 04       | Security             |
+| 05       | WireGuard            |
+| 06       | Pi-hole              |
+| 07       | Docker Services      |
+| 08       | PostgreSQL           |
+| 09       | Backup Strategy      |
+| 10       | Roadmap              |
+
+---
+
+# Current Status
+
+| Service       | Status  |
+| ------------- | ------- |
+| Debian        | ✅       |
+| Docker        | ✅       |
+| WireGuard     | ✅       |
+| Pi-hole       | ✅       |
+| PostgreSQL    | ✅       |
+| Nginx         | ✅       |
+| Documentation | 🚧      |
+| Reverse Proxy | Planned |
+| Nextcloud     | Planned |
+| FastAPI       | Planned |
+| Monitoring    | Planned |
+
+---
+
+# Author
+
+**Oscar Salcedo**
+
+Founder
+
+**CHOMS Master Technology Services**
+
