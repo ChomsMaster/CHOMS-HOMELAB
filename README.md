@@ -111,6 +111,10 @@ Additional diagrams:
 - [Network Architecture](diagrams/network-architecture.md)
 - [Docker Architecture](diagrams/docker-architecture.md)
 
+## Additional Documentation
+
+- [Project Case Study](portfolio/case-study.md)
+
 ---
 
 ## Current Status
