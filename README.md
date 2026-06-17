@@ -104,6 +104,13 @@ Detailed documentation is available inside the [`docs/`](docs/) directory.
 | [10-roadmap.md](docs/10-roadmap.md) | Roadmap |
 | [11-lessons-learned.md](docs/11-lessons-learned.md) | Lessons Learned |
 
+
+```md
+Additional diagrams:
+
+- [Network Architecture](diagrams/network-architecture.md)
+- [Docker Architecture](diagrams/docker-architecture.md)
+
 ---
 
 ## Current Status
