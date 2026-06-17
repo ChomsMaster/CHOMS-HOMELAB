@@ -1,0 +1,34 @@
+name: Repository Check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  validate-repository:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate required files
+        run: |
+          test -f README.md
+          test -f CHANGELOG.md
+          test -f LICENSE
+          test -d docs
+          test -d scripts
+
+      - name: Validate scripts syntax
+        run: |
+          bash -n scripts/*.sh
+
+      - name: Check for private keys
+        run: |
+          if find . -name "*private.key" -o -name "*.pem" | grep .; then
+            echo "Private key detected. Do not commit secrets."
+            exit 1
+          fi
