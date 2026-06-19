@@ -23,7 +23,7 @@ The main reasons include:
 * Native Docker support
 * Ideal for backend development with Python and FastAPI
 
-The database will become a core component of future CHOMS Master and ShiftCore services.
+The database will become a core component of future CHOMS Master infrastructure services.
 
 ---
 
@@ -63,7 +63,7 @@ The database currently serves as the primary SQL engine for infrastructure testi
 Future workloads include:
 
 * FastAPI applications
-* ShiftCore backend
+* Backend services
 * Internal business services
 * Development environments
 

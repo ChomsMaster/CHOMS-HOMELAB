@@ -60,5 +60,5 @@ The current platform includes:
 * Local backup storage
 * GitHub documentation
 
-Future services will include private cloud storage, monitoring, reverse proxy, backend APIs and infrastructure supporting future CHOMS Master and ShiftCore services.
+Future services will include private cloud storage, monitoring, reverse proxy, backend APIs and infrastructure supporting future CHOMS Master services.
 

@@ -47,9 +47,9 @@
 
 ---
 
-## Phase 5 - ShiftCore Infrastructure
+## Phase 5 - Advanced Infrastructure
 
-- [ ] ShiftCore API
+- [ ] Internal Infrastructure API
 - [ ] Authentication
 - [ ] Rule Engine
 - [ ] Scheduler

@@ -104,7 +104,7 @@ The project evolves through clearly defined milestones.
 The infrastructure will eventually support:
 
 * CHOMS Master
-* ShiftCore
+* Future backend services
 * Personal development services
 * Infrastructure experiments
 * Backend projects

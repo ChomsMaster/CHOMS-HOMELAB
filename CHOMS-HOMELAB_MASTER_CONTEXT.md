@@ -41,7 +41,7 @@ Today the project serves four independent purposes:
 
 • Continuous Linux / DevOps learning platform
 
-• Foundation for future CHOMS Master services and ShiftCore integration
+• Foundation for future CHOMS Master infrastructure services
 
 The project follows one simple philosophy:
 
@@ -475,7 +475,7 @@ CHOMS Dashboard
 
 CHOMS Master API
 
-ShiftCore Integration
+Future Infrastructure Integrations
 
 ---
 
@@ -497,7 +497,7 @@ Monitoring
 
 Administration Dashboard
 
-ShiftCore Backend Services
+Backend Infrastructure Services
 
 CI/CD
 

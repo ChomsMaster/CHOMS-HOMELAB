@@ -38,7 +38,7 @@ Future Services
 
 ↓
 
-ShiftCore
+Internal Backend Platform
 
 ↓
 

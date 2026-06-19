@@ -54,7 +54,7 @@ Future work includes:
 - Mail Server
 - CHOMS Dashboard
 - CHOMS Master API
-- ShiftCore integration
+- Future backend infrastructure integration
 
 ---
 
