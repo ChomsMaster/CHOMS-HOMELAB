@@ -109,7 +109,10 @@ def render_report(
     docker_table.add_column("Status")
 
     for container in docker_info:
-        image = container.image.tags[0] if container.image.tags else "unknown"
-        docker_table.add_row(container.name, image, container.status)
+        docker_table.add_row(
+            container["name"],
+            container["image"],
+            container["status"],
+        )
 
     console.print(docker_table)

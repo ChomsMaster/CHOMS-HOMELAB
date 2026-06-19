@@ -1,0 +1,122 @@
+{
+  "system": {
+    "hostname": "choms-homelab",
+    "system": "Linux",
+    "release": "6.12.90+deb13.1-amd64",
+    "architecture": "x86_64",
+    "cpu": 0.3,
+    "memory": 10.9
+  },
+  "storage": [
+    {
+      "mount": "/",
+      "total": 110.12,
+      "used": 3.19,
+      "free": 101.28,
+      "percent": 2.9
+    },
+    {
+      "mount": "/data",
+      "total": 109.47,
+      "used": 0.08,
+      "free": 103.79,
+      "percent": 0.07
+    }
+  ],
+  "docker": [
+    {
+      "name": "choms-postgres",
+      "image": "postgres:17",
+      "status": "running"
+    },
+    {
+      "name": "pihole",
+      "image": "pihole/pihole:latest",
+      "status": "running"
+    },
+    {
+      "name": "choms-nginx",
+      "image": "nginx:stable-alpine",
+      "status": "running"
+    }
+  ],
+  "network": [
+    {
+      "name": "lo",
+      "ips": [
+        "127.0.0.1"
+      ]
+    },
+    {
+      "name": "enp1s0",
+      "ips": [
+        "192.168.1.138"
+      ]
+    },
+    {
+      "name": "wg0",
+      "ips": [
+        "10.10.10.1"
+      ]
+    },
+    {
+      "name": "docker0",
+      "ips": [
+        "172.17.0.1"
+      ]
+    },
+    {
+      "name": "br-5fb3b54f2f03",
+      "ips": [
+        "172.18.0.1"
+      ]
+    },
+    {
+      "name": "br-89a3acc2a888",
+      "ips": [
+        "172.20.0.1"
+      ]
+    },
+    {
+      "name": "br-b263f373ebb9",
+      "ips": [
+        "172.19.0.1"
+      ]
+    }
+  ],
+  "wireguard": {
+    "installed": true,
+    "active": true,
+    "output": "interface: wg0\n  public key: +gut2aZVftYO0yWINGGuVZ0IUZ8fwXYIcwAsUdWvoV8=\n  private key: (hidden)\n  listening port: 51820\n\npeer: NtD0alyc7+IRaocaz+z8eV9zDPicS8jbbPYPYpnXHgI=\n  endpoint: 79.112.15.233:50470\n  allowed ips: 10.10.10.2/32\n  latest handshake: 37 minutes ago\n  transfer: 1.99 MiB received, 19.43 MiB sent"
+  },
+  "firewall": {
+    "installed": false,
+    "active": false,
+    "output": "UFW command not found."
+  },
+  "fail2ban": {
+    "installed": true,
+    "active": true,
+    "status": "active"
+  },
+  "services": [
+    {
+      "name": "choms-postgres",
+      "installed": true,
+      "active": true,
+      "status": "running"
+    },
+    {
+      "name": "pihole",
+      "installed": true,
+      "active": true,
+      "status": "running"
+    },
+    {
+      "name": "choms-nginx",
+      "installed": true,
+      "active": true,
+      "status": "running"
+    }
+  ]
+}
