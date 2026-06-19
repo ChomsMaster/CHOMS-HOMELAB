@@ -15,8 +15,17 @@ def render_report(
     fail2ban_info,
     services_info,
 ):
-    console.print(Panel.fit("CHOMS Doctor v0.1", style="bold cyan"))
+    checks = [
+        wireguard_info["installed"] and wireguard_info["active"],
+        firewall_info["installed"] and firewall_info["active"],
+        fail2ban_info["installed"] and fail2ban_info["active"],
+    ]
 
+    for service in services_info:
+        checks.append(service["installed"] and service["active"])
+
+    health_score = round((sum(checks) / len(checks)) * 100)
+    console.print(Panel.fit(f"CHOMS Doctor v0.1\nHealth Score: {health_score}%", style="bold cyan"))
     console.print("\n[bold]System[/bold]")
     console.print(f"Hostname: {system_info['hostname']}")
     console.print(f"OS: {system_info['system']} {system_info['release']}")
