@@ -5,7 +5,16 @@ from rich.panel import Panel
 console = Console()
 
 
-def render_report(system_info, storage_info, docker_info, network_info, wireguard_info, firewall_info, fail2ban_info):
+def render_report(
+    system_info,
+    storage_info,
+    docker_info,
+    network_info,
+    wireguard_info,
+    firewall_info,
+    fail2ban_info,
+    services_info,
+):
     console.print(Panel.fit("CHOMS Doctor v0.1", style="bold cyan"))
 
     console.print("\n[bold]System[/bold]")
@@ -47,6 +56,22 @@ def render_report(system_info, storage_info, docker_info, network_info, wireguar
         console.print(f"[yellow]Fail2ban installed but not active: {fail2ban_info['status']}[/yellow]")
     else:
         console.print("[red]Fail2ban not installed[/red]")
+
+    services_table = Table(title="Required Services")
+    services_table.add_column("Service")
+    services_table.add_column("Installed")
+    services_table.add_column("Active")
+    services_table.add_column("Status")
+
+    for service in services_info:
+        services_table.add_row(
+            service["name"],
+            "yes" if service["installed"] else "no",
+            "yes" if service["active"] else "no",
+            service["status"],
+        )
+
+    console.print(services_table)
 
     storage_table = Table(title="Storage")
     storage_table.add_column("Mount")
