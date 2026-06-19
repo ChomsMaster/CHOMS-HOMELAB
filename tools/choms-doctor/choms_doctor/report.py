@@ -14,6 +14,7 @@ def render_report(
     firewall_info,
     fail2ban_info,
     services_info,
+    compliance_info,
 ):
     checks = [
         wireguard_info["installed"] and wireguard_info["active"],
@@ -24,8 +25,13 @@ def render_report(
     for service in services_info:
         checks.append(service["installed"] and service["active"])
 
+    for item in compliance_info:
+        checks.append(item["compliant"])
+
     health_score = round((sum(checks) / len(checks)) * 100)
+
     console.print(Panel.fit(f"CHOMS Doctor v0.1\nHealth Score: {health_score}%", style="bold cyan"))
+
     console.print("\n[bold]System[/bold]")
     console.print(f"Hostname: {system_info['hostname']}")
     console.print(f"OS: {system_info['system']} {system_info['release']}")
@@ -81,6 +87,24 @@ def render_report(
         )
 
     console.print(services_table)
+
+    compliance_table = Table(title="Compliance")
+    compliance_table.add_column("Area")
+    compliance_table.add_column("Name")
+    compliance_table.add_column("Expected")
+    compliance_table.add_column("Actual")
+    compliance_table.add_column("Compliant")
+
+    for item in compliance_info:
+        compliance_table.add_row(
+            item["area"],
+            item["name"],
+            item["expected"],
+            item["actual"],
+            "yes" if item["compliant"] else "no",
+        )
+
+    console.print(compliance_table)
 
     storage_table = Table(title="Storage")
     storage_table.add_column("Mount")

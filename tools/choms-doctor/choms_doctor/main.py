@@ -8,12 +8,13 @@ from choms_doctor.checks.wireguard import WireGuardCheck
 from choms_doctor.checks.firewall import FirewallCheck
 from choms_doctor.checks.fail2ban import Fail2banCheck
 from choms_doctor.checks.services import ServiceCheck
+from choms_doctor.checks.compliance import ComplianceCheck
 from choms_doctor.report import render_report
 from choms_doctor.exporter import export_json
 
 
 def collect_data():
-    return {
+    data = {
         "system": SystemCheck.get_info(),
         "storage": StorageCheck.get_info(),
         "docker": DockerCheck.get_info(),
@@ -23,6 +24,10 @@ def collect_data():
         "fail2ban": Fail2banCheck.get_info(),
         "services": ServiceCheck.get_info(),
     }
+
+    data["compliance"] = ComplianceCheck.get_info(data)
+
+    return data
 
 
 def main():
@@ -42,6 +47,7 @@ def main():
         data["firewall"],
         data["fail2ban"],
         data["services"],
+        data["compliance"],
     )
 
 
