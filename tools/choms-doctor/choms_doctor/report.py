@@ -5,7 +5,7 @@ from rich.panel import Panel
 console = Console()
 
 
-def render_report(system_info, storage_info, docker_info, network_info):
+def render_report(system_info, storage_info, docker_info, network_info, wireguard_info):
     console.print(Panel.fit("CHOMS Doctor v0.1", style="bold cyan"))
 
     console.print("\n[bold]System[/bold]")
@@ -20,12 +20,17 @@ def render_report(system_info, storage_info, docker_info, network_info):
     network_table.add_column("IP Addresses")
 
     for interface in network_info:
-        network_table.add_row(
-            interface["name"],
-            ", ".join(interface["ips"]),
-        )
+        network_table.add_row(interface["name"], ", ".join(interface["ips"]))
 
     console.print(network_table)
+
+    console.print("\n[bold]WireGuard[/bold]")
+    if wireguard_info["installed"] and wireguard_info["active"]:
+        console.print("[green]WireGuard active[/green]")
+    elif wireguard_info["installed"]:
+        console.print("[yellow]WireGuard installed but inactive[/yellow]")
+    else:
+        console.print("[red]WireGuard not installed[/red]")
 
     storage_table = Table(title="Storage")
     storage_table.add_column("Mount")
@@ -55,10 +60,6 @@ def render_report(system_info, storage_info, docker_info, network_info):
 
     for container in docker_info:
         image = container.image.tags[0] if container.image.tags else "unknown"
-        docker_table.add_row(
-            container.name,
-            image,
-            container.status,
-        )
+        docker_table.add_row(container.name, image, container.status)
 
     console.print(docker_table)
