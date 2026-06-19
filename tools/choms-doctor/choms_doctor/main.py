@@ -9,6 +9,8 @@ from choms_doctor.checks.firewall import FirewallCheck
 from choms_doctor.checks.fail2ban import Fail2banCheck
 from choms_doctor.checks.services import ServiceCheck
 from choms_doctor.checks.compliance import ComplianceCheck
+from choms_doctor.checks.backup import BackupCheck
+from choms_doctor.checks.updates import UpdateCheck
 from choms_doctor.report import render_report
 from choms_doctor.exporter import export_json
 
@@ -23,6 +25,8 @@ def collect_data():
         "firewall": FirewallCheck.get_info(),
         "fail2ban": Fail2banCheck.get_info(),
         "services": ServiceCheck.get_info(),
+        "backup": BackupCheck.get_info(),
+        "updates": UpdateCheck.get_info(),
     }
 
     data["compliance"] = ComplianceCheck.get_info(data)
@@ -48,6 +52,8 @@ def main():
         data["fail2ban"],
         data["services"],
         data["compliance"],
+        data["backup"],
+        data["updates"],
     )
 
 

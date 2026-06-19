@@ -15,11 +15,16 @@ def render_report(
     fail2ban_info,
     services_info,
     compliance_info,
+    backup_info,
+    updates_info,
 ):
+
     checks = [
         wireguard_info["installed"] and wireguard_info["active"],
         firewall_info["installed"] and firewall_info["active"],
         fail2ban_info["installed"] and fail2ban_info["active"],
+        backup_info["available"],
+        updates_info["pending_updates"] == 0,
     ]
 
     for service in services_info:
@@ -30,7 +35,12 @@ def render_report(
 
     health_score = round((sum(checks) / len(checks)) * 100)
 
-    console.print(Panel.fit(f"CHOMS Doctor v0.1\nHealth Score: {health_score}%", style="bold cyan"))
+    console.print(
+        Panel.fit(
+            f"CHOMS Doctor v0.2\nHealth Score: {health_score}%",
+            style="bold cyan",
+        )
+    )
 
     console.print("\n[bold]System[/bold]")
     console.print(f"Hostname: {system_info['hostname']}")
@@ -38,6 +48,15 @@ def render_report(
     console.print(f"Architecture: {system_info['architecture']}")
     console.print(f"CPU: {system_info['cpu']}%")
     console.print(f"Memory: {system_info['memory']}%")
+
+    console.print("\n[bold]Backup[/bold]")
+    console.print(f"Status: {backup_info['status']}")
+    console.print(f"Latest: {backup_info['latest_backup']}")
+    console.print(f"Age (days): {backup_info['age_days']}")
+
+    console.print("\n[bold]Updates[/bold]")
+    console.print(f"Pending updates: {updates_info['pending_updates']}")
+    console.print(f"Status: {updates_info['status']}")
 
     network_table = Table(title="Network Interfaces")
     network_table.add_column("Interface")
@@ -47,30 +66,6 @@ def render_report(
         network_table.add_row(interface["name"], ", ".join(interface["ips"]))
 
     console.print(network_table)
-
-    console.print("\n[bold]WireGuard[/bold]")
-    if wireguard_info["installed"] and wireguard_info["active"]:
-        console.print("[green]WireGuard active[/green]")
-    elif wireguard_info["installed"]:
-        console.print("[yellow]WireGuard installed but inactive[/yellow]")
-    else:
-        console.print("[red]WireGuard not installed[/red]")
-
-    console.print("\n[bold]Firewall[/bold]")
-    if firewall_info["installed"] and firewall_info["active"]:
-        console.print("[green]UFW active[/green]")
-    elif firewall_info["installed"]:
-        console.print("[yellow]UFW installed but inactive[/yellow]")
-    else:
-        console.print("[red]UFW not installed[/red]")
-
-    console.print("\n[bold]Fail2ban[/bold]")
-    if fail2ban_info["installed"] and fail2ban_info["active"]:
-        console.print("[green]Fail2ban active[/green]")
-    elif fail2ban_info["installed"]:
-        console.print(f"[yellow]Fail2ban installed but not active: {fail2ban_info['status']}[/yellow]")
-    else:
-        console.print("[red]Fail2ban not installed[/red]")
 
     services_table = Table(title="Required Services")
     services_table.add_column("Service")
@@ -114,16 +109,13 @@ def render_report(
     storage_table.add_column("Used %")
 
     for disk in storage_info:
-        if "error" in disk:
-            storage_table.add_row(disk["mount"], "-", "-", "-", disk["error"])
-        else:
-            storage_table.add_row(
-                disk["mount"],
-                str(disk["total"]),
-                str(disk["used"]),
-                str(disk["free"]),
-                f"{disk['percent']}%",
-            )
+        storage_table.add_row(
+            disk["mount"],
+            str(disk["total"]),
+            str(disk["used"]),
+            str(disk["free"]),
+            f"{disk['percent']}%",
+        )
 
     console.print(storage_table)
 
@@ -140,3 +132,4 @@ def render_report(
         )
 
     console.print(docker_table)
+
