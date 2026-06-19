@@ -25,3 +25,25 @@ The project follows a continuous evolution approach where each milestone represe
 
 Initial production-ready infrastructure completed.
 
+
+## v0.2.0 - CHOMS Doctor Validation
+
+### Added
+
+- CHOMS Doctor health details.
+- Backup validation.
+- System update check.
+- Infrastructure compliance checks.
+- Privileged WireGuard and UFW validation.
+- JSON export support.
+
+### Validated
+
+- Power recovery after AC loss.
+- Docker automatic startup.
+- WireGuard automatic startup.
+- Pi-hole automatic startup.
+- Nginx automatic startup.
+- PostgreSQL automatic startup.
+- Backup generation.
+- CHOMS Doctor 100% Health Score.
