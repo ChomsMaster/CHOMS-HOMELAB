@@ -19,10 +19,10 @@ cp -r /opt/choms/docker "$BACKUP_DIR/docker" 2>/dev/null || echo "Docker config 
 
 echo "Backing up system configuration..."
 mkdir -p "$BACKUP_DIR/system"
-sudo cp /etc/fstab "$BACKUP_DIR/system/fstab"
-sudo cp /etc/ssh/sshd_config "$BACKUP_DIR/system/sshd_config" 2>/dev/null || true
-sudo cp -r /etc/wireguard "$BACKUP_DIR/system/wireguard" 2>/dev/null || true
-sudo cp -r /etc/fail2ban "$BACKUP_DIR/system/fail2ban" 2>/dev/null || true
+cp /etc/fstab "$BACKUP_DIR/system/fstab"
+cp /etc/ssh/sshd_config "$BACKUP_DIR/system/sshd_config" 2>/dev/null || true
+cp -r /etc/wireguard "$BACKUP_DIR/system/wireguard" 2>/dev/null || true
+cp -r /etc/fail2ban "$BACKUP_DIR/system/fail2ban" 2>/dev/null || true
 
 echo "Backing up PostgreSQL database..."
 mkdir -p "$BACKUP_DIR/databases"
