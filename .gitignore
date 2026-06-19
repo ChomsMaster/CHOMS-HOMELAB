@@ -69,3 +69,6 @@ docker-data/
 
 # Local backups
 backup/
+
+# CHOMS Doctor generated reports
+tools/choms-doctor/health-report.json
