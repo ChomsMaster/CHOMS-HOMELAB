@@ -4,6 +4,7 @@ from choms_doctor.checks.docker import DockerCheck
 from choms_doctor.checks.network import NetworkCheck
 from choms_doctor.checks.wireguard import WireGuardCheck
 from choms_doctor.checks.firewall import FirewallCheck
+from choms_doctor.checks.fail2ban import Fail2banCheck
 from choms_doctor.report import render_report
 
 
@@ -14,6 +15,7 @@ def main():
     network_info = NetworkCheck.get_info()
     wireguard_info = WireGuardCheck.get_info()
     firewall_info = FirewallCheck.get_info()
+    fail2ban_info = Fail2banCheck.get_info()
 
     render_report(
         system_info,
@@ -22,6 +24,7 @@ def main():
         network_info,
         wireguard_info,
         firewall_info,
+        fail2ban_info,
     )
 
 

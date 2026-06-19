@@ -5,7 +5,7 @@ from rich.panel import Panel
 console = Console()
 
 
-def render_report(system_info, storage_info, docker_info, network_info, wireguard_info, firewall_info):
+def render_report(system_info, storage_info, docker_info, network_info, wireguard_info, firewall_info, fail2ban_info):
     console.print(Panel.fit("CHOMS Doctor v0.1", style="bold cyan"))
 
     console.print("\n[bold]System[/bold]")
@@ -39,6 +39,14 @@ def render_report(system_info, storage_info, docker_info, network_info, wireguar
         console.print("[yellow]UFW installed but inactive[/yellow]")
     else:
         console.print("[red]UFW not installed[/red]")
+
+    console.print("\n[bold]Fail2ban[/bold]")
+    if fail2ban_info["installed"] and fail2ban_info["active"]:
+        console.print("[green]Fail2ban active[/green]")
+    elif fail2ban_info["installed"]:
+        console.print(f"[yellow]Fail2ban installed but not active: {fail2ban_info['status']}[/yellow]")
+    else:
+        console.print("[red]Fail2ban not installed[/red]")
 
     storage_table = Table(title="Storage")
     storage_table.add_column("Mount")
