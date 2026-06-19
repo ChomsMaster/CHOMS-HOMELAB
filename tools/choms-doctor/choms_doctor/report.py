@@ -5,42 +5,37 @@ from rich.panel import Panel
 console = Console()
 
 
-def render_report(
-    system_info,
-    storage_info,
-    docker_info,
-    network_info,
-    wireguard_info,
-    firewall_info,
-    fail2ban_info,
-    services_info,
-    compliance_info,
-    backup_info,
-    updates_info,
-):
-
-    checks = [
-        wireguard_info["installed"] and wireguard_info["active"],
-        firewall_info["installed"] and firewall_info["active"],
-        fail2ban_info["installed"] and fail2ban_info["active"],
-        backup_info["available"],
-        updates_info["pending_updates"] == 0,
-    ]
-
-    for service in services_info:
-        checks.append(service["installed"] and service["active"])
-
-    for item in compliance_info:
-        checks.append(item["compliant"])
-
-    health_score = round((sum(checks) / len(checks)) * 100)
+def render_report(data):
+    system_info = data["system"]
+    storage_info = data["storage"]
+    docker_info = data["docker"]
+    network_info = data["network"]
+    services_info = data["services"]
+    compliance_info = data["compliance"]
+    backup_info = data["backup"]
+    updates_info = data["updates"]
+    health_info = data["health"]
 
     console.print(
         Panel.fit(
-            f"CHOMS Doctor v0.2\nHealth Score: {health_score}%",
+            f"CHOMS Doctor v0.2\nHealth Score: {health_info['score']}%",
             style="bold cyan",
         )
     )
+
+    health_table = Table(title="Health Details")
+    health_table.add_column("Check")
+    health_table.add_column("Status")
+    health_table.add_column("Details")
+
+    for check in health_info["checks"]:
+        health_table.add_row(
+            check["name"],
+            "PASS" if check["passed"] else "FAIL",
+            check["details"],
+        )
+
+    console.print(health_table)
 
     console.print("\n[bold]System[/bold]")
     console.print(f"Hostname: {system_info['hostname']}")
@@ -132,4 +127,3 @@ def render_report(
         )
 
     console.print(docker_table)
-

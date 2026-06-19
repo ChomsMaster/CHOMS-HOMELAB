@@ -11,6 +11,7 @@ from choms_doctor.checks.services import ServiceCheck
 from choms_doctor.checks.compliance import ComplianceCheck
 from choms_doctor.checks.backup import BackupCheck
 from choms_doctor.checks.updates import UpdateCheck
+from choms_doctor.health import build_health_checks
 from choms_doctor.report import render_report
 from choms_doctor.exporter import export_json
 
@@ -31,6 +32,16 @@ def collect_data():
 
     data["compliance"] = ComplianceCheck.get_info(data)
 
+    data["health"] = build_health_checks(
+        data["wireguard"],
+        data["firewall"],
+        data["fail2ban"],
+        data["services"],
+        data["compliance"],
+        data["backup"],
+        data["updates"],
+    )
+
     return data
 
 
@@ -42,19 +53,7 @@ def main():
         print("JSON report generated: health-report.json")
         return
 
-    render_report(
-        data["system"],
-        data["storage"],
-        data["docker"],
-        data["network"],
-        data["wireguard"],
-        data["firewall"],
-        data["fail2ban"],
-        data["services"],
-        data["compliance"],
-        data["backup"],
-        data["updates"],
-    )
+    render_report(data)
 
 
 if __name__ == "__main__":
