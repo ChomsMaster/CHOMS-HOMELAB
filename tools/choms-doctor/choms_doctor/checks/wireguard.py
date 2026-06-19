@@ -7,7 +7,7 @@ class WireGuardCheck:
     def get_info():
         try:
             result = subprocess.run(
-                ["wg", "show"],
+                ["sudo", "-n", "wg", "show"],
                 capture_output=True,
                 text=True,
                 check=False,
@@ -16,14 +16,14 @@ class WireGuardCheck:
             if result.returncode == 0 and result.stdout.strip():
                 return {
                     "installed": True,
-                    "active": True,
+                    "active": "interface:" in result.stdout,
                     "output": result.stdout.strip(),
                 }
 
             return {
                 "installed": True,
                 "active": False,
-                "output": "WireGuard installed but no active interface detected.",
+                "output": result.stderr.strip() or "WireGuard installed but no active interface detected.",
             }
 
         except FileNotFoundError:

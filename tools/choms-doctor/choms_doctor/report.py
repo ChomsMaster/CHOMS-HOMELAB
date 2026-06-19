@@ -5,7 +5,7 @@ from rich.panel import Panel
 console = Console()
 
 
-def render_report(system_info, storage_info, docker_info, network_info, wireguard_info):
+def render_report(system_info, storage_info, docker_info, network_info, wireguard_info, firewall_info):
     console.print(Panel.fit("CHOMS Doctor v0.1", style="bold cyan"))
 
     console.print("\n[bold]System[/bold]")
@@ -31,6 +31,14 @@ def render_report(system_info, storage_info, docker_info, network_info, wireguar
         console.print("[yellow]WireGuard installed but inactive[/yellow]")
     else:
         console.print("[red]WireGuard not installed[/red]")
+
+    console.print("\n[bold]Firewall[/bold]")
+    if firewall_info["installed"] and firewall_info["active"]:
+        console.print("[green]UFW active[/green]")
+    elif firewall_info["installed"]:
+        console.print("[yellow]UFW installed but inactive[/yellow]")
+    else:
+        console.print("[red]UFW not installed[/red]")
 
     storage_table = Table(title="Storage")
     storage_table.add_column("Mount")

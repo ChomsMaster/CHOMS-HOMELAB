@@ -1,0 +1,28 @@
+infrastructure:
+  required_mounts:
+    - /
+    - /data
+
+services:
+  required_containers:
+    - choms-nginx
+    - pihole
+    - choms-postgres
+
+network:
+  required_interfaces:
+    - enp1s0
+    - wg0
+
+security:
+  required:
+    - ufw
+    - fail2ban
+    - wireguard
+
+documentation:
+  required_files:
+    - README.md
+    - CHANGELOG.md
+    - SESSION_STATE.md
+    - CHOMS-HOMELAB_MASTER_CONTEXT.md
