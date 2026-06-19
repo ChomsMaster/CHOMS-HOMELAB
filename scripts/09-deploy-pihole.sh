@@ -3,7 +3,7 @@ set -e
 
 echo "Deploying Pi-hole..."
 
-APP_DIR="/opt/choms/docker/pihole"
+APP_DIR="/data/projects/choms-homelab/docker"
 
 sudo mkdir -p "$APP_DIR"
 sudo mkdir -p "$APP_DIR/etc-pihole"

@@ -15,7 +15,7 @@ cp -r "$PROJECT_DIR" "$BACKUP_DIR/repository"
 
 echo "Backing up Docker compose files..."
 mkdir -p "$BACKUP_DIR/docker"
-cp -r /opt/choms/docker "$BACKUP_DIR/docker" 2>/dev/null || echo "Docker config backup skipped."
+cp -r /data/projects/choms-homelab/docker "$BACKUP_DIR/docker" 2>/dev/null || echo "Docker config backup skipped."
 
 echo "Backing up system configuration..."
 mkdir -p "$BACKUP_DIR/system"
@@ -40,6 +40,7 @@ echo "Creating archive..."
 tar -czf "$BACKUP_DIR.tar.gz" -C "$BACKUP_ROOT" "$(basename "$BACKUP_DIR")"
 
 rm -rf "$BACKUP_DIR"
-
+echo "Rotating old backups..."
+ls -1t "$BACKUP_ROOT"/choms-homelab_*.tar.gz 2>/dev/null | tail -n +8 | xargs -r rm -f
 echo "Backup completed:"
 echo "$BACKUP_DIR.tar.gz"

@@ -153,7 +153,7 @@ Operating System
 
 Persistent storage
 
-/opt/choms
+/data/projects/choms-homelab
 
 Infrastructure
 

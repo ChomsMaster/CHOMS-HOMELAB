@@ -1,16 +1,13 @@
 #!/bin/bash
 set -e
 
-echo "Creating CHOMS server directory structure..."
+mkdir -p /data/backups
+mkdir -p /data/postgres
+mkdir -p /data/websites
+mkdir -p /data/nextcloud
+mkdir -p /data/docker
+mkdir -p /data/projects
 
-sudo mkdir -p /opt/choms/backups
-sudo mkdir -p /opt/choms/data
-sudo mkdir -p /opt/choms/docker
-sudo mkdir -p /opt/choms/projects
+chown -R "$SUDO_USER:$SUDO_USER" /data 2>/dev/null || true
 
-sudo mkdir -p /data/backups
-sudo mkdir -p /data/postgres
-sudo mkdir -p /data/websites
-sudo mkdir -p /data/nextcloud
-
-echo "Directory structure created."
+echo "Server structure created."

@@ -3,7 +3,7 @@ set -e
 
 echo "Deploying Nginx test web service..."
 
-APP_DIR="/opt/choms/docker/nginx"
+APP_DIR="/data/projects/choms-homelab/docker"
 WEB_DIR="/data/websites/choms-test"
 
 sudo mkdir -p "$APP_DIR"

@@ -72,3 +72,11 @@ backup/
 
 # CHOMS Doctor generated reports
 tools/choms-doctor/health-report.json
+
+# Local Docker environment secrets
+docker/.env
+
+# Runtime data
+docker/pihole/etc-pihole/
+docker/pihole/etc-dnsmasq.d/
+tools/choms-doctor/health-report.json

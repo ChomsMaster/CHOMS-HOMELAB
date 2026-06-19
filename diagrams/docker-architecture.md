@@ -10,8 +10,8 @@ flowchart TD
     Postgres[choms-postgres<br/>postgres:17<br/>127.0.0.1:5432]
 
     Data[/data<br/>Persistent Storage]
-    Opt[/opt/choms/docker<br/>Compose Files]
-
+    Repo[/data/projects/choms-homelab/docker<br/>Compose Files]
+ 
     Host --> Docker
     Docker --> Nginx
     Docker --> Pihole

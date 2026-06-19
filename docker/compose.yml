@@ -1,0 +1,34 @@
+services:
+  nginx:
+    image: nginx:stable-alpine
+    container_name: choms-nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - /data/websites/choms-test:/usr/share/nginx/html:ro
+
+  postgres:
+    image: postgres:17
+    container_name: choms-postgres
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - /data/postgres:/var/lib/postgresql/data
+
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "8081:80/tcp"
+      - "53:53/tcp"
+      - "53:53/udp"
+    volumes:
+      - /data/pihole/etc-pihole:/etc/pihole
+      - /data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d

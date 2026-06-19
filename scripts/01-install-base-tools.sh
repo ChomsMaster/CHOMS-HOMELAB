@@ -1,8 +1,14 @@
 #!/bin/bash
-set -e
 
+source "$(dirname "$0")/lib/common.sh"
+
+set -e
 echo "Installing base tools..."
 
+if command_exists docker; then
+    success "Base tools already installed."
+    exit 0
+fi
 sudo apt update
 
 sudo apt install -y \

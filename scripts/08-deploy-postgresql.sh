@@ -3,7 +3,7 @@ set -e
 
 echo "Deploying PostgreSQL..."
 
-APP_DIR="/opt/choms/docker/postgres"
+APP_DIR="/data/projects/choms-homelab/docker"
 DATA_DIR="/data/postgres"
 
 DB_NAME="choms_lab"
