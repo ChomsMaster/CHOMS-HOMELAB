@@ -2,35 +2,8 @@
 .DS_Store
 Thumbs.db
 
-# Editor files
+# Editors
 .vscode/
-.idea/
-
-# Secrets
-*.key
-*.pem
-*.env
-.env
-secrets/
-private/
-
-# Backups
-*.bak
-*.backup
-*.tar.gz
-*.zip
-
-# Logs
-*.log
-logs/
-
-# macOS
-.DS_Store
-
-# VSCode
-.vscode/
-
-# JetBrains
 .idea/
 
 # Python
@@ -39,44 +12,36 @@ __pycache__/
 .venv/
 venv/
 
-# Environment
+# Secrets and local environment
 .env
 .env.*
-
-# Logs
-*.log
-
-# Temporary
-tmp/
-temp/
-
-# Backups
-*.bak
-
-# SSH Keys
+*.env
+secrets/
+private/
 *.pem
 *.key
-
-# WireGuard private keys
 *_private.key
 private.key
-
-# PostgreSQL
-pgdata/
-
-# Docker
-docker-data/
-
-# Local backups
-backup/
-
-# CHOMS Doctor generated reports
-tools/choms-doctor/health-report.json
-
-# Local Docker environment secrets
 docker/.env
 
+# Logs and generated reports
+*.log
+logs/
+tools/choms-doctor/health-report.json
+
+# Backups and archives
+*.bak
+*.backup
+*.tar.gz
+*.zip
+backup/
+
 # Runtime data
+docker-data/
 docker/pihole/etc-pihole/
 docker/pihole/etc-dnsmasq.d/
-tools/choms-doctor/health-report.json
+pgdata/
+
+# Temporary files
+tmp/
+temp/

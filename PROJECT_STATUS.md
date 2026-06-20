@@ -33,3 +33,11 @@ CHOMS Doctor v0.2 completed.
 ## Next Milestone
 
 CHOMS Doctor v1.0 and infrastructure automation.
+
+## Latest Infrastructure Update
+
+- Migrated /data from 120GB SSD to 960GB SSD.
+- Mounted external exFAT SSD MEDIA at /media/ssd-media.
+- Installed Samba NAS with Storage and Media shares.
+- Installed Jellyfin media server.
+- Installed MiniDLNA for Samsung Smart TV DLNA compatibility.

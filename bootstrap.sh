@@ -42,6 +42,10 @@ STEPS=(
 "07-deploy-nginx.sh"
 "08-deploy-postgresql.sh"
 "09-deploy-pihole.sh"
+"13-setup-samba.sh"
+"14-setup-media-ssd.sh"
+"15-deploy-jellyfin.sh"
+"16-setup-minidlna.sh"
 )
 
 TOTAL=${#STEPS[@]}
@@ -50,16 +54,18 @@ CURRENT=1
 chmod +x scripts/*.sh
 
 for STEP in "${STEPS[@]}"; do
-
     echo
     echo "[$CURRENT/$TOTAL] Running $STEP"
+
+    if [[ ! -f "scripts/$STEP" ]]; then
+        echo "ERROR: scripts/$STEP not found."
+        exit 1
+    fi
 
     "./scripts/$STEP"
 
     echo "Completed."
-
     CURRENT=$((CURRENT+1))
-
 done
 
 echo
@@ -69,4 +75,3 @@ echo
 echo "Log:"
 echo "$LOGFILE"
 echo "=============================================="
-
