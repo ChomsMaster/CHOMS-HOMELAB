@@ -16,6 +16,7 @@ Usage:
   choms services    Show core systemd service states
   choms doctor      Run CHOMS Doctor
   choms help        Show this help
+  choms monitoring  Show monitoring stack status
 USAGE
 }
 
@@ -45,6 +46,9 @@ case "${1:-help}" in
         else
             python3 main.py
         fi
+        ;;
+    monitoring)
+        "$OPS_DIR/monitoring-status.sh"
         ;;
 
     help|--help|-h)
