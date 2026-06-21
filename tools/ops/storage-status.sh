@@ -34,12 +34,6 @@ echo "===== DISKS / PARTITIONS ====="
 lsblk -o NAME,SIZE,FSTYPE,LABEL,MOUNTPOINT
 
 echo
-echo "===== KEY PATHS SIZE ====="
-for path in /data /media/ssd-media; do
-    if [ -d "$path" ]; then
-        echo -n "$path: "
-        du -sh "$path" 2>/dev/null || sudo du -sh "$path"
-    else
-        echo "$path: not found"
-    fi
-done
+echo "===== NOTE ====="
+echo "Per-folder size scan skipped by default to avoid slow USB/exFAT scans."
+echo "Use: du -sh /path when you want a detailed folder scan."

@@ -11,6 +11,7 @@ CHOMS-HOMELAB Operations CLI
 
 Usage:
   choms storage     Show disks, mounts and storage usage
+  choms shares      Show Samba shared resources
   choms docker      Show Docker containers and compose services
   choms services    Show core systemd service states
   choms doctor      Run CHOMS Doctor
@@ -19,28 +20,39 @@ USAGE
 }
 
 case "${1:-help}" in
+
     storage)
         "$OPS_DIR/storage-status.sh"
         ;;
+
+    shares)
+        "$BASE_DIR/tools/choms-admin/shares.sh"
+        ;;
+
     docker)
         "$OPS_DIR/docker-status.sh"
         ;;
+
     services)
         "$OPS_DIR/services-status.sh"
         ;;
+
     doctor)
         cd "$BASE_DIR/tools/choms-doctor"
+
         if [ -d "$BASE_DIR/.venv" ]; then
             "$BASE_DIR/.venv/bin/python" main.py
         else
             python3 main.py
         fi
         ;;
+
     help|--help|-h)
         usage
         ;;
+
     *)
-        echo "Unknown command: $1"
+        echo "Unknown command: ${1:-}"
         echo
         usage
         exit 1
