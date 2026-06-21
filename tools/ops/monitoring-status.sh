@@ -27,6 +27,7 @@ check_container "choms-prometheus" "http://192.168.1.138:9090"
 check_container "choms-node-exporter" "http://192.168.1.138:9100"
 check_container "choms-cadvisor" "http://192.168.1.138:8082"
 check_container "choms-uptime-kuma" "http://192.168.1.138:3001"
+check_container "choms-scrutiny" "http://192.168.1.138:8083"
 
 echo
 echo "Compose project:"
