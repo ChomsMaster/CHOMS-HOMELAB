@@ -97,3 +97,22 @@ services:
       - "3001:3001"
     volumes:
       - /data/docker/monitoring/uptime-kuma:/app/data
+
+  scrutiny:
+    image: ghcr.io/analogj/scrutiny:master-omnibus
+    container_name: choms-scrutiny
+    restart: unless-stopped
+    ports:
+      - "8083:8080"
+    cap_add:
+      - SYS_RAWIO
+      - SYS_ADMIN
+    devices:
+      - /dev/sda:/dev/sda
+      - /dev/sdb:/dev/sdb
+      - /dev/sdc:/dev/sdc
+      - /dev/sdd:/dev/sdd
+    volumes:
+      - /run/udev:/run/udev:ro
+      - /data/docker/scrutiny/config:/opt/scrutiny/config
+      - /data/docker/scrutiny/influxdb:/opt/scrutiny/influxdb
