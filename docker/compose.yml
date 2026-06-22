@@ -116,3 +116,27 @@ services:
       - /run/udev:/run/udev:ro
       - /data/docker/scrutiny/config:/opt/scrutiny/config
       - /data/docker/scrutiny/influxdb:/opt/scrutiny/influxdb
+
+  loki:
+    image: grafana/loki:latest
+    container_name: choms-loki
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/config.yml
+    volumes:
+      - ./loki/config.yml:/etc/loki/config.yml:ro
+      - /data/docker/loki:/loki
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: choms-promtail
+    restart: unless-stopped
+    command: -config.file=/etc/promtail/config.yml
+    volumes:
+      - ./promtail/config.yml:/etc/promtail/config.yml:ro
+      - /data/docker/promtail:/promtail
+      - /var/log:/var/log:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    depends_on:
+      - loki
