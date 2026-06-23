@@ -3,6 +3,12 @@ services:
     image: nginx:stable-alpine
     container_name: choms-nginx
     restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.home.rule=Host(`chomsmaster.com`)"
+      - "traefik.http.routers.home.entrypoints=websecure"
+      - "traefik.http.routers.home.tls.certresolver=letsencrypt"
+      - "traefik.http.services.home.loadbalancer.server.port=80"
     ports:
       - "8080:80"
     volumes:
