@@ -28,6 +28,9 @@ access_control:
     - domain: kuma.chomsmaster.com
       policy: one_factor
 
+    - domain: traefik.chomsmaster.com
+      policy: one_factor
+
 session:
   cookies:
     - name: authelia_session

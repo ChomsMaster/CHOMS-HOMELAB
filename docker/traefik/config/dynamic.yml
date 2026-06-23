@@ -8,6 +8,16 @@ http:
         sslRedirect: false
 
   routers:
+    traefik:
+      rule: "Host(`traefik.chomsmaster.com`)"
+      entryPoints:
+        - websecure
+      service: api@internal
+      middlewares:
+        - authelia@docker
+      tls:
+        certResolver: letsencrypt
+
     jellyfin:
       rule: "Host(`jellyfin.chomsmaster.com`)"
       entryPoints:
