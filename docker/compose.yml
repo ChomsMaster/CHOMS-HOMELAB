@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.home.rule=Host(`chomsmaster.com`)"
+      - "traefik.http.routers.home.rule=Host(`home.chomsmaster.com`)"
       - "traefik.http.routers.home.entrypoints=websecure"
       - "traefik.http.routers.home.tls.certresolver=letsencrypt"
       - "traefik.http.services.home.loadbalancer.server.port=80"
