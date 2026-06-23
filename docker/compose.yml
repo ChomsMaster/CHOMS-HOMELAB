@@ -99,6 +99,12 @@ services:
     image: louislam/uptime-kuma:latest
     container_name: choms-uptime-kuma
     restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.kuma.rule=Host(`kuma.chomsmaster.com`)"
+      - "traefik.http.routers.kuma.entrypoints=websecure"
+      - "traefik.http.routers.kuma.tls.certresolver=letsencrypt"
+      - "traefik.http.services.kuma.loadbalancer.server.port=3001"
     ports:
       - "3001:3001"
     volumes:
