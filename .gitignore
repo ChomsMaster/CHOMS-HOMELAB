@@ -45,3 +45,4 @@ pgdata/
 # Temporary files
 tmp/
 temp/
+docker/traefik/acme.json
