@@ -1,0 +1,53 @@
+services:
+
+  nextcloud-db:
+    image: mariadb:11
+    container_name: choms-nextcloud-db
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nextcloud.rule=Host(`cloud.choms.local`)"
+      - "traefik.http.routers.nextcloud.entrypoints=web"
+      - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
+      - "traefik.docker.network=docker_default"
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    environment:
+      MYSQL_ROOT_PASSWORD: Choms0600
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+      MYSQL_PASSWORD: Choms0600
+    volumes:
+      - ./db:/var/lib/mysql
+    networks:
+      - choms
+
+  nextcloud:
+    image: nextcloud:latest
+    container_name: choms-nextcloud
+    restart: unless-stopped
+    depends_on:
+      - nextcloud-db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=docker_default"
+      - "traefik.http.routers.nextcloud.rule=Host(`cloud.choms.local`)"
+      - "traefik.http.routers.nextcloud.entrypoints=web"
+      - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
+    ports:
+      - "8084:80"
+    environment:
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+      MYSQL_PASSWORD: Choms0600
+      MYSQL_HOST: nextcloud-db
+    volumes:
+      - ./html:/var/www/html
+    networks:
+      - choms
+
+
+
+networks:
+  choms:
+    external: true
+    name: docker_default
