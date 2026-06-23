@@ -46,3 +46,11 @@ pgdata/
 tmp/
 temp/
 docker/traefik/acme.json
+
+# Traefik certificates
+docker/traefik/acme.json
+docker/traefik/logs/
+
+# Nextcloud persistent data
+docker/nextcloud/html/
+docker/nextcloud/db/
