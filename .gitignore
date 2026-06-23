@@ -54,3 +54,9 @@ docker/traefik/logs/
 # Nextcloud persistent data
 docker/nextcloud/html/
 docker/nextcloud/db/
+
+# Authelia secrets and local user database
+docker/authelia/secrets/
+docker/authelia/config/users_database.yml
+docker/authelia/config/db.sqlite3
+docker/authelia/config/notification.txt
