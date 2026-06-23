@@ -1,0 +1,11 @@
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    network_mode: host
+    volumes:
+      - /data/docker/jellyfin/config:/config
+      - /data/docker/jellyfin/cache:/cache
+      - /data/media:/media
+      - /media/ssd-media:/usbmedia
+    restart: unless-stopped

@@ -38,17 +38,6 @@ services:
       - /data/pihole/etc-pihole:/etc/pihole
       - /data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d
 
-  jellyfin:
-    image: jellyfin/jellyfin:latest
-    container_name: jellyfin
-    network_mode: host
-    volumes:
-      - /data/docker/jellyfin/config:/config
-      - /data/docker/jellyfin/cache:/cache
-      - /data/media:/media
-      - /media/ssd-media:/usbmedia
-    restart: unless-stopped
-
   traefik:
     image: traefik:latest
     extra_hosts:
