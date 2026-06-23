@@ -6,3 +6,18 @@ http:
         contentTypeNosniff: true
         frameDeny: true
         sslRedirect: false
+
+  routers:
+    jellyfin:
+      rule: "Host(`jellyfin.chomsmaster.com`)"
+      entryPoints:
+        - websecure
+      service: jellyfin
+      tls:
+        certResolver: letsencrypt
+
+  services:
+    jellyfin:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:8096"
