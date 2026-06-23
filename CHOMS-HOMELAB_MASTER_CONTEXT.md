@@ -1,556 +1,220 @@
----
-## Project Information
-
-**Project Name**
-
-CHOMS-HOMELAB
-
-**Owner**
-
-Oscar Salcedo
-
-Founder
-
-CHOMS Master Technology Services
-
-Future Contact
-
-[oscar.salcedo@chomsmaster.com](mailto:oscar.salcedo@chomsmaster.com)
-
-Repository
-
-[https://github.com/ChomsMaster/CHOMS-HOMELAB](https://github.com/ChomsMaster/CHOMS-HOMELAB)
-
----
-
-# Executive Summary
-
-CHOMS-HOMELAB is a self-hosted infrastructure platform built from scratch as a long-term engineering project.
-
-The project started as a practical solution to eliminate recurring hosting costs after personal financial circumstances made commercial hosting and domain subscriptions difficult to maintain.
-
-Instead of migrating to another hosting provider, the decision was made to design and build a complete on-premise infrastructure using a low-cost Mini PC.
-
-As the platform evolved, the objective expanded beyond replacing hosting services.
-
-Today the project serves four independent purposes:
-
-• Production-inspired infrastructure
-
-• Professional engineering portfolio
-
-• Continuous Linux / DevOps learning platform
-
-• Foundation for future CHOMS Master infrastructure services
-
-The project follows one simple philosophy:
-
-> Build once.
-> Document everything.
-> Recreate anytime.
-
----
-
-# Project Vision
-
-The long-term objective is not simply to own a home server.
-
-The objective is to create a maintainable infrastructure capable of hosting personal, business and development services while following professional engineering practices.
-
-Every deployed service must satisfy three conditions:
-
-• Solve a real problem
-
-• Be fully documented
-
-• Be reproducible from scratch
-
----
-
-# Initial Problem
-
-Commercial hosting was discontinued due to cost optimization.
-
-Instead of continuing to pay monthly hosting and cloud services, the decision was made to invest in a permanent infrastructure that could gradually replace external providers.
-
-The project therefore evolved from:
-
-Hosting replacement
-
-into
-
-Complete Self-Hosted Infrastructure Platform.
-
----
-
-# Long-Term Objectives
-
-Infrastructure
-
-• Secure self-hosted environment
-
-• Full remote administration
-
-• Centralized services
-
-• Private cloud
-
-• Internal APIs
-
-• Monitoring
-
-• Automated backups
-
-Professional Growth
-
-• Linux administration
-
-• Docker
-
-• Networking
-
-• Security
-
-• DevOps
-
-• Backend Engineering
-
-• Infrastructure Documentation
-
-Portfolio
-
-The repository is intentionally designed to demonstrate engineering methodology rather than software installation.
-
-Documentation quality is considered as important as implementation.
-
----
-
-# Current Infrastructure
-
-Hardware
-
-ACEPC AK2 Mini PC
-
-Intel Celeron J3455
-
-6 GB RAM
-
-128 GB SSD (Operating System)
-
-120 GB SSD (/data)
-
-Operating System
-
-Debian 13 (Trixie)
-
-Storage Layout
-
-/
-
-Operating System
-
-/data
-
-Persistent storage
-
-/data/projects/choms-homelab
-
-Infrastructure
-
-/projects
-
-Repositories
-
-/backups
-
-System backups
-
----
-
-# Current Services
-
-Infrastructure
-
-Docker
-
-Docker Compose
-
-Networking
-
-WireGuard VPN
-
-DNS
-
-Pi-hole
-
-Web
-
-Nginx
-
-Database
-
-PostgreSQL 17
-
-Security
-
-UFW
-
-Fail2ban
-
----
-
-# Network Architecture
-
-LAN
-
-192.168.1.138
-
-VPN
-
-10.10.10.0/24
-
-Remote Access
-
-WireGuard
-
-Router Topology
-
-Internet
-
-↓
-
-Main Router
-
-↓
-
-Access Point
-
-↓
-
-CHOMS-HOMELAB
-
-The secondary router was intentionally converted into an Access Point to avoid double NAT and simplify VPN deployment.
-
----
-
-# Storage Architecture
-
-System SSD
-
-Operating system
-
-Application binaries
-
-Docker Engine
-
-Second SSD
-
-Persistent Docker volumes
-
-Future Nextcloud storage
-
-Backups
-
-Repositories
-
-Databases
-
-This separation allows complete operating system reinstallation without losing application data.
-
----
-
-# Docker Philosophy
-
-Applications are deployed as isolated containers whenever possible.
-
-Advantages
-
-Easy upgrades
-
-Simple rollback
-
-Version control
-
-Service isolation
-
-Rapid disaster recovery
-
-Native installation is reserved only for operating system components.
-
----
-
-# Security Philosophy
-
-Minimal exposed services
-
-Default deny firewall
-
-VPN-first administration
-
-Fail2ban protection
-
-Local-only PostgreSQL
-
-No unnecessary public ports
-
-Documentation before deployment
-
----
-
-# Engineering Decisions
-
-Decision 001
-
-Operating System
-
-Debian selected over Ubuntu due to stability, predictable updates and lower resource usage.
-
-Decision 002
-
-Container Platform
-
-Docker Compose selected for simplicity, reproducibility and maintainability.
-
-Decision 003
-
-Storage
-
-Dedicated SSD mounted as /data to separate operating system from persistent information.
-
-Decision 004
-
-VPN
-
-WireGuard selected due to performance and modern cryptography.
-
-Decision 005
-
-Database
-
-PostgreSQL only accessible from localhost.
-
-Decision 006
-
-Repository
-
-Every significant infrastructure change must be versioned through Git.
-
----
-
-# Repository Philosophy
-
-The repository is not intended to store configuration files only.
-
-It documents:
-
-Architecture
-
-Deployment
-
-Engineering decisions
-
-Recovery procedures
-
-Lessons learned
-
-Operational scripts
-
-Project evolution
-
----
-
-# Documentation Structure
-
-README
-
-Project presentation
-
-docs/
-
-Technical documentation
-
-scripts/
-
-Operational automation
-
-diagrams/
-
-Architecture diagrams
-
-assets/
-
-Images
-
-CHANGELOG
-
-Project history
-
-LICENSE
-
-Licensing
-
----
-
-# Operational Scripts
-
-Health Check
-
-System validation
-
-Base Installation
-
-Server Structure
-
-Docker Installation
-
-Firewall Configuration
-
-Storage Configuration
-
-WireGuard Deployment
-
-Nginx Deployment
-
-PostgreSQL Deployment
-
-Pi-hole Deployment
-
-Backup
-
-System Update
-
-Server Restore Guide
-
----
-
-# Lessons Learned
-
-Always document before expanding.
-
-Avoid duplicated scripts.
-
-Version every significant change.
-
-Keep services isolated.
-
-Separate system from data.
-
-Prefer reproducible deployments.
-
-Always verify repository structure before creating new files.
-
-Test before documenting.
-
----
-
-# Current Status
-
-Infrastructure
-
-Approximately 80–85% complete.
-
-Current Focus
-
-Repository professionalization.
-
-Documentation.
-
-Architecture diagrams.
-
-Operational automation.
-
-Upcoming Services
-
-Reverse Proxy
-
-Nextcloud
-
-Mail Server
-
-Monitoring
-
-FastAPI
-
-CHOMS Dashboard
-
-CHOMS Master API
-
-Future Infrastructure Integrations
-
----
-
-# Future Vision
-
-CHOMS-HOMELAB will become the central infrastructure for all CHOMS Master services.
-
-The platform will eventually provide:
-
-Personal Cloud
-
-Business Hosting
-
-Mail Server
-
-Internal APIs
-
-Monitoring
-
-Administration Dashboard
-
-Backend Infrastructure Services
-
-CI/CD
-
-Automation
-
-Remote Infrastructure Management
-
----
-
-# Project Philosophy
-
-This project is intentionally built without shortcuts.
-
-Every deployment is executed manually before automation.
-
-Every service is understood before abstraction.
-
-Every architectural decision is documented.
-
-The goal is not only to build infrastructure.
-
-The goal is to become capable of designing, operating, documenting and maintaining production-quality systems.
-
----
-
-# Engineering Journal
-
-2026-06
-
-Project started.
-
-Debian installed.
-
-Docker deployed.
-
-WireGuard configured.
-
-Router migrated to Access Point.
-
-Pi-hole deployed.
-
-Nginx deployed.
-
-PostgreSQL deployed.
-
-GitHub repository created.
-
-Documentation standardized.
-
-Operational scripts implemented.
-
-Repository reorganized.
-
-Project transitioned from a personal laboratory into a professional engineering portfolio.
-
-
+# CHOMS-HOMELAB MASTER CONTEXT
+
+## Owner
+Oscar Salcedo — CHOMS Master Technology Services  
+GitHub: https://github.com/ChomsMaster/CHOMS-HOMELAB  
+Domain: chomsmaster.com  
+Main server LAN IP: 192.168.1.138  
+Public IP configured in DNS: 79.112.15.233  
+OS: Debian 13 Trixie  
+Platform: ACEPC AK2 Mini PC  
+CPU: Intel Celeron J3455  
+RAM: 6 GB DDR3  
+System SSD: 128 GB  
+Main data SSD: 960 GB mounted under /data  
+Media SSD: 240 GB mounted as /media/ssd-media  
+Additional external storage: 1 TB shared HDD and 2 TB backup HDD
+
+## Working Style
+User prefers action-first technical guidance:
+- Minimal motivational commentary.
+- Give exact commands/configuration.
+- Assume recommended path unless asked for options.
+- Use “estado” only when user asks for broader status.
+- Keep responses short during operations.
+
+## Project Purpose
+CHOMS-HOMELAB is a production-inspired self-hosted infrastructure platform for:
+- Personal cloud services.
+- Media services.
+- Monitoring and observability.
+- DevOps learning.
+- Professional portfolio.
+- Future CHOMS Master / ShiftCore infrastructure.
+- Future multi-node cluster.
+
+The objective is not just running containers, but building a reproducible, documented, scalable infrastructure.
+
+## Current Architecture
+Single-node Docker Compose infrastructure.
+
+Main entrypoint:
+- Traefik reverse proxy
+- HTTP -> HTTPS redirection
+- Let's Encrypt automatic certificates
+- DNS managed in Namecheap
+- Router forwards WAN 80/443 to 192.168.1.138
+
+Public HTTPS services currently working:
+- https://cloud.chomsmaster.com -> Nextcloud
+- https://grafana.chomsmaster.com -> Grafana
+- https://kuma.chomsmaster.com -> Uptime Kuma
+- https://jellyfin.chomsmaster.com -> Jellyfin
+
+DNS A records configured:
+- @ -> 79.112.15.233
+- cloud -> 79.112.15.233
+- grafana -> 79.112.15.233
+- jellyfin -> 79.112.15.233
+- kuma -> 79.112.15.233
+- traefik -> 79.112.15.233
+
+## Current Services
+Core:
+- Docker
+- Docker Compose
+- Traefik
+- Nginx
+- PostgreSQL 17
+- MariaDB for Nextcloud
+- Pi-hole
+- WireGuard planned/existing context but not current focus
+- Fail2ban
+- UFW
+
+Applications:
+- Nextcloud
+- Jellyfin
+- Uptime Kuma
+- Grafana
+- Prometheus
+- Node Exporter
+- cAdvisor
+- Loki
+- Promtail
+- Scrutiny
+
+Current important ports:
+- 80/443 public via Traefik
+- 8096 Jellyfin direct/local
+- 3000 Grafana direct/local
+- 3001 Kuma direct/local
+- 8081 Pi-hole
+- 8082 cAdvisor
+- 8083 Scrutiny
+- 9090 Prometheus
+- 9100 Node Exporter
+- 3100 Loki
+- PostgreSQL bound to 127.0.0.1:5432
+
+## Docker Layout
+Main compose:
+- /data/projects/choms-homelab/docker/compose.yml
+
+Traefik dynamic config:
+- /data/projects/choms-homelab/docker/traefik/config/dynamic.yml
+
+Important persistent paths:
+- /data/docker/monitoring/grafana
+- /data/docker/monitoring/prometheus
+- /data/docker/monitoring/uptime-kuma
+- /data/docker/loki
+- /data/docker/promtail
+- /data/docker/scrutiny
+- /data/docker/jellyfin/config
+- /data/docker/jellyfin/cache
+- /data/projects/choms-homelab/docker/nextcloud/html
+- /data/projects/choms-homelab/docker/nextcloud/db
+- /data/postgres
+- /data/pihole
+
+Secrets:
+- docker/.env is private and must never be committed.
+- .gitignore includes docker/.env and secrets patterns.
+- Future plan: root-only vault under /root/choms/secrets.env and command sudo choms-secrets.
+
+## Confirmed Technical State
+Traefik:
+- HTTPS working.
+- Let's Encrypt certificates confirmed valid.
+- cloud.chomsmaster.com works.
+- grafana.chomsmaster.com works.
+- kuma.chomsmaster.com works.
+- jellyfin.chomsmaster.com returns HTTP/2 302 to /web/, expected Jellyfin behavior.
+
+Nextcloud:
+- Works behind Traefik.
+- Config was updated from cloud.choms.local to cloud.chomsmaster.com:
+  - overwrite.cli.url=https://cloud.chomsmaster.com
+  - overwritehost=cloud.chomsmaster.com
+  - overwriteprotocol=https
+  - trusted_domains includes cloud.chomsmaster.com
+
+Jellyfin:
+- Works locally and via https://jellyfin.chomsmaster.com/web/
+- Uses network_mode: host.
+- Traefik routes Jellyfin through dynamic.yml using host.docker.internal:8096.
+- DLNA caused heavy transcoding.
+- Jellyfin CPU reached 365% during DLNA playback.
+- Direct Play or better Jellyfin client is recommended.
+- Use https://jellyfin.chomsmaster.com as server URL in clients.
+
+Monitoring:
+- Prometheus targets confirmed up:
+  - cadvisor
+  - node-exporter
+  - prometheus
+- Grafana works.
+- Loki and Promtail work.
+- Uptime Kuma works through HTTPS.
+- Imported dashboards exist, but some old community dashboards may show N/A due label incompatibility.
+
+## Current Design Decisions
+- Use Traefik as single public ingress.
+- Only WAN ports 80 and 443 should be public.
+- Avoid exposing raw application ports publicly.
+- Services should use subdomains.
+- Secrets must stay outside Git.
+- Keep architecture scalable toward future 2-4 node cluster.
+- Do not split stateful apps across nodes until storage/HA is designed.
+- Second node should initially be backup/monitoring/secondary workloads.
+- Future 4-node vision:
+  - Docker Swarm or Kubernetes
+  - replicated storage: Longhorn/Ceph/ZFS replication
+  - database HA: PostgreSQL Patroni or MariaDB Galera
+  - redundant Traefik/load balancer
+  - automated backups
+  - service failover
+
+## Immediate Next Tasks
+1. Commit latest Jellyfin HTTPS changes.
+2. Publish/protect Traefik dashboard or keep dashboard local-only.
+3. Add Homepage dashboard at home.chomsmaster.com.
+4. Add Authelia or equivalent access protection before exposing more admin services.
+5. Harden security:
+   - close public raw ports where possible
+   - review UFW
+   - ensure Fail2ban active
+   - strong passwords
+   - root-only secrets vault
+6. Add backups:
+   - Nextcloud files + DB
+   - MariaDB
+   - PostgreSQL
+   - Docker configs
+   - Jellyfin config
+   - Pi-hole config
+   - Traefik acme.json
+7. Add DDNS automation for Namecheap/public IP changes.
+8. Update README and docs to match current state.
+9. Reorganize Traefik dynamic config into separate files before adding many more services.
+10. Future services:
+   - Homepage
+   - Authelia
+   - Vaultwarden
+   - Gitea
+   - Immich
+   - n8n
+   - Ollama/Open WebUI later if hardware allows
+
+## Known Risks / Notes
+- Raw public ports like 3000, 3001, 8081, 8082, 8083, 8096 may still be reachable if router forwards them or firewall allows them; public router currently forwards only 80/443, but local exposure remains.
+- Do not expose Grafana/Kuma/Traefik publicly without strong passwords and ideally Authelia.
+- Docker compose config shows resolved secrets from .env; this is normal, but do not paste those outputs publicly.
+- Nextcloud and MariaDB are currently on same node; HA/storage replication not implemented.
+- Jellyfin transcodes heavily via DLNA; use Direct Play clients.
+- Some files in GitHub render minified/one-line because previous writes may have removed formatting; future cleanup recommended.
+
+## Resume Prompt For New Chat
+Continue CHOMS-HOMELAB from this state:
+We have a Debian 13 single-node Docker Compose homelab at 192.168.1.138 with public IP 79.112.15.233 and domain chomsmaster.com. Traefik is the public HTTPS ingress with Let's Encrypt. Working public services: cloud.chomsmaster.com, grafana.chomsmaster.com, kuma.chomsmaster.com, jellyfin.chomsmaster.com. Nextcloud, Grafana, Uptime Kuma, Jellyfin, Prometheus, Node Exporter, cAdvisor, Loki, Promtail, Scrutiny, Pi-hole, PostgreSQL, MariaDB and Nginx are deployed. docker/.env contains private secrets and must not be committed. User wants action-first technical commands, minimal chatter, and scalable architecture toward future 4-node cluster. Next priority: commit current state, then add Homepage and Authelia, harden exposed services, implement backups, DDNS, and clean docs.
