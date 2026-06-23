@@ -15,6 +15,7 @@ Usage:
   choms docker      Show Docker containers and compose services
   choms services    Show core systemd service states
   choms doctor      Run CHOMS Doctor
+  choms status      Show global system status
   choms help        Show this help
   choms monitoring  Show monitoring stack status
 USAGE
@@ -38,7 +39,7 @@ case "${1:-help}" in
         "$OPS_DIR/services-status.sh"
         ;;
 
-    doctor)
+    doctor|status)
         cd "$BASE_DIR/tools/choms-doctor"
 
         if [ -d "$BASE_DIR/.venv" ]; then
