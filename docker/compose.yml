@@ -8,6 +8,7 @@ services:
       - "traefik.http.routers.home.rule=Host(`home.chomsmaster.com`)"
       - "traefik.http.routers.home.entrypoints=websecure"
       - "traefik.http.routers.home.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.home.middlewares=authelia@docker"
       - "traefik.http.services.home.loadbalancer.server.port=80"
     ports:
       - "8080:80"
@@ -69,6 +70,7 @@ services:
       - "traefik.http.routers.grafana.rule=Host(`grafana.chomsmaster.com`)"
       - "traefik.http.routers.grafana.entrypoints=websecure"
       - "traefik.http.routers.grafana.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.grafana.middlewares=authelia@docker"
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
     ports:
       - "3000:3000"
@@ -110,6 +112,7 @@ services:
       - "traefik.http.routers.kuma.rule=Host(`kuma.chomsmaster.com`)"
       - "traefik.http.routers.kuma.entrypoints=websecure"
       - "traefik.http.routers.kuma.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.kuma.middlewares=authelia@docker"
       - "traefik.http.services.kuma.loadbalancer.server.port=3001"
     ports:
       - "3001:3001"

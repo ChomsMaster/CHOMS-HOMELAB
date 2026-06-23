@@ -1,0 +1,49 @@
+server:
+  address: tcp://0.0.0.0:9091/
+
+log:
+  level: info
+
+theme: dark
+
+totp:
+  issuer: chomsmaster.com
+
+authentication_backend:
+  file:
+    path: /config/users_database.yml
+
+access_control:
+  default_policy: deny
+  rules:
+    - domain: auth.chomsmaster.com
+      policy: bypass
+
+    - domain: home.chomsmaster.com
+      policy: one_factor
+
+    - domain: grafana.chomsmaster.com
+      policy: one_factor
+
+    - domain: kuma.chomsmaster.com
+      policy: one_factor
+
+session:
+  cookies:
+    - name: authelia_session
+      domain: chomsmaster.com
+      authelia_url: https://auth.chomsmaster.com
+      default_redirection_url: https://home.chomsmaster.com
+
+regulation:
+  max_retries: 5
+  find_time: 2m
+  ban_time: 10m
+
+storage:
+  local:
+    path: /config/db.sqlite3
+
+notifier:
+  filesystem:
+    filename: /config/notification.txt
