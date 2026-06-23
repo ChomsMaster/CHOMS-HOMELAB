@@ -10,8 +10,6 @@ services:
       - "traefik.http.routers.home.tls.certresolver=letsencrypt"
       - "traefik.http.routers.home.middlewares=authelia@docker"
       - "traefik.http.services.home.loadbalancer.server.port=80"
-    ports:
-      - "8080:80"
     volumes:
       - /data/websites/choms-test:/usr/share/nginx/html:ro
 
@@ -55,8 +53,6 @@ services:
     image: prom/prometheus:latest
     container_name: choms-prometheus
     restart: unless-stopped
-    ports:
-      - "9090:9090"
     volumes:
       - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - /data/docker/monitoring/prometheus:/prometheus
@@ -72,8 +68,6 @@ services:
       - "traefik.http.routers.grafana.tls.certresolver=letsencrypt"
       - "traefik.http.routers.grafana.middlewares=authelia@docker"
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
-    ports:
-      - "3000:3000"
     volumes:
       - /data/docker/monitoring/grafana:/var/lib/grafana
     depends_on:
@@ -83,8 +77,6 @@ services:
     image: prom/node-exporter:latest
     container_name: choms-node-exporter
     restart: unless-stopped
-    ports:
-      - "9100:9100"
     command:
       - --path.rootfs=/host
     volumes:
@@ -94,8 +86,6 @@ services:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: choms-cadvisor
     restart: unless-stopped
-    ports:
-      - "8082:8080"
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
@@ -114,8 +104,6 @@ services:
       - "traefik.http.routers.kuma.tls.certresolver=letsencrypt"
       - "traefik.http.routers.kuma.middlewares=authelia@docker"
       - "traefik.http.services.kuma.loadbalancer.server.port=3001"
-    ports:
-      - "3001:3001"
     volumes:
       - /data/docker/monitoring/uptime-kuma:/app/data
 
@@ -123,8 +111,6 @@ services:
     image: ghcr.io/analogj/scrutiny:master-omnibus
     container_name: choms-scrutiny
     restart: unless-stopped
-    ports:
-      - "8083:8080"
     cap_add:
       - SYS_RAWIO
       - SYS_ADMIN
@@ -132,7 +118,7 @@ services:
       - /dev/sda:/dev/sda
       - /dev/sdb:/dev/sdb
       - /dev/sdc:/dev/sdc
-      - /dev/sdd:/dev/sdd
+      - /dev/sde:/dev/sde
     volumes:
       - /run/udev:/run/udev:ro
       - /data/docker/scrutiny/config:/opt/scrutiny/config
@@ -142,8 +128,6 @@ services:
     image: grafana/loki:latest
     container_name: choms-loki
     restart: unless-stopped
-    ports:
-      - "3100:3100"
     command: -config.file=/etc/loki/config.yml
     volumes:
       - ./loki/config.yml:/etc/loki/config.yml:ro
