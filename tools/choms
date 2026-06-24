@@ -19,6 +19,12 @@ Usage:
   choms compose     Run Docker Compose using CHOMS stack files
   choms update      Update the complete CHOMS stack
   choms vault       Show admin secrets vault
+  choms health      Quick health check
+  choms version     Show CHOMS version info
+  choms urls        Show published URLs
+  choms logs        Show service logs
+  choms restart     Restart one service
+  choms service     Manage CHOMS services
   choms help        Show this help
 USAGE
 }
@@ -35,7 +41,7 @@ case "$cmd" in
         "$COMMANDS_DIR/status.sh" "$@"
         ;;
 
-    status|storage|shares|docker|services|monitoring|compose|update|vault)
+    status|storage|shares|docker|services|monitoring|compose|update|vault|health|version|urls|logs|restart|service)
         "$COMMANDS_DIR/$cmd.sh" "$@"
         ;;
 
