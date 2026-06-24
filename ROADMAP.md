@@ -1,56 +1,6 @@
-# CHOMS-HOMELAB Roadmap
+# Roadmap
 
-## Phase 1 - Infrastructure
-
-- [x] Debian 13
-- [x] Docker
-- [x] Docker Compose
-- [x] WireGuard
-- [x] Pi-hole
-- [x] PostgreSQL
-- [x] Nginx
-- [x] Automated Backup
-- [x] Documentation
-- [x] CHOMS Doctor v0.1
-
----
-
-## Phase 2 - Infrastructure Automation
-
-- [ ] CHOMS Doctor v1.0
-- [ ] Infrastructure Compliance Engine
-- [ ] HTML Report
-- [ ] PDF Report
-- [ ] Automatic Recovery
-- [ ] SMART Monitoring
-- [ ] Update Checker
-
----
-
-## Phase 3 - Production Services
-
-- [ ] Reverse Proxy
-- [ ] Nextcloud
-- [ ] Mail Server
-- [ ] Monitoring
-- [ ] Grafana
-- [ ] Prometheus
-
----
-
-## Phase 4 - Development Platform
-
-- [ ] FastAPI
-- [ ] Portfolio Website
-- [ ] CI/CD
-- [ ] Container Registry
-
----
-
-## Phase 5 - Advanced Infrastructure
-
-- [ ] Internal Infrastructure API
-- [ ] Authentication
-- [ ] Rule Engine
-- [ ] Scheduler
-- [ ] Dashboard
+Phase 1: Complete
+Phase 2: Backups
+Phase 3: New Services
+Phase 4: Cluster
