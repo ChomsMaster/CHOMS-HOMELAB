@@ -54,7 +54,7 @@ case "${1:-help}" in
         ;;
 
     vault)
-        sudo /usr/local/sbin/choms-secrets
+        sudo /usr/local/sbin/choms-secrets "${2:-show-all}" "${3:-}"
         ;;
 
     help|--help|-h)
