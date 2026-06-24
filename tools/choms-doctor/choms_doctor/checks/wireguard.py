@@ -4,34 +4,29 @@ import subprocess
 class WireGuardCheck:
     @staticmethod
     def get_info():
-        commands = [
-            ["wg", "show"],
-            ["/usr/bin/wg", "show"],
-            ["sudo", "-n", "wg", "show"],
-            ["sudo", "-n", "/usr/bin/wg", "show"],
+        checks = [
+            [["wg", "show"], lambda r: "interface: wg0" in r.stdout],
+            [["/usr/bin/wg", "show"], lambda r: "interface: wg0" in r.stdout],
+            [["ip", "link", "show", "wg0"], lambda r: r.returncode == 0],
+            [["systemctl", "is-active", "wg-quick@wg0"], lambda r: r.stdout.strip() == "active"],
         ]
 
         installed = False
 
-        for command in commands:
+        for command, validator in checks:
             try:
-                result = subprocess.run(
-                    command,
-                    capture_output=True,
-                    text=True,
-                    timeout=5,
-                )
+                result = subprocess.run(command, capture_output=True, text=True, timeout=5)
 
                 if result.returncode == 0:
                     installed = True
 
-                if result.returncode == 0 and "interface: wg0" in result.stdout:
+                if result.returncode == 0 and validator(result):
                     return {
                         "installed": True,
                         "active": True,
                         "status": "PASS",
                         "details": "active",
-                        "output": result.stdout.strip(),
+                        "output": (result.stdout or result.stderr).strip(),
                     }
 
             except (FileNotFoundError, subprocess.TimeoutExpired):

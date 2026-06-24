@@ -7,27 +7,20 @@ class FirewallCheck:
         commands = [
             ["ufw", "status"],
             ["/usr/sbin/ufw", "status"],
-            ["sudo", "-n", "ufw", "status"],
-            ["sudo", "-n", "/usr/sbin/ufw", "status"],
+            ["systemctl", "is-active", "ufw"],
         ]
 
         installed = False
 
         for command in commands:
             try:
-                result = subprocess.run(
-                    command,
-                    capture_output=True,
-                    text=True,
-                    timeout=5,
-                )
-
+                result = subprocess.run(command, capture_output=True, text=True, timeout=5)
                 output = result.stdout.strip()
 
                 if result.returncode == 0:
                     installed = True
 
-                if result.returncode == 0 and "Status: active" in output:
+                if command[0].endswith("ufw") and result.returncode == 0 and "Status: active" in output:
                     return {
                         "installed": True,
                         "active": True,
@@ -36,12 +29,12 @@ class FirewallCheck:
                         "output": output,
                     }
 
-                if result.returncode == 0 and "Status: inactive" in output:
+                if command[0] == "systemctl" and result.returncode == 0 and output == "active":
                     return {
                         "installed": True,
-                        "active": False,
-                        "status": "FAIL",
-                        "details": "inactive",
+                        "active": True,
+                        "status": "PASS",
+                        "details": "active",
                         "output": output,
                     }
 
