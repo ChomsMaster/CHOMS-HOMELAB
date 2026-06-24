@@ -18,6 +18,7 @@ Usage:
   choms status      Show global system status
   choms help        Show this help
   choms monitoring  Show monitoring stack status
+  choms compose     Run Docker Compose using CHOMS stack files
   choms vault       Show admin secrets vault
 USAGE
 }
@@ -34,6 +35,10 @@ case "${1:-help}" in
 
     docker)
         "$OPS_DIR/docker-status.sh"
+        ;;
+
+    compose)
+        "$BASE_DIR/tools/compose/docker-compose.sh" "${@:2}"
         ;;
 
     services)
