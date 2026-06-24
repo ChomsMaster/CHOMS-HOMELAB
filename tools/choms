@@ -1,9 +1,8 @@
 #!/bin/bash
-
 set -euo pipefail
 
 BASE_DIR="/data/projects/choms-homelab"
-OPS_DIR="$BASE_DIR/tools/ops"
+COMMANDS_DIR="$BASE_DIR/tools/commands"
 
 usage() {
     cat <<USAGE
@@ -16,63 +15,32 @@ Usage:
   choms services    Show core systemd service states
   choms doctor      Run CHOMS Doctor
   choms status      Show global system status
-  choms help        Show this help
   choms monitoring  Show monitoring stack status
   choms compose     Run Docker Compose using CHOMS stack files
   choms update      Update the complete CHOMS stack
   choms vault       Show admin secrets vault
+  choms help        Show this help
 USAGE
 }
 
-case "${1:-help}" in
+cmd="${1:-help}"
+shift || true
 
-    storage)
-        "$OPS_DIR/storage-status.sh"
-        ;;
-
-    shares)
-        "$BASE_DIR/tools/choms-admin/shares.sh"
-        ;;
-
-    docker)
-        "$OPS_DIR/docker-status.sh"
-        ;;
-
-    compose)
-        "$BASE_DIR/tools/compose/docker-compose.sh" "${@:2}"
-        ;;
-
-    update)
-        "$BASE_DIR/tools/update/update.sh"
-        ;;
-
-    services)
-        "$OPS_DIR/services-status.sh"
-        ;;
-
-    doctor|status)
-        cd "$BASE_DIR/tools/choms-doctor"
-
-        if [ -d "$BASE_DIR/.venv" ]; then
-            "$BASE_DIR/.venv/bin/python" main.py
-        else
-            python3 main.py
-        fi
-        ;;
-    monitoring)
-        "$OPS_DIR/monitoring-status.sh"
-        ;;
-
-    vault)
-        sudo /usr/local/sbin/choms-secrets "${2:-show-all}" "${3:-}"
-        ;;
-
+case "$cmd" in
     help|--help|-h)
         usage
         ;;
 
+    doctor)
+        "$COMMANDS_DIR/status.sh" "$@"
+        ;;
+
+    status|storage|shares|docker|services|monitoring|compose|update|vault)
+        "$COMMANDS_DIR/$cmd.sh" "$@"
+        ;;
+
     *)
-        echo "Unknown command: ${1:-}"
+        echo "Unknown command: $cmd"
         echo
         usage
         exit 1
