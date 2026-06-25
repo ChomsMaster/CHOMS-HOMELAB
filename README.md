@@ -1,249 +1,313 @@
 # CHOMS-HOMELAB
 
-> **Production-inspired self-hosted infrastructure platform built with Debian, Docker and custom operational tooling.**
+> Production-inspired self-hosted infrastructure platform built with Debian, Docker, Traefik, Authelia, monitoring, custom operational tooling and a roadmap toward resilient homelab infrastructure.
 
-![Status](https://img.shields.io/badge/status-active-brightgreen)
-![Version](https://img.shields.io/badge/version-v0.2.0-blue)
+![Status](https://img.shields.io/badge/status-stable-brightgreen)
+![Version](https://img.shields.io/badge/version-v1.0.0--phase1-blue)
+![Phase](https://img.shields.io/badge/phase_1-completed-success)
 ![Debian](https://img.shields.io/badge/Debian-13-red)
 ![Docker](https://img.shields.io/badge/Docker-enabled-blue)
-![Grafana](https://img.shields.io/badge/Grafana-enabled-orange)
-![Prometheus](https://img.shields.io/badge/Prometheus-enabled-important)
+![Traefik](https://img.shields.io/badge/Traefik-enabled-blue)
+![Authelia](https://img.shields.io/badge/Authelia-enabled-purple)
+![Monitoring](https://img.shields.io/badge/Monitoring-enabled-orange)
 ![WireGuard](https://img.shields.io/badge/WireGuard-enabled-success)
 
-CHOMS-HOMELAB is a long-term self-hosted infrastructure project designed as a real-world Systems Administration, Infrastructure Engineering and DevOps laboratory.
+## What is CHOMS-HOMELAB?
 
-The objective is not simply to run services, but to build a fully documented, version-controlled and reproducible platform.
+CHOMS-HOMELAB is a long-term infrastructure project designed as a real-world Systems Administration, Infrastructure Engineering and DevOps laboratory.
 
----
+The goal is not simply to run services. The goal is to build, operate and document a reproducible platform with production-inspired practices:
 
-# Current Status
+- Infrastructure as code mindset
+- Git as source of truth
+- Modular Docker Compose architecture
+- Secure public and private service exposure
+- Centralized authentication
+- Monitoring and observability
+- Operational CLI tooling
+- Documented decisions and roadmap
+- Progressive path toward NAS, backups, CI/CD, clustering and automation
+
+## Current Status
 
 | Area | Status |
-|------|--------|
-| Infrastructure | ✅ Completed |
-| Networking | ✅ Completed |
-| Security | ✅ Completed |
-| Storage | ✅ Completed |
-| Monitoring | ✅ Completed |
-| Operations | 🚧 In Progress |
-| Control Center | 📅 Planned |
+|---|---|
+| Phase 1 Foundation Infrastructure | Completed |
+| GitHub repository | Clean and versioned |
+| Docker Compose modularization | Completed |
+| Traefik reverse proxy | Completed |
+| Authelia authentication | Completed |
+| HTTPS routing | Completed |
+| Public website | Completed |
+| Monitoring stack | Completed |
+| CHOMS CLI | Completed |
+| CHOMS Doctor / Health | Completed |
+| Documentation baseline | Completed |
+| Phase 2 Backups and Resilience | Ready to start |
 
----
+Current release tag:
 
-# Architecture Overview
+```text
+v1.0.0-phase1
+```
+
+## High-Level Architecture
 
 ```mermaid
 flowchart TD
-Internet((Internet))
-Router[DIGI Router]
-Server[CHOMS-HOMELAB]
+    Internet((Internet))
+    Router[ISP Router / Future OPNsense]
+    Traefik[Traefik Reverse Proxy]
+    Authelia[Authelia Authentication]
+    Docker[Docker Compose Stack]
 
-Router --> Server
+    Public[Public Website]
+    Home[Home Portal]
+    Grafana[Grafana]
+    Kuma[Uptime Kuma]
+    Nextcloud[Nextcloud]
+    Jellyfin[Jellyfin]
+    Monitoring[Prometheus / Loki / cAdvisor / Node Exporter]
+    Data[(Local Data / Future NAS)]
 
-Server --> Docker
-Server --> WireGuard
-Server --> Samba
-Server --> Monitoring
-
-Docker --> PostgreSQL
-Docker --> Jellyfin
-Docker --> Pi-hole
-Docker --> Nginx
-Docker --> Grafana
-Docker --> Prometheus
-Docker --> UptimeKuma
+    Internet --> Router
+    Router --> Traefik
+    Traefik --> Public
+    Traefik --> Authelia
+    Authelia --> Home
+    Authelia --> Grafana
+    Authelia --> Kuma
+    Traefik --> Nextcloud
+    Traefik --> Jellyfin
+    Docker --> Monitoring
+    Docker --> Data
 ```
 
----
+## Public and Protected Services
 
-# Hardware
+### Public
 
-| Component | Specification |
-|-----------|---------------|
-| Platform | ACEPC AK2 Mini PC |
-| CPU | Intel Celeron J3455 (4 Cores / 4 Threads) |
-| Memory | 6 GB DDR3 |
-| System SSD | 128 GB SATA SSD |
-| CHOMS Data SSD | 960 GB SATA SSD |
-| Media SSD | 240 GB SATA SSD |
-| Shared HDD | 1 TB USB HDD (NTFS + exFAT) |
-| Backup HDD | 2 TB External HDD |
-| Network | Gigabit Ethernet |
-| Operating System | Debian 13 (Trixie) |
+- `https://chomsmaster.com`
+- `https://www.chomsmaster.com`
 
----
+### Authentication
 
-# Storage Layout
+- `https://auth.chomsmaster.com`
 
-```text
-128 GB SSD
-└── /
-    Debian 13
+### Protected by Authelia
 
-960 GB SSD
-└── /data
-    Docker
-    PostgreSQL
-    Persistent Volumes
-    Shared Storage
+- `https://home.chomsmaster.com`
+- `https://grafana.chomsmaster.com`
+- `https://kuma.chomsmaster.com`
+- `https://traefik.chomsmaster.com`
 
-240 GB SSD
-└── /media/ssd-media
-    Media Library
+### Native Login Applications
 
-1 TB HDD
-├── /media/choms
-└── /media/mac-win
+- `https://cloud.chomsmaster.com`
+- `https://jellyfin.chomsmaster.com`
 
-2 TB HDD
-└── Offline Backups
-```
+## Technology Stack
 
----
+### Base Infrastructure
 
-# Infrastructure
-
-## Core
 - Debian 13
 - Docker
 - Docker Compose
-
-## Networking
-- WireGuard
-- Pi-hole
-- Nginx
-
-## Security
 - UFW
 - Fail2ban
+- WireGuard
 
-## Storage
-- Samba
-- NTFS
-- exFAT
-- ext4
+### Routing and Security
 
-## Services
-- PostgreSQL 17
-- Jellyfin
+- Traefik
+- Let's Encrypt
+- Authelia
+- Pi-hole
 
-## Monitoring
+### Monitoring and Observability
+
 - Grafana
 - Prometheus
-- Node Exporter
+- Loki
+- Promtail
 - cAdvisor
+- Node Exporter
 - Uptime Kuma
+- Scrutiny
 
-## Operations
+### Data and Applications
+
+- PostgreSQL
+- MariaDB
+- Nextcloud
+- Jellyfin
+- Nginx public site
+
+### Operations
+
 - CHOMS CLI
 - CHOMS Doctor
+- CHOMS Health
+- CHOMS Vault wrapper
+- CHOMS Compose wrapper
+- CHOMS service utilities
 
----
+## CHOMS CLI
 
-# CHOMS CLI
+The project includes its own operational CLI:
 
 ```bash
+choms help
+choms health
+choms status
 choms doctor
-choms storage
-choms shares
-choms docker
-choms services
+choms version
+choms urls
+choms compose ps
+choms compose up -d
+choms compose config
+choms service list
+choms service status
+choms service restart <service>
+choms service logs <service>
+choms logs <service>
+choms restart <service>
+choms update
+choms vault list
+choms vault show <service>
 ```
 
-Future:
+CLI structure:
 
-```bash
-choms recycle
-choms monitoring
-choms backup
-choms restore
-choms vpn
+```text
+tools/choms
+tools/commands/
 ```
 
----
+## Docker Compose Architecture
 
-# Project Goals
-
-- Build production-inspired infrastructure.
-- Learn by operating real services.
-- Maintain everything as code.
-- Produce professional documentation.
-- Serve as a technical portfolio.
-
----
-
-# Repository Structure
+The Compose stack is modularized:
 
 ```text
 docker/
-docs/
-scripts/
-tools/
-└── choms
+├── compose.yml
+└── compose/
+    ├── core.yml
+    ├── authelia.yml
+    ├── monitoring.yml
+    ├── cloud.yml
+    ├── media.yml
+    └── databases.yml
 ```
 
----
+Use:
 
-# Documentation
+```bash
+choms compose ps
+choms compose config
+choms compose up -d
+```
 
-Current documentation includes:
+Avoid manually invoking long Docker Compose file chains unless debugging.
 
-- Overview
-- Hardware
-- Network
-- Security
-- WireGuard
-- Docker
-- PostgreSQL
-- Backups
-- Roadmap
-- Lessons Learned
+## Operational Validation
 
----
+Expected Phase 1 validation commands:
 
-# Roadmap
+```bash
+git status
+git tag | grep phase
+choms health
+choms status
+choms compose config
+choms compose ps
+curl -I https://chomsmaster.com
+curl -I https://www.chomsmaster.com
+```
 
-## Completed
+Expected result:
 
-- Debian
-- Docker
-- WireGuard
-- Samba
-- PostgreSQL
-- Jellyfin
-- Pi-hole
-- Nginx
-- Grafana
-- Prometheus
-- Node Exporter
-- cAdvisor
-- Uptime Kuma
-- CHOMS Doctor
+- Repository clean
+- Tag `v1.0.0-phase1` present
+- CHOMS Health OK
+- CHOMS Doctor 100%
+- Compose config valid
+- Core containers running
+- Public website returning HTTP 200
+
+## Roadmap
+
+### Phase 1 — Foundation Infrastructure
+
+Status: Completed
+
+Delivered:
+
+- Debian 13 base host
+- Docker and Compose
+- Modular Compose layout
+- Traefik
+- Authelia
+- HTTPS
+- Public website
+- Protected dashboards
+- Monitoring stack
 - CHOMS CLI
+- CHOMS Doctor / Health
+- GitHub repository and documentation baseline
 
-## Next
+### Phase 2 — Backups, Resilience and Recovery
 
-- Recovery Center
-- Scrutiny
-- Loki
-- Alertmanager
-- Nextcloud
-- CHOMS Control Center
+Status: Ready to start
 
----
+Planned:
 
-# Vision
+- NAS design
+- Disk inventory and SMART audit
+- ZFS / TrueNAS or Debian + ZFS decision
+- `choms backup`
+- `choms restore`
+- automated backup schedule
+- backup verification
+- recovery runbooks
 
-CHOMS-HOMELAB is more than a homelab.
+### Phase 3 — Service Expansion
 
-It is a production-inspired infrastructure platform where every service, automation and operational tool is documented, reproducible and version controlled.
+Planned:
 
----
+- Vaultwarden
+- Gitea
+- n8n
+- Immich
+- additional automation services
 
-# Author
+### Phase 4 — Cluster Preparation
 
-**Oscar Salcedo**
+Planned:
 
+- multiple mini PC nodes
+- node inventory
+- WireGuard node-to-node connectivity
+- service placement strategy
+- K3s evaluation
+- distributed monitoring
+- CI/CD deployment flow
+
+## Project Goal
+
+CHOMS-HOMELAB is intended to become a practical, portfolio-grade infrastructure platform demonstrating:
+
+- Linux administration
+- Docker operations
+- networking
+- security
+- monitoring
+- automation
+- documentation
+- systems architecture
+- recovery planning
+
+## Author
+
+Oscar Salcedo  
 Founder — CHOMS Master Technology Services
-
-GitHub: https://github.com/ChomsMaster

@@ -1,49 +1,58 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to CHOMS-HOMELAB are documented here.
 
-The project follows a continuous evolution approach where each milestone represents a stable and documented version of the infrastructure.
-
----
-
-## Version 0.1.0 - Initial Infrastructure
+## v1.0.0-phase1 — Foundation Infrastructure Complete
 
 ### Added
 
-* Debian 13 installation
-* Docker and Docker Compose
-* WireGuard VPN
-* Pi-hole DNS filtering
-* PostgreSQL 17
-* Nginx web server
-* UFW firewall
-* Fail2ban
-* GitHub repository
-* Initial project documentation
+- Debian 13 foundation
+- Docker and Docker Compose stack
+- Modular Docker Compose architecture
+- Traefik reverse proxy
+- HTTPS routing with Let's Encrypt
+- Authelia authentication
+- Public website routing
+- Protected internal dashboards
+- WireGuard VPN
+- UFW firewall
+- Fail2ban
+- Pi-hole
+- PostgreSQL
+- MariaDB
+- Nextcloud
+- Jellyfin
+- Grafana
+- Prometheus
+- Loki
+- Promtail
+- cAdvisor
+- Node Exporter
+- Uptime Kuma
+- Scrutiny
+- CHOMS CLI
+- CHOMS Doctor
+- CHOMS Health
+- CHOMS Compose wrapper
+- CHOMS Vault wrapper
+- CHOMS service utilities
+- Phase 1 documentation baseline
+
+### Changed
+
+- Moved from monolithic Compose structure to modular Compose files
+- Refactored CHOMS CLI into modular command scripts
+- Improved network checks for WireGuard and firewall status
+- Documented Phase 1 closure
+
+### Security
+
+- Validated that `.env`, `.env.bak` and `acme.json` are not tracked
+- Confirmed vault wrapper does not contain plaintext credentials
+- Added security documentation baseline
 
 ### Status
 
-Initial production-ready infrastructure completed.
+Phase 1 closed.
 
-
-## v0.2.0 - CHOMS Doctor Validation
-
-### Added
-
-- CHOMS Doctor health details.
-- Backup validation.
-- System update check.
-- Infrastructure compliance checks.
-- Privileged WireGuard and UFW validation.
-- JSON export support.
-
-### Validated
-
-- Power recovery after AC loss.
-- Docker automatic startup.
-- WireGuard automatic startup.
-- Pi-hole automatic startup.
-- Nginx automatic startup.
-- PostgreSQL automatic startup.
-- Backup generation.
-- CHOMS Doctor 100% Health Score.
+Next: Phase 2 — Backups, resilience and recovery.
