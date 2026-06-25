@@ -16,13 +16,16 @@ venv/
 .env
 .env.*
 *.env
+docker/.env
 secrets/
 private/
 *.pem
 *.key
 *_private.key
 private.key
-docker/.env
+docker/traefik/acme.json
+docker/authelia/secrets/
+*/secrets/
 
 # Logs and generated reports
 *.log
@@ -45,9 +48,8 @@ pgdata/
 # Temporary files
 tmp/
 temp/
-docker/traefik/acme.json
 
-# Traefik certificates
+# Traefik certificates and logs
 docker/traefik/acme.json
 docker/traefik/logs/
 
@@ -55,8 +57,8 @@ docker/traefik/logs/
 docker/nextcloud/html/
 docker/nextcloud/db/
 
-# Authelia secrets and local user database
-docker/authelia/secrets/
+# Authelia local runtime/config data
 docker/authelia/config/users_database.yml
 docker/authelia/config/db.sqlite3
 docker/authelia/config/notification.txt
+docker/authelia/secrets/
