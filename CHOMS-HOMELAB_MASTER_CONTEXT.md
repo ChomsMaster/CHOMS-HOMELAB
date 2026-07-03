@@ -1,220 +1,357 @@
 # CHOMS-HOMELAB MASTER CONTEXT
 
 ## Owner
+
 Oscar Salcedo — CHOMS Master Technology Services  
-GitHub: https://github.com/ChomsMaster/CHOMS-HOMELAB  
-Domain: chomsmaster.com  
-Main server LAN IP: 192.168.1.138  
-Public IP configured in DNS: 79.112.15.233  
-OS: Debian 13 Trixie  
-Platform: ACEPC AK2 Mini PC  
-CPU: Intel Celeron J3455  
-RAM: 6 GB DDR3  
-System SSD: 128 GB  
-Main data SSD: 960 GB mounted under /data  
-Media SSD: 240 GB mounted as /media/ssd-media  
-Additional external storage: 1 TB shared HDD and 2 TB backup HDD
+Repository: `https://github.com/ChomsMaster/CHOMS-HOMELAB`  
+Primary domain: `chomsmaster.com`  
+Working LAN subnet: `192.168.1.0/24`
 
 ## Working Style
-User prefers action-first technical guidance:
-- Minimal motivational commentary.
-- Give exact commands/configuration.
-- Assume recommended path unless asked for options.
-- Use “estado” only when user asks for broader status.
-- Keep responses short during operations.
 
-## Project Purpose
+The user prefers action-first technical guidance:
+
+- Give exact commands and configuration.
+- Assume the recommended path unless options are explicitly requested.
+- Keep operational answers short while troubleshooting.
+- Avoid long motivational commentary during live operations.
+- Preserve context in this file before moving to a new chat.
+
+## Current Project Purpose
+
 CHOMS-HOMELAB is a production-inspired self-hosted infrastructure platform for:
+
 - Personal cloud services.
 - Media services.
 - Monitoring and observability.
-- DevOps learning.
-- Professional portfolio.
+- DevOps and systems administration learning.
+- Professional portfolio evidence.
 - Future CHOMS Master / ShiftCore infrastructure.
-- Future multi-node cluster.
+- Future multi-node cluster or lightweight orchestration.
 
-The objective is not just running containers, but building a reproducible, documented, scalable infrastructure.
+The goal is not simply running containers. The goal is to build, operate and document a reproducible, scalable and secure infrastructure.
 
-## Current Architecture
-Single-node Docker Compose infrastructure.
+## Current Physical Architecture
 
-Main entrypoint:
-- Traefik reverse proxy
-- HTTP -> HTTPS redirection
-- Let's Encrypt automatic certificates
-- DNS managed in Namecheap
-- Router forwards WAN 80/443 to 192.168.1.138
+The project has evolved from a single-node homelab into a small multi-machine infrastructure.
 
-Public HTTPS services currently working:
-- https://cloud.chomsmaster.com -> Nextcloud
-- https://grafana.chomsmaster.com -> Grafana
-- https://kuma.chomsmaster.com -> Uptime Kuma
-- https://jellyfin.chomsmaster.com -> Jellyfin
+### Confirmed host inventory
 
-DNS A records configured:
-- @ -> 79.112.15.233
-- cloud -> 79.112.15.233
-- grafana -> 79.112.15.233
-- jellyfin -> 79.112.15.233
-- kuma -> 79.112.15.233
-- traefik -> 79.112.15.233
+| Role | Hostname | LAN IP | Notes |
+|---|---|---:|---|
+| Compute node 1 | `choms-node-01` | `192.168.1.138` | Former `choms-homelab`; main Docker/services node. |
+| Compute node 2 | `choms-node-02` planned | `192.168.1.172` | Lenovo M710Q currently still being renamed from `choms-core-02`. |
+| NAS | `choms-nas` | `192.168.1.167` | Debian NAS with RAID0 arrays for temporary media/storage. |
+| Router | DIGI router | `192.168.1.1` | Current gateway. Public IP is dynamic via PPPoE. |
+| Switch | D-Link DGS-1016D | unmanaged | Central Gigabit switch. Validated by iperf3. |
+| Lab router | Cisco 1921/K9 | offline | Kept aside for Cisco IOS lab; not needed in production now. |
 
-## Current Services
-Core:
-- Docker
-- Docker Compose
-- Traefik
-- Nginx
-- PostgreSQL 17
-- MariaDB for Nextcloud
-- Pi-hole
-- WireGuard planned/existing context but not current focus
-- Fail2ban
-- UFW
+### Current network topology
 
-Applications:
-- Nextcloud
-- Jellyfin
-- Uptime Kuma
-- Grafana
-- Prometheus
-- Node Exporter
-- cAdvisor
-- Loki
-- Promtail
-- Scrutiny
+```text
+Internet
+   |
+DIGI Router
+   |
+D-Link DGS-1016D Gigabit Switch
+   |-- choms-node-01
+   |-- choms-node-02
+   |-- choms-nas
+   |-- TV / clients
+```
 
-Current important ports:
-- 80/443 public via Traefik
-- 8096 Jellyfin direct/local
-- 3000 Grafana direct/local
-- 3001 Kuma direct/local
-- 8081 Pi-hole
-- 8082 cAdvisor
-- 8083 Scrutiny
-- 9090 Prometheus
-- 9100 Node Exporter
-- 3100 Loki
-- PostgreSQL bound to 127.0.0.1:5432
+Important design point: internal traffic between NAS and nodes goes through the switch, not through the router. The router is only involved for Internet/WAN, DHCP/gateway and traffic leaving the LAN.
 
-## Docker Layout
-Main compose:
-- /data/projects/choms-homelab/docker/compose.yml
+## Naming Convention Decision
 
-Traefik dynamic config:
-- /data/projects/choms-homelab/docker/traefik/config/dynamic.yml
+Use function-based names, not hardware names:
 
-Important persistent paths:
-- /data/docker/monitoring/grafana
-- /data/docker/monitoring/prometheus
-- /data/docker/monitoring/uptime-kuma
-- /data/docker/loki
-- /data/docker/promtail
-- /data/docker/scrutiny
-- /data/docker/jellyfin/config
-- /data/docker/jellyfin/cache
-- /data/projects/choms-homelab/docker/nextcloud/html
-- /data/projects/choms-homelab/docker/nextcloud/db
-- /data/postgres
-- /data/pihole
+```text
+choms-nas
+choms-node-01
+choms-node-02
+choms-node-03
+choms-router
+choms-switch-01
+```
 
-Secrets:
-- docker/.env is private and must never be committed.
-- .gitignore includes docker/.env and secrets patterns.
-- Future plan: root-only vault under /root/choms/secrets.env and command sudo choms-secrets.
+Avoid names such as `master`, `primary`, `main`, or hardware labels unless the device truly has a unique role. Compute nodes should be treated as equivalent wherever possible.
 
-## Confirmed Technical State
-Traefik:
-- HTTPS working.
-- Let's Encrypt certificates confirmed valid.
-- cloud.chomsmaster.com works.
-- grafana.chomsmaster.com works.
-- kuma.chomsmaster.com works.
-- jellyfin.chomsmaster.com returns HTTP/2 302 to /web/, expected Jellyfin behavior.
+## Current Node-01 State
 
-Nextcloud:
-- Works behind Traefik.
-- Config was updated from cloud.choms.local to cloud.chomsmaster.com:
-  - overwrite.cli.url=https://cloud.chomsmaster.com
-  - overwritehost=cloud.chomsmaster.com
-  - overwriteprotocol=https
-  - trusted_domains includes cloud.chomsmaster.com
+Current hostname has been changed in `/etc/hosts` to:
 
-Jellyfin:
-- Works locally and via https://jellyfin.chomsmaster.com/web/
-- Uses network_mode: host.
-- Traefik routes Jellyfin through dynamic.yml using host.docker.internal:8096.
-- DLNA caused heavy transcoding.
-- Jellyfin CPU reached 365% during DLNA playback.
-- Direct Play or better Jellyfin client is recommended.
-- Use https://jellyfin.chomsmaster.com as server URL in clients.
+```text
+127.0.1.1    choms-node-01
+```
 
-Monitoring:
-- Prometheus targets confirmed up:
-  - cadvisor
-  - node-exporter
-  - prometheus
-- Grafana works.
-- Loki and Promtail work.
-- Uptime Kuma works through HTTPS.
-- Imported dashboards exist, but some old community dashboards may show N/A due label incompatibility.
+Old project path remains intentionally unchanged:
 
-## Current Design Decisions
-- Use Traefik as single public ingress.
-- Only WAN ports 80 and 443 should be public.
-- Avoid exposing raw application ports publicly.
-- Services should use subdomains.
-- Secrets must stay outside Git.
-- Keep architecture scalable toward future 2-4 node cluster.
-- Do not split stateful apps across nodes until storage/HA is designed.
-- Second node should initially be backup/monitoring/secondary workloads.
-- Future 4-node vision:
-  - Docker Swarm or Kubernetes
-  - replicated storage: Longhorn/Ceph/ZFS replication
-  - database HA: PostgreSQL Patroni or MariaDB Galera
-  - redundant Traefik/load balancer
-  - automated backups
-  - service failover
+```text
+/data/projects/choms-homelab
+```
 
-## Immediate Next Tasks
-1. Commit latest Jellyfin HTTPS changes.
-2. Publish/protect Traefik dashboard or keep dashboard local-only.
-3. Add Homepage dashboard at home.chomsmaster.com.
-4. Add Authelia or equivalent access protection before exposing more admin services.
-5. Harden security:
-   - close public raw ports where possible
-   - review UFW
-   - ensure Fail2ban active
-   - strong passwords
-   - root-only secrets vault
-6. Add backups:
-   - Nextcloud files + DB
-   - MariaDB
-   - PostgreSQL
-   - Docker configs
-   - Jellyfin config
-   - Pi-hole config
-   - Traefik acme.json
-7. Add DDNS automation for Namecheap/public IP changes.
-8. Update README and docs to match current state.
-9. Reorganize Traefik dynamic config into separate files before adding many more services.
-10. Future services:
-   - Homepage
-   - Authelia
-   - Vaultwarden
-   - Gitea
-   - Immich
-   - n8n
-   - Ollama/Open WebUI later if hardware allows
+Do not rename this path yet because systemd services and scripts still reference it.
 
-## Known Risks / Notes
-- Raw public ports like 3000, 3001, 8081, 8082, 8083, 8096 may still be reachable if router forwards them or firewall allows them; public router currently forwards only 80/443, but local exposure remains.
-- Do not expose Grafana/Kuma/Traefik publicly without strong passwords and ideally Authelia.
-- Docker compose config shows resolved secrets from .env; this is normal, but do not paste those outputs publicly.
-- Nextcloud and MariaDB are currently on same node; HA/storage replication not implemented.
-- Jellyfin transcodes heavily via DLNA; use Direct Play clients.
-- Some files in GitHub render minified/one-line because previous writes may have removed formatting; future cleanup recommended.
+### Node-01 mounted storage
+
+From current `lsblk` and `fstab` state:
+
+| Device | Mount | Type | Label | Purpose |
+|---|---|---|---|---|
+| SSD ~120 GB | `/` | ext4 | - | Debian system disk. |
+| SSD ~960 GB | `/data` | ext4 | DATA | Docker, persistent data, project files. |
+| SSD ~224 GB | `/media/ssd-media` | exFAT | MEDIA | Local media SSD. |
+| NFS from NAS | `/mnt/choms-media` | nfs4 | - | NAS media export `/srv/media`. |
+| External/shared HDDs | `/media/choms`, `/media/mac-win` | ntfs3/exfat | - | Shared media/archive drives if connected. |
+| mmcblk0p1 1.9 TB | not currently mounted | ext4 | BACKUPS | Needs review; intended archive/backups. |
+
+Current important fstab line for the NAS media share:
+
+```text
+192.168.1.167:/srv/media  /mnt/choms-media  nfs  defaults,_netdev,nofail  0  0
+```
+
+Confirmed working path for NAS movies from node-01:
+
+```text
+/mnt/choms-media/Movies
+```
+
+Confirmed working path for local SSD media on node-01:
+
+```text
+/media/ssd-media
+```
+
+For Jellyfin, the Movies library can contain both local and NAS paths during transition:
+
+```text
+/media/ssd-media/Movies
+/mnt/choms-media/Movies
+```
+
+Long-term architecture target: persistent media should live on the NAS; nodes should mainly execute services.
+
+## Current NAS State
+
+NAS is Debian-based and currently temporary/experimental but operational.
+
+### NAS storage layout
+
+| Device/Array | Size | FS | Mount | Notes |
+|---|---:|---|---|---|
+| System SSD Kingston | ~120 GB | ext4/vfat/swap | `/`, `/boot/efi` | NAS OS disk. |
+| md0 | ~5.5 TB | ext4 | `/srv/storage` | RAID0 from 2×3 TB disks. Temporary/untrusted. |
+| md1 | ~3.6 TB | ext4 | `/srv/media` | RAID0 from 2×2 TB disks. Temporary/untrusted. |
+
+Important warning: NAS disks are not trusted long-term. Current RAID0 provides capacity only, not redundancy. Future plan is a proper NAS/backups design with better disks and/or a second backup NAS.
+
+### Current NAS export
+
+Confirmed NFS export:
+
+```text
+/srv/media  192.168.1.0/24(rw,sync,no_subtree_check,root_squash)
+```
+
+Confirmed from node-01:
+
+```text
+192.168.1.167:/srv/media on /mnt/choms-media type nfs4
+```
+
+Confirmed content:
+
+```text
+/mnt/choms-media/Movies
+/mnt/choms-media/Series
+/mnt/choms-media/Music
+/mnt/choms-media/Photos
+/mnt/choms-media/HomeVideos
+```
+
+## Current Docker / Services State on Node-01
+
+Node-01 currently runs the main Docker stack.
+
+Confirmed running containers include:
+
+- `jellyfin`
+- `choms-nginx`
+- `choms-traefik`
+- `choms-nextcloud`
+- `choms-loki`
+- `choms-postgres`
+- `choms-grafana`
+- `pihole`
+- `choms-cadvisor`
+- `choms-prometheus`
+- `choms-uptime-kuma`
+- `choms-node-exporter`
+- `choms-authelia`
+- `choms-nextcloud-db`
+- `choms-promtail`
+
+Public-facing ingress should remain Traefik on 80/443 only.
+
+Do not expose raw app ports publicly unless deliberately required. Local/LAN ports may remain available for administration.
+
+## Current Public DNS / WAN State
+
+- ISP: DIGI Spain.
+- Previously behind CG-NAT; current router shows public IPv4 via PPPoE, so CG-NAT appears resolved.
+- Public IP is dynamic and can change after router reboot/reconnect.
+- DNS is manually updated for now.
+- DDNS automation remains pending.
+
+Important operational point: use domain/DDNS instead of relying on a fixed public IP.
+
+## WireGuard State
+
+Node-01 has WireGuard interface `wg0` active with listening port `51820` and at least one peer (`10.10.10.2/32`).
+
+Keep WireGuard as the preferred future remote administration path. Router WAN should forward only the necessary VPN port and 80/443 for Traefik when required.
+
+## Firewall State
+
+UFW is active on node-01. Confirmed behavior:
+
+- SSH works.
+- Jellyfin local/direct port is allowed.
+- WireGuard UDP 51820 is allowed.
+- iperf3 port 5201 was blocked until explicitly opened.
+
+Decision: do not keep `5201/tcp` open permanently. Open only for diagnostics, then close:
+
+```bash
+sudo ufw allow 5201/tcp
+# run tests
+sudo ufw delete allow 5201/tcp
+sudo ufw reload
+```
+
+## Network Validation Results
+
+Network has been validated using ping, ethtool and iperf3.
+
+### Link status
+
+Node-01 physical interface negotiated:
+
+```text
+Speed: 1000Mb/s
+Duplex: Full
+Auto-negotiation: on
+Link detected: yes
+```
+
+### Ping validation
+
+Pings from NAS/node(s) to router were stable with 0% loss. Minor sub-ms to low-ms latency variation is acceptable.
+
+### iperf3 validation
+
+Observed results across the LAN:
+
+| Test | Approx throughput | Retransmissions |
+|---|---:|---:|
+| node-01 -> node-02 | ~941 Mbps | 0 |
+| node-02 -> node-01 | ~830 Mbps | 0 |
+| node-01 -> NAS | ~884-885 Mbps | 0 |
+| NAS -> node-01 | ~753 Mbps | 0 |
+| NAS -> node-02 | ~813-814 Mbps | 0 |
+| node-02 -> NAS | ~829-830 Mbps | 0 |
+
+Interpretation:
+
+- Router is not suspected.
+- D-Link switch is not suspected globally.
+- Cable/router/switch backbone is considered validated.
+- Differences by direction are normal and can come from CPU, NIC, drivers, TCP offload, or NAS hardware.
+- `Retr: 0` is the strongest sign that the LAN is healthy.
+
+## Jellyfin / DLNA / TV State
+
+Problem: TV was kicked from playback / showed connection issue.
+
+Findings:
+
+- Playback from computer does not stop.
+- Jellyfin server logs did not show a server crash.
+- Network tests do not indicate switch/router failure.
+- TV direct to router appeared stable.
+- TV back on switch also appeared stable after reconnect.
+- A likely issue was found: RJ45 cable/connector at TV lacks the locking tab, so it may have micro-disconnections.
+
+Current suspicion ranking:
+
+1. TV cable/connector or port-specific issue.
+2. TV app / DLNA behavior.
+3. Jellyfin DLNA fragility.
+4. Switch failure is low probability after iperf3 validation.
+
+Recommendation:
+
+- Replace TV Ethernet cable with one whose RJ45 locking tab is intact.
+- Avoid Jellyfin DLNA if it keeps behaving badly.
+- Prefer official Jellyfin app/client where possible.
+- If using separate DLNA server, identify it (`minidlna` / ReadyMedia / Gerbera) and add `/mnt/choms-media/Movies` as a media source.
+
+## USB / Removable Media Policy
+
+Debian Server minimal does not auto-mount arbitrary USB drives unless configured in `/etc/fstab`, udev, or a desktop automounter.
+
+Security decision:
+
+- Do not auto-mount arbitrary USB devices.
+- Only trusted disks with known UUIDs should auto-mount.
+- No autorun behavior exists on Debian Server like Windows autorun.
+
+If a trusted SSD is configured by UUID in `fstab`, it can mount automatically regardless of USB port.
+
+## Cisco 1921/K9 Decision
+
+Hardware identified:
+
+- Cisco 1921/K9 ISR router.
+- 2× Gigabit Ethernet ports.
+- Cisco IOS capable.
+- Expansion slots present.
+- Installed HWIC module identified as `HWIC-1ADSL`, an old ADSL modem module.
+
+Decision:
+
+- Do not use it in current CHOMS production path.
+- Keep it aside for Cisco IOS / routing / VPN / ACL / VLAN lab.
+- The ADSL module is not useful for current CHOMS.
+
+## Immediate Next Tasks Before Opening New Chat
+
+1. Finish renaming `choms-core-02` to `choms-node-02`:
+   - `hostnamectl set-hostname choms-node-02`
+   - update `/etc/hosts`
+   - reboot and verify.
+2. Confirm Jellyfin library paths:
+   - local SSD: `/media/ssd-media/...`
+   - NAS NFS: `/mnt/choms-media/Movies`
+3. Identify the non-Jellyfin DLNA server:
+   - `systemctl list-units --type=service | grep -Ei 'dlna|minidlna|readymedia|gerbera'`
+   - `dpkg -l | grep -Ei 'minidlna|readymedia|gerbera'`
+4. Replace or test TV Ethernet cable with intact RJ45 locking tab.
+5. Close any temporary diagnostic firewall ports:
+   - ensure `5201/tcp` is not left open.
+6. Review `/archive` / `mmcblk0p1 BACKUPS` mount state on node-01.
+7. Begin NAS documentation update:
+   - temporary RAID0 media/storage.
+   - NFS export `/srv/media`.
+   - current risk: no redundancy.
+8. Start Phase 2 formally: backups/resilience and storage design.
+9. DDNS automation for dynamic DIGI public IP.
+10. Push updated documentation to GitHub.
 
 ## Resume Prompt For New Chat
+
 Continue CHOMS-HOMELAB from this state:
-We have a Debian 13 single-node Docker Compose homelab at 192.168.1.138 with public IP 79.112.15.233 and domain chomsmaster.com. Traefik is the public HTTPS ingress with Let's Encrypt. Working public services: cloud.chomsmaster.com, grafana.chomsmaster.com, kuma.chomsmaster.com, jellyfin.chomsmaster.com. Nextcloud, Grafana, Uptime Kuma, Jellyfin, Prometheus, Node Exporter, cAdvisor, Loki, Promtail, Scrutiny, Pi-hole, PostgreSQL, MariaDB and Nginx are deployed. docker/.env contains private secrets and must not be committed. User wants action-first technical commands, minimal chatter, and scalable architecture toward future 4-node cluster. Next priority: commit current state, then add Homepage and Authelia, harden exposed services, implement backups, DDNS, and clean docs.
+
+We now have a multi-machine CHOMS homelab: `choms-node-01` at `192.168.1.138`, `choms-node-02` planned at `192.168.1.172`, and `choms-nas` at `192.168.1.167`, all connected through a D-Link DGS-1016D Gigabit switch behind a DIGI router. Node-01 runs the main Docker stack: Traefik, Authelia, Nextcloud, Jellyfin, Grafana, Prometheus, Loki, Uptime Kuma, Pi-hole, PostgreSQL, MariaDB, cAdvisor, Node Exporter and supporting services. The NAS runs Debian with temporary RAID0 arrays: `/srv/media` (~3.6 TB) and `/srv/storage` (~5.5 TB). NAS exports `/srv/media` over NFS to node-01 at `/mnt/choms-media`; confirmed working path for NAS movies is `/mnt/choms-media/Movies`. Node-01 also has local SSD media at `/media/ssd-media`. Network validation with ethtool/ping/iperf3 shows Gigabit, 0 retransmissions, and 750-940 Mbps depending on direction; router/switch are considered healthy. Jellyfin/TV issue likely relates to TV cable/app/DLNA, not backbone network. Cisco 1921/K9 is kept aside for lab, not production. Next work: rename node-02, update docs/GitHub, identify DLNA server, configure Jellyfin/NFS media sources, replace TV Ethernet cable, and begin Phase 2 backups/resilience.

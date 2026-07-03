@@ -1,131 +1,65 @@
 # CHOMS-HOMELAB Project Status
 
-## Current State
+## Current Phase
 
-Current phase: **Phase 1 completed**  
-Current tag: **v1.0.0-phase1**  
-Next phase: **Phase 2 — Backups, resilience and recovery**
+**Phase 1: Foundation Infrastructure — Completed**  
+**Phase 1.5: Multi-node / NAS Transition — In Progress**  
+**Phase 2: Backups, Resilience and Recovery — Ready to start**
 
-## Executive Summary
+## Current State Summary
 
-CHOMS-HOMELAB has completed its foundation infrastructure phase.
+CHOMS-HOMELAB has moved from a single-node Docker host to a small multi-machine homelab:
 
-The platform currently provides a working self-hosted environment with:
+- `choms-node-01` — main Docker/services node, LAN `192.168.1.138`.
+- `choms-node-02` — second compute node, LAN `192.168.1.172`, rename in progress.
+- `choms-nas` — Debian NAS, LAN `192.168.1.167`.
+- D-Link DGS-1016D — central Gigabit switch.
+- DIGI router — current gateway, dynamic public IP.
 
-- Debian 13 host
-- Docker and modular Docker Compose
-- Traefik reverse proxy
-- Let's Encrypt HTTPS
-- Authelia authentication layer
-- Public website
-- Protected internal services
-- Monitoring stack
-- WireGuard VPN
-- Firewall and intrusion protection
-- Custom operational CLI
-- GitHub-based documentation and versioning
+## Validated
 
-## Phase 1 Status
+- Debian 13 base systems.
+- Docker stack on node-01.
+- Traefik / HTTPS service architecture.
+- Authelia present.
+- Monitoring stack present.
+- WireGuard present.
+- UFW active.
+- NFS from NAS to node-01.
+- LAN tested with iperf3: 750-940 Mbps depending on host/direction, 0 retransmissions.
+- Switch/router backbone considered healthy.
 
-| Capability | Status |
-|---|---|
-| Debian host | Completed |
-| Docker runtime | Completed |
-| Docker Compose modularization | Completed |
-| Traefik routing | Completed |
-| HTTPS certificates | Completed |
-| Authelia authentication | Completed |
-| Public website | Completed |
-| Monitoring stack | Completed |
-| WireGuard | Completed |
-| UFW / Fail2ban | Completed |
-| CHOMS CLI | Completed |
-| CHOMS Doctor / Health | Completed |
-| Repository documentation baseline | Completed |
-| Phase 1 release tag | Completed |
+## Storage Status
 
-## Current Operational Validation
+NAS storage is operational but temporary:
 
-Use:
+- `/srv/media` on RAID0, exported by NFS.
+- `/srv/storage` on RAID0.
+- No redundancy yet.
+- Disk trust level: low / transitional.
 
-```bash
-choms health
-choms status
-choms compose config
-choms compose ps
-```
+Node-01 storage:
 
-Expected:
+- `/data` for Docker/project state.
+- `/media/ssd-media` for local media SSD.
+- `/mnt/choms-media` for NAS media via NFS.
 
-- Docker: OK
-- Compose config: OK
-- Traefik: OK
-- Authelia: OK
-- Nginx: OK
-- PostgreSQL: OK
-- UFW: OK
-- WireGuard: OK
-- Doctor: 100%
+## Current Risks
 
-## Current Services
+- NAS arrays are RAID0; any disk failure loses that array.
+- Public IP is dynamic; DDNS automation still pending.
+- TV/Jellyfin issue not fully closed; probable TV cable/app/DLNA issue.
+- Documentation in GitHub is behind the real infrastructure state.
+- Some files in repo are one-line/minified and need formatting cleanup.
+- Backup strategy not yet implemented.
 
-- Traefik
-- Authelia
-- Nginx public site
-- Grafana
-- Prometheus
-- Loki
-- Promtail
-- cAdvisor
-- Node Exporter
-- Uptime Kuma
-- Scrutiny
-- Pi-hole
-- PostgreSQL
-- MariaDB
-- Nextcloud
-- Jellyfin
+## Immediate Priorities
 
-## Security Status
-
-Validated:
-
-- `.env` is not tracked
-- `.env.bak` is not tracked
-- `acme.json` is not tracked
-- local vault wrapper does not contain credentials
-- Git working tree clean after Phase 1 closure
-
-Pending for higher maturity:
-
-- automated secret scanning in CI
-- image vulnerability scanning
-- credential rotation policy
-- hardened role-based operational model
-
-## Documentation Status
-
-The technical documentation baseline exists.
-
-Executive documentation has been aligned for Phase 1 closure through:
-
-- README
-- PROJECT_STATUS
-- ROADMAP
-- SYSTEM_OVERVIEW
-- PHASE_1_CLOSURE
-- CHANGELOG
-- SECURITY
-- CONTRIBUTING
-- LICENSE
-
-## Next Milestone
-
-Phase 2 begins with:
-
-1. Storage inventory
-2. NAS design
-3. SMART disk audit
-4. ZFS / TrueNAS decision
-5. Backup and restore engine
-6. Recovery runbooks
+1. Update repository documentation with current multi-node/NAS state.
+2. Rename second node to `choms-node-02`.
+3. Confirm Jellyfin media paths with NAS and local SSD.
+4. Identify and configure external DLNA service if used.
+5. Replace or test TV Ethernet cable.
+6. Begin Phase 2 backups and resilience.
+7. Implement DDNS/public IP automation.
+8. Create recovery/runbook documentation.
