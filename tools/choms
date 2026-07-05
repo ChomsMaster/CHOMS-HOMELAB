@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-BASE_DIR="/data/projects/choms-homelab"
+BASE_DIR="${CHOMS_BASE_DIR:-/data/projects/CHOMS-HOMELAB}"
 COMMANDS_DIR="$BASE_DIR/tools/commands"
 
 usage() {
@@ -9,6 +9,7 @@ usage() {
 CHOMS-HOMELAB Operations CLI
 
 Usage:
+  choms platform    Show CHOMS Platform inventory
   choms storage     Show disks, mounts and storage usage
   choms shares      Show Samba shared resources
   choms docker      Show Docker containers and compose services
@@ -41,7 +42,7 @@ case "$cmd" in
         "$COMMANDS_DIR/status.sh" "$@"
         ;;
 
-    status|storage|shares|docker|services|monitoring|compose|update|vault|health|version|urls|logs|restart|service)
+    platform|status|storage|shares|docker|services|monitoring|compose|update|vault|health|version|urls|logs|restart|service)
         "$COMMANDS_DIR/$cmd.sh" "$@"
         ;;
 
