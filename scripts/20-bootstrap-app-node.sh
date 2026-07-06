@@ -13,7 +13,25 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo
-echo "[1/6] Creating application node base directories..."
+echo "[1/6] Installing base packages..."
+
+apt update
+apt install -y \
+  curl \
+  wget \
+  git \
+  htop \
+  vim \
+  tree \
+  rsync \
+  ufw \
+  nfs-common \
+  cifs-utils \
+  ca-certificates \
+  gnupg
+
+echo
+echo "[2/6] Creating application node base directories..."
 
 mkdir -p \
   /data/compose/{postgres,mariadb,nextcloud,redis,applications,shiftcore} \
@@ -23,7 +41,7 @@ mkdir -p \
   /data/backups/{postgres,mariadb,nextcloud,applications,shiftcore}
 
 echo
-echo "[2/6] Creating stack directory layout..."
+echo "[3/6] Creating stack directory layout..."
 
 mkdir -p \
   /data/docker/stacks/database/{postgres,redis} \
@@ -31,22 +49,6 @@ mkdir -p \
   /data/docker/stacks/monitoring \
   /data/docker/stacks/storage \
   /data/docker/stacks/testing
-
-echo
-echo "[3/6] Creating stack template files..."
-
-for stack in \
-  /data/docker/stacks/database/postgres \
-  /data/docker/stacks/database/redis \
-  /data/docker/stacks/applications/nextcloud \
-  /data/docker/stacks/applications/shiftcore
-do
-  touch "$stack/compose.yaml"
-  touch "$stack/.env.example"
-  touch "$stack/README.md"
-  touch "$stack/deploy.sh"
-  chmod +x "$stack/deploy.sh"
-done
 
 echo
 echo "[4/6] Creating CHOMS Docker networks if missing..."
