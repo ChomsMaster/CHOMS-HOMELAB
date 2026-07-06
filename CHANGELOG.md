@@ -1,58 +1,32 @@
-# Changelog
+# CHOMS Changelog
 
-All notable changes to CHOMS-HOMELAB are documented here.
-
-## v1.0.0-phase1 — Foundation Infrastructure Complete
+## 2026-07-06
 
 ### Added
 
-- Debian 13 foundation
-- Docker and Docker Compose stack
-- Modular Docker Compose architecture
-- Traefik reverse proxy
-- HTTPS routing with Let's Encrypt
-- Authelia authentication
-- Public website routing
-- Protected internal dashboards
-- WireGuard VPN
-- UFW firewall
-- Fail2ban
-- Pi-hole
-- PostgreSQL
-- MariaDB
-- Nextcloud
-- Jellyfin
-- Grafana
-- Prometheus
-- Loki
-- Promtail
-- cAdvisor
-- Node Exporter
-- Uptime Kuma
-- Scrutiny
-- CHOMS CLI
-- CHOMS Doctor
-- CHOMS Health
-- CHOMS Compose wrapper
-- CHOMS Vault wrapper
-- CHOMS service utilities
-- Phase 1 documentation baseline
+- Application Node bootstrap
+- PostgreSQL stack
+- Redis stack
+- CHOMS deploy command
+- Project documentation structure
+- AI handoff document
 
 ### Changed
 
-- Moved from monolithic Compose structure to modular Compose files
-- Refactored CHOMS CLI into modular command scripts
-- Improved network checks for WireGuard and firewall status
-- Documented Phase 1 closure
+- Git repository is now the source of truth.
+- Runtime directory is treated as generated deployment output.
 
-### Security
+### Fixed
 
-- Validated that `.env`, `.env.bak` and `acme.json` are not tracked
-- Confirmed vault wrapper does not contain plaintext credentials
-- Added security documentation baseline
+- qBittorrent was incorrectly using NAS system SSD paths.
+- qBittorrent now mounts:
+  - /downloads → /srv/storage/downloads/torrents
+  - /config → /srv/storage/docker/qbittorrent/config
+  - /logs → /srv/storage/logs
+  - /movies → /srv/media/Movies
+  - /series → /srv/media/Series
 
-### Status
+### Current State
 
-Phase 1 closed.
-
-Next: Phase 2 — Backups, resilience and recovery.
+- Node-02 runs PostgreSQL and Redis.
+- Deployment engine v1 is working.
