@@ -13,6 +13,7 @@ Usage:
   choms storage     Show disks, mounts and storage usage
   choms shares      Show Samba shared resources
   choms docker      Show Docker containers and compose services
+  choms deploy      Deploy a CHOMS stack
   choms services    Show core systemd service states
   choms doctor      Run CHOMS Doctor
   choms status      Show global system status
@@ -42,7 +43,7 @@ case "$cmd" in
         "$COMMANDS_DIR/status.sh" "$@"
         ;;
 
-    platform|status|storage|shares|docker|services|monitoring|compose|update|vault|health|version|urls|logs|restart|service)
+    platform|status|storage|shares|docker|deploy|services|monitoring|compose|update|vault|health|version|urls|logs|restart|service)
         "$COMMANDS_DIR/$cmd.sh" "$@"
         ;;
 
