@@ -12,12 +12,51 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
+echo
+echo "[1/6] Creating application node base directories..."
+
 mkdir -p \
-  /data/compose/{postgres,mariadb,nextcloud,redis,apps,shiftcore} \
-  /data/docker/{postgres,mariadb,nextcloud,redis,apps,shiftcore} \
-  /data/config/{postgres,mariadb,nextcloud,redis,apps,shiftcore} \
-  /data/logs/{postgres,mariadb,nextcloud,apps,shiftcore} \
-  /data/backups/{postgres,mariadb,nextcloud,apps,shiftcore}
+  /data/compose/{postgres,mariadb,nextcloud,redis,applications,shiftcore} \
+  /data/docker/{postgres,mariadb,nextcloud,redis,applications,shiftcore,configs,secrets,volumes,networks,stacks} \
+  /data/config/{postgres,mariadb,nextcloud,redis,applications,shiftcore} \
+  /data/logs/{postgres,mariadb,nextcloud,applications,shiftcore} \
+  /data/backups/{postgres,mariadb,nextcloud,applications,shiftcore}
+
+echo
+echo "[2/6] Creating stack directory layout..."
+
+mkdir -p \
+  /data/docker/stacks/database/{postgres,redis} \
+  /data/docker/stacks/applications/{nextcloud,shiftcore} \
+  /data/docker/stacks/monitoring \
+  /data/docker/stacks/storage \
+  /data/docker/stacks/testing
+
+echo
+echo "[3/6] Creating stack template files..."
+
+for stack in \
+  /data/docker/stacks/database/postgres \
+  /data/docker/stacks/database/redis \
+  /data/docker/stacks/applications/nextcloud \
+  /data/docker/stacks/applications/shiftcore
+do
+  touch "$stack/compose.yaml"
+  touch "$stack/.env.example"
+  touch "$stack/README.md"
+  touch "$stack/deploy.sh"
+  chmod +x "$stack/deploy.sh"
+done
+
+echo
+echo "[4/6] Creating CHOMS Docker networks if missing..."
+
+docker network inspect choms-public >/dev/null 2>&1 || docker network create choms-public
+docker network inspect choms-backend >/dev/null 2>&1 || docker network create choms-backend
+docker network inspect choms-database >/dev/null 2>&1 || docker network create choms-database
+
+echo
+echo "[5/6] Applying ownership..."
 
 if id "$CHOMS_USER" >/dev/null 2>&1; then
   chown -R "$CHOMS_USER:$CHOMS_USER" \
@@ -26,11 +65,20 @@ if id "$CHOMS_USER" >/dev/null 2>&1; then
     /data/config \
     /data/logs \
     /data/backups
+else
+  echo "WARNING: user $CHOMS_USER not found. Ownership skipped."
 fi
 
 echo
-echo "Application node directories:"
-find /data -maxdepth 2 -type d | sort
+echo "[6/6] Validation..."
+
+echo
+echo "Docker networks:"
+docker network ls | grep choms || true
+
+echo
+echo "Application stack layout:"
+tree -a -L 3 /data/docker/stacks || find /data/docker/stacks -maxdepth 3 -type d | sort
 
 echo
 echo "CHOMS Application Node ready."
