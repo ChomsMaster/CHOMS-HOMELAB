@@ -1,0 +1,8 @@
+[Unit]
+Description=CHOMS Node Agent
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/opt/choms/agent/choms-node-agent.sh
