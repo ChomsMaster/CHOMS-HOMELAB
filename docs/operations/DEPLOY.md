@@ -1,21 +1,43 @@
 # CHOMS Deploy Operations
 
-## List Available Stacks
+## Source of Truth
+
+Repository:
+
+    /data/projects/CHOMS-HOMELAB
+
+Runtime:
+
+    /data/docker/stacks
+
+## Deploy Flow
+
+    Git
+      ↓
+    choms deploy <stack>
+      ↓
+    /data/docker/stacks
+      ↓
+    docker compose up -d
+
+## Commands
+
+List stacks:
 
     choms deploy
 
-## Deploy Redis
-
-    choms deploy redis
-
-## Deploy PostgreSQL
+Deploy PostgreSQL:
 
     choms deploy postgres
 
-## Verify PostgreSQL
+Deploy Redis:
+
+    choms deploy redis
+
+Validate PostgreSQL:
 
     docker exec -it choms-postgres pg_isready -U choms -d choms_platform
 
-## Verify Redis
+Validate Redis:
 
     docker exec -it choms-redis redis-cli ping

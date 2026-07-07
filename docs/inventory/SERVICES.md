@@ -1,23 +1,13 @@
 # CHOMS Services Inventory
 
-## Node-02
+| Service | Node | Status | Deploy |
+|---|---|---|---|
+| PostgreSQL | choms-node-02 | Running | choms deploy postgres |
+| Redis | choms-node-02 | Running | choms deploy redis |
 
-- choms-postgres
-- choms-redis
+## Next Planned Services
 
-## NAS
-
-- qbittorrent
-- filebrowser
-- nginx-proxy-manager
-- uptime-kuma
-
-## Node-01
-
-- Traefik
-- Authelia
-- Pi-hole
-- Grafana
-- Prometheus
-- Loki
-- Jellyfin
+- Filebrowser
+- Nextcloud
+- Portainer
+- CHOMS Console

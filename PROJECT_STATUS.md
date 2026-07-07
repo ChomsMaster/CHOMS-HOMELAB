@@ -1,80 +1,33 @@
-# CHOMS Project Status
+# CHOMS Platform Status
 
 ## Current Phase
 
 Phase 16 — Core Platform Foundation
 
-## Source of Truth
+## Current State
 
-Repository:
+Application Node: choms-node-02
 
-    /data/projects/CHOMS-HOMELAB
+Completed:
 
-Runtime:
+- Docker
+- Docker Compose
+- CHOMS Deploy Engine
+- PostgreSQL Stack
+- Redis Stack
+- Runtime deployment model
+- Git Source of Truth
+- AI Handoff
+- Architecture documentation
 
-    /data/docker
-
-Rule:
-
-    Edit Git. Deploy to runtime. Do not manually maintain runtime as source.
-
-## Deployment Flow
-
-    Git repository
-        ↓
-    stacks/
-        ↓
-    choms deploy <stack>
-        ↓
-    /data/docker/stacks/
-        ↓
-    docker compose up -d
-
-## Nodes
-
-- choms-node-01 — Edge
-- choms-node-02 — Application
-- choms-nas — Storage
-
-## Completed
-
-- Node standard bootstrap
-- Application node bootstrap
-- GitHub SSH access on node-02
-- Platform inventory command
-- Docker networks:
-  - choms-public
-  - choms-backend
-  - choms-database
-- PostgreSQL stack
-- Redis stack
-- CHOMS deploy command
-- qBittorrent NAS mount issue corrected
-
-## Running on Node-02
+Running services:
 
 - choms-postgres
 - choms-redis
 
-## Critical Rules
+Next candidates:
 
-Never edit as source:
-
-    /data/docker
-
-Always edit source in:
-
-    /data/projects/CHOMS-HOMELAB
-
-Deploy using:
-
-    choms deploy <stack>
-
-## Next Task
-
-Continue building managed stacks. Candidate next stacks:
-
-- Nextcloud
 - Filebrowser
+- Nextcloud
 - Portainer
 - CHOMS Console
