@@ -84,3 +84,7 @@ tree -a -L 3 /data/docker/stacks || find /data/docker/stacks -maxdepth 3 -type d
 
 echo
 echo "CHOMS Application Node ready."
+
+echo
+echo "Installing CHOMS Node Agent..."
+sudo ./scripts/install-node-agent.sh application
