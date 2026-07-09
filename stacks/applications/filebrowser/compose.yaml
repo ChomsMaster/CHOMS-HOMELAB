@@ -1,0 +1,26 @@
+services:
+  filebrowser:
+    image: ${FILEBROWSER_IMAGE}
+    container_name: ${FILEBROWSER_CONTAINER_NAME}
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:${FILEBROWSER_PORT}:80"
+    volumes:
+      - /data/docker/filebrowser/database:/database
+      - /data/docker/filebrowser/config:/config
+      - /mnt/choms-storage:/srv/storage
+      - /mnt/choms-media:/srv/media
+      - /data/projects:/srv/projects
+    networks:
+      - choms-backend
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:80"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+networks:
+  choms-backend:
+    external: true
