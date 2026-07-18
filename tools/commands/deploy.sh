@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BASE_DIR="${CHOMS_BASE_DIR:-/data/projects/CHOMS-HOMELAB}"
+BASE_DIR="${CHOMS_BASE_DIR:-/data/projects/choms-homelab}"
 RUNTIME_DIR="${CHOMS_RUNTIME_DIR:-/data/docker/stacks}"
 
 STACK="${1:-}"

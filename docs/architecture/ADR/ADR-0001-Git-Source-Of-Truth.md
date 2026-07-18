@@ -16,7 +16,7 @@ The Git repository is the Single Source of Truth.
 
 Stacks must be edited in:
 
-    /data/projects/CHOMS-HOMELAB/stacks
+    /data/projects/choms-homelab/stacks
 
 Runtime is generated into:
 

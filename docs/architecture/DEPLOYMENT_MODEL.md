@@ -8,7 +8,7 @@ Runtime directories must not be edited as source.
 
 ## Repository
 
-    /data/projects/CHOMS-HOMELAB
+    /data/projects/choms-homelab
 
 Contains:
 

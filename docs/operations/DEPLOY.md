@@ -4,7 +4,7 @@
 
 Repository:
 
-    /data/projects/CHOMS-HOMELAB
+    /data/projects/choms-homelab
 
 Runtime:
 

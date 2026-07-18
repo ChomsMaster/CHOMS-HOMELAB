@@ -9,6 +9,4 @@ exec docker compose \
   -f compose/authelia.yml \
   -f compose/monitoring.yml \
   -f compose/cloud.yml \
-  -f compose/media.yml \
-  -f compose/databases.yml \
   "$@"
