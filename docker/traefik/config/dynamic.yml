@@ -26,8 +26,32 @@ http:
       tls:
         certResolver: letsencrypt
 
+    torrent:
+      rule: "Host(`torrent.chomsmaster.com`)"
+      entryPoints:
+        - websecure
+      service: torrent
+      tls:
+        certResolver: letsencrypt
+
+    fbrowser:
+      rule: "Host(`fbrowser.chomsmaster.com`)"
+      entryPoints:
+        - websecure
+      service: fbrowser
+      tls:
+        certResolver: letsencrypt
+
   services:
     jellyfin:
       loadBalancer:
         servers:
-          - url: "http://host.docker.internal:8096"
+          - url: "http://192.168.1.172:8096"
+    torrent:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.167:8080"
+    fbrowser:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.167:8088"
