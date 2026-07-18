@@ -68,7 +68,6 @@ services:
       - /dev/sda:/dev/sda
       - /dev/sdb:/dev/sdb
       - /dev/sdc:/dev/sdc
-      - /dev/sde:/dev/sde
     volumes:
       - /run/udev:/run/udev:ro
       - /data/docker/scrutiny/config:/opt/scrutiny/config

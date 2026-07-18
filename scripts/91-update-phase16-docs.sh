@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BASE_DIR="${CHOMS_BASE_DIR:-/data/projects/CHOMS-HOMELAB}"
+BASE_DIR="${CHOMS_BASE_DIR:-/data/projects/choms-homelab}"
 cd "$BASE_DIR"
 
 echo "Updating CHOMS documentation..."
@@ -65,7 +65,7 @@ cat > docs/operations/DEPLOY.md <<'DOC'
 
 Repository:
 
-    /data/projects/CHOMS-HOMELAB
+    /data/projects/choms-homelab
 
 Runtime:
 

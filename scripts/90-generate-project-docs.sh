@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BASE_DIR="${CHOMS_BASE_DIR:-/data/projects/CHOMS-HOMELAB}"
+BASE_DIR="${CHOMS_BASE_DIR:-/data/projects/choms-homelab}"
 
 cd "$BASE_DIR"
 
@@ -42,7 +42,7 @@ Phase 16 — Core Platform Foundation
 
 Repository:
 
-    /data/projects/CHOMS-HOMELAB
+    /data/projects/choms-homelab
 
 Runtime:
 
@@ -98,7 +98,7 @@ Never edit as source:
 
 Always edit source in:
 
-    /data/projects/CHOMS-HOMELAB
+    /data/projects/choms-homelab
 
 Deploy using:
 
@@ -194,7 +194,7 @@ Runtime directories must not be edited as source.
 
 ## Repository
 
-    /data/projects/CHOMS-HOMELAB
+    /data/projects/choms-homelab
 
 Contains:
 
@@ -381,7 +381,7 @@ The Git repository is the Single Source of Truth.
 
 Stacks must be edited in:
 
-    /data/projects/CHOMS-HOMELAB/stacks
+    /data/projects/choms-homelab/stacks
 
 Runtime is generated into:
 
