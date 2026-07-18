@@ -6,7 +6,7 @@ services:
     env_file:
       - .env
     ports:
-      - "127.0.0.1:${FILEBROWSER_PORT}:80"
+      - "${FILEBROWSER_PORT}:80"
     volumes:
       - /data/docker/filebrowser/database:/database
       - /data/docker/filebrowser/config:/config
