@@ -26,6 +26,14 @@ http:
       tls:
         certResolver: letsencrypt
 
+    controller:
+      rule: "Host(`controller.chomsmaster.com`)"
+      entryPoints:
+        - websecure
+      service: controller
+      tls:
+        certResolver: letsencrypt
+
     torrent:
       rule: "Host(`torrent.chomsmaster.com`)"
       entryPoints:
@@ -55,3 +63,8 @@ http:
       loadBalancer:
         servers:
           - url: "http://192.168.1.167:8088"
+
+    controller:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.172:8000"
