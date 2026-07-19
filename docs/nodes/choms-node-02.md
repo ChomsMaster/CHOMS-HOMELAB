@@ -128,3 +128,21 @@ Completed:
 
 Node 02 is ready for production-like workloads inside CHOMS
 infrastructure.
+
+---
+
+# Final Validation
+
+Validated after reboot:
+
+- Docker services restored correctly.
+- NFS media mount available.
+- Jellyfin container started with controlled restart policy.
+- Jellyfin media library accessible.
+- CHOMS Controller API operational.
+
+Status:
+
+READY
+
+
