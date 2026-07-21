@@ -1,17 +1,19 @@
-# CHOMS Storage Inventory
+# Storage Inventory
 
-## NAS
+## NAS responsibilities
 
-    /srv/storage
-    /srv/media
+- NFS exports for application persistence.
+- Media libraries consumed by Jellyfin and MiniDLNA.
+- Backup targets for Node 01 and Node 02.
 
-## Node-01
+## Repository boundary
 
-- M.2 120 GB
-- SSD 960 GB
-- USB SSD 240 GB
+The repository contains configuration and automation only. It must not contain database files, application datasets, media, backup archives, TLS material or generated runtime state.
 
-## Node-02
+## Required controls
 
-- NVMe 1 TB
-- SATA 2.5 HDD 1 TB
+- Stable mount points and explicit mount dependencies.
+- SMART and capacity monitoring.
+- Backup retention and restore verification.
+- Least-privilege NFS exports.
+- Documented ownership for every dataset.

@@ -1,64 +1,57 @@
-# System files
+# Operating systems and editors
 .DS_Store
 Thumbs.db
-
-# Editors
 .vscode/
 .idea/
 
 # Python
 __pycache__/
-*.pyc
+*.py[cod]
 .venv/
 venv/
+.pytest_cache/
+.mypy_cache/
 
-# Secrets and local environment
+# Environment and secrets
 .env
 .env.*
+!.env.example
 *.env
-docker/.env
+!*.env.example
 secrets/
 private/
 *.pem
 *.key
 *_private.key
 private.key
-docker/traefik/acme.json
-docker/authelia/secrets/
 */secrets/
 
-# Logs and generated reports
+# Runtime credentials and state
+docker/traefik/acme.json
+docker/traefik/logs/
+docker/authelia/config/db.sqlite3
+docker/authelia/config/users_database.yml
+docker/authelia/config/notification.txt
+docker/authelia/secrets/
+
+# Application and container data
+docker-data/
+docker/pihole/etc-pihole/
+docker/pihole/etc-dnsmasq.d/
+docker/nextcloud/html/
+docker/nextcloud/db/
+pgdata/
+
+# Logs, reports and temporary files
 *.log
 logs/
 tools/choms-doctor/health-report.json
+tmp/
+temp/
 
-# Backups and archives
+# Backups and generated archives
 *.bak
 *.backup
 *.tar.gz
 *.zip
 backup/
-
-# Runtime data
-docker-data/
-docker/pihole/etc-pihole/
-docker/pihole/etc-dnsmasq.d/
-pgdata/
-
-# Temporary files
-tmp/
-temp/
-
-# Traefik certificates and logs
-docker/traefik/acme.json
-docker/traefik/logs/
-
-# Nextcloud persistent data
-docker/nextcloud/html/
-docker/nextcloud/db/
-
-# Authelia local runtime/config data
-docker/authelia/config/users_database.yml
-docker/authelia/config/db.sqlite3
-docker/authelia/config/notification.txt
-docker/authelia/secrets/
