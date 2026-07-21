@@ -40,7 +40,6 @@ Responsibilities:
 
 - RAID storage
 - NFS
-- Samba
 - Media storage
 - Backups
 - File services

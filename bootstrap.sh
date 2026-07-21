@@ -42,7 +42,6 @@ STEPS=(
 "07-deploy-nginx.sh"
 "08-deploy-postgresql.sh"
 "09-deploy-pihole.sh"
-"13-setup-samba.sh"
 "14-setup-media-ssd.sh"
 "15-deploy-jellyfin.sh"
 "16-setup-minidlna.sh"
