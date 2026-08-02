@@ -62,3 +62,15 @@ docker/authelia/config/users_database.yml
 docker/authelia/config/db.sqlite3
 docker/authelia/config/notification.txt
 docker/authelia/secrets/
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
+.terraformrc
+terraform.rc
+*.auto.tfvars
+!*.tfvars.example

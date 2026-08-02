@@ -1,0 +1,20 @@
+---
+- name: Auditar infraestructura CHOMS
+  hosts: all
+  gather_facts: true
+  become: false
+
+  tasks:
+    - name: Mostrar resumen del nodo
+      ansible.builtin.debug:
+        msg:
+          hostname: "{{ ansible_facts['hostname'] }}"
+          fqdn: "{{ ansible_facts['fqdn'] }}"
+          ip_principal: "{{ ansible_facts['default_ipv4']['address'] | default('sin-ip') }}"
+          sistema: "{{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_version'] }}"
+          kernel: "{{ ansible_facts['kernel'] }}"
+          arquitectura: "{{ ansible_facts['architecture'] }}"
+          cpu_modelo: "{{ ansible_facts['processor'][2] | default(ansible_facts['processor'][0] | default('desconocido')) }}"
+          vcpus: "{{ ansible_facts['processor_vcpus'] | default('desconocido') }}"
+          memoria_mb: "{{ ansible_facts['memtotal_mb'] }}"
+          virtualizacion: "{{ ansible_facts['virtualization_type'] | default('none') }}"
