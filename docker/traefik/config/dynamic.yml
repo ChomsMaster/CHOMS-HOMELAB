@@ -128,7 +128,7 @@ http:
       loadBalancer:
         passHostHeader: true
         servers:
-        - url: http://192.168.1.172:30096
+        - url: http://192.168.1.172:31080
         - url: http://192.168.1.134:31080
     authelia-k8s:
       loadBalancer:
