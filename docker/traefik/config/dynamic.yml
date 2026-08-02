@@ -6,65 +6,134 @@ http:
         contentTypeNosniff: true
         frameDeny: true
         sslRedirect: false
-
+    authelia-k8s:
+      forwardAuth:
+        address: http://192.168.1.138:30991/api/authz/forward-auth
+        trustForwardHeader: true
+        authResponseHeaders:
+        - Remote-User
+        - Remote-Groups
+        - Remote-Email
+        - Remote-Name
   routers:
     traefik:
-      rule: "Host(`traefik.chomsmaster.com`)"
+      rule: Host(`traefik.chomsmaster.com`)
       entryPoints:
-        - websecure
+      - websecure
       service: api@internal
       middlewares:
-        - authelia@docker
+      - authelia-k8s@file
       tls:
         certResolver: letsencrypt
-
     jellyfin:
-      rule: "Host(`jellyfin.chomsmaster.com`)"
+      rule: Host(`jellyfin.chomsmaster.com`)
       entryPoints:
-        - websecure
+      - websecure
       service: jellyfin
       tls:
         certResolver: letsencrypt
-
     controller:
-      rule: "Host(`controller.chomsmaster.com`)"
+      rule: Host(`controller.chomsmaster.com`)
       entryPoints:
-        - websecure
-      service: controller
+      - websecure
+      service: kubernetes-gateway
       tls:
         certResolver: letsencrypt
-
     torrent:
-      rule: "Host(`torrent.chomsmaster.com`)"
+      rule: Host(`torrent.chomsmaster.com`)
       entryPoints:
-        - websecure
+      - websecure
       service: torrent
       tls:
         certResolver: letsencrypt
-
     fbrowser:
-      rule: "Host(`fbrowser.chomsmaster.com`)"
+      rule: Host(`fbrowser.chomsmaster.com`)
       entryPoints:
-        - websecure
+      - websecure
       service: fbrowser
       tls:
         certResolver: letsencrypt
-
+    nextcloud:
+      rule: Host(`nextcloud.chomsmaster.com`)
+      entryPoints:
+      - websecure
+      service: kubernetes-gateway
+      tls:
+        certResolver: letsencrypt
+    grafana:
+      rule: Host(`grafana.chomsmaster.com`)
+      entryPoints:
+      - websecure
+      service: kubernetes-gateway
+      tls:
+        certResolver: letsencrypt
+    prometheus:
+      rule: Host(`prometheus.chomsmaster.com`)
+      entryPoints:
+      - websecure
+      service: kubernetes-gateway
+      tls:
+        certResolver: letsencrypt
+    uptime-kuma:
+      rule: Host(`kuma.chomsmaster.com`)
+      entryPoints:
+      - websecure
+      service: kubernetes-gateway
+      tls:
+        certResolver: letsencrypt
+    portainer:
+      rule: Host(`portainer.chomsmaster.com`)
+      entryPoints:
+      - websecure
+      service: kubernetes-gateway
+      tls:
+        certResolver: letsencrypt
+    authelia:
+      rule: Host(`auth.chomsmaster.com`)
+      entryPoints:
+      - websecure
+      service: authelia-k8s
+      tls:
+        certResolver: letsencrypt
+    home:
+      rule: Host(`home.chomsmaster.com`)
+      entryPoints:
+      - websecure
+      service: kubernetes-gateway
+      middlewares:
+      - authelia-k8s@file
+      tls:
+        certResolver: letsencrypt
+    www:
+      rule: Host(`www.chomsmaster.com`) || Host(`chomsmaster.com`)
+      entryPoints:
+      - websecure
+      service: kubernetes-gateway
+      tls:
+        certResolver: letsencrypt
   services:
     jellyfin:
       loadBalancer:
         servers:
-          - url: "http://192.168.1.172:8096"
+        - url: http://192.168.1.172:30096
     torrent:
       loadBalancer:
         servers:
-          - url: "http://192.168.1.167:8080"
+        - url: http://192.168.1.167:8081
     fbrowser:
       loadBalancer:
         servers:
-          - url: "http://192.168.1.167:8088"
-
-    controller:
+        - url: http://192.168.1.167:8080
+    kubernetes-gateway:
       loadBalancer:
+        passHostHeader: true
         servers:
-          - url: "http://192.168.1.172:8000"
+        - url: http://192.168.1.172:30096
+        - url: http://192.168.1.134:31080
+    authelia-k8s:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+        - url: http://192.168.1.138:30991
+        - url: http://192.168.1.172:30991
+        - url: http://192.168.1.134:30991
