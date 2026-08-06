@@ -1,0 +1,16 @@
+services:
+  scrutiny-collector:
+    image: ghcr.io/analogj/scrutiny:v0.8.2-collector
+    container_name: choms-scrutiny-collector
+    restart: unless-stopped
+    privileged: true
+
+    environment:
+      COLLECTOR_API_ENDPOINT: http://192.168.1.138:8083
+      COLLECTOR_HOST_ID: choms-nas
+      COLLECTOR_RUN_STARTUP: "true"
+      COLLECTOR_CRON_SCHEDULE: "0 */6 * * *"
+
+    volumes:
+      - /run/udev:/run/udev:ro
+      - /dev:/dev
