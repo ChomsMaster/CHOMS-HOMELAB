@@ -39,6 +39,13 @@ http:
       service: kubernetes-gateway
       tls:
         certResolver: letsencrypt
+    scrutiny:
+      rule: Host(`scrutiny.chomsmaster.com`)
+      entryPoints:
+      - websecure
+      service: scrutiny
+      tls:
+        certResolver: letsencrypt
     torrent:
       rule: Host(`torrent.chomsmaster.com`)
       entryPoints:
@@ -116,6 +123,10 @@ http:
       loadBalancer:
         servers:
         - url: http://192.168.1.172:30096
+    scrutiny:
+      loadBalancer:
+        servers:
+        - url: http://192.168.1.172:31080
     torrent:
       loadBalancer:
         servers:
