@@ -1,0 +1,181 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: security
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authelia-config
+  namespace: security
+data:
+  configuration.yml: "server:\n  address: tcp://0.0.0.0:9091/\nlog:\n  level: info\n\
+    theme: dark\ntotp:\n  issuer: chomsmaster.com\nauthentication_backend:\n  file:\n\
+    \    path: /config/users_database.yml\naccess_control:\n  default_policy: deny\n\
+    \  rules:\n  - domain: auth.chomsmaster.com\n    policy: bypass\n  - domain: home.chomsmaster.com\n\
+    \    policy: one_factor\n  - domain: grafana.chomsmaster.com\n    policy: one_factor\n\
+    \  - domain: kuma.chomsmaster.com\n    policy: one_factor\n  - domain: traefik.chomsmaster.com\n\
+    \    policy: one_factor\nsession:\n  cookies:\n  - name: authelia_session\n  \
+    \  domain: chomsmaster.com\n    authelia_url: https://auth.chomsmaster.com\n \
+    \   default_redirection_url: https://home.chomsmaster.com\n  redis:\n    host:\
+    \ redis.databases.svc.cluster.local\n    port: 6379\n    database_index: 1\n \
+    \   timeout: 5s\nregulation:\n  max_retries: 5\n  find_time: 2m\n  ban_time: 10m\n\
+    storage:\n  local:\n    path: /config/db.sqlite3\nnotifier:\n  filesystem:\n \
+    \   filename: /config/notification.txt\n"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: authelia-data
+  namespace: security
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: choms-nfs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: authelia
+  namespace: security
+spec:
+  type: ClusterIP
+  selector:
+    app: authelia
+  ports:
+  - name: http
+    port: 9091
+    protocol: TCP
+    targetPort: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authelia
+  namespace: security
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authelia
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: authelia
+    spec:
+      containers:
+      - env:
+        - name: TZ
+          value: Europe/Madrid
+        - name: X_AUTHELIA_CONFIG
+          value: /config/configuration.yml
+        - name: AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE
+          value: /secrets/jwt_secret
+        - name: AUTHELIA_SESSION_SECRET_FILE
+          value: /secrets/session_secret
+        - name: AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE
+          value: /secrets/storage_encryption_key
+        - name: AUTHELIA_SESSION_REDIS_PASSWORD_FILE
+          value: /secrets/redis_password
+        image: authelia/authelia:4.39.20
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /api/health
+            port: http
+            scheme: HTTP
+          periodSeconds: 30
+          successThreshold: 1
+          timeoutSeconds: 5
+        name: authelia
+        ports:
+        - containerPort: 9091
+          name: http
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 6
+          httpGet:
+            path: /api/health
+            port: http
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+          requests:
+            cpu: 25m
+            memory: 64Mi
+        startupProbe:
+          failureThreshold: 60
+          httpGet:
+            path: /api/health
+            port: http
+            scheme: HTTP
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 5
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /config/configuration.yml
+          name: configuration
+          readOnly: true
+          subPath: configuration.yml
+        - mountPath: /config/db.sqlite3
+          name: data
+          subPath: db.sqlite3
+        - mountPath: /config/users_database.yml
+          name: data
+          readOnly: true
+          subPath: users_database.yml
+        - mountPath: /config/notification.txt
+          name: data
+          subPath: notification.txt
+        - mountPath: /secrets/jwt_secret
+          name: authelia-secrets
+          readOnly: true
+          subPath: jwt_secret
+        - mountPath: /secrets/session_secret
+          name: authelia-secrets
+          readOnly: true
+          subPath: session_secret
+        - mountPath: /secrets/storage_encryption_key
+          name: authelia-secrets
+          readOnly: true
+          subPath: storage_encryption_key
+        - mountPath: /secrets/redis_password
+          name: redis-secret
+          readOnly: true
+          subPath: redis_password
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: false
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: authelia-config
+        name: configuration
+      - name: data
+        persistentVolumeClaim:
+          claimName: authelia-data
+      - name: authelia-secrets
+        secret:
+          defaultMode: 256
+          secretName: authelia-secrets
+      - name: redis-secret
+        secret:
+          defaultMode: 256
+          secretName: authelia-redis-secret

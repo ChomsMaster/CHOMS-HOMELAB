@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -9,14 +10,13 @@ metadata:
   name: jellyfin
   namespace: media
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: jellyfin
   ports:
-    - name: http
-      port: 8096
-      targetPort: 8096
-      nodePort: 30096
+  - name: http
+    port: 8096
+    targetPort: 8096
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -37,82 +37,66 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/hostname: choms-node-02
-
       securityContext:
         fsGroup: 1000
         supplementalGroups:
-          - 44
-          - 992
-
+        - 44
+        - 992
       containers:
-        - name: jellyfin
-          image: jellyfin/jellyfin:latest
-          imagePullPolicy: IfNotPresent
-
-          securityContext:
-            privileged: true
-
-          env:
-            - name: TZ
-              value: Europe/Madrid
-
-          ports:
-            - name: http
-              containerPort: 8096
-
-          volumeMounts:
-            - name: config
-              mountPath: /config
-
-            - name: cache
-              mountPath: /cache
-
-            - name: media
-              mountPath: /media
-
-            - name: dri
-              mountPath: /dev/dri
-
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 8096
-            initialDelaySeconds: 20
-            periodSeconds: 10
-            failureThreshold: 12
-
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 8096
-            initialDelaySeconds: 60
-            periodSeconds: 30
-            failureThreshold: 5
-
-          resources:
-            requests:
-              cpu: 250m
-              memory: 512Mi
-            limits:
-              memory: 6Gi
-
-      volumes:
+      - name: jellyfin
+        image: jellyfin/jellyfin:latest
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          privileged: true
+        env:
+        - name: TZ
+          value: Europe/Madrid
+        ports:
+        - name: http
+          containerPort: 8096
+        volumeMounts:
         - name: config
-          hostPath:
-            path: /data/docker/jellyfin-node02/config
-            type: Directory
-
+          mountPath: /config
         - name: cache
-          hostPath:
-            path: /data/docker/jellyfin-node02/cache
-            type: Directory
-
+          mountPath: /cache
         - name: media
-          hostPath:
-            path: /mnt/choms-media
-            type: Directory
-
+          mountPath: /media
         - name: dri
-          hostPath:
-            path: /dev/dri
-            type: Directory
+          mountPath: /dev/dri
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8096
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          failureThreshold: 12
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8096
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          failureThreshold: 5
+        resources:
+          requests:
+            cpu: 250m
+            memory: 512Mi
+          limits:
+            memory: 6Gi
+      volumes:
+      - name: config
+        hostPath:
+          path: /data/docker/jellyfin-node02/config
+          type: Directory
+      - name: cache
+        hostPath:
+          path: /data/docker/jellyfin-node02/cache
+          type: Directory
+      - name: media
+        hostPath:
+          path: /mnt/choms-media
+          type: Directory
+      - name: dri
+        hostPath:
+          path: /dev/dri
+          type: Directory
