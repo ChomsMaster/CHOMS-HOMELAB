@@ -8,17 +8,19 @@ spec:
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
-
   dnsNames:
-    - chomsmaster.com
-    - www.chomsmaster.com
-    - home.chomsmaster.com
-    - controller.chomsmaster.com
-    - nextcloud.chomsmaster.com
-    - portainer.chomsmaster.com
-    - kuma.chomsmaster.com
-    - grafana.chomsmaster.com
-    - prometheus.chomsmaster.com
-    - fbrowser.chomsmaster.com
-    - torrent.chomsmaster.com
-    - scrutiny.chomsmaster.com
+  - chomsmaster.com
+  - www.chomsmaster.com
+  - home.chomsmaster.com
+  - controller.chomsmaster.com
+  - nextcloud.chomsmaster.com
+  - portainer.chomsmaster.com
+  - kuma.chomsmaster.com
+  - grafana.chomsmaster.com
+  - prometheus.chomsmaster.com
+  - fbrowser.chomsmaster.com
+  - torrent.chomsmaster.com
+  - scrutiny.chomsmaster.com
+  - jellyfin.chomsmaster.com
+  - auth.chomsmaster.com
+  - traefik.chomsmaster.com
