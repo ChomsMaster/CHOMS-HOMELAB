@@ -171,31 +171,35 @@ Confirmed content:
 /mnt/choms-media/HomeVideos
 ```
 
-## Current Docker / Services State on Node-01
+## Current Edge / Services State
 
-Node-01 currently runs the main Docker stack.
+The public application edge has been migrated from Docker Traefik on Node-01 to Kubernetes.
 
-Confirmed running containers include:
+Current ingress architecture:
 
-- `jellyfin`
-- `choms-nginx`
-- `choms-traefik`
-- `choms-nextcloud`
-- `choms-loki`
-- `choms-postgres`
-- `choms-grafana`
-- `pihole`
-- `choms-cadvisor`
-- `choms-prometheus`
-- `choms-uptime-kuma`
-- `choms-node-exporter`
-- `choms-authelia`
-- `choms-nextcloud-db`
-- `choms-promtail`
+- MetalLB provides the stable LAN VIP `192.168.1.240`.
+- Traefik runs inside Kubernetes and owns public HTTP/HTTPS ingress.
+- The Kubernetes `Gateway` named `traefik` exposes listeners `web` and `websecure`.
+- HTTPRoutes attach application hostnames to both listeners.
+- cert-manager manages the Let's Encrypt certificate `choms-platform`.
+- TLS terminates at Traefik Kubernetes using Secret `choms-platform-tls`.
+- Authelia runs inside Kubernetes and provides ForwardAuth protection for protected routes.
+- The Traefik dashboard is exposed through Kubernetes and protected by Authelia.
+- Legacy Docker container `choms-traefik` has been removed.
+- Jellyfin and Authelia use internal Kubernetes `ClusterIP` Services; their previous NodePorts have been removed.
 
-Public-facing ingress should remain Traefik on 80/443 only.
+Current public ingress path:
 
-Do not expose raw app ports publicly unless deliberately required. Local/LAN ports may remain available for administration.
+    Internet
+      -> router/NAT TCP 80 and 443
+      -> 192.168.1.240 (MetalLB)
+      -> Traefik Kubernetes
+      -> Gateway API / IngressRoute
+      -> Kubernetes Services
+
+Public application ports should not be exposed directly unless deliberately required.
+
+NodePorts should not be used for application ingress when the service is already reachable internally through Traefik and Kubernetes networking.
 
 ## Current Public DNS / WAN State
 

@@ -39,9 +39,6 @@ check_remote_container_health() {
 check_cmd "Docker" docker info
 check_cmd "Compose config" "$BASE_DIR/tools/commands/compose.sh" config
 
-check_cmd "Traefik node-01" \
-  docker inspect -f '{{.State.Running}}' choms-traefik
-
 check_cmd "Authelia node-01" \
   docker inspect -f '{{.State.Running}}' choms-authelia
 

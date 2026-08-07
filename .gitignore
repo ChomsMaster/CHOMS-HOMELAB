@@ -23,7 +23,6 @@ private/
 *.key
 *_private.key
 private.key
-docker/traefik/acme.json
 docker/authelia/secrets/
 */secrets/
 
@@ -50,8 +49,6 @@ tmp/
 temp/
 
 # Traefik certificates and logs
-docker/traefik/acme.json
-docker/traefik/logs/
 
 # Nextcloud persistent data
 docker/nextcloud/html/
