@@ -1,18 +1,16 @@
 service:
   spec:
     type: LoadBalancer
-
+    allocateLoadBalancerNodePorts: false
   annotations:
     metallb.io/address-pool: choms-platform
     metallb.io/loadBalancerIPs: 192.168.1.240
-
 ports:
   web:
     expose:
       default: true
     exposedPort: 80
     port: 8000
-
   websecure:
     expose:
       default: true
