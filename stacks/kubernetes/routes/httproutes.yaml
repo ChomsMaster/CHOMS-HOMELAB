@@ -1,0 +1,312 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: choms-controller
+  namespace: apps
+spec:
+  hostnames:
+  - controller.chomsmaster.com
+  parentRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: traefik
+    namespace: traefik
+    sectionName: web
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: traefik
+    namespace: traefik
+    sectionName: websecure
+  rules:
+  - backendRefs:
+    - group: ''
+      kind: Service
+      name: choms-controller
+      port: 80
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: home
+  namespace: apps
+spec:
+  hostnames:
+  - home.chomsmaster.com
+  - chomsmaster.com
+  - www.chomsmaster.com
+  parentRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: traefik
+    namespace: traefik
+    sectionName: web
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: traefik
+    namespace: traefik
+    sectionName: websecure
+  rules:
+  - backendRefs:
+    - group: ''
+      kind: Service
+      name: home
+      port: 80
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: nextcloud
+  namespace: apps
+spec:
+  hostnames:
+  - nextcloud.chomsmaster.com
+  parentRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: traefik
+    namespace: traefik
+    sectionName: web
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: traefik
+    namespace: traefik
+    sectionName: websecure
+  rules:
+  - backendRefs:
+    - group: ''
+      kind: Service
+      name: nextcloud
+      port: 80
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: portainer
+  namespace: apps
+spec:
+  hostnames:
+  - portainer.chomsmaster.com
+  parentRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: traefik
+    namespace: traefik
+    sectionName: web
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: traefik
+    namespace: traefik
+    sectionName: websecure
+  rules:
+  - backendRefs:
+    - group: ''
+      kind: Service
+      name: portainer
+      port: 80
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: uptime-kuma
+  namespace: apps
+spec:
+  hostnames:
+  - kuma.chomsmaster.com
+  parentRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: traefik
+    namespace: traefik
+    sectionName: web
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: traefik
+    namespace: traefik
+    sectionName: websecure
+  rules:
+  - backendRefs:
+    - group: ''
+      kind: Service
+      name: uptime-kuma
+      port: 80
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: filebrowser
+  namespace: filebrowser
+spec:
+  hostnames:
+  - fbrowser.chomsmaster.com
+  parentRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: traefik
+    namespace: traefik
+    sectionName: web
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: traefik
+    namespace: traefik
+    sectionName: websecure
+  rules:
+  - backendRefs:
+    - group: ''
+      kind: Service
+      name: filebrowser
+      port: 80
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: grafana
+  namespace: monitoring
+spec:
+  hostnames:
+  - grafana.chomsmaster.com
+  parentRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: traefik
+    namespace: traefik
+    sectionName: web
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: traefik
+    namespace: traefik
+    sectionName: websecure
+  rules:
+  - backendRefs:
+    - group: ''
+      kind: Service
+      name: choms-monitoring-grafana
+      port: 80
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: prometheus
+  namespace: monitoring
+spec:
+  hostnames:
+  - prometheus.chomsmaster.com
+  parentRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: traefik
+    namespace: traefik
+    sectionName: web
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: traefik
+    namespace: traefik
+    sectionName: websecure
+  rules:
+  - backendRefs:
+    - group: ''
+      kind: Service
+      name: choms-monitoring-prometheus
+      port: 9090
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: scrutiny
+  namespace: monitoring
+spec:
+  hostnames:
+  - scrutiny.chomsmaster.com
+  parentRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: traefik
+    namespace: traefik
+    sectionName: web
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: traefik
+    namespace: traefik
+    sectionName: websecure
+  rules:
+  - backendRefs:
+    - group: ''
+      kind: Service
+      name: scrutiny
+      port: 8080
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: qbittorrent
+  namespace: qbittorrent
+spec:
+  hostnames:
+  - torrent.chomsmaster.com
+  parentRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: traefik
+    namespace: traefik
+    sectionName: web
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: traefik
+    namespace: traefik
+    sectionName: websecure
+  rules:
+  - backendRefs:
+    - group: ''
+      kind: Service
+      name: qbittorrent
+      port: 8081
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: /

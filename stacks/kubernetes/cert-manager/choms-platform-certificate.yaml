@@ -1,0 +1,24 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: choms-platform
+  namespace: traefik
+spec:
+  secretName: choms-platform-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+
+  dnsNames:
+    - chomsmaster.com
+    - www.chomsmaster.com
+    - home.chomsmaster.com
+    - controller.chomsmaster.com
+    - nextcloud.chomsmaster.com
+    - portainer.chomsmaster.com
+    - kuma.chomsmaster.com
+    - grafana.chomsmaster.com
+    - prometheus.chomsmaster.com
+    - fbrowser.chomsmaster.com
+    - torrent.chomsmaster.com
+    - scrutiny.chomsmaster.com

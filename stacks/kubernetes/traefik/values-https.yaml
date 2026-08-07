@@ -1,0 +1,18 @@
+gateway:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+
+  listeners:
+    web:
+      port: 8000
+      protocol: HTTP
+      namespacePolicy:
+        from: All
+
+    websecure:
+      port: 8443
+      protocol: HTTPS
+      namespacePolicy:
+        from: All
+      certificateRefs:
+        - name: choms-platform-tls

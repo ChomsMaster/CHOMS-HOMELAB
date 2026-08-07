@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -13,9 +14,9 @@ spec:
   selector:
     app: qbittorrent
   ports:
-    - name: web
-      port: 8081
-      targetPort: 8081
+  - name: web
+    port: 8081
+    targetPort: 8081
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -36,105 +37,63 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/hostname: choms-node-03
-
       securityContext:
         fsGroup: 1000
-
       containers:
-        - name: qbittorrent
-          image: lscr.io/linuxserver/qbittorrent:latest
-          imagePullPolicy: IfNotPresent
-
-          env:
-            - name: PUID
-              value: "1000"
-            - name: PGID
-              value: "1000"
-            - name: TZ
-              value: Europe/Madrid
-            - name: WEBUI_PORT
-              value: "8081"
-            - name: TORRENTING_PORT
-              value: "6881"
-
-          ports:
-            - name: web
-              containerPort: 8081
-
-            - name: torrent-tcp
-              containerPort: 6881
-              hostPort: 6881
-              protocol: TCP
-
-            - name: torrent-udp
-              containerPort: 6881
-              hostPort: 6881
-              protocol: UDP
-
-          readinessProbe:
-            tcpSocket:
-              port: 8081
-            initialDelaySeconds: 15
-            periodSeconds: 5
-            failureThreshold: 18
-
-          livenessProbe:
-            tcpSocket:
-              port: 8081
-            initialDelaySeconds: 45
-            periodSeconds: 20
-            failureThreshold: 5
-
-          resources:
-            requests:
-              cpu: 100m
-              memory: 256Mi
-            limits:
-              memory: 2Gi
-
-          volumeMounts:
-            - name: config
-              mountPath: /config
-
-            - name: downloads
-              mountPath: /downloads
-
-      volumes:
+      - name: qbittorrent
+        image: lscr.io/linuxserver/qbittorrent:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: PUID
+          value: '1000'
+        - name: PGID
+          value: '1000'
+        - name: TZ
+          value: Europe/Madrid
+        - name: WEBUI_PORT
+          value: '8081'
+        - name: TORRENTING_PORT
+          value: '6881'
+        ports:
+        - name: web
+          containerPort: 8081
+        - name: torrent-tcp
+          containerPort: 6881
+          hostPort: 6881
+          protocol: TCP
+        - name: torrent-udp
+          containerPort: 6881
+          hostPort: 6881
+          protocol: UDP
+        readinessProbe:
+          tcpSocket:
+            port: 8081
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          failureThreshold: 18
+        livenessProbe:
+          tcpSocket:
+            port: 8081
+          initialDelaySeconds: 45
+          periodSeconds: 20
+          failureThreshold: 5
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            memory: 2Gi
+        volumeMounts:
         - name: config
-          hostPath:
-            path: /data/docker/qbittorrent/config
-            type: Directory
-
+          mountPath: /config
         - name: downloads
-          nfs:
-            server: 192.168.1.167
-            path: /srv/storage/downloads
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: qbittorrent
-  namespace: qbittorrent
-spec:
-  hostnames:
-    - torrent.chomsmaster.com
-
-  parentRefs:
-    - group: gateway.networking.k8s.io
-      kind: Gateway
-      name: traefik
-      namespace: traefik
-      sectionName: web
-
-  rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-
-      backendRefs:
-        - group: ""
-          kind: Service
-          name: qbittorrent
-          port: 8081
-          weight: 1
+          mountPath: /downloads
+      volumes:
+      - name: config
+        hostPath:
+          path: /data/docker/qbittorrent/config
+          type: Directory
+      - name: downloads
+        nfs:
+          server: 192.168.1.167
+          path: /srv/storage/downloads

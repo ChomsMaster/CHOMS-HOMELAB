@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -8,9 +9,9 @@ spec:
   selector:
     app: scrutiny
   ports:
-    - name: http
-      port: 8080
-      targetPort: 8080
+  - name: http
+    port: 8080
+    targetPort: 8080
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -21,120 +22,73 @@ spec:
   replicas: 1
   strategy:
     type: Recreate
-
   selector:
     matchLabels:
       app: scrutiny
-
   template:
     metadata:
       labels:
         app: scrutiny
-
     spec:
       nodeSelector:
         kubernetes.io/hostname: choms-node-01
-
       tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
-
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
       containers:
-        - name: scrutiny
-          image: ghcr.io/analogj/scrutiny:master-omnibus
-          imagePullPolicy: IfNotPresent
-
-          securityContext:
-            privileged: true
-
-          ports:
-            - name: http
-              containerPort: 8080
-              hostPort: 8083
-              protocol: TCP
-
-          readinessProbe:
-            tcpSocket:
-              port: 8080
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            failureThreshold: 18
-
-          livenessProbe:
-            tcpSocket:
-              port: 8080
-            initialDelaySeconds: 90
-            periodSeconds: 30
-            failureThreshold: 5
-
-          resources:
-            requests:
-              cpu: 100m
-              memory: 256Mi
-            limits:
-              memory: 2Gi
-
-          volumeMounts:
-            - name: config
-              mountPath: /opt/scrutiny/config
-
-            - name: influxdb
-              mountPath: /opt/scrutiny/influxdb
-
-            - name: udev
-              mountPath: /run/udev
-              readOnly: true
-
-            - name: dev
-              mountPath: /dev
-
-      volumes:
+      - name: scrutiny
+        image: ghcr.io/analogj/scrutiny:master-omnibus
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          privileged: true
+        ports:
+        - name: http
+          containerPort: 8080
+          hostPort: 8083
+          protocol: TCP
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          failureThreshold: 18
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 90
+          periodSeconds: 30
+          failureThreshold: 5
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            memory: 2Gi
+        volumeMounts:
         - name: config
-          hostPath:
-            path: /data/docker/scrutiny/config
-            type: Directory
-
+          mountPath: /opt/scrutiny/config
         - name: influxdb
-          hostPath:
-            path: /data/docker/scrutiny/influxdb
-            type: Directory
-
+          mountPath: /opt/scrutiny/influxdb
         - name: udev
-          hostPath:
-            path: /run/udev
-            type: Directory
-
+          mountPath: /run/udev
+          readOnly: true
         - name: dev
-          hostPath:
-            path: /dev
-            type: Directory
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: scrutiny
-  namespace: monitoring
-spec:
-  hostnames:
-    - scrutiny.chomsmaster.com
-
-  parentRefs:
-    - group: gateway.networking.k8s.io
-      kind: Gateway
-      name: traefik
-      namespace: traefik
-      sectionName: web
-
-  rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-
-      backendRefs:
-        - group: ""
-          kind: Service
-          name: scrutiny
-          port: 8080
-          weight: 1
+          mountPath: /dev
+      volumes:
+      - name: config
+        hostPath:
+          path: /data/docker/scrutiny/config
+          type: Directory
+      - name: influxdb
+        hostPath:
+          path: /data/docker/scrutiny/influxdb
+          type: Directory
+      - name: udev
+        hostPath:
+          path: /run/udev
+          type: Directory
+      - name: dev
+        hostPath:
+          path: /dev
+          type: Directory

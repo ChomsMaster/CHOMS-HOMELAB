@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns-custom
+  namespace: kube-system
+data:
+  chomsmaster.server: |
+    chomsmaster.com:53 {
+        errors
+
+        hosts {
+            192.168.1.240 chomsmaster.com
+            192.168.1.240 www.chomsmaster.com
+            192.168.1.240 home.chomsmaster.com
+            192.168.1.240 controller.chomsmaster.com
+            192.168.1.240 nextcloud.chomsmaster.com
+            192.168.1.240 portainer.chomsmaster.com
+            192.168.1.240 kuma.chomsmaster.com
+            192.168.1.240 grafana.chomsmaster.com
+            192.168.1.240 prometheus.chomsmaster.com
+            192.168.1.240 fbrowser.chomsmaster.com
+            192.168.1.240 torrent.chomsmaster.com
+            192.168.1.240 scrutiny.chomsmaster.com
+            192.168.1.240 jellyfin.chomsmaster.com
+            192.168.1.240 auth.chomsmaster.com
+            192.168.1.240 traefik.chomsmaster.com
+            fallthrough
+        }
+
+        cache 30
+        reload
+    }
