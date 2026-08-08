@@ -71,3 +71,12 @@ crash.*.log
 terraform.rc
 *.auto.tfvars
 !*.tfvars.example
+
+
+
+
+# Kubernetes secrets bootstrap: track tooling, never real values
+!stacks/kubernetes/secrets/
+!stacks/kubernetes/secrets/secrets.env.example
+!stacks/kubernetes/secrets/apply-secrets.sh
+stacks/kubernetes/secrets/secrets.env
