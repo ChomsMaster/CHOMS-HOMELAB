@@ -1,0 +1,102 @@
+alertmanager:
+  alertmanagerSpec:
+    replicas: 1
+    resources:
+      limits:
+        cpu: 300m
+        memory: 256Mi
+      requests:
+        cpu: 20m
+        memory: 80Mi
+  enabled: true
+defaultRules:
+  create: true
+fullnameOverride: choms-monitoring
+grafana:
+  admin:
+    existingSecret: grafana-admin
+    passwordKey: admin-password
+    userKey: admin-user
+  enabled: true
+  grafana.ini:
+    analytics:
+      check_for_updates: false
+      reporting_enabled: false
+    security:
+      cookie_samesite: lax
+      cookie_secure: true
+    server:
+      domain: grafana.chomsmaster.com
+      root_url: https://grafana.chomsmaster.com
+  ingress:
+    enabled: false
+  persistence:
+    accessModes:
+    - ReadWriteOnce
+    enabled: true
+    finalizers:
+    - kubernetes.io/pvc-protection
+    size: 5Gi
+    storageClassName: choms-nfs
+    type: pvc
+  resources:
+    limits:
+      cpu: "1"
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+  sidecar:
+    dashboards:
+      enabled: true
+    datasources:
+      enabled: true
+kube-state-metrics:
+  enabled: true
+kubeControllerManager:
+  enabled: false
+kubeEtcd:
+  enabled: false
+kubeProxy:
+  enabled: false
+kubeScheduler:
+  enabled: false
+prometheus:
+  enabled: true
+  ingress:
+    enabled: false
+  prometheusSpec:
+    podMonitorSelectorNilUsesHelmValues: false
+    probeSelectorNilUsesHelmValues: false
+    replicas: 1
+    resources:
+      limits:
+        cpu: "2"
+        memory: 2Gi
+      requests:
+        cpu: 250m
+        memory: 768Mi
+    retention: 15d
+    retentionSize: 17GB
+    ruleSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+          - ReadWriteOnce
+          resources:
+            requests:
+              storage: 20Gi
+          storageClassName: choms-nfs
+prometheus-node-exporter:
+  enabled: true
+prometheusOperator:
+  enabled: true
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 50m
+      memory: 128Mi
