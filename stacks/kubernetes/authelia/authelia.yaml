@@ -16,7 +16,7 @@ data:
     \  rules:\n  - domain: auth.chomsmaster.com\n    policy: bypass\n  - domain: home.chomsmaster.com\n\
     \    policy: one_factor\n  - domain: grafana.chomsmaster.com\n    policy: one_factor\n\
     \  - domain: kuma.chomsmaster.com\n    policy: one_factor\n  - domain: traefik.chomsmaster.com\n\
-    \    policy: one_factor\nsession:\n  cookies:\n  - name: authelia_session\n  \
+    \    policy: one_factor\n  - domain: threadfin.chomsmaster.com\n    policy: one_factor\nsession:\n  cookies:\n  - name: authelia_session\n  \
     \  domain: chomsmaster.com\n    authelia_url: https://auth.chomsmaster.com\n \
     \   default_redirection_url: https://home.chomsmaster.com\n  redis:\n    host:\
     \ redis.databases.svc.cluster.local\n    port: 6379\n    database_index: 1\n \

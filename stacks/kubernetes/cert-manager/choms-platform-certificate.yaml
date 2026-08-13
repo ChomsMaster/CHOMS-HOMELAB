@@ -24,3 +24,4 @@ spec:
   - jellyfin.chomsmaster.com
   - auth.chomsmaster.com
   - traefik.chomsmaster.com
+  - threadfin.chomsmaster.com

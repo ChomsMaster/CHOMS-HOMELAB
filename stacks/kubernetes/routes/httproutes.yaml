@@ -257,6 +257,43 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
+  name: threadfin
+  namespace: media
+spec:
+  hostnames:
+  - threadfin.chomsmaster.com
+  parentRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: traefik
+    namespace: traefik
+    sectionName: web
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: traefik
+    namespace: traefik
+    sectionName: websecure
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    filters:
+    - type: ExtensionRef
+      extensionRef:
+        group: traefik.io
+        kind: Middleware
+        name: authelia-forwardauth
+    backendRefs:
+    - group: ''
+      kind: Service
+      name: threadfin
+      port: 34400
+      weight: 1
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
   name: grafana
   namespace: monitoring
 spec:
