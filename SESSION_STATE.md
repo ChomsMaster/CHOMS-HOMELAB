@@ -2,98 +2,70 @@
 
 ## Last Updated
 
-2026-07-03
+2026-08-14
 
 ## Current Focus
 
-The current chat became too long. The next chat should continue from the updated master context and focus on operational work, not rediscovering prior state.
+Complete Kubernetes platform reproducibility, documentation and recovery
+procedures after migration from the legacy Docker edge.
 
-## Current Infrastructure
+## Infrastructure
 
-- `choms-node-01` (`192.168.1.138`) — main services node, former `choms-homelab`.
-- `choms-node-02` (`192.168.1.172`) — Lenovo M710Q node, rename pending/ongoing.
-- `choms-nas` (`192.168.1.167`) — Debian NAS.
-- Router: DIGI, gateway `192.168.1.1`, dynamic public IP via PPPoE.
-- Switch: D-Link DGS-1016D Gigabit.
-- Cisco 1921/K9: set aside for lab only.
+| System | Address | Function |
+|---|---|---|
+| `node-dev-01` | `192.168.1.150` | Ubuntu administration workstation |
+| `choms-node-01` | `192.168.1.138` | K3s control plane |
+| `choms-node-02` | `192.168.1.172` | K3s worker |
+| `choms-node-03` | `192.168.1.134` | K3s worker |
+| `choms-nas` | `192.168.1.167` | NFS storage |
+| MetalLB VIP | `192.168.1.240` | Traefik LoadBalancer address |
 
-## Current Services on Node-01
+All three Kubernetes nodes run Debian 13 and are Ready.
 
-Running Docker stack includes:
+## Platform Services
 
-- Traefik
-- Authelia
-- Nextcloud
-- Jellyfin
-- Grafana
-- Prometheus
-- Loki
-- Promtail
-- Uptime Kuma
-- Pi-hole
-- PostgreSQL
-- MariaDB
-- cAdvisor
-- Node Exporter
-- Nginx public site
+The cluster currently runs:
 
-## Network Validation
+- Home portal and public site
+- CHOMS Controller
+- Nextcloud, Portainer and Uptime Kuma
+- PostgreSQL, MariaDB and Redis
+- Jellyfin and Threadfin
+- Filebrowser and qBittorrent
+- Authelia and Traefik
+- cert-manager and MetalLB
+- Prometheus, Alertmanager and Grafana
+- Loki and Alloy
+- Scrutiny
+- NFS external provisioner
 
-- Physical link on node-01 is 1000 Mbps Full Duplex.
-- Ping tests to router stable with 0% loss.
-- iperf3 tests between nodes/NAS show 750-940 Mbps depending on direction.
-- Retransmissions observed: 0.
-- Backbone switch/router/cables are considered healthy.
+## Declarative State
 
-## NAS State
+Completed reproducibility work:
 
-- `/srv/media` exported over NFS to `192.168.1.0/24`.
-- Node-01 mounts it at `/mnt/choms-media`.
-- Movies available at `/mnt/choms-media/Movies`.
-- RAID0 arrays are temporary and not redundant.
+- Core application and database manifests versioned.
+- Threadfin Kubernetes integration versioned.
+- MetalLB `v0.15.2` native installation vendored.
+- Six Helm releases locked by chart version.
+- Helm server-side plan validated successfully.
+- Release revisions remained unchanged during planning.
+- Runtime audit found zero uncovered workloads.
+- Secret values remain excluded from Git.
+- Directly managed application images are pinned by digest.
 
 ## Media State
 
-Jellyfin can use two sources in the Movies library:
+Threadfin exposes an HDHomeRun-compatible lineup to Jellyfin.
 
-```text
-/media/ssd-media/Movies
-/mnt/choms-media/Movies
-```
+Last validated Threadfin lineup size: 356 channels.
 
-TV issue likely caused by cable/TV/DLNA, not core LAN. RJ45 connector at TV lacks locking tab and should be replaced.
+Jellyfin previously retained stale entries from two removed large M3U tuners.
+The final channel count should be checked after its guide refresh finishes.
 
-## Next Commands To Run
+## Next Work
 
-### Rename node-02
-
-```bash
-sudo hostnamectl set-hostname choms-node-02
-sudo nano /etc/hosts
-sudo reboot
-hostname
-hostnamectl
-```
-
-### Identify DLNA service
-
-```bash
-systemctl list-units --type=service | grep -Ei 'dlna|minidlna|readymedia|gerbera'
-dpkg -l | grep -Ei 'minidlna|readymedia|gerbera'
-```
-
-### Verify NAS media mount on node-01
-
-```bash
-mount | grep choms-media
-findmnt /mnt/choms-media
-ls -lah /mnt/choms-media/Movies
-```
-
-### Ensure iperf port is closed after testing
-
-```bash
-sudo ufw status
-sudo ufw delete allow 5201/tcp
-sudo ufw reload
-```
+1. Update remaining canonical architecture and inventory documents.
+2. Validate backup and recovery for NFS-backed PVCs.
+3. Add probes and resource controls to MariaDB and Redis.
+4. Verify Jellyfin Live TV reconciliation.
+5. Introduce declarative drift detection.

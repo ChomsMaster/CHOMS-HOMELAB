@@ -4,160 +4,73 @@
 
 CHOMS-HOMELAB is a production-inspired self-hosted infrastructure platform.
 
-It is designed to be:
+It is secure, observable, version controlled, reproducible and multi-node.
 
-- practical
-- documented
-- version-controlled
-- reproducible
-- secure by default
-- ready to evolve into a multi-node platform
+## Kubernetes Cluster
 
-## Current Architecture
+| Node | Address | Role |
+|---|---|---|
+| `choms-node-01` | `192.168.1.138` | K3s control plane |
+| `choms-node-02` | `192.168.1.172` | K3s worker |
+| `choms-node-03` | `192.168.1.134` | K3s worker |
 
-```mermaid
-flowchart TD
-    Internet((Internet))
-    Router[ISP Router]
-    Traefik[Traefik Reverse Proxy]
-    Authelia[Authelia]
-    Docker[Docker Compose Stack]
+K3s provides orchestration and containerd provides the container runtime.
 
-    PublicWeb[Public Website]
-    Home[Home Portal]
-    Grafana[Grafana]
-    Kuma[Uptime Kuma]
-    Cloud[Nextcloud]
-    Media[Jellyfin]
-    Monitoring[Monitoring Stack]
-    Databases[PostgreSQL / MariaDB]
-    DNS[Pi-hole]
-    VPN[WireGuard]
-    CLI[CHOMS CLI]
+## Traffic Flow
 
-    Internet --> Router
-    Router --> Traefik
-    Traefik --> PublicWeb
-    Traefik --> Authelia
-    Authelia --> Home
-    Authelia --> Grafana
-    Authelia --> Kuma
-    Traefik --> Cloud
-    Traefik --> Media
-    Docker --> Monitoring
-    Docker --> Databases
-    Docker --> DNS
-    VPN --> Docker
-    CLI --> Docker
-```
+Client traffic reaches the MetalLB VIP `192.168.1.240`.
+Traefik processes Kubernetes Gateway API routes and forwards requests to
+internal ClusterIP Services. Authelia protects selected routes through
+ForwardAuth.
 
-## Current Host Role
+## Networking
 
-The current server acts as the first CHOMS node.
+- LAN subnet: `192.168.1.0/24`
+- Stable edge address: `192.168.1.240`
+- Load balancer: MetalLB
+- Routing: Traefik with Kubernetes Gateway API
+- TLS: cert-manager with Let's Encrypt
+- Authentication: Authelia ForwardAuth
+- Internal resolution: CoreDNS split DNS
+- Application Services normally remain `ClusterIP`
 
-Current responsibilities:
+Application ingress should not use NodePort when the service is reachable
+through Traefik and Kubernetes networking.
 
-- reverse proxy
-- authentication
-- public website
-- application hosting
-- monitoring
-- database hosting
-- DNS filtering
-- VPN endpoint
-- operational control
+## Storage
 
-## Public and Private Access Model
+The NAS at `192.168.1.167` exports NFS storage.
 
-### Public
+The `choms-nfs` StorageClass dynamically provisions persistent volumes with
+a `Retain` reclaim policy. Stateful services use NFS-backed PVCs.
 
-- `chomsmaster.com`
-- `www.chomsmaster.com`
+## Workload Management
 
-### Authentication
+CHOMS uses two declarative deployment models:
 
-- `auth.chomsmaster.com`
+1. Direct Kubernetes manifests under `stacks/kubernetes`.
+2. Locked Helm releases managed by
+   `stacks/kubernetes/helm/apply-releases.sh`.
 
-### Protected
+MetalLB uses a vendored upstream native manifest instead of Helm.
+Directly managed images are pinned by digest and Helm versions are locked.
 
-- `home.chomsmaster.com`
-- `grafana.chomsmaster.com`
-- `kuma.chomsmaster.com`
-- `traefik.chomsmaster.com`
+## Secret Management
 
-### Native Login
+Secret values are not stored in Git. The repository contains only Secret
+references, an ignored local environment file, a safe example and the
+versioned bootstrap script.
 
-- `cloud.chomsmaster.com`
-- `jellyfin.chomsmaster.com`
+## Observability
 
-## Operational Model
+- Prometheus collects metrics.
+- Alertmanager handles alerts.
+- Grafana provides dashboards.
+- Loki stores logs.
+- Alloy collects logs.
+- Scrutiny monitors storage health.
 
-Primary operational command:
+## Source of Truth
 
-```bash
-choms
-```
-
-Key commands:
-
-```bash
-choms health
-choms status
-choms version
-choms urls
-choms compose ps
-choms service list
-choms logs <service>
-choms restart <service>
-choms update
-choms vault list
-```
-
-## Storage Model
-
-Current storage is local to the host.
-
-Planned Phase 2 storage model:
-
-```mermaid
-flowchart TD
-    Mini1[Mini PC Core Node]
-    Mini2[Future Apps Node]
-    Mini3[Future Monitoring Node]
-    NAS[Future NAS / CHOMS Storage]
-    Backups[Backups and Snapshots]
-
-    Mini1 --> NAS
-    Mini2 --> NAS
-    Mini3 --> NAS
-    NAS --> Backups
-```
-
-The future architecture will separate:
-
-- compute nodes
-- storage
-- backups
-- monitoring
-
-## Future Architecture Direction
-
-CHOMS is expected to evolve toward:
-
-- dedicated NAS
-- 3–4 mini PC nodes
-- managed switch
-- OPNsense / pfSense firewall
-- VLAN segmentation
-- backup and restore automation
-- CI/CD
-- K3s evaluation
-- service placement strategy
-
-## Current Phase
-
-Phase 1 is complete.
-
-Next phase:
-
-**Phase 2 — Backups, resilience and recovery**
+Git is the desired-state source of truth. Runtime exports are used only for
+auditing or controlled reconstruction and must be cleaned before versioning.

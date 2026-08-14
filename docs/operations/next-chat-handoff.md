@@ -1,44 +1,86 @@
 # Next Chat Handoff
 
-Use this summary to start the next CHOMS-HOMELAB chat quickly.
+## Last Updated
 
-## Context
+2026-08-14
 
-CHOMS now has:
+## Current Objective
 
-- `choms-node-01` at `192.168.1.138`, main Docker/services host.
-- `choms-node-02` at `192.168.1.172`, Lenovo M710Q, rename pending/ongoing.
-- `choms-nas` at `192.168.1.167`, Debian NAS.
-- D-Link DGS-1016D central switch.
-- DIGI router with dynamic public IP.
+Continue stabilizing and documenting the CHOMS Kubernetes platform without
+rediscovering infrastructure that has already been validated.
 
-## Validated
+## Infrastructure
 
-- LAN is healthy: iperf3 750-940 Mbps, 0 retransmissions.
-- NFS NAS media mount works on node-01.
-- NAS movies available at `/mnt/choms-media/Movies`.
-- Local SSD media available at `/media/ssd-media`.
-- UFW is active and working.
-- Cisco 1921/K9 is not part of production; keep for lab.
+| System | Address | Function |
+|---|---|---|
+| `node-dev-01` | `192.168.1.150` | Administration workstation |
+| `choms-node-01` | `192.168.1.138` | K3s control plane |
+| `choms-node-02` | `192.168.1.172` | K3s worker |
+| `choms-node-03` | `192.168.1.134` | K3s worker |
+| `choms-nas` | `192.168.1.167` | NFS storage |
+| MetalLB VIP | `192.168.1.240` | Traefik edge address |
 
-## Current immediate tasks
+All three Kubernetes nodes run Debian 13 and are Ready.
 
-1. Rename node-02 to `choms-node-02`.
-2. Identify DLNA service:
+## Validated Platform State
 
-```bash
-systemctl list-units --type=service | grep -Ei 'dlna|minidlna|readymedia|gerbera'
-dpkg -l | grep -Ei 'minidlna|readymedia|gerbera'
-```
+- No unhealthy Pods were detected.
+- All persistent volume claims were Bound.
+- The Traefik Gateway was programmed at `192.168.1.240`.
+- Runtime audit covered 35 workloads with zero uncovered workloads.
+- Core applications and databases are versioned as Kubernetes manifests.
+- Directly managed application images are pinned by digest.
+- MetalLB `v0.15.2` is vendored as a native installation.
+- Six Helm releases use locked chart versions and versioned values.
+- The complete Helm server-side plan passed.
+- Helm release state remained unchanged during planning.
+- Kubernetes Secret values remain outside Git.
 
-3. Add NAS media source to DLNA service if needed.
-4. Replace TV Ethernet cable.
-5. Confirm Jellyfin Movies library includes:
+## Recent Commits
 
-```text
-/media/ssd-media/Movies
-/mnt/choms-media/Movies
-```
+- `67f9797` — locked Helm release installer.
+- `6e2d009` — vendored MetalLB native installation.
+- `fd08b74` — versioned core applications and databases.
+- `89ca54b` — versioned Threadfin Kubernetes integration.
+- `11730fd` — Kubernetes secrets bootstrap.
 
-6. Close iperf3 diagnostic port if still open.
-7. Start Phase 2 backup/resilience design.
+## Media State
+
+Threadfin exposes an HDHomeRun-compatible lineup to Jellyfin.
+
+The last validated Threadfin lineup contained 356 channels.
+
+Jellyfin previously showed stale entries from two removed large M3U tuners.
+Wait for the guide refresh to finish before diagnosing the final channel
+count.
+
+## Current Uncommitted Documentation
+
+The following canonical documents are being updated for the Kubernetes model:
+
+- `PROJECT_STATUS.md`
+- `SESSION_STATE.md`
+- `SYSTEM_OVERVIEW.md`
+- `docs/operations/BOOTSTRAP.md`
+- `docs/operations/DEPLOY.md`
+- `docs/operations/next-chat-handoff.md`
+
+Review these files together before committing.
+
+## Next Actions
+
+1. Review the six-document diff and check for obsolete Docker-era statements.
+2. Commit and push the canonical operational documentation update.
+3. Update README, ROADMAP and master context in a separate change.
+4. Validate backup and recovery for NFS-backed PVCs.
+5. Add probes and resource controls to MariaDB and Redis.
+6. Verify the final Jellyfin Live TV channel count.
+7. Add declarative drift detection.
+
+## Safety Rules
+
+- Preserve unrelated user changes.
+- Never commit `stacks/kubernetes/secrets/secrets.env`.
+- Validate manifests before applying them.
+- Do not delete PVCs during routine deployment.
+- Keep historical ADRs as records of previous architectural decisions.
