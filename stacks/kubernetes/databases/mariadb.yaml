@@ -46,10 +46,7 @@ spec:
     matchLabels:
       app: mariadb
   strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
+    type: Recreate
   template:
     metadata:
       labels:
@@ -74,6 +71,33 @@ spec:
         image: docker.io/library/mariadb@sha256:efb4959ef2c835cd735dbc388eb9ad6aab0c78dd64febcd51bc17481111890c4
         imagePullPolicy: IfNotPresent
         name: mariadb
+        startupProbe:
+          exec:
+            command:
+              - healthcheck.sh
+              - --connect
+              - --innodb_initialized
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 60
+        readinessProbe:
+          exec:
+            command:
+              - healthcheck.sh
+              - --connect
+              - --innodb_initialized
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
+        livenessProbe:
+          exec:
+            command:
+              - healthcheck.sh
+              - --connect
+              - --innodb_initialized
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 6
         ports:
         - containerPort: 3306
           protocol: TCP
