@@ -39,9 +39,11 @@ The project has evolved from a single-node homelab into a small multi-machine in
 
 | Role | Hostname | LAN IP | Notes |
 |---|---|---:|---|
-| Compute node 1 | `choms-node-01` | `192.168.1.138` | Former `choms-homelab`; main Docker/services node. |
-| Compute node 2 | `choms-node-02` planned | `192.168.1.172` | Lenovo M710Q currently still being renamed from `choms-core-02`. |
-| NAS | `choms-nas` | `192.168.1.167` | Debian NAS with RAID0 arrays for temporary media/storage. |
+| Administration | `node-dev-01` | `192.168.1.150` | Ubuntu workstation and Git working copy. |
+| Control plane | `choms-node-01` | `192.168.1.138` | Debian 13; K3s control plane. |
+| Worker | `choms-node-02` | `192.168.1.172` | Debian 13; K3s worker. |
+| Worker | `choms-node-03` | `192.168.1.134` | Debian 13; K3s worker. |
+| NAS | `choms-nas` | `192.168.1.167` | Debian NAS and NFS storage provider. |
 | Router | DIGI router | `192.168.1.1` | Current gateway. Public IP is dynamic via PPPoE. |
 | Switch | D-Link DGS-1016D | unmanaged | Central Gigabit switch. Validated by iperf3. |
 | Lab router | Cisco 1921/K9 | offline | Kept aside for Cisco IOS lab; not needed in production now. |
@@ -54,8 +56,10 @@ Internet
 DIGI Router
    |
 D-Link DGS-1016D Gigabit Switch
+   |-- node-dev-01
    |-- choms-node-01
    |-- choms-node-02
+   |-- choms-node-03
    |-- choms-nas
    |-- TV / clients
 ```
@@ -85,13 +89,13 @@ Current hostname has been changed in `/etc/hosts` to:
 127.0.1.1    choms-node-01
 ```
 
-Old project path remains intentionally unchanged:
+The active Git working copy is maintained on `node-dev-01`:
 
 ```text
-/data/projects/choms-homelab
+/home/chomsmaster/projects/choms-homelab
 ```
 
-Do not rename this path yet because systemd services and scripts still reference it.
+Git is the desired-state source of truth for the Kubernetes platform.
 
 ### Node-01 mounted storage
 
@@ -275,32 +279,27 @@ Interpretation:
 - Differences by direction are normal and can come from CPU, NIC, drivers, TCP offload, or NAS hardware.
 - `Retr: 0` is the strongest sign that the LAN is healthy.
 
-## Jellyfin / DLNA / TV State
+## Jellyfin / Threadfin / Live TV State
 
-Problem: TV was kicked from playback / showed connection issue.
+Jellyfin and Threadfin run as Kubernetes workloads in the `media` namespace.
 
-Findings:
+Threadfin exposes an HDHomeRun-compatible interface to Jellyfin through:
 
-- Playback from computer does not stop.
-- Jellyfin server logs did not show a server crash.
-- Network tests do not indicate switch/router failure.
-- TV direct to router appeared stable.
-- TV back on switch also appeared stable after reconnect.
-- A likely issue was found: RJ45 cable/connector at TV lacks the locking tab, so it may have micro-disconnections.
+    http://threadfin.media.svc.cluster.local:34400
 
-Current suspicion ranking:
+Last validated Threadfin state:
 
-1. TV cable/connector or port-specific issue.
-2. TV app / DLNA behavior.
-3. Jellyfin DLNA fragility.
-4. Switch failure is low probability after iperf3 validation.
+- HDHomeRun discovery endpoint returned HTTP 200.
+- Lineup status endpoint returned HTTP 200.
+- Lineup contained 356 entries.
+- Threadfin filters the provider lineup before presenting it to Jellyfin.
 
-Recommendation:
+Jellyfin previously retained stale channels from two removed large M3U
+tuners. The final channel count must be checked after the Jellyfin guide
+refresh completes.
 
-- Replace TV Ethernet cable with one whose RJ45 locking tab is intact.
-- Avoid Jellyfin DLNA if it keeps behaving badly.
-- Prefer official Jellyfin app/client where possible.
-- If using separate DLNA server, identify it (`minidlna` / ReadyMedia / Gerbera) and add `/mnt/choms-media/Movies` as a media source.
+The previous TV cable and DLNA investigation remains useful as historical
+troubleshooting context, but it is no longer the active platform task.
 
 ## USB / Removable Media Policy
 
@@ -330,32 +329,35 @@ Decision:
 - Keep it aside for Cisco IOS / routing / VPN / ACL / VLAN lab.
 - The ADSL module is not useful for current CHOMS.
 
-## Immediate Next Tasks Before Opening New Chat
+## Current Engineering Priorities
 
-1. Finish renaming `choms-core-02` to `choms-node-02`:
-   - `hostnamectl set-hostname choms-node-02`
-   - update `/etc/hosts`
-   - reboot and verify.
-2. Confirm Jellyfin library paths:
-   - local SSD: `/media/ssd-media/...`
-   - NAS NFS: `/mnt/choms-media/Movies`
-3. Identify the non-Jellyfin DLNA server:
-   - `systemctl list-units --type=service | grep -Ei 'dlna|minidlna|readymedia|gerbera'`
-   - `dpkg -l | grep -Ei 'minidlna|readymedia|gerbera'`
-4. Replace or test TV Ethernet cable with intact RJ45 locking tab.
-5. Close any temporary diagnostic firewall ports:
-   - ensure `5201/tcp` is not left open.
-6. Review `/archive` / `mmcblk0p1 BACKUPS` mount state on node-01.
-7. Begin NAS documentation update:
-   - temporary RAID0 media/storage.
-   - NFS export `/srv/media`.
-   - current risk: no redundancy.
-8. Start Phase 2 formally: backups/resilience and storage design.
-9. DDNS automation for dynamic DIGI public IP.
-10. Push updated documentation to GitHub.
+1. Validate backup and recovery for NFS-backed PVCs.
+2. Add probes and resource controls to MariaDB and Redis.
+3. Verify final Jellyfin and Threadfin channel reconciliation.
+4. Add declarative drift detection.
+5. Introduce CI validation for manifests and Helm values.
+6. Review monitoring and logging retention capacity.
+
+## Current Declarative State
+
+- Three-node K3s cluster operational.
+- Runtime workloads audited: 35.
+- Workloads without identified declarative ownership: 0.
+- Core application and database manifests versioned.
+- MetalLB `v0.15.2` native installation vendored.
+- Six Helm releases locked by chart version.
+- Helm server-side plan validated without changing release revisions.
+- Directly managed workload images pinned by digest.
+- Kubernetes Secret values excluded from Git.
 
 ## Resume Prompt For New Chat
 
-Continue CHOMS-HOMELAB from this state:
-
-We now have a multi-machine CHOMS homelab: `choms-node-01` at `192.168.1.138`, `choms-node-02` planned at `192.168.1.172`, and `choms-nas` at `192.168.1.167`, all connected through a D-Link DGS-1016D Gigabit switch behind a DIGI router. Node-01 runs the main Docker stack: Traefik, Authelia, Nextcloud, Jellyfin, Grafana, Prometheus, Loki, Uptime Kuma, Pi-hole, PostgreSQL, MariaDB, cAdvisor, Node Exporter and supporting services. The NAS runs Debian with temporary RAID0 arrays: `/srv/media` (~3.6 TB) and `/srv/storage` (~5.5 TB). NAS exports `/srv/media` over NFS to node-01 at `/mnt/choms-media`; confirmed working path for NAS movies is `/mnt/choms-media/Movies`. Node-01 also has local SSD media at `/media/ssd-media`. Network validation with ethtool/ping/iperf3 shows Gigabit, 0 retransmissions, and 750-940 Mbps depending on direction; router/switch are considered healthy. Jellyfin/TV issue likely relates to TV cable/app/DLNA, not backbone network. Cisco 1921/K9 is kept aside for lab, not production. Next work: rename node-02, update docs/GitHub, identify DLNA server, configure Jellyfin/NFS media sources, replace TV Ethernet cable, and begin Phase 2 backups/resilience.
+Continue CHOMS-HOMELAB as a three-node K3s platform. `choms-node-01`
+at `192.168.1.138` is the control plane. `choms-node-02` at
+`192.168.1.172` and `choms-node-03` at `192.168.1.134` are workers.
+`choms-nas` at `192.168.1.167` provides NFS-backed persistent storage.
+MetalLB exposes Traefik at `192.168.1.240`. Gateway API, cert-manager and
+Authelia provide routing, TLS and protected access. All 35 runtime workloads
+have identified declarative ownership. The next priorities are recovery
+validation, MariaDB and Redis hardening, media reconciliation and drift
+detection.

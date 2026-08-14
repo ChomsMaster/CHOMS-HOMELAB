@@ -1,136 +1,143 @@
 # CHOMS-HOMELAB
 
-> Production-inspired self-hosted infrastructure platform built with Debian, Docker, Traefik, Authelia, monitoring, custom operational tooling and a roadmap toward resilient homelab infrastructure.
+> Production-inspired self-hosted Kubernetes platform built with Debian,
+> K3s, Traefik, Authelia, observability and Git-based desired-state management.
 
 ![Status](https://img.shields.io/badge/status-stable-brightgreen)
-![Version](https://img.shields.io/badge/version-v1.0.0--phase1-blue)
-![Phase](https://img.shields.io/badge/phase_1-completed-success)
+![Platform](https://img.shields.io/badge/platform-K3s-blue)
+![Nodes](https://img.shields.io/badge/nodes-3-success)
 ![Debian](https://img.shields.io/badge/Debian-13-red)
-![Docker](https://img.shields.io/badge/Docker-enabled-blue)
-![Traefik](https://img.shields.io/badge/Traefik-enabled-blue)
-![Authelia](https://img.shields.io/badge/Authelia-enabled-purple)
-![Monitoring](https://img.shields.io/badge/Monitoring-enabled-orange)
-![WireGuard](https://img.shields.io/badge/WireGuard-enabled-success)
+![Traefik](https://img.shields.io/badge/Traefik-Gateway_API-blue)
+![MetalLB](https://img.shields.io/badge/MetalLB-L2-purple)
+![Monitoring](https://img.shields.io/badge/observability-enabled-orange)
+![Git](https://img.shields.io/badge/source_of_truth-Git-black)
 
 ## What is CHOMS-HOMELAB?
 
-CHOMS-HOMELAB is a long-term infrastructure project designed as a real-world Systems Administration, Infrastructure Engineering and DevOps laboratory.
+CHOMS-HOMELAB is a long-term infrastructure project designed as a real-world
+Systems Administration, Infrastructure Engineering and DevOps laboratory.
 
-The goal is not simply to run services. The goal is to build, operate and document a reproducible platform with production-inspired practices:
+The goal is not simply to run services. The goal is to build, operate and
+document a reproducible platform with production-inspired practices:
 
+- Kubernetes orchestration with K3s
 - Infrastructure as code mindset
-- Git as source of truth
-- Modular Docker Compose architecture
+- Git as the desired-state source of truth
 - Secure public and private service exposure
 - Centralized authentication
-- Monitoring and observability
-- Operational CLI tooling
-- Documented decisions and roadmap
-- Progressive path toward NAS, backups, CI/CD, clustering and automation
+- Monitoring and centralized logging
+- Persistent NFS storage
+- Operational validation and recovery
+- Documented engineering decisions and roadmap
 
 ## Current Status
 
 | Area | Status |
 |---|---|
-| Phase 1 Foundation Infrastructure | Completed |
-| GitHub repository | Clean and versioned |
-| Docker Compose modularization | Completed |
-| Traefik reverse proxy | Completed |
-| Authelia authentication | Completed |
-| HTTPS routing | Completed |
-| Public website | Completed |
-| Monitoring stack | Completed |
-| CHOMS CLI | Completed |
-| CHOMS Doctor / Health | Completed |
-| Documentation baseline | Completed |
-| Phase 2 Backups and Resilience | Ready to start |
+| Three-node K3s cluster | Operational |
+| Git desired state | Versioned |
+| MetalLB and Traefik edge | Operational |
+| Gateway API and HTTPS routing | Operational |
+| Authelia authentication | Operational |
+| NFS persistent storage | Operational |
+| Monitoring and centralized logging | Operational |
+| Direct Kubernetes workloads | Versioned |
+| Locked Helm releases | Validated |
+| Runtime declarative coverage | 35 of 35 workloads |
+| Backup and recovery validation | Next priority |
 
-Current release tag:
+Current cluster:
 
-```text
-v1.0.0-phase1
-```
+| Node | Address | Role |
+|---|---|---|
+| `choms-node-01` | `192.168.1.138` | K3s control plane |
+| `choms-node-02` | `192.168.1.172` | K3s worker |
+| `choms-node-03` | `192.168.1.134` | K3s worker |
 
 ## High-Level Architecture
 
 ```mermaid
 flowchart TD
-    Internet((Internet))
-    Router[ISP Router / Future OPNsense]
-    Traefik[Traefik Reverse Proxy]
-    Authelia[Authelia Authentication]
-    Docker[Docker Compose Stack]
+    Clients[LAN and Internet Clients]
+    Router[DIGI Router]
+    VIP[MetalLB VIP 192.168.1.240]
+    Traefik[Traefik Gateway API]
+    Authelia[Authelia ForwardAuth]
+    Apps[Application and Media Services]
+    Data[PostgreSQL / MariaDB / Redis]
+    Observe[Prometheus / Grafana / Loki / Alloy]
+    NAS[CHOMS NAS 192.168.1.167]
 
-    Public[Public Website]
-    Home[Home Portal]
-    Grafana[Grafana]
-    Kuma[Uptime Kuma]
-    Nextcloud[Nextcloud]
-    Jellyfin[Jellyfin]
-    Monitoring[Prometheus / Loki / cAdvisor / Node Exporter]
-    Data[(Local Data / Future NAS)]
-
-    Internet --> Router
-    Router --> Traefik
-    Traefik --> Public
+    Clients --> Router
+    Router --> VIP
+    VIP --> Traefik
     Traefik --> Authelia
-    Authelia --> Home
-    Authelia --> Grafana
-    Authelia --> Kuma
-    Traefik --> Nextcloud
-    Traefik --> Jellyfin
-    Docker --> Monitoring
-    Docker --> Data
+    Traefik --> Apps
+    Apps --> Data
+    Apps --> NAS
+    Data --> NAS
+    Observe --> Apps
+    Observe --> Data
 ```
 
-## Public and Protected Services
+## Platform Endpoints
 
 ### Public
 
 - `https://chomsmaster.com`
 - `https://www.chomsmaster.com`
 
-### Authentication
+### Authentication and Platform
 
 - `https://auth.chomsmaster.com`
-
-### Protected by Authelia
-
 - `https://home.chomsmaster.com`
+- `https://controller.chomsmaster.com`
 - `https://grafana.chomsmaster.com`
+- `https://prometheus.chomsmaster.com`
 - `https://kuma.chomsmaster.com`
-- `https://traefik.chomsmaster.com`
+- `https://scrutiny.chomsmaster.com`
 
-### Native Login Applications
+### Applications and Media
 
-- `https://cloud.chomsmaster.com`
+- `https://nextcloud.chomsmaster.com`
 - `https://jellyfin.chomsmaster.com`
+- `https://threadfin.chomsmaster.com`
+- `https://fbrowser.chomsmaster.com`
+- `https://torrent.chomsmaster.com`
+- `https://portainer.chomsmaster.com`
+
+Applications use their native authentication or Authelia ForwardAuth
+according to their route and security requirements.
 
 ## Technology Stack
 
 ### Base Infrastructure
 
 - Debian 13
-- Docker
-- Docker Compose
-- UFW
-- Fail2ban
-- WireGuard
+- K3s `v1.36.2+k3s1`
+- containerd
+- Three-node Kubernetes cluster
+- NFS-backed persistent storage
 
-### Routing and Security
+### Networking and Security
 
+- MetalLB
 - Traefik
+- Kubernetes Gateway API
+- cert-manager
 - Let's Encrypt
-- Authelia
-- Pi-hole
+- Authelia ForwardAuth
+- CoreDNS split DNS
+- WireGuard
 
 ### Monitoring and Observability
 
-- Grafana
 - Prometheus
+- Alertmanager
+- Grafana
 - Loki
-- Promtail
-- cAdvisor
+- Alloy
+- kube-state-metrics
 - Node Exporter
 - Uptime Kuma
 - Scrutiny
@@ -139,101 +146,123 @@ flowchart TD
 
 - PostgreSQL
 - MariaDB
+- Redis
 - Nextcloud
 - Jellyfin
-- Nginx public site
+- Threadfin
+- Filebrowser
+- qBittorrent
+- Portainer
+- CHOMS Controller
 
-### Operations
+### Declarative Operations
 
-- CHOMS CLI
-- CHOMS Doctor
-- CHOMS Health
-- CHOMS Vault wrapper
-- CHOMS Compose wrapper
-- CHOMS service utilities
+- Direct Kubernetes manifests
+- Locked Helm chart versions
+- Versioned Helm values
+- Images pinned by digest
+- Local Kubernetes Secret bootstrap
+- Git-based desired-state management
 
-## CHOMS CLI
+## Declarative Platform Architecture
 
-The project includes its own operational CLI:
-
-```bash
-choms help
-choms health
-choms status
-choms doctor
-choms version
-choms urls
-choms compose ps
-choms compose up -d
-choms compose config
-choms service list
-choms service status
-choms service restart <service>
-choms service logs <service>
-choms logs <service>
-choms restart <service>
-choms update
-choms vault list
-choms vault show <service>
-```
-
-CLI structure:
+Kubernetes desired state is organized by platform component:
 
 ```text
-tools/choms
-tools/commands/
+stacks/kubernetes/
+├── apps/
+├── authelia/
+├── cert-manager/
+├── coredns/
+├── databases/
+├── filebrowser/
+├── helm/
+├── home/
+├── jellyfin/
+├── logging/
+├── metallb/
+├── monitoring/
+├── nfs-provisioner/
+├── qbittorrent/
+├── routes/
+├── scrutiny/
+├── secrets/
+├── security/
+├── threadfin/
+└── traefik/
 ```
 
-## Docker Compose Architecture
+Direct manifests describe application resources. Versioned values describe
+Helm-managed components. MetalLB uses a vendored upstream native manifest.
 
-The Compose stack is modularized:
+## Locked Helm Releases
 
-```text
-docker/
-├── compose.yml
-└── compose/
-    ├── core.yml
-    ├── authelia.yml
-    ├── monitoring.yml
-    ├── cloud.yml
-    ├── media.yml
-    └── databases.yml
-```
+| Release | Namespace | Chart version |
+|---|---|---|
+| `choms-nfs` | `nfs-provisioner` | `4.0.18` |
+| `cert-manager` | `cert-manager` | `v1.21.1` |
+| `traefik-k8s` | `traefik` | `41.1.0` |
+| `choms-monitoring` | `monitoring` | `88.0.1` |
+| `choms-loki` | `logging` | `18.7.1` |
+| `choms-alloy` | `logging` | `1.11.0` |
 
-Use:
+Validate all locked releases without changing their revisions:
 
 ```bash
-choms compose ps
-choms compose config
-choms compose up -d
+./stacks/kubernetes/helm/apply-releases.sh plan
 ```
 
-Avoid manually invoking long Docker Compose file chains unless debugging.
+Apply only after reviewing a successful plan:
+
+```bash
+./stacks/kubernetes/helm/apply-releases.sh apply
+```
+
+## Secret Management
+
+Secret values are excluded from Git. Kubernetes Secrets are generated from
+the ignored local environment file:
+
+```bash
+./stacks/kubernetes/secrets/apply-secrets.sh
+```
+
+The local `stacks/kubernetes/secrets/secrets.env` file must never be
+committed.
 
 ## Operational Validation
 
-Expected Phase 1 validation commands:
+Cluster health:
 
 ```bash
-git status
-git tag | grep phase
-choms health
-choms status
-choms compose config
-choms compose ps
-curl -I https://chomsmaster.com
-curl -I https://www.chomsmaster.com
+kubectl get nodes
+kubectl get pods -A
+kubectl get deployment,statefulset,daemonset -A
+kubectl get pvc -A
+kubectl get gateway,httproute -A
+helm list -A
 ```
 
-Expected result:
+Validate a direct manifest before applying it:
 
-- Repository clean
-- Tag `v1.0.0-phase1` present
-- CHOMS Health OK
-- CHOMS Doctor 100%
-- Compose config valid
-- Core containers running
-- Public website returning HTTP 200
+```bash
+kubectl apply --dry-run=server -f <manifest>
+kubectl diff -f <manifest>
+kubectl apply -f <manifest>
+```
+
+Expected platform state:
+
+- Three nodes Ready
+- No unhealthy Pods
+- Persistent volume claims Bound
+- Traefik Gateway programmed at `192.168.1.240`
+- Six Helm releases deployed
+- Zero runtime workloads without identified declarative ownership
+
+Legacy Docker-oriented CHOMS CLI tooling remains in the repository as
+engineering history and may be reused where appropriate, but it is no longer
+the deployment model for the Kubernetes platform.
 
 ## Roadmap
 
@@ -243,69 +272,70 @@ Status: Completed
 
 Delivered:
 
-- Debian 13 base host
-- Docker and Compose
-- Modular Compose layout
-- Traefik
-- Authelia
-- HTTPS
-- Public website
-- Protected dashboards
-- Monitoring stack
-- CHOMS CLI
-- CHOMS Doctor / Health
-- GitHub repository and documentation baseline
+- Debian infrastructure baseline
+- Git source-of-truth model
+- Initial service deployment and operational tooling
+- Authentication, HTTPS and observability foundation
+- NAS integration and network validation
 
-### Phase 2 — Backups, Resilience and Recovery
+### Phase 2 — Kubernetes Platform
 
-Status: Ready to start
+Status: Operational
 
-Planned:
+Delivered:
 
-- NAS design
-- Disk inventory and SMART audit
-- ZFS / TrueNAS or Debian + ZFS decision
-- `choms backup`
-- `choms restore`
-- automated backup schedule
-- backup verification
-- recovery runbooks
+- Three-node K3s cluster
+- MetalLB stable edge address
+- Traefik Gateway API
+- cert-manager TLS automation
+- Authelia ForwardAuth
+- NFS dynamic provisioning
+- Core application and database workloads
+- Prometheus, Grafana, Loki and Alloy
+- Locked Helm release installer
+- Declarative runtime coverage audit
 
-### Phase 3 — Service Expansion
+### Phase 3 — Resilience and Recovery
+
+Status: Current priority
 
 Planned:
 
-- Vaultwarden
-- Gitea
-- n8n
-- Immich
-- additional automation services
+- PVC and NAS backup validation
+- Controlled restoration tests
+- Database-aware backup procedures
+- Node replacement procedures
+- Storage and capacity alerts
+- Disaster-recovery exercises
 
-### Phase 4 — Cluster Preparation
+### Phase 4 — Platform Automation
 
 Planned:
 
-- multiple mini PC nodes
-- node inventory
-- WireGuard node-to-node connectivity
-- service placement strategy
-- K3s evaluation
-- distributed monitoring
-- CI/CD deployment flow
+- Continuous declarative drift detection
+- CI validation for manifests and Helm values
+- Automated policy checks
+- Scheduled recovery verification
+- GitOps evaluation
+- Infrastructure provisioning automation
+
+See [`ROADMAP.md`](ROADMAP.md) for the active engineering roadmap.
 
 ## Project Goal
 
-CHOMS-HOMELAB is intended to become a practical, portfolio-grade infrastructure platform demonstrating:
+CHOMS-HOMELAB is intended to be a practical, portfolio-grade platform
+demonstrating:
 
-- Linux administration
-- Docker operations
-- networking
-- security
-- monitoring
-- automation
-- documentation
-- systems architecture
-- recovery planning
+- Linux and Kubernetes administration
+- Container orchestration
+- Networking and secure ingress
+- Identity-aware application access
+- Persistent storage management
+- Monitoring and centralized logging
+- Declarative infrastructure management
+- Automation and operational safety
+- Backup and recovery engineering
+- Technical documentation and architecture governance
 
 ## Author
 
