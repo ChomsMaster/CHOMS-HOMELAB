@@ -1,0 +1,13 @@
+[Unit]
+Description=CHOMS Sync Validated Backups to NAS
+After=network-online.target remote-fs.target choms-kubernetes-backup.service
+Wants=network-online.target remote-fs.target
+
+[Service]
+Type=oneshot
+User=chomsmaster
+Group=chomsmaster
+ExecStart=/usr/local/sbin/choms-backup-nas-sync.sh
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7

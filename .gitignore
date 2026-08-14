@@ -38,6 +38,10 @@ tools/choms-doctor/health-report.json
 *.zip
 backup/
 
+# Versioned backup automation; backup data remains ignored.
+!stacks/backup/
+!stacks/backup/**
+
 # Runtime data
 docker-data/
 docker/pihole/etc-pihole/

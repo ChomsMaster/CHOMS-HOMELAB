@@ -1,0 +1,11 @@
+[Unit]
+Description=Sync CHOMS backups to NAS nightly
+
+[Timer]
+OnCalendar=*-*-* 03:30:00
+Persistent=true
+RandomizedDelaySec=5m
+Unit=choms-backup-nas-sync.service
+
+[Install]
+WantedBy=timers.target

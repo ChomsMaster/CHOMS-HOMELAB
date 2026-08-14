@@ -1,0 +1,11 @@
+[Unit]
+Description=Run CHOMS Nextcloud data backup nightly
+
+[Timer]
+OnCalendar=*-*-* 04:10:00
+Persistent=true
+RandomizedDelaySec=5m
+Unit=choms-nextcloud-data-backup.service
+
+[Install]
+WantedBy=timers.target

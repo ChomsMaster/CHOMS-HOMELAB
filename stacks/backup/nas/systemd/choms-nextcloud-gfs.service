@@ -1,0 +1,11 @@
+[Unit]
+Description=CHOMS Nextcloud GFS Retention
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/choms-nextcloud-gfs.sh
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7

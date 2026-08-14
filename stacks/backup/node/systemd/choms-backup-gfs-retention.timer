@@ -1,0 +1,11 @@
+[Unit]
+Description=Apply CHOMS GFS backup retention nightly
+
+[Timer]
+OnCalendar=*-*-* 03:40:00
+Persistent=true
+RandomizedDelaySec=5m
+Unit=choms-backup-gfs-retention.service
+
+[Install]
+WantedBy=timers.target
