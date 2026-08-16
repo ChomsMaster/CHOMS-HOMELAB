@@ -114,3 +114,27 @@ entries are immutable; append an explicit correction when needed.
 - **Evidence:** Git history, current documentation, direct manifests, workload
   audit, and read-only runtime checks.
 - **Derived pending:** maintain these files in each future state-changing task.
+
+## 2026-08-17 — MetalLB speaker reconciliation rolled back
+
+- **Action:** Validated and applied only `metallb-system/DaemonSet/speaker`,
+  replacing the runtime `v0.15.2` declaration with the identical effective
+  digest already published in the vendored manifest.
+- **Result:** RollingUpdate respected `maxUnavailable: 1`; availability reached
+  no lower than 2/3 and three critical public routes remained HTTP 200. After
+  rollout, all three speakers repeatedly failed memberlist joins and two also
+  reported immutable-node conflicts for the existing `ServiceL2Status`.
+  Revision 1 was restored. Final runtime is again `v0.15.2`, with 3/3 Ready,
+  zero restarts, the same effective digest, healthy controller/Traefik/Gateway,
+  three Ready nodes, and no failed Pods.
+- **Commit:** no operational commit; Git already contained the digest. The
+  documentation commit containing this entry records the blocked result.
+- **Evidence:** controller-only state remained unchanged; speaker-only dry-run
+  and diff were exact; node-by-node rollout and rollback completed; TCP/7946
+  was locally reachable on the control-plane node but blocked or unreachable
+  from it to both workers; errors continued after rollback; VIP and routes
+  remained available throughout.
+- **Derived pending:** obtain explicit authority for a focused node-network and
+  firewall diagnosis covering TCP/UDP 7946, determine correct
+  `ServiceL2Status` ownership behavior, and close the `/metrics` scraping gap
+  before retrying speaker digest reconciliation.

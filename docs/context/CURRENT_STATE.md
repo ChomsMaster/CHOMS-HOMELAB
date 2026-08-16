@@ -7,7 +7,7 @@ the deployment authority for the Kubernetes platform.
 ## Evidence baseline
 
 - Observed: 2026-08-17 (Europe/Madrid).
-- Git baseline: `fc3df18c3652dce8053aefeccb72f126ee84bc45` on `main`.
+- Git baseline: `1770adb3a3641ddd59b13ae32e9d39e5da589faf` on `main`.
 - At observation time: clean tree, `HEAD == origin/main`, divergence `0/0`.
 - Runtime: three K3s nodes Ready; no failed or pending Pods.
 - Detailed inventory: [Kubernetes workload audit](../operations/KUBERNETES_WORKLOAD_AUDIT.md).
@@ -144,7 +144,16 @@ already contained the correct desired state.
 ## Current risks
 
 - MetalLB speaker still declares its version tag at runtime while Git already
-  contains the matching digest.
+  contains the matching digest. A reconciliation attempt on 2026-08-17 was
+  rolled back after all three new speakers repeatedly failed memberlist joins.
+  TCP/7946 was reachable locally on the control-plane node but blocked or
+  unreachable from that node to both workers. Two speakers also encountered an
+  immutable-node conflict updating the existing `ServiceL2Status`. The VIP and
+  public routes remained available, but digest reconciliation is blocked until
+  node-to-node memberlist connectivity and L2 status ownership are understood.
+- Speaker `/metrics` passes native kubelet readiness/liveness checks but was not
+  reachable through cross-node, API proxy, or temporary port-forward tests;
+  Prometheus had no matching active `speaker` target in the checked query.
 - Scrutiny collectors and server, and Jellyfin, have broad device/host access.
 - Home, Authelia, Filebrowser, and the Scrutiny collector use mutable tags.
 - Some direct, Helm, and K3s-managed workloads lack complete probes or resource

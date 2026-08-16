@@ -14,12 +14,13 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 
 | Work | Status | Closure criteria |
 |---|---|---|
-| Reconcile `metallb-system/DaemonSet/speaker` to the digest already published in the vendored manifest | `pending` | Preflight clean; prove effective imageID matches Git; dry-run and diff affect only speaker; preserve three-node availability during RollingUpdate; verify all speakers Ready, VIP and public routes reachable, no new errors, cluster healthy, and speaker drift zero. Do not combine with other MetalLB resources. |
+| Restore and validate MetalLB speaker memberlist/L2 convergence before retrying digest reconciliation | `blocked` | Determine the intended node-to-node TCP/UDP 7946 path and safely correct the blocking network/firewall condition under explicit network-change authority; explain the immutable `ServiceL2Status` ownership behavior; prove all three speakers join without recurring errors; verify `/metrics` observability; then retry a speaker-only diff and rollout with continuous VIP monitoring. Do not modify controller, pools, advertisements, or Traefik as part of diagnosis. |
 
 ## High priority
 
 | Work | Status | Closure criteria |
 |---|---|---|
+| MetalLB speaker reconciliation | `blocked` | Runtime was safely rolled back to `v0.15.2` after persistent memberlist and L2-status errors. Keep the matching digest in Git; do not retry until the exact network and status-controller causes above are resolved. |
 | Scrutiny collector hardening | `pending` | Pin the current digest; add only supported probes/resources; minimize privilege and device paths without losing SMART discovery; validate both collectors and server ingestion. |
 | Scrutiny server privilege reduction | `pending` | Confirm backup/recovery, narrow host paths and privilege safely, add justified CPU/startup controls, and validate UI plus collector ingestion. |
 | Jellyfin device-access design | `pending` | Prove hardware transcoding with non-privileged, narrowly mapped devices; preserve library access and playback; document rollback. |
