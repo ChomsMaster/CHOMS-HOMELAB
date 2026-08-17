@@ -22,7 +22,7 @@ Severity is evidence-based: `Critical`, `High`, `Medium`, `Low`, `Accepted`,
 | SEC-006 | Direct workloads | Security contexts largely implicit/root | Medium | High | Larger container escape/write surface | Image entrypoint and volume ownership evidence | Harden one image with supported non-root/no-escalation/drop/seccomp controls | Medium-high | Stateful workloads require backup | Per workload | UID/GID, filesystem writes, probes | Startup, storage, functions, consumers | Restore prior context | Platform | Pending |
 | NET-002 | Traefik HTTP listener | HTTP sample returned 400 instead of HTTPS redirect | Medium | High | Downgrade/confusing edge behavior | Determine intended entryPoint redirect | Configure chart-supported global redirect in versioned values | Medium; all routes affected | None | None expected | Sample all HTTP/HTTPS routes; Helm plan | HTTP 301/308; HTTPS/auth/routes healthy | Atomic Helm rollback | Platform | Pending |
 | NET-003 | Edge headers | HSTS and security headers are inconsistent | Medium | Medium | Weaker browser defense | Decide global vs app-specific policy | Add reviewed middleware/header policy to one route group | Medium; app compatibility | None | None expected | Header and app compatibility baseline | Header matrix and application tests | Revert middleware attachment | Platform | Pending |
-| IAM-001 | Portainer | Runtime grants unversioned `cluster-admin`, including Secrets, exec, tokens, impersonate, bind and escalate | High | Medium | Full cluster compromise through the admin workload | Capture intended Portainer management operations | Version a minimum dedicated ClusterRole/Binding, validate workflows and negative checks, then remove only the old binding | High if narrowed blindly | Portainer data backup | No Pod restart; admin outage possible | Workflow inventory and current binding export without Secret values | Required management tests; dangerous `can-i` checks denied | Restore reviewed prior binding | Platform owner | Pending |
+| IAM-001 | Portainer | Runtime grants unversioned `cluster-admin`; no retained evidence demonstrates privileged use, and the public route relies on native authentication | High | Medium | Full cluster compromise through the admin workload | Platform owner chooses viewer or names exact mutation verbs/resources/namespaces plus logs/exec need | Stage a dedicated Secret-free viewer by default, or approved limited operator; validate independently before removing only the old binding | High if narrowed blindly | Portainer data backup | No Pod restart; admin outage possible | Review [diagnosis](PORTAINER_IAM_001_DIAGNOSIS_2026-08-17.md), owner scope, candidate-role positive/negative matrix | Approved workflows pass; Secrets, dangerous subresources, tokens, RBAC, bind, escalate and impersonate denied | Restore exact prior binding | Platform owner | Pending decision |
 | IAM-002 | Cluster RBAC evidence | Complete workload/binding/rule inventory and false-positive review captured | Accepted | Low | Provides attribution for later least-privilege work | None | Documentation only; derived findings split below | None | None | None | Repeated read-only inventory | Audit reviewed against Git and runtime | Documentation revert | Platform operator | Completed |
 | IMG-001 | Home | Mutable image tag | Medium | Medium | Non-reproducible rollout | Fresh effective imageID | Pin exact current digest only | Low | None | Rolling update | Content drift review; route baseline | Two replicas, spread, content and routes | Restore tag | Platform | Pending |
 | IMG-002 | Authelia | Version tag not digest-pinned | Medium | Medium | Non-reproducible identity rollout | Fresh imageID and auth session plan | Pin exact current digest only | Medium; authentication path | Authelia data backup | Brief auth outage | Login/ForwardAuth/Redis baseline | Protected/public route matrix | Restore tag | Platform | Pending |
@@ -55,23 +55,25 @@ The recommended sequence is:
 1. `SEC-001` completed as the first isolated route change.
 2. The evidence phase of `IAM-001`, plus `IAM-002/OBS-003`, completed as one
    read-only block; it changed no workload or authorization policy.
-3. `IAM-001` remediation for Portainer only: capture required management
-   workflows, version minimum RBAC, validate positive and negative permissions,
-   and only then replace the unversioned cluster-admin binding.
-4. `SUP-001`, then `RES-002`, as separate prerequisites for `SEC-002`. These
+3. `IAM-001` owner decision: accept the provisional Secret-free viewer or name
+   exact mutation verbs, resource kinds, namespaces, logs, and exec need.
+4. `IAM-001` remediation only after that decision: version dedicated RBAC,
+   validate it independently while retaining rollback, and only then replace
+   the unversioned cluster-admin binding.
+5. `SUP-001`, then `RES-002`, as separate prerequisites for `SEC-002`. These
    Medium items precede that High item only to pin the collector's existing
    bytes and establish supported health/resource behavior before changing its
    device privilege; combining those changes would make rollback evidence
    ambiguous.
-5. `SEC-002`, only after those prerequisites and hardware/SMART discovery
+6. `SEC-002`, only after those prerequisites and hardware/SMART discovery
    baselines are complete.
-6. `SEC-003`, only after its config/database recovery is rehearsed and its
+7. `SEC-003`, only after its config/database recovery is rehearsed and its
    required paths and UID behavior are documented.
-7. `SEC-004`, only after reproducible software and hardware-transcode fixtures
+8. `SEC-004`, only after reproducible software and hardware-transcode fixtures
    establish the exact devices, groups, and capabilities it requires.
-8. `RES-001`, after destination, encryption, key-custody, integrity, retention,
+9. `RES-001`, after destination, encryption, key-custody, integrity, retention,
    and isolated-restore requirements are approved.
-9. Remaining Medium work: `IAM-003` through `IAM-006` one Helm workload at a
+10. Remaining Medium work: `IAM-003` through `IAM-006` one Helm workload at a
    time, `NET-001` namespace by namespace, `SEC-005` workload
    by workload, and `IMG-001` through `IMG-003` separately. Backup and
    observability recovery work follows with one service per task.

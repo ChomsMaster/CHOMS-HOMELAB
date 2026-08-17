@@ -151,6 +151,15 @@ reducible Secret-read scope. Prometheus has 24/24 active targets through ten
 ServiceMonitors, with no PodMonitor, Probe, or additional scrape configuration.
 See the [IAM and observability audit](../audits/KUBERNETES_IAM_OBSERVABILITY_AUDIT_2026-08-17.md).
 
+A focused read-only Portainer diagnosis found no retained evidence that its
+write, Secret, exec, RBAC, impersonation, token, node, storage, CRD, or webhook
+authority has been used. Audit logs and attributable managed fields are not
+available, so historical use cannot be excluded. Portainer is exposed through
+its native authentication without Authelia ForwardAuth. A Secret-free viewer
+is the provisional minimum profile; the Platform owner must still identify any
+required mutation, resource kind, namespace, logs, or exec workflow before an
+RBAC change. See the [Portainer IAM diagnosis](../audits/PORTAINER_IAM_001_DIAGNOSIS_2026-08-17.md).
+
 ## Completed operational blocks
 
 - Backup and recovery automation, including a documented restore validation.
@@ -169,6 +178,8 @@ See the [IAM and observability audit](../audits/KUBERNETES_IAM_OBSERVABILITY_AUD
   validated without changing the Prometheus workload or its consumers.
 - Read-only IAM, effective-RBAC, and Prometheus discovery audit covering all
   managed workloads and active targets.
+- Read-only Portainer IAM-001 diagnosis with three candidate access profiles;
+  no authorization change was made.
 
 The last three runtime-only reconciliations created no empty commits when Git
 already contained the correct desired state.
@@ -188,8 +199,9 @@ already contained the correct desired state.
   Prometheus had no matching active `speaker` target in the checked query.
 - No NetworkPolicy is versioned, and effective runtime east-west isolation
   still requires a fresh authorized inventory.
-- Portainer receives unversioned `cluster-admin`; its required management scope
-  must be captured before replacing the binding with versioned minimum RBAC.
+- Portainer receives unversioned `cluster-admin`; no privileged workflow is
+  demonstrated, while the public route relies on native authentication rather
+  than Authelia. Owner scope is required before replacing the binding.
 - Alloy, Grafana, Loki, and kube-state-metrics can read Secret metadata more
   broadly than their current consumers require.
 - Scrutiny collectors and server, and Jellyfin, have broad device/host access.

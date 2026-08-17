@@ -202,3 +202,25 @@ entries are immutable; append an explicit correction when needed.
 - **Derived pending:** replace only Portainer's cluster-admin binding after its
   required workflows are captured. Keep MetalLB speaker Blocked; do not combine
   metrics discovery with memberlist diagnosis.
+
+## 2026-08-17 — Portainer IAM-001 read-only diagnosis
+
+- **Action:** Correlated Portainer Git/history, runtime ownership metadata,
+  targeted effective permissions, safe use evidence, route exposure, Pod
+  security, storage metadata, and official feature documentation. No login,
+  Secret, PVC data, workload, route, or RBAC change was performed.
+- **Result:** The unversioned binding grants every tested administrative
+  capability. No retained evidence demonstrates use of writes, Secrets, exec,
+  RBAC, impersonation, tokens, nodes, storage, CRDs, or webhooks; audit logs and
+  attributable managed fields are unavailable, so historical use remains
+  unknown. The route uses native Portainer authentication without Authelia.
+  A Secret-free viewer is the provisional minimum profile.
+- **Commit:** recorded by the documentation commit containing this entry.
+- **Evidence:**
+  [`PORTAINER_IAM_001_DIAGNOSIS_2026-08-17.md`](../audits/PORTAINER_IAM_001_DIAGNOSIS_2026-08-17.md),
+  repeated `can-i` checks, structured runtime metadata, sanitized log counts,
+  route conditions, endpoint health, and Git history.
+- **Derived pending:** the Platform owner must state whether Portainer needs
+  mutations and identify exact verbs, resource kinds, namespaces, logs, and
+  exec requirements. Only then design and review staged dedicated RBAC; do not
+  remove the current binding during that decision task.
