@@ -138,3 +138,27 @@ entries are immutable; append an explicit correction when needed.
   firewall diagnosis covering TCP/UDP 7946, determine correct
   `ServiceL2Status` ownership behavior, and close the `/metrics` scraping gap
   before retrying speaker digest reconciliation.
+
+## 2026-08-17 — Non-mutating Kubernetes security baseline
+
+- **Action:** Audited versioned Kubernetes and backup sources, active
+  operational memory, image and workload controls, storage/recovery, RBAC and
+  Secret handling, observability configuration, and declared public routes.
+  Performed anonymous safe HTTPS checks without authenticating or changing the
+  platform.
+- **Result:** No Critical finding established. Published an evidence-ranked
+  baseline and one-logical-block backlog. High priorities are protection of the
+  public Prometheus interface, tested minimization of privileged device
+  workloads, and an independent encrypted backup copy. MetalLB speaker remains
+  Blocked and its rollout was not retried.
+- **Commit:** recorded by the documentation commit containing this entry.
+- **Evidence:**
+  [`KUBERNETES_SECURITY_BASELINE_2026-08-17.md`](../audits/KUBERNETES_SECURITY_BASELINE_2026-08-17.md)
+  and [`HARDENING_BACKLOG.md`](../audits/HARDENING_BACKLOG.md). The audit
+  environment lacked Kubernetes/Helm clients, so current runtime RBAC, events,
+  restart counts, effective images, and monitoring targets remain explicitly
+  marked Needs evidence.
+- **Derived pending:** protect only the Prometheus HTTPRoute with existing
+  ForwardAuth in the next authorized change; separately capture the pending
+  read-only runtime evidence from an authorized workstation. Privileged
+  MetalLB readings by an authorized platform operator remain deferred.

@@ -14,13 +14,14 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 
 | Work | Status | Closure criteria |
 |---|---|---|
-| Restore and validate MetalLB speaker memberlist/L2 convergence before retrying digest reconciliation | `blocked` | Determine the intended node-to-node TCP/UDP 7946 path and safely correct the blocking network/firewall condition under explicit network-change authority; explain the immutable `ServiceL2Status` ownership behavior; prove all three speakers join without recurring errors; verify `/metrics` observability; then retry a speaker-only diff and rollout with continuous VIP monitoring. Do not modify controller, pools, advertisements, or Traefik as part of diagnosis. |
+| Protect the Prometheus HTTPRoute with existing Authelia ForwardAuth | `pending` | Change only the Prometheus route; validate local syntax, server dry-run and exact diff; prove anonymous access redirects to Authelia, authorized access still reaches Prometheus, scrape and alert health remain intact, critical routes stay healthy, and final drift is zero. |
 
 ## High priority
 
 | Work | Status | Closure criteria |
 |---|---|---|
-| MetalLB speaker reconciliation | `blocked` | Runtime was safely rolled back to `v0.15.2` after persistent memberlist and L2-status errors. Keep the matching digest in Git; do not retry until the exact network and status-controller causes above are resolved. |
+| MetalLB speaker reconciliation | `blocked` | Runtime was safely rolled back to `v0.15.2` after persistent memberlist-join failures and immutable-node `ServiceL2Status` conflicts. Keep the matching digest in Git; do not retry until node-to-node TCP/UDP 7946 connectivity and status ownership are understood and the separate diagnosis closure criteria are satisfied. |
+| MetalLB speaker memberlist/L2 diagnosis | `blocked` | Suspended pending privileged node readings by an authorized platform operator. Determine the intended TCP/UDP 7946 path, explain immutable `ServiceL2Status` ownership, prove 3/3 convergence and `/metrics` scraping, and only then plan a separate speaker rollout. |
 | Scrutiny collector hardening | `pending` | Pin the current digest; add only supported probes/resources; minimize privilege and device paths without losing SMART discovery; validate both collectors and server ingestion. |
 | Scrutiny server privilege reduction | `pending` | Confirm backup/recovery, narrow host paths and privilege safely, add justified CPU/startup controls, and validate UI plus collector ingestion. |
 | Jellyfin device-access design | `pending` | Prove hardware transcoding with non-privileged, narrowly mapped devices; preserve library access and playback; document rollback. |
@@ -58,6 +59,7 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 | MariaDB hardening | `completed` | Digest, Recreate, probes, healthy consumer; `2948d31`. |
 | Nextcloud secure sharing | `completed` | Reproducible enforced policy and isolated E2E cleanup confirmed; `c16fd81` plus runtime evidence. A detailed historical HTTP transcript was intentionally not retained. |
 | Workload audit | `completed` | Full inventory and repeatable read-only script; `3d10730`. |
+| Kubernetes security baseline | `completed` | Non-mutating repository and safe edge audit with explicit runtime limitations and prioritized backlog; [`KUBERNETES_SECURITY_BASELINE_2026-08-17.md`](../audits/KUBERNETES_SECURITY_BASELINE_2026-08-17.md). |
 | Redis hardening | `completed` | Recreate, probes, justified resources, digest, consumers healthy; `fc3df18`. |
 | PostgreSQL reconciliation | `completed` | Published digest reconciled and validated; runtime-only, no empty commit. |
 | MetalLB controller reconciliation | `completed` | Published digest reconciled; webhook, speakers, VIP, routes, and cluster validated; runtime-only. |
