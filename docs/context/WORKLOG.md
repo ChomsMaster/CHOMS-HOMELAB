@@ -181,3 +181,24 @@ entries are immutable; append an explicit correction when needed.
 - **Derived pending:** capture `IAM-001`, `IAM-002`, and `OBS-003` as one
   read-only evidence block. Authenticated Prometheus access was not exercised
   because no authorized test credential was used.
+
+## 2026-08-17 — IAM and observability evidence block
+
+- **Action:** Audited all managed workload identities, projected tokens,
+  effective Role/ClusterRole bindings, high-risk `can-i` permissions,
+  Prometheus selectors, monitor CRs, targets, Services, EndpointSlices, and
+  MetalLB metrics reachability using read-only control-plane access.
+- **Result:** No Critical finding. Portainer has unversioned `cluster-admin`;
+  four chart workloads have reducible Secret-read scope; 14 direct workloads
+  use default SAs with tokens and no demonstrated API need. Prometheus has 24
+  targets up and none down, but annotated workloads without monitors are absent.
+  Speaker absence is caused by missing discovery resources, with an additional
+  1/3 TCP/7472 reachability constraint.
+- **Commit:** recorded by the documentation commit containing this entry.
+- **Evidence:**
+  [`KUBERNETES_IAM_OBSERVABILITY_AUDIT_2026-08-17.md`](../audits/KUBERNETES_IAM_OBSERVABILITY_AUDIT_2026-08-17.md),
+  repeated effective-RBAC checks, target aggregates, CRD/operator health, and
+  redacted endpoint tests. No Secret value or metrics payload was retained.
+- **Derived pending:** replace only Portainer's cluster-admin binding after its
+  required workflows are captured. Keep MetalLB speaker Blocked; do not combine
+  metrics discovery with memberlist diagnosis.

@@ -143,6 +143,14 @@ explicitly pending rather than inferred. See the
 [security baseline](../audits/KUBERNETES_SECURITY_BASELINE_2026-08-17.md) and
 [hardening backlog](../audits/HARDENING_BACKLOG.md).
 
+The 2026-08-17 read-only IAM and observability audit completed the previously
+missing runtime evidence. Portainer has an unversioned `cluster-admin` binding;
+14 direct workloads use `default` ServiceAccounts with projected tokens and no
+demonstrated API need; Alloy, Grafana, Loki, and kube-state-metrics have
+reducible Secret-read scope. Prometheus has 24/24 active targets through ten
+ServiceMonitors, with no PodMonitor, Probe, or additional scrape configuration.
+See the [IAM and observability audit](../audits/KUBERNETES_IAM_OBSERVABILITY_AUDIT_2026-08-17.md).
+
 ## Completed operational blocks
 
 - Backup and recovery automation, including a documented restore validation.
@@ -159,6 +167,8 @@ explicitly pending rather than inferred. See the
   with a one-block-at-a-time hardening backlog.
 - Prometheus HTTPRoute protection with namespaced Authelia ForwardAuth,
   validated without changing the Prometheus workload or its consumers.
+- Read-only IAM, effective-RBAC, and Prometheus discovery audit covering all
+  managed workloads and active targets.
 
 The last three runtime-only reconciliations created no empty commits when Git
 already contained the correct desired state.
@@ -178,6 +188,10 @@ already contained the correct desired state.
   Prometheus had no matching active `speaker` target in the checked query.
 - No NetworkPolicy is versioned, and effective runtime east-west isolation
   still requires a fresh authorized inventory.
+- Portainer receives unversioned `cluster-admin`; its required management scope
+  must be captured before replacing the binding with versioned minimum RBAC.
+- Alloy, Grafana, Loki, and kube-state-metrics can read Secret metadata more
+  broadly than their current consumers require.
 - Scrutiny collectors and server, and Jellyfin, have broad device/host access.
 - Home, Authelia, Filebrowser, and the Scrutiny collector use mutable tags.
 - Some direct, Helm, and K3s-managed workloads lack complete probes or resource
@@ -187,9 +201,10 @@ already contained the correct desired state.
 - NetworkPolicies and Pod Security controls have not yet received a dedicated
   platform-wide audit.
 - Complete NAS loss is not covered by the current same-filesystem snapshots.
-- Current runtime, Helm, RBAC, events, restarts, and monitoring-target evidence
-  could not be refreshed from the audit environment because Kubernetes client
-  tools and non-privileged control-plane name resolution were unavailable.
+- MetalLB has no metrics ServiceMonitor/PodMonitor. Controller metrics are
+  reachable, but only one of three speaker TCP/7472 endpoints was reachable
+  from Prometheus; this is separate from the blocked TCP/UDP 7946 memberlist and
+  `ServiceL2Status` investigation.
 
 ## Operating conventions
 

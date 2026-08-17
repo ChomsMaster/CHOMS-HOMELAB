@@ -14,7 +14,7 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 
 | Work | Status | Closure criteria |
 |---|---|---|
-| Capture read-only runtime RBAC and observability evidence | `pending` | Execute `IAM-001`, `IAM-002`, and `OBS-003` as one non-mutating evidence block from the authorized control plane; record names, ownership, aggregate health, and wildcard scope without Secret values, credentials, user data, or unnecessary topology. Do not change RBAC, workloads, alerts, dashboards, or monitoring configuration. |
+| Replace Portainer cluster-admin with versioned minimum RBAC | `pending` | Capture the exact Portainer management operations in use; design and review a dedicated ClusterRole/Binding in the direct manifest; prove required workflows and negative checks for Secrets, exec, token creation, impersonate, bind and escalate; then remove only the old unversioned binding. Do not restart or upgrade Portainer, and retain an exact binding rollback. |
 
 ## High priority
 
@@ -61,6 +61,7 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 | Workload audit | `completed` | Full inventory and repeatable read-only script; `3d10730`. |
 | Kubernetes security baseline | `completed` | Non-mutating repository and safe edge audit with explicit runtime limitations and prioritized backlog; [`KUBERNETES_SECURITY_BASELINE_2026-08-17.md`](../audits/KUBERNETES_SECURITY_BASELINE_2026-08-17.md). |
 | Prometheus route protection | `completed` | `SEC-001`: namespaced Authelia ForwardAuth and a minimal `one_factor` policy protect the Prometheus HTTPRoute; anonymous redirect, resolved references, internal readiness, targets, Grafana health, routes, cluster health, and drift zero validated. |
+| IAM and observability evidence block | `completed` | Evidence phase of `IAM-001`, plus `IAM-002` and `OBS-003`: all managed identities, effective high-risk permissions, monitor resources, 24 active targets, and the MetalLB discovery/reachability split documented in the [audit](../audits/KUBERNETES_IAM_OBSERVABILITY_AUDIT_2026-08-17.md). Portainer remediation remains pending. |
 | Redis hardening | `completed` | Recreate, probes, justified resources, digest, consumers healthy; `fc3df18`. |
 | PostgreSQL reconciliation | `completed` | Published digest reconciled and validated; runtime-only, no empty commit. |
 | MetalLB controller reconciliation | `completed` | Published digest reconciled; webhook, speakers, VIP, routes, and cluster validated; runtime-only. |
