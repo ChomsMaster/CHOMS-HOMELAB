@@ -7,7 +7,7 @@ the deployment authority for the Kubernetes platform.
 ## Evidence baseline
 
 - Observed: 2026-08-17 (Europe/Madrid).
-- Git baseline: `1770adb3a3641ddd59b13ae32e9d39e5da589faf` on `main`.
+- Git baseline: `4a801d1cded3254c41316e385605b84ed8b4d124` on `main`.
 - At observation time: clean tree, `HEAD == origin/main`, divergence `0/0`.
 - Runtime: three K3s nodes Ready; no failed or pending Pods.
 - Detailed inventory: [Kubernetes workload audit](../operations/KUBERNETES_WORKLOAD_AUDIT.md).
@@ -125,6 +125,13 @@ Scrutiny, missing controls in the Scrutiny collectors, mutable images, and
 incomplete resource/probe coverage. These require per-image testing rather
 than blanket UID or capability changes.
 
+Prometheus is protected by the existing Authelia ForwardAuth pattern through a
+Middleware scoped to `monitoring` and a `one_factor` access-control rule.
+Anonymous requests redirect once to Authelia without a loop. The change did not
+alter the Helm-managed Prometheus workload: its internal readiness, 24 active
+targets, zero down targets, Grafana health, storage, and effective images
+remained intact during the 2026-08-17 validation.
+
 The non-mutating 2026-08-17 security baseline found no established Critical
 risk. It confirmed that the Prometheus query interface is anonymously
 reachable and has no ForwardAuth filter in Git, no NetworkPolicy is versioned,
@@ -150,6 +157,8 @@ explicitly pending rather than inferred. See the
 - MetalLB controller digest reconciliation and VIP/webhook validation.
 - Non-mutating Kubernetes security, resilience, and maintainability baseline
   with a one-block-at-a-time hardening backlog.
+- Prometheus HTTPRoute protection with namespaced Authelia ForwardAuth,
+  validated without changing the Prometheus workload or its consumers.
 
 The last three runtime-only reconciliations created no empty commits when Git
 already contained the correct desired state.
@@ -167,8 +176,6 @@ already contained the correct desired state.
 - Speaker `/metrics` passes native kubelet readiness/liveness checks but was not
   reachable through cross-node, API proxy, or temporary port-forward tests;
   Prometheus had no matching active `speaker` target in the checked query.
-- Prometheus has a public route without a declared Authelia ForwardAuth filter;
-  anonymous HTTPS currently reaches its query interface.
 - No NetworkPolicy is versioned, and effective runtime east-west isolation
   still requires a fresh authorized inventory.
 - Scrutiny collectors and server, and Jellyfin, have broad device/host access.

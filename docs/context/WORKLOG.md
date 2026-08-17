@@ -162,3 +162,22 @@ entries are immutable; append an explicit correction when needed.
   ForwardAuth in the next authorized change; separately capture the pending
   read-only runtime evidence from an authorized workstation. Privileged
   MetalLB readings by an authorized platform operator remain deferred.
+
+## 2026-08-17 — Prometheus route protected by Authelia
+
+- **Action:** Added an `authelia-forwardauth` Middleware in `monitoring`, added
+  the minimal Prometheus `one_factor` policy, and attached only that Middleware
+  to `HTTPRoute/prometheus`. The Prometheus Helm release was not changed.
+- **Result:** Anonymous HTTPS redirects once to Authelia and reaches its login
+  page without a loop. Both route parents report `Accepted=True` and
+  `ResolvedRefs=True`; Prometheus stayed Ready with 24 targets up and none down,
+  Grafana health remained successful, and no new Traefik, Authelia, Prometheus,
+  datasource, Pod, or event error was observed.
+- **Commit:** recorded by the commit containing this entry.
+- **Evidence:** server-side dry-runs and exact per-resource diffs; validated
+  Authelia configuration; three post-change observation cycles; stable Service,
+  EndpointSlice, RWO NFS PVC, effective images, public routes, three Ready
+  nodes, and final drift zero.
+- **Derived pending:** capture `IAM-001`, `IAM-002`, and `OBS-003` as one
+  read-only evidence block. Authenticated Prometheus access was not exercised
+  because no authorized test credential was used.

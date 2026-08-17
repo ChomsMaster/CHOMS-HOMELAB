@@ -10,7 +10,7 @@ Severity is evidence-based: `Critical`, `High`, `Medium`, `Low`, `Accepted`,
 
 | ID | Component | Finding | Severity | Probability | Impact | Dependency | Minimum proposed change | Change risk | Backup | Downtime | Pre-tests | Post-tests | Rollback | Owner | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| SEC-001 | Prometheus route | Query UI is anonymously reachable and has no ForwardAuth in Git | High | High | Operational metadata disclosure | Confirm existing middleware namespace/reference | Add existing Authelia middleware to only the Prometheus HTTPRoute | Low; could block intended access | None | None expected | Record anonymous status/redirect; validate middleware and route diff | Anonymous redirect; authorized UI; scrape and alert health | Revert route filter commit | Platform | Pending |
+| SEC-001 | Prometheus route | Query UI was anonymously reachable; namespaced ForwardAuth is now enforced | High | High | Operational metadata disclosure | Completed: middleware namespace/reference confirmed | Added a monitoring-scoped Middleware, minimal Authelia policy, and only the Prometheus HTTPRoute filter | Low; no workload rollout | None | Brief Authelia reload only | Anonymous baseline, config validation, server dry-run and exact diffs passed | Anonymous redirect, resolved route, internal readiness, targets, Grafana and cluster health passed | Reapply prior ConfigMap and HTTPRoute; remove only the new Middleware | Platform | Completed |
 | RES-001 | Independent backup | Live data and snapshots share the NAS failure domain | High | Medium | Irrecoverable multi-service data loss after total NAS loss | Select protected destination/key custody | Add encrypted independent/off-site copy of validated artifacts | Medium; retention/key errors | Existing validated source | None | Capacity, encryption, integrity and restore design | Checksum and isolated restore | Stop copy job; preserve source backups | Platform owner | Pending |
 | SEC-002 | Scrutiny collector | Privileged access to host devices and udev | High | Medium | Node compromise if container is compromised | Hardware inventory and SMART discovery tests | Design narrow device/capability mapping; do not combine with digest/probe change | High; telemetry/device discovery can fail | Config/DB backup | Telemetry gap | Baseline disks, commands and ingestion | All disks discovered; ingestion and logs healthy | Restore previous DaemonSet | Platform | Pending |
 | SEC-003 | Scrutiny server | Privileged access plus broad host paths | High | Medium | Node/device/data compromise | Backup and path/UID evidence | Remove only proven-unnecessary devices/privilege | High; DB/config permissions can fail | Required | Monitoring outage possible | Restore rehearsal; UID/path inventory | UI, DB and collector ingestion | Restore manifest and data mapping | Platform | Pending |
@@ -48,7 +48,7 @@ Severity is evidence-based: `Critical`, `High`, `Medium`, `Low`, `Accepted`,
 
 The recommended sequence is:
 
-1. `SEC-001` as the first isolated route change.
+1. `SEC-001` completed as the first isolated route change.
 2. `IAM-001/IAM-002/OBS-003` as one read-only evidence block; it changes no
    workload or authorization policy.
 3. `SUP-001`, then `RES-002`, as separate prerequisites for `SEC-002`. These

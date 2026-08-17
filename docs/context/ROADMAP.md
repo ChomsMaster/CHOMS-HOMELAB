@@ -14,7 +14,7 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 
 | Work | Status | Closure criteria |
 |---|---|---|
-| Protect the Prometheus HTTPRoute with existing Authelia ForwardAuth | `pending` | Change only the Prometheus route; validate local syntax, server dry-run and exact diff; prove anonymous access redirects to Authelia, authorized access still reaches Prometheus, scrape and alert health remain intact, critical routes stay healthy, and final drift is zero. |
+| Capture read-only runtime RBAC and observability evidence | `pending` | Execute `IAM-001`, `IAM-002`, and `OBS-003` as one non-mutating evidence block from the authorized control plane; record names, ownership, aggregate health, and wildcard scope without Secret values, credentials, user data, or unnecessary topology. Do not change RBAC, workloads, alerts, dashboards, or monitoring configuration. |
 
 ## High priority
 
@@ -60,6 +60,7 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 | Nextcloud secure sharing | `completed` | Reproducible enforced policy and isolated E2E cleanup confirmed; `c16fd81` plus runtime evidence. A detailed historical HTTP transcript was intentionally not retained. |
 | Workload audit | `completed` | Full inventory and repeatable read-only script; `3d10730`. |
 | Kubernetes security baseline | `completed` | Non-mutating repository and safe edge audit with explicit runtime limitations and prioritized backlog; [`KUBERNETES_SECURITY_BASELINE_2026-08-17.md`](../audits/KUBERNETES_SECURITY_BASELINE_2026-08-17.md). |
+| Prometheus route protection | `completed` | `SEC-001`: namespaced Authelia ForwardAuth and a minimal `one_factor` policy protect the Prometheus HTTPRoute; anonymous redirect, resolved references, internal readiness, targets, Grafana health, routes, cluster health, and drift zero validated. |
 | Redis hardening | `completed` | Recreate, probes, justified resources, digest, consumers healthy; `fc3df18`. |
 | PostgreSQL reconciliation | `completed` | Published digest reconciled and validated; runtime-only, no empty commit. |
 | MetalLB controller reconciliation | `completed` | Published digest reconciled; webhook, speakers, VIP, routes, and cluster validated; runtime-only. |
