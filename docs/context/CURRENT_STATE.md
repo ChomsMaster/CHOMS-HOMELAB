@@ -125,6 +125,17 @@ Scrutiny, missing controls in the Scrutiny collectors, mutable images, and
 incomplete resource/probe coverage. These require per-image testing rather
 than blanket UID or capability changes.
 
+The non-mutating 2026-08-17 security baseline found no established Critical
+risk. It confirmed that the Prometheus query interface is anonymously
+reachable and has no ForwardAuth filter in Git, no NetworkPolicy is versioned,
+most direct workloads retain default ServiceAccount-token and security-context
+behavior, and backup/restore maturity is uneven outside Nextcloud and the
+databases. The audit environment could not access `kubectl` or Helm, so current
+runtime-only RBAC, target, event, restart, and effective-image checks remain
+explicitly pending rather than inferred. See the
+[security baseline](../audits/KUBERNETES_SECURITY_BASELINE_2026-08-17.md) and
+[hardening backlog](../audits/HARDENING_BACKLOG.md).
+
 ## Completed operational blocks
 
 - Backup and recovery automation, including a documented restore validation.
@@ -137,6 +148,8 @@ than blanket UID or capability changes.
 - Redis rollout, probe, resource, and digest hardening.
 - PostgreSQL digest reconciliation and consumer validation.
 - MetalLB controller digest reconciliation and VIP/webhook validation.
+- Non-mutating Kubernetes security, resilience, and maintainability baseline
+  with a one-block-at-a-time hardening backlog.
 
 The last three runtime-only reconciliations created no empty commits when Git
 already contained the correct desired state.
@@ -154,6 +167,10 @@ already contained the correct desired state.
 - Speaker `/metrics` passes native kubelet readiness/liveness checks but was not
   reachable through cross-node, API proxy, or temporary port-forward tests;
   Prometheus had no matching active `speaker` target in the checked query.
+- Prometheus has a public route without a declared Authelia ForwardAuth filter;
+  anonymous HTTPS currently reaches its query interface.
+- No NetworkPolicy is versioned, and effective runtime east-west isolation
+  still requires a fresh authorized inventory.
 - Scrutiny collectors and server, and Jellyfin, have broad device/host access.
 - Home, Authelia, Filebrowser, and the Scrutiny collector use mutable tags.
 - Some direct, Helm, and K3s-managed workloads lack complete probes or resource
@@ -163,6 +180,9 @@ already contained the correct desired state.
 - NetworkPolicies and Pod Security controls have not yet received a dedicated
   platform-wide audit.
 - Complete NAS loss is not covered by the current same-filesystem snapshots.
+- Current runtime, Helm, RBAC, events, restarts, and monitoring-target evidence
+  could not be refreshed from the audit environment because Kubernetes client
+  tools and non-privileged control-plane name resolution were unavailable.
 
 ## Operating conventions
 
