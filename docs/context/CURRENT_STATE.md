@@ -6,8 +6,9 @@ the deployment authority for the Kubernetes platform.
 
 ## Evidence baseline
 
-- Observed: 2026-08-17 (Europe/Madrid).
-- Git baseline: `4a801d1cded3254c41316e385605b84ed8b4d124` on `main`.
+- Observed: 2026-08-18 (Europe/Madrid).
+- Pre-change Git baseline: `3b576bff04a5aea55b73ad8c927e7b2bc77707b1`
+  on `main`.
 - At observation time: clean tree, `HEAD == origin/main`, divergence `0/0`.
 - Runtime: three K3s nodes Ready; no failed or pending Pods.
 - Detailed inventory: [Kubernetes workload audit](../operations/KUBERNETES_WORKLOAD_AUDIT.md).
@@ -144,7 +145,8 @@ explicitly pending rather than inferred. See the
 [hardening backlog](../audits/HARDENING_BACKLOG.md).
 
 The 2026-08-17 read-only IAM and observability audit completed the previously
-missing runtime evidence. Portainer has an unversioned `cluster-admin` binding;
+missing runtime evidence. It found Portainer with an unversioned
+`cluster-admin` binding;
 14 direct workloads use `default` ServiceAccounts with projected tokens and no
 demonstrated API need; Alloy, Grafana, Loki, and kube-state-metrics have
 reducible Secret-read scope. Prometheus has 24/24 active targets through ten
@@ -155,10 +157,18 @@ A focused read-only Portainer diagnosis found no retained evidence that its
 write, Secret, exec, RBAC, impersonation, token, node, storage, CRD, or webhook
 authority has been used. Audit logs and attributable managed fields are not
 available, so historical use cannot be excluded. Portainer is exposed through
-its native authentication without Authelia ForwardAuth. A Secret-free viewer
-is the provisional minimum profile; the Platform owner must still identify any
-required mutation, resource kind, namespace, logs, or exec workflow before an
-RBAC change. See the [Portainer IAM diagnosis](../audits/PORTAINER_IAM_001_DIAGNOSIS_2026-08-17.md).
+its native authentication without Authelia ForwardAuth. The diagnosis proposed
+a Secret-free viewer as the provisional minimum profile. On 2026-08-18 the
+Platform owner selected Profile A. IAM-001 then
+replaced the runtime binding with the versioned `portainer-viewer` role and
+binding. The role grants explicit ordinary-resource, metrics, and Gateway API
+reads plus `get` on `pods/log`; it grants no Secret, token, interactive Pod,
+RBAC, CRD, webhook, certificate, or write access. The complete positive and
+negative authorization matrix passed for the real identity, and Portainer,
+its endpoint and route, Authelia, Traefik, and cluster health remained stable
+for three post-change cycles. Authenticated visual UI validation remains
+pending because no Portainer login was authorized. See the
+[Portainer IAM diagnosis](../audits/PORTAINER_IAM_001_DIAGNOSIS_2026-08-17.md).
 
 ## Completed operational blocks
 
@@ -180,6 +190,8 @@ RBAC change. See the [Portainer IAM diagnosis](../audits/PORTAINER_IAM_001_DIAGN
   managed workloads and active targets.
 - Read-only Portainer IAM-001 diagnosis with three candidate access profiles;
   no authorization change was made.
+- Portainer IAM-001 remediation: dedicated Secret-free viewer RBAC replaced
+  the unversioned `cluster-admin` binding with staged validation and rollback.
 
 The last three runtime-only reconciliations created no empty commits when Git
 already contained the correct desired state.
@@ -199,9 +211,9 @@ already contained the correct desired state.
   Prometheus had no matching active `speaker` target in the checked query.
 - No NetworkPolicy is versioned, and effective runtime east-west isolation
   still requires a fresh authorized inventory.
-- Portainer receives unversioned `cluster-admin`; no privileged workflow is
-  demonstrated, while the public route relies on native authentication rather
-  than Authelia. Owner scope is required before replacing the binding.
+- Portainer now has only the versioned viewer RBAC, but its public route still
+  relies on native authentication rather than Authelia and the authenticated
+  UI was not visually validated during IAM-001.
 - Alloy, Grafana, Loki, and kube-state-metrics can read Secret metadata more
   broadly than their current consumers require.
 - Scrutiny collectors and server, and Jellyfin, have broad device/host access.

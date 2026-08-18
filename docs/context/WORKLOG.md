@@ -224,3 +224,22 @@ entries are immutable; append an explicit correction when needed.
   mutations and identify exact verbs, resource kinds, namespaces, logs, and
   exec requirements. Only then design and review staged dedicated RBAC; do not
   remove the current binding during that decision task.
+
+## 2026-08-18 — Portainer IAM-001 viewer migration
+
+- **Action:** Implemented the owner-selected Profile A with an explicit,
+  versioned `portainer-viewer` ClusterRole and binding, validated it through an
+  isolated temporary identity, then removed only the unversioned
+  `ClusterRoleBinding/portainer` to `cluster-admin`.
+- **Result:** Approved inventory, event, metrics, storage and Pod-log reads
+  passed with the real ServiceAccount. Secrets, tokens, writes, interactive Pod
+  access, RBAC/delegation, CRD and webhook mutation all returned `no`.
+  Portainer, its storage, endpoint and route, Authelia, Traefik and cluster
+  health stayed stable across three cycles with no sanitized RBAC errors.
+- **Commit:** recorded by the commit containing this entry.
+- **Evidence:** server-side dry-run, RBAC-only diff, isolated and real-identity
+  matrices, actual non-sensitive reads, three Ready nodes, zero Pending/Failed
+  Pods, and final declarative drift zero.
+- **Derived pending:** authenticated visual Portainer review remains pending
+  because no login or credentials were authorized. Next execute only
+  `SUP-001`, the Scrutiny collector digest pinning block.

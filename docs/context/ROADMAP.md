@@ -14,7 +14,7 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 
 | Work | Status | Closure criteria |
 |---|---|---|
-| Decide Portainer viewer or limited-operator scope | `pending` | Platform owner states any required mutation verbs, resource kinds, namespaces, logs, and exec need. Default proposal is the Secret-free viewer in the [IAM-001 diagnosis](../audits/PORTAINER_IAM_001_DIAGNOSIS_2026-08-17.md). Only after that decision, review dedicated RBAC and a staged validation/removal plan; do not change the binding or workload yet. |
+| Pin Scrutiny collector image (`SUP-001`) | `pending` | Capture the fresh effective image ID on both collector nodes, pin exactly those bytes without upgrading, validate both collectors and server ingestion, and reach drift zero. Do not combine this with probes, resources, or privilege reduction. |
 
 ## High priority
 
@@ -61,8 +61,9 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 | Workload audit | `completed` | Full inventory and repeatable read-only script; `3d10730`. |
 | Kubernetes security baseline | `completed` | Non-mutating repository and safe edge audit with explicit runtime limitations and prioritized backlog; [`KUBERNETES_SECURITY_BASELINE_2026-08-17.md`](../audits/KUBERNETES_SECURITY_BASELINE_2026-08-17.md). |
 | Prometheus route protection | `completed` | `SEC-001`: namespaced Authelia ForwardAuth and a minimal `one_factor` policy protect the Prometheus HTTPRoute; anonymous redirect, resolved references, internal readiness, targets, Grafana health, routes, cluster health, and drift zero validated. |
-| IAM and observability evidence block | `completed` | Evidence phase of `IAM-001`, plus `IAM-002` and `OBS-003`: all managed identities, effective high-risk permissions, monitor resources, 24 active targets, and the MetalLB discovery/reachability split documented in the [audit](../audits/KUBERNETES_IAM_OBSERVABILITY_AUDIT_2026-08-17.md). Portainer remediation remains pending. |
-| Portainer IAM-001 access diagnosis | `completed` | Read-only ownership, use-evidence, exposure and three-profile analysis documented in the [Portainer IAM diagnosis](../audits/PORTAINER_IAM_001_DIAGNOSIS_2026-08-17.md); no Kubernetes change. Viewer is provisional pending owner scope. |
+| IAM and observability evidence block | `completed` | Evidence phase of `IAM-001`, plus `IAM-002` and `OBS-003`: all managed identities, effective high-risk permissions, monitor resources, 24 active targets, and the MetalLB discovery/reachability split documented in the [audit](../audits/KUBERNETES_IAM_OBSERVABILITY_AUDIT_2026-08-17.md). |
+| Portainer IAM-001 access diagnosis | `completed` | Read-only ownership, use-evidence, exposure and three-profile analysis documented in the [Portainer IAM diagnosis](../audits/PORTAINER_IAM_001_DIAGNOSIS_2026-08-17.md); no Kubernetes change. Profile A was subsequently selected and implemented. |
+| Portainer IAM-001 viewer migration | `completed` | Platform owner selected Profile A; explicit versioned viewer RBAC preserves inventory, events, metrics and Pod logs while denying Secrets, writes, interactive Pod access, tokens, RBAC delegation, CRD and webhook mutation. Staged isolated and real-identity matrices passed; the old `cluster-admin` binding is absent. Authenticated UI review remains pending. |
 | Redis hardening | `completed` | Recreate, probes, justified resources, digest, consumers healthy; `fc3df18`. |
 | PostgreSQL reconciliation | `completed` | Published digest reconciled and validated; runtime-only, no empty commit. |
 | MetalLB controller reconciliation | `completed` | Published digest reconciled; webhook, speakers, VIP, routes, and cluster validated; runtime-only. |

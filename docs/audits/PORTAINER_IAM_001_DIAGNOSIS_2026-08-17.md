@@ -246,3 +246,56 @@ Obtain the Platform owner's minimal action/namespace decision. Then prepare a
 separate, reviewable IAM-001 RBAC manifest and validation plan for Profile A or
 B. Do not remove the current binding, authenticate to Portainer, or modify the
 workload as part of that design review.
+
+## 2026-08-18 decision and migration result
+
+The Platform owner selected **Profile A — Viewer** and authorized the isolated
+IAM-001 migration. The versioned `ClusterRole/portainer-viewer` grants:
+
+- `get/list/watch` for namespaces, nodes, Pods, ConfigMaps, ServiceAccounts,
+  Services, Endpoints, EndpointSlices, events, quotas, limits, PVCs, PVs,
+  ordinary workload controllers, HPA, Jobs, CronJobs, Ingresses,
+  NetworkPolicies, PDBs, StorageClasses, metrics, and the installed Gateway API
+  inventory;
+- `get` only for `pods/log`.
+
+It intentionally omits Secrets, ServiceAccount token creation, interactive Pod
+subresources, all write verbs, RBAC resources and delegation verbs, CRDs,
+admission webhooks, certificate resources, and every installed custom-resource
+group except Gateway API. Kubernetes RBAC cannot expose only selected fields of
+a ServiceAccount: the granted read returns the complete ServiceAccount object,
+including references but not token values. This API limitation is accepted for
+workload inventory; Secret and token subresources remain denied.
+
+The change was applied in stages. While the former binding remained active, a
+temporary binding to a fictitious validation user tested the candidate role in
+isolation and was removed. All positive checks returned `yes`; all negative
+checks returned `no`. The new role and binding were then verified, and only
+`ClusterRoleBinding/portainer`—the single-subject binding from
+`apps/portainer` to `cluster-admin`—was deleted. The complete matrix was
+repeated with the real ServiceAccount. Actual reads of namespaces, nodes, Pods,
+a Deployment, Services, PVCs and events succeeded, as did reading one line of
+a non-sensitive Pod log without retaining its contents. Every prohibited
+operation remained denied.
+
+Across three post-change observation cycles, Portainer stayed 1/1 Ready with
+zero restarts; its PVC remained Bound, EndpointSlice ready, HTTPRoute parents
+Accepted and ResolvedRefs, and HTTPS returned 200. Authelia and Traefik stayed
+Ready, all three nodes stayed Ready, no Pod was Pending or Failed, and sanitized
+Portainer log counters showed no RBAC failure. No workload, route, storage,
+image, probe, or other component was changed. The former global binding is
+absent and declarative RBAC matches runtime.
+
+No Portainer login was authorized, so the authenticated visual interface was
+not reviewed and no claim is made that every CE screen renders without denied
+optional actions. Kubernetes inventory, endpoint, log and authorization
+evidence supports the selected viewer profile without retaining
+`cluster-admin`.
+
+Temporary rollback, if a later approved viewer function is shown to fail:
+
+```bash
+kubectl create clusterrolebinding portainer \
+  --clusterrole=cluster-admin \
+  --serviceaccount=apps:portainer
+```
