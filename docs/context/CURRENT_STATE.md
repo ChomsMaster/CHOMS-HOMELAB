@@ -7,7 +7,7 @@ the deployment authority for the Kubernetes platform.
 ## Evidence baseline
 
 - Observed: 2026-08-18 (Europe/Madrid).
-- Pre-change Git baseline: `173a18d9e19695b3260bc170615889ad85805baf`
+- Pre-change Git baseline: `7300325a799ba2eef57dca952f49ddaa4b052efb`
   on `main`.
 - At observation time: clean tree, `HEAD == origin/main`, divergence `0/0`.
 - Runtime: three K3s nodes Ready; no failed or pending Pods.
@@ -134,6 +134,17 @@ and four SMART uploads without failed API posts. Probes, resources, privilege,
 devices, host paths, the Scrutiny server, route, storage, and network were not
 changed. Those separate hardening gaps remain open.
 
+On 2026-08-18 RES-002 moved the Scrutiny collector from BestEffort to bounded
+resources using seven days of Prometheus evidence. Per-collector peaks were
+5.19–6.24 mCPU, 8.31–10.18 MiB working set and 5.52–6.86 MiB RSS, with zero
+OOM events. Requests are now `10m` CPU and `32Mi` memory; limits are `250m`
+CPU and `128Mi` memory. No probes were added: the persistent process is cron,
+the collector is a six-hour one-shot child, and v0.8.2 exposes no supported
+health endpoint or durable state that can distinguish an internal hang without
+coupling restarts to disk, network, or server health. `SEC-002` and `SEC-003`
+remain pending; image, privilege, devices, host paths, server, storage and
+network are unchanged.
+
 Prometheus is protected by the existing Authelia ForwardAuth pattern through a
 Middleware scoped to `monitoring` and a `one_factor` access-control rule.
 Anonymous requests redirect once to Authelia without a loop. The change did not
@@ -202,6 +213,8 @@ pending because no Portainer login was authorized. See the
   the unversioned `cluster-admin` binding with staged validation and rollback.
 - Scrutiny collector SUP-001: pinned the existing `v0.8.2-collector` bytes by
   digest with 2/2 collectors, device counts, ingestion and drift validated.
+- Scrutiny collector RES-002: added evidence-based CPU/memory requests and
+  limits only; probes were found not applicable for the v0.8.2 cron model.
 
 The last three runtime-only reconciliations created no empty commits when Git
 already contained the correct desired state.

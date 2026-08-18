@@ -20,6 +20,14 @@ spec:
           image: ghcr.io/analogj/scrutiny@sha256:3274a8c1e4b48bcc42089f9431f89604d4b3a661aeeaa2029c59c352d41762c2
           imagePullPolicy: IfNotPresent
 
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 250m
+              memory: 128Mi
+
           securityContext:
             privileged: true
 

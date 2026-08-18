@@ -14,7 +14,7 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 
 | Work | Status | Closure criteria |
 |---|---|---|
-| Add supported Scrutiny collector probes and resources (`RES-002`) | `pending` | Establish startup behavior and utilization evidence, then add only supported health checks and conservative requests/limits. Preserve the pinned image, privilege, devices and host paths; validate both collectors and server ingestion. |
+| Minimize Scrutiny collector privilege and device access (`SEC-002`) | `pending` | Inventory the exact hardware and SMART access requirements, then design a separate reversible reduction without changing the pinned image or RES-002 resource boundaries. Validate every device and server ingestion. |
 
 ## High priority
 
@@ -65,6 +65,7 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 | Portainer IAM-001 access diagnosis | `completed` | Read-only ownership, use-evidence, exposure and three-profile analysis documented in the [Portainer IAM diagnosis](../audits/PORTAINER_IAM_001_DIAGNOSIS_2026-08-17.md); no Kubernetes change. Profile A was subsequently selected and implemented. |
 | Portainer IAM-001 viewer migration | `completed` | Platform owner selected Profile A; explicit versioned viewer RBAC preserves inventory, events, metrics and Pod logs while denying Secrets, writes, interactive Pod access, tokens, RBAC delegation, CRD and webhook mutation. Staged isolated and real-identity matrices passed; the old `cluster-admin` binding is absent. Authenticated UI review remains pending. |
 | Scrutiny collector digest pinning | `completed` | `SUP-001`: both expected collectors previously resolved `v0.8.2-collector` to the same digest; Git and the DaemonSet now declare that digest. RollingUpdate preserved 2/2 availability, sanitized device counts and server ingestion; final drift is zero. Probes, resources and privileges remain separate pending work. |
+| Scrutiny collector resource boundaries | `completed` | `RES-002`: seven days of metrics justified `10m`/`32Mi` requests and `250m`/`128Mi` limits. No reliable v0.8.2 collector health signal exists, so probes are explicitly not applicable. The sequential rollout preserved two devices per collector and ingestion. `SEC-002` and `SEC-003` remain pending. |
 | Redis hardening | `completed` | Recreate, probes, justified resources, digest, consumers healthy; `fc3df18`. |
 | PostgreSQL reconciliation | `completed` | Published digest reconciled and validated; runtime-only, no empty commit. |
 | MetalLB controller reconciliation | `completed` | Published digest reconciled; webhook, speakers, VIP, routes, and cluster validated; runtime-only. |

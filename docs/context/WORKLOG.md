@@ -260,3 +260,25 @@ entries are immutable; append an explicit correction when needed.
 - **Derived pending:** `RES-002` remains next for separately designed probes
   and resources. `SEC-002` collector privilege/device minimization and
   `SEC-003` server hardening remain pending and unchanged.
+
+## 2026-08-18 — Scrutiny collector RES-002 resource boundaries
+
+- **Action:** Reviewed the v0.8.2 entrypoint, PID 1 process tree and one-shot
+  collector behavior, then added only CPU and memory resources to the
+  collector DaemonSet. Seven days of Prometheus data showed per-node peaks of
+  5.19–6.24 mCPU, 8.31–10.18 MiB working set and 5.52–6.86 MiB RSS, with zero
+  OOM events; observed startup collections completed in 0.91–1.91 seconds.
+- **Probe decision:** Startup, readiness and liveness probes are not applicable
+  currently. Cron is the persistent process, no Service consumes readiness,
+  and v0.8.2 exposes no supported endpoint or durable health marker. PID checks
+  duplicate runtime supervision, while disk, server or network checks would
+  turn external/transient failures into restart loops.
+- **Result:** Requests are `10m` CPU and `32Mi` memory; limits are `250m` CPU
+  and `128Mi` memory. RollingUpdate retained `maxUnavailable: 1` and converged
+  sequentially to 2/2 Ready with zero restarts, unchanged digest, two devices
+  per anonymized collector, completed collection and recent server ingestion.
+- **Rollback:** `kubectl rollout undo daemonset/scrutiny-collector -n monitoring
+  --to-revision=2`, with a five-minute timeout.
+- **Commit:** recorded by the commit containing this entry.
+- **Derived pending:** execute only `SEC-002` next. Collector privilege/device
+  minimization and `SEC-003` server hardening remain pending and unchanged.
