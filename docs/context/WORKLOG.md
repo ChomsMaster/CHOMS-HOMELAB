@@ -282,3 +282,33 @@ entries are immutable; append an explicit correction when needed.
 - **Commit:** recorded by the commit containing this entry.
 - **Derived pending:** execute only `SEC-002` next. Collector privilege/device
   minimization and `SEC-003` server hardening remain pending and unchanged.
+
+## 2026-08-18 — Scrutiny collector SEC-002 privilege diagnosis
+
+- **Action:** Ran server-dry-run-validated, non-uploading canaries one at a
+  time on both collector nodes using the pinned image. The privileged baseline
+  and all reduced variants performed only device discovery plus non-destructive
+  `smartctl --info` and `--xall` reads; raw device output was discarded.
+- **Evidence:** The privileged reference completed 2/2 reads on both nodes.
+  The proposed non-privileged `SYS_RAWIO`/drop-all/no-escalation/
+  `RuntimeDefault` profile discovered two devices but failed both opens on both
+  nodes. The same failures remained with seccomp unconfined and with every
+  capability, proving a containerd device-cgroup denial rather than a missing
+  capability. Kubernetes rejected hostPath block devices in `volumeDevices`,
+  which supports only PVC/Ephemeral block-mode sources. Read-only rootfs
+  canaries failed before startup with three read-only-filesystem errors from
+  the entrypoint/cron path.
+- **Decision:** No production change. Controls declared alongside
+  `privileged: true` would be ineffective: privilege escalation, all
+  capabilities and unconfined seccomp/AppArmor are forced by Kubernetes.
+  SEC-002 is blocked pending an approved device-plugin/CDI/DRA or equivalent
+  mechanism that creates stable per-device cgroup rules.
+- **Result:** All canaries were deleted; no temporary Pod, ServiceAccount, Role
+  or binding remains. Production stayed 2/2 Ready with zero restarts, two
+  recent devices per anonymized node, healthy ingestion and drift zero.
+- **Rollback:** Not invoked because runtime was not changed. For a future
+  failed attempt, restore the immediately prior DaemonSet revision within five
+  minutes.
+- **Commit:** recorded by the documentation commit containing this entry.
+- **Derived pending:** Resolve the SEC-002 device-mapping prerequisite. Do not
+  continue with `SEC-003` in this work block; it remains pending and untouched.

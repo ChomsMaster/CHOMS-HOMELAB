@@ -14,7 +14,7 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 
 | Work | Status | Closure criteria |
 |---|---|---|
-| Minimize Scrutiny collector privilege and device access (`SEC-002`) | `pending` | Inventory the exact hardware and SMART access requirements, then design a separate reversible reduction without changing the pinned image or RES-002 resource boundaries. Validate every device and server ingestion. |
+| Resolve Scrutiny collector device isolation prerequisite (`SEC-002`) | `blocked` | Select and validate a K3s/containerd-supported device-plugin, CDI, DRA or equivalent stable block-device mapping that creates per-device cgroup rules. Current hostPath mounts cannot replace privileged device access; do not proceed to `SEC-003` as part of this block. |
 
 ## High priority
 
@@ -22,7 +22,7 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 |---|---|---|
 | MetalLB speaker reconciliation | `blocked` | Runtime was safely rolled back to `v0.15.2` after persistent memberlist-join failures and immutable-node `ServiceL2Status` conflicts. Keep the matching digest in Git; do not retry until node-to-node TCP/UDP 7946 connectivity and status ownership are understood and the separate diagnosis closure criteria are satisfied. |
 | MetalLB speaker memberlist/L2 diagnosis | `blocked` | Suspended pending privileged node readings by an authorized platform operator. Determine the intended TCP/UDP 7946 path, explain immutable `ServiceL2Status` ownership, prove 3/3 convergence and `/metrics` scraping, and only then plan a separate speaker rollout. |
-| Scrutiny collector hardening | `pending` | Pin the current digest; add only supported probes/resources; minimize privilege and device paths without losing SMART discovery; validate both collectors and server ingestion. |
+| Scrutiny collector hardening | `blocked` | Digest and resource boundaries are complete. Privilege reduction is blocked because non-privileged hostPath devices remain denied by containerd's device cgroup even with all capabilities; resume only with an approved per-device mapping mechanism. |
 | Scrutiny server privilege reduction | `pending` | Confirm backup/recovery, narrow host paths and privilege safely, add justified CPU/startup controls, and validate UI plus collector ingestion. |
 | Jellyfin device-access design | `pending` | Prove hardware transcoding with non-privileged, narrowly mapped devices; preserve library access and playback; document rollback. |
 | Independent/off-site backup copy | `pending` | Produce an encrypted copy outside the live NAS failure domain and complete a documented restore validation. |

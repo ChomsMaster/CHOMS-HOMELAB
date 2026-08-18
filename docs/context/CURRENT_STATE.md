@@ -7,7 +7,7 @@ the deployment authority for the Kubernetes platform.
 ## Evidence baseline
 
 - Observed: 2026-08-18 (Europe/Madrid).
-- Pre-change Git baseline: `7300325a799ba2eef57dca952f49ddaa4b052efb`
+- Pre-change Git baseline: `174ed36c2f5be6e6387ef15541402571fd09a876`
   on `main`.
 - At observation time: clean tree, `HEAD == origin/main`, divergence `0/0`.
 - Runtime: three K3s nodes Ready; no failed or pending Pods.
@@ -144,6 +144,22 @@ health endpoint or durable state that can distinguish an internal hang without
 coupling restarts to disk, network, or server health. `SEC-002` and `SEC-003`
 remain pending; image, privilege, devices, host paths, server, storage and
 network are unchanged.
+
+On 2026-08-18 SEC-002 tested privilege reduction with temporary, non-uploading
+canaries on both collector nodes. The privileged reference read both devices
+on each node. A root, non-privileged collector with `SYS_RAWIO`, dropped
+capabilities, no privilege escalation and `RuntimeDefault` seccomp discovered
+both devices but could not open either one. Removing seccomp and even granting
+all capabilities did not change that result, which isolates the blocker to the
+containerd device cgroup rather than a missing Linux capability. Kubernetes
+rejected individual host block devices through `volumeDevices` because that
+API accepts only PVC/Ephemeral block-mode sources. A read-only root filesystem
+also failed before startup because the v0.8.2 entrypoint and cron require
+writes in the image filesystem. No effective control can be layered on
+`privileged: true`: Kubernetes forces all capabilities, privilege escalation,
+and unconfined seccomp/AppArmor. The DaemonSet therefore remains unchanged and
+SEC-002 is blocked pending a stable device-plugin/CDI or equivalent supported
+device-mapping design. `SEC-003` remains pending and untouched.
 
 Prometheus is protected by the existing Authelia ForwardAuth pattern through a
 Middleware scoped to `monitoring` and a `one_factor` access-control rule.

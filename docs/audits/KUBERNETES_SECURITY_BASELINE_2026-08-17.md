@@ -483,6 +483,33 @@ filesystem/PVC ownership, required syscalls/capabilities/device nodes, and the
 real functional path (SMART discovery or hardware transcode). For network
 policy, begin with flow inventory and explicit allowlists before default deny.
 
+## SEC-002 focused follow-up — 2026-08-18
+
+Temporary canaries using the pinned Scrutiny v0.8.2 collector image tested the
+two collector nodes independently without uploading data. The privileged
+reference discovered and read two devices per node. The proposed
+non-privileged root profile with only `SYS_RAWIO`, all other capabilities
+dropped, no privilege escalation and `RuntimeDefault` seccomp discovered the
+same devices but failed every device open. Removing seccomp did not help, and
+granting every capability while remaining non-privileged produced the same
+result. The limiting layer is therefore the K3s/containerd device cgroup, not
+Unix UID, `SYS_RAWIO`, or seccomp.
+
+Individual block-device `hostPath` volumes cannot be supplied through
+`volumeDevices`; Kubernetes validation accepts only PVC or Ephemeral sources
+for block mode. A separate read-only-rootfs experiment failed before cron
+started because the v0.8.2 entrypoint writes its environment and cron
+configuration, and cron requires writable runtime state. Under
+`privileged: true`, seccomp and AppArmor are unconfined, all capabilities are
+granted and `allowPrivilegeEscalation` is effectively true, so declaring those
+fields would not provide a real compensating control.
+
+No DaemonSet change was made. SEC-002 is blocked until the platform adopts a
+supported per-device mapping mechanism, such as a reviewed device plugin, CDI,
+DRA, or an equivalent K3s/containerd integration that creates explicit device
+cgroup rules and remains stable on both nodes. All temporary resources were
+removed and production health and drift remained unchanged.
+
 ## Top ten ordered follow-up blocks
 
 1. Protect only the Prometheus HTTPRoute with the existing Authelia middleware;
