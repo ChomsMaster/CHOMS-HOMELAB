@@ -243,3 +243,20 @@ entries are immutable; append an explicit correction when needed.
 - **Derived pending:** authenticated visual Portainer review remains pending
   because no login or credentials were authorized. Next execute only
   `SUP-001`, the Scrutiny collector digest pinning block.
+
+## 2026-08-18 — Scrutiny collector SUP-001 digest pinning
+
+- **Action:** Replaced only the collector's `v0.8.2-collector` tag with the
+  identical effective digest already running on both expected DaemonSet Pods.
+- **Result:** RollingUpdate progressed 0/2, 1/2, then 2/2 updated while keeping
+  both collectors Ready. Both retained zero restarts and two devices per
+  anonymized node; startup collection completed on each, and the server
+  accepted two registrations and four SMART uploads without failed posts.
+- **Commit:** recorded by the commit containing this entry.
+- **Evidence:** matching pre-change image IDs, image-only runtime diff,
+  `maxUnavailable: 1`, three post-change cycles, API health 200, stable server
+  storage metadata, healthy route and EndpointSlice, zero new warning events,
+  three Ready nodes, zero Pending/Failed Pods, and final collector drift zero.
+- **Derived pending:** `RES-002` remains next for separately designed probes
+  and resources. `SEC-002` collector privilege/device minimization and
+  `SEC-003` server hardening remain pending and unchanged.

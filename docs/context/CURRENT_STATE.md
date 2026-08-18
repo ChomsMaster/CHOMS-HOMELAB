@@ -7,7 +7,7 @@ the deployment authority for the Kubernetes platform.
 ## Evidence baseline
 
 - Observed: 2026-08-18 (Europe/Madrid).
-- Pre-change Git baseline: `3b576bff04a5aea55b73ad8c927e7b2bc77707b1`
+- Pre-change Git baseline: `173a18d9e19695b3260bc170615889ad85805baf`
   on `main`.
 - At observation time: clean tree, `HEAD == origin/main`, divergence `0/0`.
 - Runtime: three K3s nodes Ready; no failed or pending Pods.
@@ -126,6 +126,14 @@ Scrutiny, missing controls in the Scrutiny collectors, mutable images, and
 incomplete resource/probe coverage. These require per-image testing rather
 than blanket UID or capability changes.
 
+On 2026-08-18 SUP-001 pinned only the Scrutiny collector image to the exact
+digest already running on both expected nodes. The DaemonSet RollingUpdate
+kept both collectors available, each retained its sanitized two-device count,
+startup collection completed twice, and the server accepted two registrations
+and four SMART uploads without failed API posts. Probes, resources, privilege,
+devices, host paths, the Scrutiny server, route, storage, and network were not
+changed. Those separate hardening gaps remain open.
+
 Prometheus is protected by the existing Authelia ForwardAuth pattern through a
 Middleware scoped to `monitoring` and a `one_factor` access-control rule.
 Anonymous requests redirect once to Authelia without a loop. The change did not
@@ -192,6 +200,8 @@ pending because no Portainer login was authorized. See the
   no authorization change was made.
 - Portainer IAM-001 remediation: dedicated Secret-free viewer RBAC replaced
   the unversioned `cluster-admin` binding with staged validation and rollback.
+- Scrutiny collector SUP-001: pinned the existing `v0.8.2-collector` bytes by
+  digest with 2/2 collectors, device counts, ingestion and drift validated.
 
 The last three runtime-only reconciliations created no empty commits when Git
 already contained the correct desired state.
@@ -217,7 +227,7 @@ already contained the correct desired state.
 - Alloy, Grafana, Loki, and kube-state-metrics can read Secret metadata more
   broadly than their current consumers require.
 - Scrutiny collectors and server, and Jellyfin, have broad device/host access.
-- Home, Authelia, Filebrowser, and the Scrutiny collector use mutable tags.
+- Home, Authelia, and Filebrowser use mutable tags.
 - Some direct, Helm, and K3s-managed workloads lack complete probes or resource
   controls.
 - Portainer and Uptime Kuma have low-risk registry-prefix drift.

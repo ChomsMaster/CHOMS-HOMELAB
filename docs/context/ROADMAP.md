@@ -14,7 +14,7 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 
 | Work | Status | Closure criteria |
 |---|---|---|
-| Pin Scrutiny collector image (`SUP-001`) | `pending` | Capture the fresh effective image ID on both collector nodes, pin exactly those bytes without upgrading, validate both collectors and server ingestion, and reach drift zero. Do not combine this with probes, resources, or privilege reduction. |
+| Add supported Scrutiny collector probes and resources (`RES-002`) | `pending` | Establish startup behavior and utilization evidence, then add only supported health checks and conservative requests/limits. Preserve the pinned image, privilege, devices and host paths; validate both collectors and server ingestion. |
 
 ## High priority
 
@@ -64,6 +64,7 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 | IAM and observability evidence block | `completed` | Evidence phase of `IAM-001`, plus `IAM-002` and `OBS-003`: all managed identities, effective high-risk permissions, monitor resources, 24 active targets, and the MetalLB discovery/reachability split documented in the [audit](../audits/KUBERNETES_IAM_OBSERVABILITY_AUDIT_2026-08-17.md). |
 | Portainer IAM-001 access diagnosis | `completed` | Read-only ownership, use-evidence, exposure and three-profile analysis documented in the [Portainer IAM diagnosis](../audits/PORTAINER_IAM_001_DIAGNOSIS_2026-08-17.md); no Kubernetes change. Profile A was subsequently selected and implemented. |
 | Portainer IAM-001 viewer migration | `completed` | Platform owner selected Profile A; explicit versioned viewer RBAC preserves inventory, events, metrics and Pod logs while denying Secrets, writes, interactive Pod access, tokens, RBAC delegation, CRD and webhook mutation. Staged isolated and real-identity matrices passed; the old `cluster-admin` binding is absent. Authenticated UI review remains pending. |
+| Scrutiny collector digest pinning | `completed` | `SUP-001`: both expected collectors previously resolved `v0.8.2-collector` to the same digest; Git and the DaemonSet now declare that digest. RollingUpdate preserved 2/2 availability, sanitized device counts and server ingestion; final drift is zero. Probes, resources and privileges remain separate pending work. |
 | Redis hardening | `completed` | Recreate, probes, justified resources, digest, consumers healthy; `fc3df18`. |
 | PostgreSQL reconciliation | `completed` | Published digest reconciled and validated; runtime-only, no empty commit. |
 | MetalLB controller reconciliation | `completed` | Published digest reconciled; webhook, speakers, VIP, routes, and cluster validated; runtime-only. |
