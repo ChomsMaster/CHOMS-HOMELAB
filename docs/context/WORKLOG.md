@@ -365,3 +365,21 @@ entries are immutable; append an explicit correction when needed.
   mounts, storage, route, network, configuration or other workload changed.
 - **Derived pending:** SEC-003 remains pending and untouched; no subsequent
   workload was started.
+
+## 2026-08-19 — Home IMG-001 digest pinning
+
+- **Action:** Replaced only `nginx:stable-alpine` in the Home Deployment with
+  the exact already-running digest
+  `docker.io/library/nginx@sha256:97d490c12ba55b4946b01546d1c3ed324e8d41ab1c9fcb2a616aa470620e5b46`.
+- **Result:** YAML, server-side dry-run and controller-only diff passed. The
+  two-replica RollingUpdate completed; both Pods remained Ready with zero
+  restarts and imageIDs matching the declared digest. Service, EndpointSlice,
+  HTTPRoute/auth response, ConfigMap metadata, mounted files, three Ready
+  nodes, zero Pending/Failed Pods and zero warnings remained healthy.
+  Controller drift is zero; unrelated pre-existing full-manifest ConfigMap
+  content drift was preserved and not changed.
+- **Scope:** No probes, resources, securityContext, ServiceAccount, ports,
+  mounts, content, Service, route, TLS, Authelia, network or other workload
+  changed.
+- **Derived pending:** SEC-003 remains pending and untouched; Authelia and
+  all other workloads were not started.

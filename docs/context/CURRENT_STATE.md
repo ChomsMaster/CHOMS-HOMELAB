@@ -311,3 +311,13 @@ Follow [`AGENTS.md`](../../AGENTS.md), the active
 [`DEPLOY.md`](../operations/DEPLOY.md). Work in small reversible blocks, keep
 one workload and one logical change per commit, validate consumers, and record
 state changes in the operational memory.
+
+On 2026-08-19 IMG-001 pinned Home from `nginx:stable-alpine` to the exact
+already-running digest
+`docker.io/library/nginx@sha256:97d490c12ba55b4946b01546d1c3ed324e8d41ab1c9fcb2a616aa470620e5b46`.
+The two-replica RollingUpdate completed with both Pods Ready and zero
+restarts; Service, EndpointSlice, protected HTTPRoute/public response,
+ConfigMap metadata and mounted files remained healthy. The controller-only
+diff is empty; pre-existing full-manifest ConfigMap content drift was
+preserved and not changed. No other workload or Home field changed. SEC-003
+remains pending and was not executed.
