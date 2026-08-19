@@ -331,3 +331,21 @@ entries are immutable; append an explicit correction when needed.
   architectural decision and work block.
 - **Derived pending:** Do not execute `SEC-003`; it remains pending and
   untouched.
+
+## 2026-08-19 — Scrutiny server backup prerequisite design
+
+- **Action:** Performed a read-only diagnosis of the Scrutiny server's
+  persistent paths, InfluxDB version, storage metadata and existing backup
+  automation. No backup, snapshot, restore, restart, Kubernetes change or
+  file modification was performed.
+- **Result:** Scrutiny `0.8.2` embeds InfluxDB `2.2.0`; current backup coverage
+  excludes its 28 KiB SQLite configuration and approximately 104 MiB InfluxDB
+  data. Direct hot copying of the InfluxDB tree is unsafe. The image lacks the
+  `influx` CLI, so a future implementation needs a compatible tool or
+  authenticated API backup through a Secret reference without exposing values.
+- **Design:** Use official InfluxDB backup/restore plus a consistent SQLite
+  backup. Reserve 250 MiB per copy and 1 GiB for isolated restore staging;
+  target RPO is 24 hours and RTO 1–2 hours. An isolated restoration is
+  mandatory before SEC-003 changes.
+- **Decision:** SEC-003 remains `pending`. SecurityContext, hostPath,
+  devices and the Scrutiny server remain unchanged.

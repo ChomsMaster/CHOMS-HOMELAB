@@ -530,6 +530,34 @@ future option is to run collectors as restricted host services, but that needs
 a separate architectural decision and work block. `SEC-003` remains pending
 and must not be executed.
 
+## SEC-003 backup prerequisite design — 2026-08-19
+
+The read-only review found no existing backup coverage for the Scrutiny server.
+The running [Scrutiny `0.8.2` image](https://github.com/AnalogJ/scrutiny/releases/tag/v0.8.2)
+embeds InfluxDB `2.2.0`. The persistent data
+requiring protection is the 28 KiB SQLite configuration database and
+approximately 104 MiB of InfluxDB data. The current storage is a local `ext4`
+hostPath; the existing backup automation covers Kubernetes resources and other
+databases, not these paths.
+
+The recommended design is the official [InfluxDB backup and restore
+workflow](https://docs.influxdata.com/influxdb/v2/admin/backup-restore/) plus a
+consistent SQLite backup. The InfluxDB tree must not be copied directly while
+hot. The current image does not contain the `influx` CLI, so a future backup
+implementation must provide a compatible tool or use authenticated InfluxDB
+API backup endpoints ([official API](https://docs.influxdata.com/influxdb/v2/api/backup/))
+through a Secret reference without exposing values. If an application-aware
+SQLite backup is unavailable, a coordinated short stop and atomic copy is the
+fallback; no such stop or copy was performed here.
+
+Reserve 250 MiB per backup copy and 1 GiB for isolated-restore staging. Target
+RPO is 24 hours and target RTO is 1–2 hours. The restore must be performed in an
+isolated Scrutiny `0.8.2`/InfluxDB `2.2.0` environment, with checksum,
+ownership/permission, service-health, historical-read, write and collector-
+ingestion checks, before any SEC-003 privilege or hostPath change. SEC-003
+remains `pending`; no securityContext, hostPath, device or server change was
+made.
+
 ## Top ten ordered follow-up blocks
 
 1. Protect only the Prometheus HTTPRoute with the existing Authelia middleware;

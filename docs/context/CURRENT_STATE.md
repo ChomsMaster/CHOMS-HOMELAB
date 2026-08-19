@@ -174,6 +174,19 @@ risk temporarily accepted. A future host-service collector design remains an
 alternative requiring a separate architectural decision and work block.
 `SEC-003` remains pending and must not be started.
 
+On 2026-08-19 the non-mutating SEC-003 backup prerequisite review found that
+Scrutiny `0.8.2` embeds InfluxDB `2.2.0` and has no existing backup coverage.
+The protected state is the 28 KiB SQLite configuration database and
+approximately 104 MiB of InfluxDB data under the existing server paths. A
+direct hot copy of the InfluxDB tree is not considered safe. The design target
+is the official InfluxDB backup/restore flow plus a consistent SQLite backup;
+the current image does not include the `influx` CLI, so a compatible tool or
+authenticated API access through a Secret reference will be needed without
+exposing values. Reserve 250 MiB per copy and 1 GiB for an isolated restore;
+use RPO 24 hours and RTO 1–2 hours. An isolated restoration is mandatory before
+any SEC-003 privilege or hostPath change. No securityContext, hostPath,
+device, or server change was made.
+
 Prometheus is protected by the existing Authelia ForwardAuth pattern through a
 Middleware scoped to `monitoring` and a `one_factor` access-control rule.
 Anonymous requests redirect once to Authelia without a loop. The change did not
