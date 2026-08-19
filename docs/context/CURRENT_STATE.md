@@ -187,6 +187,15 @@ use RPO 24 hours and RTO 1–2 hours. An isolated restoration is mandatory befor
 any SEC-003 privilege or hostPath change. No securityContext, hostPath,
 device, or server change was made.
 
+On 2026-08-19 IMG-003 pinned Filebrowser from the declared `s6` tag to the
+exact digest already running:
+`docker.io/filebrowser/filebrowser@sha256:ee4ac79e52966a5f6247f99c7d667c1debfb277a3a61ab829f505aa8f4c74b21`.
+The single-replica Recreate rollout completed with zero restarts; the Pod,
+Service, EndpointSlice, HTTPRoute, Authelia, storage mounts and application
+response remained healthy. No probes, resources, security context,
+ServiceAccount, ports, mounts, storage, route, network or other workload
+changed. SEC-003 remains pending and was not executed.
+
 Prometheus is protected by the existing Authelia ForwardAuth pattern through a
 Middleware scoped to `monitoring` and a `one_factor` access-control rule.
 Anonymous requests redirect once to Authelia without a loop. The change did not

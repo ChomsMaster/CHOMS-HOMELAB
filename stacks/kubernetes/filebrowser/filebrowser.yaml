@@ -39,7 +39,7 @@ spec:
         fsGroup: 1000
       containers:
       - name: filebrowser
-        image: filebrowser/filebrowser:s6
+        image: docker.io/filebrowser/filebrowser@sha256:ee4ac79e52966a5f6247f99c7d667c1debfb277a3a61ab829f505aa8f4c74b21
         imagePullPolicy: IfNotPresent
         env:
         - name: PUID

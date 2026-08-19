@@ -56,6 +56,7 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 | Work | Status | Closure criteria/evidence |
 |---|---|---|
 | Kubernetes backup and recovery automation | `completed` | Versioned automation and successful controlled Nextcloud restore test; `b5b8792`. |
+| Filebrowser image pinning (`IMG-003`) | `completed` | Pinned the exact effective digest only; validated route, native authentication path, storage mounts, consumer health and drift zero in the 2026-08-19 rollout. |
 | MariaDB hardening | `completed` | Digest, Recreate, probes, healthy consumer; `2948d31`. |
 | Nextcloud secure sharing | `completed` | Reproducible enforced policy and isolated E2E cleanup confirmed; `c16fd81` plus runtime evidence. A detailed historical HTTP transcript was intentionally not retained. |
 | Workload audit | `completed` | Full inventory and repeatable read-only script; `3d10730`. |

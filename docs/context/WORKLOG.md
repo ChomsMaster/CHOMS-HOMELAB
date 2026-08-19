@@ -349,3 +349,19 @@ entries are immutable; append an explicit correction when needed.
   mandatory before SEC-003 changes.
 - **Decision:** SEC-003 remains `pending`. SecurityContext, hostPath,
   devices and the Scrutiny server remain unchanged.
+
+## 2026-08-19 — Filebrowser IMG-003 digest pinning
+
+- **Action:** Replaced only `filebrowser/filebrowser:s6` in the Filebrowser
+  Deployment with the exact already-running digest
+  `docker.io/filebrowser/filebrowser@sha256:ee4ac79e52966a5f6247f99c7d667c1debfb277a3a61ab829f505aa8f4c74b21`.
+- **Result:** Server-side dry-run and controller-only diff passed. The single
+  Recreate rollout completed successfully; the Pod remained Ready with zero
+  restarts and its declared image matched the effective imageID exactly.
+  Service, EndpointSlice, HTTPRoute, Authelia, local HTTP response, storage
+  mounts/files, three Ready nodes and zero Pending/Failed Pods remained healthy;
+  no warnings were present and the final full-manifest diff was empty.
+- **Scope:** No probes, resources, securityContext, ServiceAccount, ports,
+  mounts, storage, route, network, configuration or other workload changed.
+- **Derived pending:** SEC-003 remains pending and untouched; no subsequent
+  workload was started.
