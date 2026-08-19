@@ -312,3 +312,22 @@ entries are immutable; append an explicit correction when needed.
 - **Commit:** recorded by the documentation commit containing this entry.
 - **Derived pending:** Resolve the SEC-002 device-mapping prerequisite. Do not
   continue with `SEC-003` in this work block; it remains pending and untouched.
+
+## 2026-08-19 — Scrutiny collector SEC-002 device-plugin review
+
+- **Action:** Reviewed only the official [generic plugin repository](https://github.com/squat/generic-device-plugin)
+  and [NVIDIA plugin repository](https://github.com/NVIDIA/k8s-device-plugin);
+  no component,
+  Kubernetes resource, manifest or runtime setting was changed.
+- **Result:** The generic plugin is technically plausible through `DeviceSpec`,
+  but its published DaemonSet is privileged and mounts the complete `/dev`,
+  transferring rather than eliminating the risk. The NVIDIA plugin is for
+  NVIDIA GPUs and does not apply to Scrutiny SATA/SAS devices. No candidate
+  demonstrated the required security, maintenance and K3s/containerd
+  compatibility, and developing one for four disks is not recommended.
+- **Decision:** Preserve the current design and accept its residual risk
+  temporarily. SEC-002 remains `blocked`, not completed. Restricted host
+  service collectors are a possible future alternative requiring a separate
+  architectural decision and work block.
+- **Derived pending:** Do not execute `SEC-003`; it remains pending and
+  untouched.

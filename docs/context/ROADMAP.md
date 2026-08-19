@@ -14,7 +14,7 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 
 | Work | Status | Closure criteria |
 |---|---|---|
-| Resolve Scrutiny collector device isolation prerequisite (`SEC-002`) | `blocked` | Select and validate a K3s/containerd-supported device-plugin, CDI, DRA or equivalent stable block-device mapping that creates per-device cgroup rules. Current hostPath mounts cannot replace privileged device access; do not proceed to `SEC-003` as part of this block. |
+| Resolve Scrutiny collector device isolation prerequisite (`SEC-002`) | `blocked` | Select and validate a K3s/containerd-supported device-plugin, CDI, DRA or equivalent stable block-device mapping that creates per-device cgroup rules. The review found no candidate with demonstrable compatibility, security and maintenance; the current design and residual risk are temporarily accepted. A future host-service collector is a separate architectural block. Current hostPath mounts cannot replace privileged device access; do not proceed to `SEC-003` as part of this block. |
 
 ## High priority
 

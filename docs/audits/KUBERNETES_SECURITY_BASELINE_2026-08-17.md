@@ -510,6 +510,26 @@ DRA, or an equivalent K3s/containerd integration that creates explicit device
 cgroup rules and remains stable on both nodes. All temporary resources were
 removed and production health and drift remained unchanged.
 
+### SEC-002 device-plugin review — 2026-08-19
+
+The official repositories for two possible plugins were reviewed without
+installation or cluster changes. `squat/generic-device-plugin` is technically
+plausible: it accepts explicit device paths and returns Kubernetes `DeviceSpec`
+allocations ([repository](https://github.com/squat/generic-device-plugin)). Its
+published DaemonSet, however, is `privileged: true` and mounts
+the complete `/dev`, so it transfers the host-device risk to a new component
+instead of removing it. `NVIDIA/k8s-device-plugin` is actively maintained and
+supports CDI for NVIDIA hardware, but it is GPU-specific and does not apply to
+Scrutiny SATA/SAS devices ([repository](https://github.com/NVIDIA/k8s-device-plugin)). No reviewed project demonstrated all of the required
+security, maintenance and K3s/containerd compatibility properties.
+
+The four-disk scope does not justify developing and maintaining a custom
+plugin. The current privileged collector design is retained and its residual
+risk is accepted temporarily; SEC-002 remains `blocked`, not completed. A
+future option is to run collectors as restricted host services, but that needs
+a separate architectural decision and work block. `SEC-003` remains pending
+and must not be executed.
+
 ## Top ten ordered follow-up blocks
 
 1. Protect only the Prometheus HTTPRoute with the existing Authelia middleware;

@@ -161,6 +161,19 @@ and unconfined seccomp/AppArmor. The DaemonSet therefore remains unchanged and
 SEC-002 is blocked pending a stable device-plugin/CDI or equivalent supported
 device-mapping design. `SEC-003` remains pending and untouched.
 
+On 2026-08-19 the documentary review of generic device plugins found no
+candidate that simultaneously demonstrates the required security, maintenance
+and K3s/containerd compatibility. `squat/generic-device-plugin` is technically
+plausible and can allocate explicit Linux devices through the Device Plugin
+API, but its published DaemonSet is privileged and mounts the complete `/dev`,
+transferring rather than removing the risk. `NVIDIA/k8s-device-plugin` targets
+NVIDIA GPUs and does not apply to Scrutiny SATA/SAS devices. Developing a
+purpose-built plugin for four disks is not recommended. The current Scrutiny
+design is therefore retained and SEC-002 remains `blocked`, with this residual
+risk temporarily accepted. A future host-service collector design remains an
+alternative requiring a separate architectural decision and work block.
+`SEC-003` remains pending and must not be started.
+
 Prometheus is protected by the existing Authelia ForwardAuth pattern through a
 Middleware scoped to `monitoring` and a `one_factor` access-control rule.
 Anonymous requests redirect once to Authelia without a loop. The change did not
