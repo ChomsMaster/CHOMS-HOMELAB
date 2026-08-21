@@ -204,6 +204,21 @@ the recurring RPO-24-hour solution. No token, Secret, recovery command,
 production security context, image, device, hostPath or configuration changed.
 `SEC-003` remains pending.
 
+On 2026-08-21 the separate authorization prerequisite was completed with the
+official InfluxDB 2.2.0 `influxd recovery auth create-operator` flow. Scrutiny
+was stopped for 43 seconds, the pinned server image mounted only its InfluxDB
+path in a temporary token-free Pod, and the command output was consumed by a
+closed stdin pipeline. The new authorization is stored only in the runtime
+Secret `monitoring/scrutiny-backup-influx-operator`, whose contract contains
+exactly `token` and `authorization-id`; Git contains neither value. A GET of
+the authorization itself returned HTTP 200 with its body discarded. Scrutiny
+returned 1/1, collectors remained 2/2 with successful recent collection,
+three nodes were Ready, no unhealthy Pod or new Warning remained, and server
+plus collector drift was zero. No recurring backup, restore automation,
+production image, security context, device, host path or configuration was
+changed. `SEC-003` remains pending until the official recurring RPO-24-hour
+backup is implemented and restored in isolation.
+
 On 2026-08-19 IMG-003 pinned Filebrowser from the declared `s6` tag to the
 exact digest already running:
 `docker.io/filebrowser/filebrowser@sha256:ee4ac79e52966a5f6247f99c7d667c1debfb277a3a61ab829f505aa8f4c74b21`.

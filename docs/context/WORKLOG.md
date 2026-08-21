@@ -410,3 +410,31 @@ entries are immutable; append an explicit correction when needed.
 - **Derived pending:** `SEC-003` remains pending. Controlled operator-token
   recovery and the official recurring backup needed for RPO 24h require
   separate authorization and validation.
+
+## 2026-08-21 — Scrutiny dedicated InfluxDB backup authorization
+
+- **Action:** Used the official offline InfluxDB 2.2.0
+  `influxd recovery auth create-operator` command while only
+  `Deployment/monitoring/scrutiny` was at zero. A temporary Pod used the exact
+  pinned Scrutiny image, mounted only the InfluxDB host path, had no
+  ServiceAccount token, and retained no command output in its logs.
+- **Secret handling:** The v2.2.0 command prints all authorizations, so stdout
+  and stderr were consumed by a strict closed pipeline. Exactly the new token
+  and authorization ID were sent by stdin to the atomic creation of
+  `monitoring/scrutiny-backup-influx-operator`; neither value, token fragment,
+  reversible hash nor response body was displayed or persisted elsewhere.
+  Git records only the object and key contract.
+- **Validation:** The Secret contains exactly `token` and `authorization-id`,
+  both non-empty. Authentication against that authorization returned HTTP 200
+  with the body discarded. The first client-side validation attempt had an
+  invalid local `jq` quoting expression; production had already returned 1/1,
+  and the corrected stdin-only check passed without another recovery command
+  or interruption.
+- **Result:** The recorded scale interval was 43 seconds. Scrutiny is 1/1,
+  collectors are 2/2 with recent successful collection, three nodes are
+  Ready, no Pod is Pending/Failed, no new Warning or temporary resource
+  remains, storage mounts are intact, and server plus collector drift is zero.
+- **Scope:** No recurring backup, restore automation, CronJob, production
+  image, security context, device, host path, application configuration or
+  other workload changed. `SEC-003` remains pending until the official
+  recurring RPO-24-hour backup and isolated restore pass.

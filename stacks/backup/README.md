@@ -124,6 +124,27 @@ This is a manual bootstrap copy, not the RPO 24-hour recurring backup. It does
 not create or recover an InfluxDB token and must not be synchronized to a less
 restricted destination.
 
+### InfluxDB backup authorization contract
+
+The one-time recovery prerequisite uses the official
+[`influxd recovery auth create-operator`](https://docs.influxdata.com/influxdb/v2/reference/cli/influxd/recovery/auth/create-operator/)
+command with InfluxDB stopped. Its dedicated authorization exists only for the
+future official backup/restore workflow and is stored in the runtime Secret
+`monitoring/scrutiny-backup-influx-operator` with exactly these keys:
+
+- `token`
+- `authorization-id`
+
+Neither value belongs in Git, local environment files, command arguments,
+logs, Pod specifications or retained evidence. Consumers must use
+`secretKeyRef` and disable ServiceAccount-token automount when they do not need
+the Kubernetes API. Revocation must authenticate with this same authorization,
+delete its InfluxDB authorization first, verify that authentication then fails,
+and only afterwards delete the Kubernetes Secret.
+
+The authorization bootstrap does not implement the recurring RPO-24-hour
+backup and does not authorize a production restore or `SEC-003` hardening.
+
 Validate the latest copy without production writes:
 
     /usr/local/sbin/choms-scrutiny-bootstrap-restore-test.sh
