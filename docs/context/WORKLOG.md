@@ -475,3 +475,25 @@ entries are immutable; append an explicit correction when needed.
 - **Scope:** Production Scrutiny, privileges, security context, image,
   configuration, devices, host paths and collectors were not modified.
   `SEC-003` remains pending; only its backup prerequisite is complete.
+
+## 2026-08-22 — NAS Scrutiny collector digest pinning
+
+- **Action:** Replaced only the NAS collector's mutable
+  `v0.8.2-collector` image reference with the exact digest already present and
+  running. Because the historical container was not Compose-managed, it was
+  recreated through the local Docker API from its effective configuration;
+  the prior container remained stopped as rollback until validation passed.
+- **Validation:** Non-image runtime comparison passed with zero drift. The new
+  container stayed running with zero restarts and completed one startup cycle
+  covering five devices, five SMART reads and five publications, with no
+  permission, access or publication error. The central API confirmed the same
+  five-device origin and 11 unique recent devices overall, proving zero
+  overlap with the six active Kubernetes devices.
+- **Result:** The stopped rollback container was removed only after central
+  validation; the prior image remains locally available. Three Kubernetes
+  nodes remained Ready, Scrutiny stayed 1/1, collectors stayed 2/2, and no Pod
+  became Pending or Failed.
+- **Scope:** Privilege, capabilities, mounts, environment, host identity,
+  endpoint, six-hour schedule, startup behavior, network and filesystems were
+  unchanged. No smartmontools installation, native migration, mdraid work,
+  Kubernetes change, `SEC-002` or `SEC-003` work was performed.

@@ -232,6 +232,18 @@ SQLite integrity, full isolated InfluxDB restore, offline TSM/series/WAL checks
 and isolated Scrutiny 0.8.2/InfluxDB 2.2.0 startup passed. The cold bootstrap
 copy and its checksums were preserved. Production Scrutiny stayed 1/1,
 collectors 2/2 with recent ingestion, three nodes Ready and no unhealthy Pod.
+
+On 2026-08-22 the separate NAS Scrutiny collector was reconciled from the
+mutable `v0.8.2-collector` tag to the exact digest already running. Its
+effective bytes, privilege, mounts, environment contract, six-hour schedule,
+startup collection and bridge network were unchanged. The recreated collector
+completed five SMART reads and five successful publications with no access,
+permission or publication error; the central API confirmed the same
+five-device origin and no overlap with the six active Kubernetes devices.
+Kubernetes and the Scrutiny server were not modified. Native collector
+migration, privilege reduction and the unrelated failed mdraid-monitoring
+units remain separate work.
+
 Six Warning events from the removed preliminary Jobs/Pods remain as historical
 evidence; no Warning occurred after final stabilization. All temporary
 resources, locks and partial copies were removed. `SEC-003` remains pending;

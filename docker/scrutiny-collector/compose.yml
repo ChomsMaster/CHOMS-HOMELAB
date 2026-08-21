@@ -1,6 +1,6 @@
 services:
   scrutiny-collector:
-    image: ghcr.io/analogj/scrutiny:v0.8.2-collector
+    image: ghcr.io/analogj/scrutiny@sha256:3274a8c1e4b48bcc42089f9431f89604d4b3a661aeeaa2029c59c352d41762c2
     container_name: choms-scrutiny-collector
     restart: unless-stopped
     privileged: true
