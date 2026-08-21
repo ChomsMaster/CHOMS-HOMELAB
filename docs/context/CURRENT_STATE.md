@@ -244,16 +244,17 @@ Kubernetes and the Scrutiny server were not modified. Native collector
 migration, privilege reduction and the unrelated failed mdraid-monitoring
 units remain separate work.
 
-The follow-up read-only NAS diagnosis on 2026-08-22 confirmed one active,
-non-degraded mdraid array with no resynchronization in progress. Both static,
-triggered monitoring units nevertheless exit with status 1, and no mdadm
-monitor process remains active. Their unit wiring and default daemon setting
-are present, but the exact error is unavailable to the unprivileged operator;
-the narrowly scoped journal query was denied. The units were therefore not
-disabled, masked, restarted or edited: an active array makes unnecessary-unit
-removal unsafe to infer. NAS storage, NFS, the GFS timer and its latest service
-result remained healthy. Resolution is blocked pending read-only privileged
-journal evidence for only those two units.
+The follow-up NAS diagnosis confirmed one active, non-degraded mdraid array
+with no resynchronization in progress. Monitoring had exited because neither a
+notification address nor a notification program was configured, and the
+historical local mail transport was absent. Systemd drop-ins now preserve the
+vendor units while adding `--syslog`: the permanent monitor is active and the
+oneshot completes successfully when the inherited `AUTOSCAN` setting is
+enabled. An initial oneshot override bypassed that condition and was corrected
+before commit to restore the vendor environment file and conditional command.
+No array, disk, filesystem, package or mail configuration changed. Local
+journal/syslog monitoring is restored; external notification remains pending
+integration with Alertmanager.
 
 Six Warning events from the removed preliminary Jobs/Pods remain as historical
 evidence; no Warning occurred after final stabilization. All temporary

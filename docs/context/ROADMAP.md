@@ -26,7 +26,7 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 | Scrutiny server privilege reduction | `pending` | Cold bootstrap, dedicated authorization and recurring logical backup with isolated restore are complete. In a separate explicitly authorized block, narrow only proven-unnecessary access and validate UI plus collector ingestion. |
 | Jellyfin device-access design | `pending` | Prove hardware transcoding with non-privileged, narrowly mapped devices; preserve library access and playback; document rollback. |
 | Independent/off-site backup copy | `pending` | Produce an encrypted copy outside the live NAS failure domain and complete a documented restore validation. |
-| Diagnose NAS mdraid monitoring units | `blocked` | One active, non-degraded array exists, so do not disable or mask monitoring. Obtain read-only privileged journal evidence for only `mdmonitor.service` and `mdmonitor-oneshot.service`, identify the exact exit-1 cause, and authorize a separate reversible configuration-only correction before changing either unit. |
+| NAS mdraid local monitoring | `completed` | Versioned systemd drop-ins add syslog delivery without modifying the array. The permanent monitor is active; the oneshot preserves its vendor `AUTOSCAN` environment and conditional execution and completes successfully. External alert delivery through Alertmanager remains separate pending work. |
 
 ## Medium priority
 

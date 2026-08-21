@@ -521,3 +521,31 @@ entries are immutable; append an explicit correction when needed.
   Central Scrutiny reported 11 unique recent devices with zero duplicates;
   Scrutiny was 1/1, collectors 2/2, all three nodes Ready, and no Pod was
   Pending or Failed. NAS and Kubernetes received no mutation in this block.
+
+## 2026-08-22 — NAS mdraid local monitoring correction
+
+- **Cause:** mdadm refused to monitor because neither `MAILADDR` nor `PROGRAM`
+  was configured; an earlier event had also attempted to use an absent local
+  mail transport. SMTP, credentials and packages were deliberately excluded.
+- **Change:** Added versioned systemd drop-ins that leave the vendor units in
+  place and append `--syslog` to their mdadm monitor commands. The permanent
+  service runs continuously. The oneshot resets and restores the vendor
+  environment-file declaration and retains conditional execution under
+  `AUTOSCAN=true`.
+- **Correction during validation:** The initially applied oneshot drop-in ran
+  mdadm directly and bypassed `AUTOSCAN`. Before commit it was reconciled to
+  the conditional vendor semantics using an exact-state guard and automatic
+  rollback. The source, installed override and effective unit now agree.
+- **Validation:** The permanent monitor is active/running; the conditional
+  oneshot completed with result `success` and exit status 0. Both effective
+  commands use `--syslog`, no related unit is failed, and the monitor process
+  is present. One array remains active and complete with no rebuild or
+  resynchronization. No synthetic RAID event was generated; syslog/journal is
+  the configured local delivery path, while external Alertmanager delivery
+  remains pending.
+- **Consumers:** Storage and NFS remained accessible, the GFS timer and latest
+  backup result stayed successful, and the digest-pinned NAS collector stayed
+  running with zero restarts. Kubernetes remained 3/3 Ready with Scrutiny 1/1,
+  collectors 2/2 and no Pending/Failed Pod. All staging and reconciliation
+  temporaries were removed. No array, disk, filesystem, mount, package,
+  Scrutiny, Docker, NFS, backup or Kubernetes configuration changed.
