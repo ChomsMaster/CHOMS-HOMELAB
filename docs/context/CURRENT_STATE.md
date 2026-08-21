@@ -187,6 +187,23 @@ use RPO 24 hours and RTO 1–2 hours. An isolated restoration is mandatory befor
 any SEC-003 privilege or hostPath change. No securityContext, hostPath,
 device, or server change was made.
 
+On 2026-08-21 a manual cold bootstrap backup closed the recovery prerequisite
+needed before any InfluxDB authorization recovery. Only the Scrutiny server was
+scaled to zero, for 83 seconds. Its configuration and complete InfluxDB 2.2.0
+state were copied from read-only hostPath mounts to a mode-0700 staging tree on
+the existing NAS backup export, checked, and atomically published. An isolated
+1 GiB restore then passed SQLite integrity and InfluxDB series, TSM, WAL and
+tombstone verification before the pinned Scrutiny 0.8.2 image and embedded
+InfluxDB started healthy without a Service, route, host port or collector
+endpoint. Two initial restore Pods failed before data validation because of
+temporary copy-path and ownership-preservation errors; both were removed and
+the corrected procedure passed. Production returned to 1/1, collectors stayed
+2/2 with recent ingestion, manifests retained drift zero, and no warning
+occurred after stabilization. The copy is a sensitive one-time bootstrap, not
+the recurring RPO-24-hour solution. No token, Secret, recovery command,
+production security context, image, device, hostPath or configuration changed.
+`SEC-003` remains pending.
+
 On 2026-08-19 IMG-003 pinned Filebrowser from the declared `s6` tag to the
 exact digest already running:
 `docker.io/filebrowser/filebrowser@sha256:ee4ac79e52966a5f6247f99c7d667c1debfb277a3a61ab829f505aa8f4c74b21`.

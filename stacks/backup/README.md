@@ -106,6 +106,33 @@ mistakes, but they reside on the same RAID filesystem as the live data.
 They are not protection against complete NAS loss. An encrypted independent
 or off-site copy remains required for full disaster recovery.
 
+## Scrutiny cold bootstrap backup
+
+The Scrutiny server has a manual cold-backup procedure for use before recovery
+or security work:
+
+    /usr/local/sbin/choms-scrutiny-bootstrap-backup.sh
+
+It performs a preflight before downtime, scales only the Scrutiny server to
+zero, mounts its configuration and InfluxDB host paths read-only, and publishes
+the validated copy atomically under the existing NAS backup mount. The backup
+tree is mode `0700` because InfluxDB 2.2 metadata contains authentication
+material. The procedure restores the original replica count through a trap and
+enforces a sub-ten-minute interruption.
+
+This is a manual bootstrap copy, not the RPO 24-hour recurring backup. It does
+not create or recover an InfluxDB token and must not be synchronized to a less
+restricted destination.
+
+Validate the latest copy without production writes:
+
+    /usr/local/sbin/choms-scrutiny-bootstrap-restore-test.sh
+
+The restore test uses a separate 1 GiB `emptyDir`, validates checksums, SQLite
+integrity, InfluxDB series/TSM/WAL/tombstone structures, and starts the pinned
+Scrutiny 0.8.2 image with its embedded InfluxDB 2.2.0. It creates no Service,
+route or collector endpoint and deletes the Pod and restored data on exit.
+
 ## Restore Test
 
 Run the controlled Nextcloud recovery test on `choms-node-01`:
@@ -141,6 +168,15 @@ Validation completed on 2026-08-14:
 - Nextcloud maintenance mode remained disabled
 - Nextcloud status endpoint remained healthy
 - Production database was not modified
+
+Scrutiny cold-bootstrap recovery validation completed on 2026-08-21:
+
+- Cold copy published atomically to the restricted NAS destination.
+- Production interruption completed well below the ten-minute limit.
+- SQLite and InfluxDB offline integrity checks passed.
+- Isolated InfluxDB 2.2.0 and Scrutiny 0.8.2 started healthy.
+- Temporary Pods, Jobs and restored data were removed.
+- Production Scrutiny, collectors and ingestion remained healthy.
 
 ## Validation
 

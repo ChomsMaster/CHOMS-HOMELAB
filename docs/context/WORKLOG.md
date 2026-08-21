@@ -383,3 +383,30 @@ entries are immutable; append an explicit correction when needed.
   changed.
 - **Derived pending:** SEC-003 remains pending and untouched; Authelia and
   all other workloads were not started.
+
+## 2026-08-21 — Scrutiny cold-bootstrap recovery prerequisite
+
+- **Action:** Added manual, non-recurring cold-backup and isolated-restore
+  procedures. A mount preflight passed before scaling only the Scrutiny server
+  to zero. Configuration and InfluxDB state were copied from read-only hostPath
+  mounts to a restricted NAS staging directory, checksummed and published by
+  atomic rename. Production interruption was 83 seconds.
+- **Restore evidence:** A separate 1 GiB `emptyDir` restore passed SQLite
+  `integrity_check` plus InfluxDB 2.2.0 series, TSM, WAL and tombstone checks.
+  The pinned Scrutiny 0.8.2 image and embedded InfluxDB then started healthy
+  without Service, route, host port or collector endpoint. Two earlier
+  temporary Pods failed before validation because of copy path/ownership
+  handling; both were removed before the corrected run passed.
+- **Result:** Scrutiny returned 1/1, collectors remained 2/2, recent ingestion
+  and the API were healthy, all three nodes were Ready, no Pods were
+  Pending/Failed, no Warning appeared after stabilization, and server plus
+  collector drift was zero. Temporary Pods, Jobs, locks, partial copies and
+  restored data were removed. Production data and manifest fields were not
+  changed.
+- **Security:** The backup is mode `0700` because InfluxDB 2.2 metadata
+  contains authentication material. No token or database content was read or
+  logged, and no Secret, recovery command, recurring schedule or automated
+  backup was introduced.
+- **Derived pending:** `SEC-003` remains pending. Controlled operator-token
+  recovery and the official recurring backup needed for RPO 24h require
+  separate authorization and validation.
