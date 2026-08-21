@@ -244,6 +244,17 @@ Kubernetes and the Scrutiny server were not modified. Native collector
 migration, privilege reduction and the unrelated failed mdraid-monitoring
 units remain separate work.
 
+The follow-up read-only NAS diagnosis on 2026-08-22 confirmed one active,
+non-degraded mdraid array with no resynchronization in progress. Both static,
+triggered monitoring units nevertheless exit with status 1, and no mdadm
+monitor process remains active. Their unit wiring and default daemon setting
+are present, but the exact error is unavailable to the unprivileged operator;
+the narrowly scoped journal query was denied. The units were therefore not
+disabled, masked, restarted or edited: an active array makes unnecessary-unit
+removal unsafe to infer. NAS storage, NFS, the GFS timer and its latest service
+result remained healthy. Resolution is blocked pending read-only privileged
+journal evidence for only those two units.
+
 Six Warning events from the removed preliminary Jobs/Pods remain as historical
 evidence; no Warning occurred after final stabilization. All temporary
 resources, locks and partial copies were removed. `SEC-003` remains pending;

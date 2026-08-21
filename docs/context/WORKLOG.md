@@ -497,3 +497,27 @@ entries are immutable; append an explicit correction when needed.
   endpoint, six-hour schedule, startup behavior, network and filesystems were
   unchanged. No smartmontools installation, native migration, mdraid work,
   Kubernetes change, `SEC-002` or `SEC-003` work was performed.
+
+## 2026-08-22 — NAS mdraid monitoring diagnosis
+
+- **Action:** Revalidated the digest-pinned NAS Scrutiny collector and performed
+  a read-only diagnosis of `mdmonitor.service` and
+  `mdmonitor-oneshot.service`. No collector reconciliation was needed because
+  the declared and effective image digests already matched.
+- **Evidence:** The kernel reports one active mdraid array, with no degraded
+  member or resynchronization. Both static, triggered monitoring units exit
+  with status 1 and leave no monitor process active. Unit flags, the mdadm
+  configuration entry and the default daemon setting are present, but the
+  unprivileged account cannot read the unit journal; a narrowly scoped
+  non-interactive sudo journal query was denied.
+- **Decision:** The cause is not yet unequivocal. Because an active array
+  exists, neither unit was disabled, masked, restarted or modified. No RAID,
+  disk, partition, filesystem or package operation was attempted. Resolution
+  remains blocked pending privileged read-only journal evidence and a separate
+  authorization for any proven reversible configuration-only correction.
+- **Validation:** NAS filesystems and NFS remained accessible, the GFS timer
+  and latest backup service result were healthy, and the collector remained
+  running with zero restarts after a complete five-device publication cycle.
+  Central Scrutiny reported 11 unique recent devices with zero duplicates;
+  Scrutiny was 1/1, collectors 2/2, all three nodes Ready, and no Pod was
+  Pending or Failed. NAS and Kubernetes received no mutation in this block.
