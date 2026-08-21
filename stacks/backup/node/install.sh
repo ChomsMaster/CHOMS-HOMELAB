@@ -15,6 +15,7 @@ SCRIPTS=(
   choms-nextcloud-restore-test.sh
   choms-scrutiny-bootstrap-backup.sh
   choms-scrutiny-bootstrap-restore-test.sh
+  choms-scrutiny-logical-restore-test.sh
 )
 
 UNITS=(

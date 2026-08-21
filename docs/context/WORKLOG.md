@@ -438,3 +438,40 @@ entries are immutable; append an explicit correction when needed.
   image, security context, device, host path, application configuration or
   other workload changed. `SEC-003` remains pending until the official
   recurring RPO-24-hour backup and isolated restore pass.
+
+## 2026-08-22 — Scrutiny recurring logical backup prerequisite
+
+- **Action:** Added an internal InfluxDB backup Service, script ConfigMap and
+  daily `scrutiny-logical-backup` CronJob. Official `influx backup` receives
+  the dedicated Operator token only through `secretKeyRef`; Python's
+  `sqlite3_backup` API creates a transactional SQLite copy from a read-only
+  production mount. Publication uses a mode-0700 staging directory, lock,
+  file-size and SHA-256 manifests, atomic rename and 7/8/12/5 GFS retention.
+- **Security:** Both pinned tool images run without privilege, host namespaces,
+  ServiceAccount tokens, added capabilities or privilege escalation, with
+  `RuntimeDefault` seccomp and read-only roots. UID/GID 0 is retained only
+  because a non-root preflight could not traverse the existing mode-0700 NAS
+  and source host paths. The token was neither displayed nor persisted outside
+  its existing Secret.
+- **Backup evidence:** Two preliminary manual Jobs failed before publication:
+  the first image had no Bash and the second exposed a BusyBox/GNU `find`
+  incompatibility. Both left zero partial copy or lock and were deleted. The
+  corrected POSIX Job succeeded and published one 17-file logical copy with
+  valid checksums. No GFS promotion was due; the cold bootstrap checksum set
+  remained valid.
+- **Restore evidence:** SQLite copy and `integrity_check`, full `influx
+  restore`, offline TSM/series and applicable WAL validation, and isolated
+  Scrutiny 0.8.2/InfluxDB 2.2.0 startup passed in a 1 GiB `emptyDir`. Earlier
+  isolated attempts identified writable InfluxDB metadata-path requirements
+  and an invalid post-full-restore token assumption; they changed no
+  production state and were removed before the final successful run.
+- **Result:** The daily 02:45 Europe/Madrid schedule is active with
+  `concurrencyPolicy: Forbid`, a 20-minute deadline and 1/1 successful/failed
+  history limits. Scrutiny remained 1/1, collectors 2/2 with healthy recent
+  ingestion, all three nodes Ready and no unhealthy Pod. Six Warning events
+  from the removed preliminary Jobs/Pods remain in event history; none occurred
+  after the final successful stabilization. No temporary Job, Pod, lock or
+  partial copy remains.
+- **Scope:** Production Scrutiny, privileges, security context, image,
+  configuration, devices, host paths and collectors were not modified.
+  `SEC-003` remains pending; only its backup prerequisite is complete.

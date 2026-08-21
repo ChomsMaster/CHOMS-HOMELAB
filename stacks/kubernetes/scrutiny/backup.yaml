@@ -1,0 +1,307 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: scrutiny-influx-backup
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/name: scrutiny-influx-backup
+spec:
+  type: ClusterIP
+  selector:
+    app: scrutiny
+  ports:
+  - name: influxdb
+    port: 8086
+    targetPort: 8086
+    protocol: TCP
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: scrutiny-logical-backup
+  namespace: monitoring
+data:
+  backup.sh: |
+    #!/bin/sh
+
+    set -eu
+    set +x
+    umask 077
+
+    root=/backup/scrutiny/logical
+    daily="$root/daily"
+    weekly="$root/weekly"
+    monthly="$root/monthly"
+    yearly="$root/yearly"
+    lock=/backup/scrutiny/.logical.lock
+    stamp="$(date -u +%Y%m%d-%H%M%S)"
+    partial="$daily/.partial-$stamp-$HOSTNAME"
+    final="$daily/$stamp"
+    published=0
+
+    cleanup() {
+      status=$?
+      if [ "$published" -eq 0 ]; then
+        rm -rf -- "$partial"
+      fi
+      rmdir "$lock" 2>/dev/null || true
+      rm -f /work/influx.log
+      exit "$status"
+    }
+    trap cleanup EXIT INT TERM
+
+    mkdir -p "$daily" "$weekly" "$monthly" "$yearly"
+    chmod 0700 /backup/scrutiny "$root" "$daily" "$weekly" "$monthly" "$yearly"
+    mkdir "$lock" || {
+      echo 'ERROR: another Scrutiny logical backup is active' >&2
+      exit 1
+    }
+
+    test ! -e "$partial"
+    test ! -e "$final"
+    mkdir -m 0700 "$partial" "$partial/influxdb"
+
+    if ! timeout 12m /tools/influx backup "$partial/influxdb" \
+      >/work/influx.log 2>&1; then
+      echo 'ERROR: official InfluxDB backup failed' >&2
+      exit 1
+    fi
+    find "$partial/influxdb" -type f | while IFS= read -r file; do
+      if [ -s "$file" ]; then
+        echo yes > /work/influx-nonempty
+        break
+      fi
+    done
+    test -s /work/influx-nonempty
+
+    BACKUP_SQLITE_SOURCE=/source/scrutiny.db \
+    BACKUP_SQLITE_DESTINATION="$partial/scrutiny.db" \
+      python3 - <<'PY'
+    import os
+    import sqlite3
+
+    source_path = os.environ["BACKUP_SQLITE_SOURCE"]
+    destination_path = os.environ["BACKUP_SQLITE_DESTINATION"]
+    source = sqlite3.connect(f"file:{source_path}?mode=ro", uri=True, timeout=30)
+    destination = sqlite3.connect(destination_path, timeout=30)
+    try:
+        source.backup(destination, pages=256, sleep=0.05)
+        result = destination.execute("PRAGMA integrity_check").fetchone()
+        tables = destination.execute(
+            "SELECT COUNT(*) FROM sqlite_master WHERE type='table'"
+        ).fetchone()[0]
+        if result != ("ok",) or tables < 1:
+            raise RuntimeError("SQLite backup integrity validation failed")
+    finally:
+        destination.close()
+        source.close()
+    PY
+
+    test -s "$partial/scrutiny.db"
+    (
+      cd "$partial"
+      find influxdb scrutiny.db -type f | LC_ALL=C sort |
+        while IFS= read -r file; do
+          printf '%s\t%s\n' "$file" "$(stat -c %s "$file")"
+        done
+    ) > "$partial/FILES.txt"
+    test -s "$partial/FILES.txt"
+    (
+      cd "$partial"
+      find influxdb scrutiny.db -type f | LC_ALL=C sort |
+        while IFS= read -r file; do sha256sum "$file"; done > SHA256SUMS
+      sha256sum -c SHA256SUMS >/dev/null
+    )
+
+    cat > "$partial/metadata.txt" <<META
+    Created: $stamp
+    InfluxDB server: 2.2.0
+    Influx CLI: 2.3.0
+    SQLite method: sqlite3_backup
+    Backup mode: online logical
+    META
+    chmod -R go-rwx "$partial"
+    mv "$partial" "$final"
+    published=1
+    ln -sfn "$stamp" "$daily/latest"
+
+    promote() {
+      source=$1
+      destination_root=$2
+      name=$3
+      destination="$destination_root/$name"
+      temporary="$destination_root/.partial-$name-$HOSTNAME"
+      if [ ! -d "$destination" ]; then
+        rm -rf -- "$temporary"
+        cp -al "$source" "$temporary"
+        (cd "$temporary" && sha256sum -c SHA256SUMS >/dev/null)
+        mv "$temporary" "$destination"
+      fi
+      ln -sfn "$name" "$destination_root/latest"
+    }
+
+    rotate() {
+      directory=$1
+      keep=$2
+      find "$directory" -mindepth 1 -maxdepth 1 -type d \
+        -name '20??????-??????' | sed 's#.*/##' | LC_ALL=C sort -r |
+        tail -n "+$((keep + 1))" |
+        while IFS= read -r old; do
+          [ -n "$old" ] && rm -rf -- "$directory/$old"
+        done
+    }
+
+    backup_date=${stamp%%-*}
+    year="$(printf '%s' "$backup_date" | cut -c1-4)"
+    month="$(printf '%s' "$backup_date" | cut -c5-6)"
+    day="$(printf '%s' "$backup_date" | cut -c7-8)"
+    date_iso="$year-$month-$day"
+    day_of_week="$(date -u -d "$date_iso" +%u)"
+
+    [ "$day_of_week" -ne 7 ] || promote "$final" "$weekly" "$stamp"
+    [ "$(expr "$day" + 0)" -ne 1 ] || promote "$final" "$monthly" "$stamp"
+    if [ "$(expr "$month" + 0)" -eq 1 ] && [ "$(expr "$day" + 0)" -eq 1 ]; then
+      promote "$final" "$yearly" "$stamp"
+    fi
+
+    rotate "$daily" 7
+    rotate "$weekly" 8
+    rotate "$monthly" 12
+    rotate "$yearly" 5
+
+    (cd "$final" && sha256sum -c SHA256SUMS >/dev/null)
+    test -L "$daily/latest"
+    echo 'scrutiny_logical_backup=validated'
+    echo "backup_release=$stamp"
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: scrutiny-logical-backup
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/name: scrutiny-logical-backup
+spec:
+  schedule: "45 2 * * *"
+  timeZone: Europe/Madrid
+  suspend: false
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 900
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      activeDeadlineSeconds: 1200
+      ttlSecondsAfterFinished: 3600
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: scrutiny-logical-backup
+        spec:
+          automountServiceAccountToken: false
+          restartPolicy: Never
+          nodeSelector:
+            kubernetes.io/hostname: choms-node-01
+          tolerations:
+          - key: node-role.kubernetes.io/control-plane
+            operator: Exists
+            effect: NoSchedule
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+            seccompProfile:
+              type: RuntimeDefault
+          initContainers:
+          - name: influx-cli
+            image: docker.io/library/influxdb@sha256:0bf6457dc1282f653d9e82186fad7e35138892364c7f81e5e2c47b551c65a49a
+            imagePullPolicy: IfNotPresent
+            command: [/bin/sh, -euc]
+            args:
+            - |
+              influx version 2>/dev/null | grep -q 'Influx CLI 2.3.0'
+              influxd version 2>/dev/null | grep -q 'InfluxDB v2.2.0'
+              install -m 0555 /usr/local/bin/influx /tools/influx
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: [ALL]
+              readOnlyRootFilesystem: true
+            resources:
+              requests:
+                cpu: 10m
+                memory: 16Mi
+              limits:
+                cpu: 100m
+                memory: 64Mi
+            volumeMounts:
+            - name: tools
+              mountPath: /tools
+            - name: tmp
+              mountPath: /tmp
+          containers:
+          - name: backup
+            image: docker.io/library/python@sha256:9ba6d8cbebf0fb6546ae71f2a1c14f6ffd2fdab83af7fa5669734ef30ad48844
+            imagePullPolicy: IfNotPresent
+            command: [/bin/sh, /scripts/backup.sh]
+            env:
+            - name: INFLUX_HOST
+              value: http://scrutiny-influx-backup.monitoring.svc.cluster.local:8086
+            - name: INFLUX_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: scrutiny-backup-influx-operator
+                  key: token
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: [ALL]
+              readOnlyRootFilesystem: true
+            resources:
+              requests:
+                cpu: 50m
+                memory: 64Mi
+                ephemeral-storage: 32Mi
+              limits:
+                cpu: 500m
+                memory: 512Mi
+                ephemeral-storage: 128Mi
+            volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+              readOnly: true
+            - name: tools
+              mountPath: /tools
+              readOnly: true
+            - name: source-config
+              mountPath: /source
+              readOnly: true
+            - name: backup
+              mountPath: /backup
+            - name: work
+              mountPath: /work
+            - name: tmp
+              mountPath: /tmp
+          volumes:
+          - name: scripts
+            configMap:
+              name: scrutiny-logical-backup
+              defaultMode: 0555
+          - name: tools
+            emptyDir:
+              sizeLimit: 32Mi
+          - name: source-config
+            hostPath:
+              path: /data/docker/scrutiny/config
+              type: Directory
+          - name: backup
+            hostPath:
+              path: /mnt/choms-backups
+              type: Directory
+          - name: work
+            emptyDir:
+              sizeLimit: 32Mi
+          - name: tmp
+            emptyDir:
+              sizeLimit: 32Mi

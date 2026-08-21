@@ -69,6 +69,7 @@ Both backup paths use the following GFS policy:
 | `choms-node-01` | `choms-backup-gfs-retention.timer` | 03:40 |
 | `choms-node-01` | `choms-nextcloud-data-backup.timer` | 04:10 |
 | `choms-nas` | `choms-nextcloud-gfs.timer` | 04:25 |
+| Kubernetes | `scrutiny-logical-backup` CronJob | 02:45 Europe/Madrid |
 
 Timers use a randomized delay of up to five minutes.
 
@@ -145,6 +146,41 @@ and only afterwards delete the Kubernetes Secret.
 The authorization bootstrap does not implement the recurring RPO-24-hour
 backup and does not authorize a production restore or `SEC-003` hardening.
 
+## Scrutiny recurring logical backup
+
+[`backup.yaml`](../kubernetes/scrutiny/backup.yaml) declares an internal-only
+InfluxDB Service, the backup script ConfigMap and a daily CronJob. The CronJob
+uses the official InfluxDB 2.2.0 image, whose bundled CLI is 2.3.0, and the
+pinned Python image used by the established restore tooling. It performs:
+
+- official online `influx backup` using `INFLUX_TOKEN` from `secretKeyRef`;
+- transactional SQLite backup through Python's `sqlite3_backup` API while the
+  production directory is mounted read-only;
+- mode-0700 staging, a cross-run lock, file-size and SHA-256 manifests;
+- atomic directory publication and a `latest` pointer;
+- GFS retention of 7 daily, 8 weekly, 12 monthly and 5 yearly copies.
+
+Logical copies live under `/mnt/choms-backups/scrutiny/logical`. The separate
+bootstrap tree is outside retention scope and must never be removed by this
+workflow. The Job has a 20-minute deadline, forbids overlap, retains one
+successful and one failed history entry, mounts no ServiceAccount token, and
+has no privileged or host-namespace access.
+
+The existing NAS and source host paths require UID/GID 0. A non-root preflight
+could not traverse the protected mode-0700 paths. The containers remain
+non-privileged with all capabilities dropped, no privilege escalation,
+`RuntimeDefault` seccomp and read-only root filesystems.
+
+Run the isolated logical restore validation with:
+
+    /usr/local/sbin/choms-scrutiny-logical-restore-test.sh
+
+The test verifies both checksum manifests, restores SQLite into a separate
+1 GiB `emptyDir`, runs `influx restore --full` against a fresh isolated
+InfluxDB 2.2.0 instance, validates TSM, series and any restored WAL offline,
+then starts the pinned Scrutiny 0.8.2 image. It creates no Service, route,
+hostPort or collector endpoint and removes the Pod and restored data on exit.
+
 Validate the latest copy without production writes:
 
     /usr/local/sbin/choms-scrutiny-bootstrap-restore-test.sh
@@ -198,6 +234,17 @@ Scrutiny cold-bootstrap recovery validation completed on 2026-08-21:
 - Isolated InfluxDB 2.2.0 and Scrutiny 0.8.2 started healthy.
 - Temporary Pods, Jobs and restored data were removed.
 - Production Scrutiny, collectors and ingestion remained healthy.
+
+Scrutiny logical-backup validation completed on 2026-08-22:
+
+- One daily backup was published atomically with 17 files and valid checksums.
+- SQLite online backup and isolated `integrity_check` passed.
+- Full InfluxDB restore plus offline storage validation passed.
+- Isolated InfluxDB 2.2.0 and Scrutiny 0.8.2 started healthy.
+- GFS ran with no eligible weekly, monthly or yearly promotion and preserved
+  the cold bootstrap checksums.
+- The CronJob is active for 02:45 Europe/Madrid; no temporary resource, lock
+  or partial copy remains.
 
 ## Validation
 

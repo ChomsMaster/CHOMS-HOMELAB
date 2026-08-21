@@ -219,6 +219,24 @@ production image, security context, device, host path or configuration was
 changed. `SEC-003` remains pending until the official recurring RPO-24-hour
 backup is implemented and restored in isolation.
 
+On 2026-08-22 the recurring Scrutiny backup prerequisite was completed. A
+daily `monitoring/scrutiny-logical-backup` CronJob uses the official InfluxDB
+2.2.0 image with its compatible 2.3.0 CLI for online `influx backup`, and a
+pinned Python image uses SQLite's online backup API against a read-only source
+mount. The workload publishes mode-0700 copies atomically to the separate NAS
+logical tree, with a lock, file/size and SHA-256 manifests, a 20-minute
+deadline, `Forbid` concurrency and the existing 7/8/12/5 GFS policy. The
+Operator token is available only to the backup container through the existing
+Secret reference. A manual run produced one 17-file logical copy; checksums,
+SQLite integrity, full isolated InfluxDB restore, offline TSM/series/WAL checks
+and isolated Scrutiny 0.8.2/InfluxDB 2.2.0 startup passed. The cold bootstrap
+copy and its checksums were preserved. Production Scrutiny stayed 1/1,
+collectors 2/2 with recent ingestion, three nodes Ready and no unhealthy Pod.
+Six Warning events from the removed preliminary Jobs/Pods remain as historical
+evidence; no Warning occurred after final stabilization. All temporary
+resources, locks and partial copies were removed. `SEC-003` remains pending;
+no production privilege, image, configuration, device or hostPath changed.
+
 On 2026-08-19 IMG-003 pinned Filebrowser from the declared `s6` tag to the
 exact digest already running:
 `docker.io/filebrowser/filebrowser@sha256:ee4ac79e52966a5f6247f99c7d667c1debfb277a3a61ab829f505aa8f4c74b21`.

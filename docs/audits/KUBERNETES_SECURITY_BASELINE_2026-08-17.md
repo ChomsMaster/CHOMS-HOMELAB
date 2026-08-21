@@ -558,6 +558,29 @@ ingestion checks, before any SEC-003 privilege or hostPath change. SEC-003
 remains `pending`; no securityContext, hostPath, device or server change was
 made.
 
+## SEC-003 recurring backup prerequisite — 2026-08-22
+
+The remaining backup prerequisite is now implemented without modifying the
+production Scrutiny Deployment. The daily CronJob performs official online
+InfluxDB backup with the dedicated runtime-only Operator authorization and
+uses SQLite's transactional backup API against a read-only hostPath. It
+publishes atomically to a separate mode-0700 NAS tree with checksums, lock,
+20-minute timeout and 7/8/12/5 GFS retention. Its internal Service exposes only
+authenticated InfluxDB port 8086 inside the cluster and has no route.
+
+The fixed InfluxDB 2.2.0 official image contains CLI 2.3.0. A non-root
+preflight proved incompatible with the existing protected host paths, so the
+backup containers use UID/GID 0 while remaining non-privileged, dropping all
+capabilities, denying privilege escalation, using `RuntimeDefault` seccomp and
+read-only roots. ServiceAccount token automount and host namespaces are
+disabled.
+
+One logical copy passed SHA-256 and SQLite integrity checks. A full restore to
+a separate 1 GiB `emptyDir` passed InfluxDB TSM, series and applicable WAL
+validation, followed by healthy isolated InfluxDB 2.2.0 and Scrutiny 0.8.2
+startup without Service, route, hostPort or collectors. The cold bootstrap was
+unchanged. This closes only the backup prerequisite; `SEC-003` remains pending.
+
 ## Top ten ordered follow-up blocks
 
 1. Protect only the Prometheus HTTPRoute with the existing Authelia middleware;
