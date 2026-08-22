@@ -549,3 +549,18 @@ entries are immutable; append an explicit correction when needed.
   collectors 2/2 and no Pending/Failed Pod. All staging and reconciliation
   temporaries were removed. No array, disk, filesystem, mount, package,
   Scrutiny, Docker, NFS, backup or Kubernetes configuration changed.
+
+## 2026-08-22 — Scrutiny SEC-003 Hub/Spoke migration
+
+- **Baseline:** 12 stored records reconcile to 11 active unique devices
+  (`2+2+2+5`) plus one inactive July record; no overlap or deletion.
+- **SQLite:** UID/GID is 0 for both images. `1000:1000 0755` failed API writes
+  after dropping capabilities and `fsGroup` did not help. Minimal `0:0 0755`
+  passed synthetic registration, restart persistence and integrity checks.
+- **Change:** Split pinned web/API 0.8.2 and InfluxDB 2.2.0; removed web
+  privilege, devices, udev, hostPort, Influx mount and ServiceAccount token;
+  switched collectors to Service DNS and added S as the third collector.
+- **Validation:** S published two devices without HTTP 500. A post-change
+  backup and full isolated Hub/Spoke restore with API write/restart passed.
+- **Rollback:** Stop split workloads, remove S label, restore omnibus and
+  config ownership `1000:1000`; restore data only on proven corruption.

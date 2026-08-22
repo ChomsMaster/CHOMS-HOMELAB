@@ -12,8 +12,12 @@ spec:
       labels:
         app: scrutiny-collector
     spec:
+      automountServiceAccountToken: false
       nodeSelector:
         scrutiny-collector: "enabled"
+
+      tolerations:
+        - {key: node-role.kubernetes.io/control-plane, operator: Exists, effect: NoSchedule}
 
       containers:
         - name: collector
@@ -33,7 +37,7 @@ spec:
 
           env:
             - name: COLLECTOR_API_ENDPOINT
-              value: http://192.168.1.138:8083
+              value: http://scrutiny.monitoring.svc.cluster.local:8080
 
             - name: COLLECTOR_HOST_ID
               valueFrom:

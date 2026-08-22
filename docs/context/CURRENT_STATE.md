@@ -395,3 +395,12 @@ ConfigMap metadata and mounted files remained healthy. The controller-only
 diff is empty; pre-existing full-manifest ConfigMap content drift was
 preserved and not changed. No other workload or Home field changed. SEC-003
 remains pending and was not executed.
+
+On 2026-08-22 SEC-003 migrated Scrutiny 0.8.2 to Hub/Spoke with official
+InfluxDB 2.2.0. Web/API now mounts only configuration and has no privilege,
+capabilities, devices, udev, hostPort, Influx storage or ServiceAccount token.
+An isolated API-write matrix proved minimal config ownership `0:0 0755` is
+required with all capabilities dropped; retained UID 0 is the residual risk.
+Three Kubernetes collectors plus NAS cover 11 active unique devices
+(`2+2+2+5`); one inactive July record remains intact. A fresh logical backup
+and complete isolated restore with API write and web restart passed.

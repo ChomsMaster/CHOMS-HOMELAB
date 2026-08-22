@@ -1,94 +1,86 @@
 ---
 apiVersion: v1
 kind: Service
-metadata:
-  name: scrutiny
-  namespace: monitoring
+metadata: {name: scrutiny, namespace: monitoring}
 spec:
   type: ClusterIP
-  selector:
-    app: scrutiny
-  ports:
-  - name: http
-    port: 8080
-    targetPort: 8080
+  selector: {app: scrutiny}
+  ports: [{name: http, port: 8080, targetPort: 8080}]
+---
+apiVersion: v1
+kind: Service
+metadata: {name: scrutiny-influxdb, namespace: monitoring}
+spec:
+  type: ClusterIP
+  selector: {app: scrutiny-influxdb}
+  ports: [{name: influxdb, port: 8086, targetPort: 8086}]
 ---
 apiVersion: apps/v1
 kind: Deployment
-metadata:
-  name: scrutiny
-  namespace: monitoring
+metadata: {name: scrutiny-influxdb, namespace: monitoring}
 spec:
   replicas: 1
-  strategy:
-    type: Recreate
-  selector:
-    matchLabels:
-      app: scrutiny
+  strategy: {type: Recreate}
+  selector: {matchLabels: {app: scrutiny-influxdb}}
   template:
-    metadata:
-      labels:
-        app: scrutiny
+    metadata: {labels: {app: scrutiny-influxdb}}
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: choms-node-01
+      automountServiceAccountToken: false
+      nodeSelector: {kubernetes.io/hostname: choms-node-01}
       tolerations:
-      - key: node-role.kubernetes.io/control-plane
-        operator: Exists
-        effect: NoSchedule
+      - {key: node-role.kubernetes.io/control-plane, operator: Exists, effect: NoSchedule}
       containers:
-      - name: scrutiny
-        image: ghcr.io/analogj/scrutiny@sha256:18689773150d6b8b53c94a435f40f7b6e946fd4a6d40b44c64fa2154a5b38941
+      - name: influxdb
+        image: docker.io/library/influxdb@sha256:0bf6457dc1282f653d9e82186fad7e35138892364c7f81e5e2c47b551c65a49a
         imagePullPolicy: IfNotPresent
         securityContext:
-          privileged: true
-        ports:
-        - name: http
-          containerPort: 8080
-          hostPort: 8083
-          protocol: TCP
-        readinessProbe:
-          tcpSocket:
-            port: 8080
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          failureThreshold: 18
-        livenessProbe:
-          tcpSocket:
-            port: 8080
-          initialDelaySeconds: 90
-          periodSeconds: 30
-          failureThreshold: 5
+          privileged: false
+          allowPrivilegeEscalation: false
+          seccompProfile: {type: RuntimeDefault}
+        ports: [{name: influxdb, containerPort: 8086, protocol: TCP}]
+        readinessProbe: {httpGet: {path: /health, port: 8086}, initialDelaySeconds: 10, periodSeconds: 5, failureThreshold: 24}
+        livenessProbe: {httpGet: {path: /health, port: 8086}, initialDelaySeconds: 60, periodSeconds: 30, failureThreshold: 5}
         resources:
-          requests:
-            cpu: 100m
-            memory: 256Mi
-          limits:
-            memory: 2Gi
-        volumeMounts:
-        - name: config
-          mountPath: /opt/scrutiny/config
-        - name: influxdb
-          mountPath: /opt/scrutiny/influxdb
-        - name: udev
-          mountPath: /run/udev
-          readOnly: true
-        - name: dev
-          mountPath: /dev
+          requests: {cpu: 100m, memory: 256Mi}
+          limits: {memory: 2Gi}
+        volumeMounts: [{name: influxdb, mountPath: /var/lib/influxdb2}]
+      volumes:
+      - name: influxdb
+        hostPath: {path: /data/docker/scrutiny/influxdb, type: Directory}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: scrutiny, namespace: monitoring}
+spec:
+  replicas: 1
+  strategy: {type: Recreate}
+  selector: {matchLabels: {app: scrutiny}}
+  template:
+    metadata: {labels: {app: scrutiny}}
+    spec:
+      automountServiceAccountToken: false
+      nodeSelector: {kubernetes.io/hostname: choms-node-01}
+      tolerations:
+      - {key: node-role.kubernetes.io/control-plane, operator: Exists, effect: NoSchedule}
+      containers:
+      - name: scrutiny
+        image: ghcr.io/analogj/scrutiny@sha256:1f3e97da5f1395bd236b3846dff9abcf59da34092fb5a66de549bf863dcb26b9
+        imagePullPolicy: IfNotPresent
+        env:
+        - {name: SCRUTINY_WEB_INFLUXDB_HOST, value: scrutiny-influxdb.monitoring.svc.cluster.local}
+        - {name: SCRUTINY_WEB_INFLUXDB_PORT, value: "8086"}
+        securityContext:
+          privileged: false
+          allowPrivilegeEscalation: false
+          capabilities: {drop: [ALL]}
+          seccompProfile: {type: RuntimeDefault}
+        ports: [{name: http, containerPort: 8080, protocol: TCP}]
+        readinessProbe: {httpGet: {path: /api/health, port: 8080}, initialDelaySeconds: 10, periodSeconds: 5, failureThreshold: 24}
+        livenessProbe: {httpGet: {path: /api/health, port: 8080}, initialDelaySeconds: 60, periodSeconds: 30, failureThreshold: 5}
+        resources:
+          requests: {cpu: 100m, memory: 256Mi}
+          limits: {memory: 2Gi}
+        volumeMounts: [{name: config, mountPath: /opt/scrutiny/config}]
       volumes:
       - name: config
-        hostPath:
-          path: /data/docker/scrutiny/config
-          type: Directory
-      - name: influxdb
-        hostPath:
-          path: /data/docker/scrutiny/influxdb
-          type: Directory
-      - name: udev
-        hostPath:
-          path: /run/udev
-          type: Directory
-      - name: dev
-        hostPath:
-          path: /dev
-          type: Directory
+        hostPath: {path: /data/docker/scrutiny/config, type: Directory}
