@@ -599,3 +599,19 @@ entries are immutable; append an explicit correction when needed.
   resources and backup artifacts were removed.
 - **Security:** No Secret values, dumps, private keys, personal data or logs
   entered Git. Checkpoint 1 remains an independent rollback boundary.
+
+## 2026-08-23 — Colegio staging Checkpoint 3 declarativo
+
+- **Scope:** Deployed only Gibbon 30.0.01 staging resources: independent
+  MariaDB, database/runtime PVCs, runtime Secret, pinned bootstrap Deployment,
+  ClusterIP Services and the `colegio-gestion.chomsmaster.com` HTTPRoute.
+- **Protection:** The route is attached to `web` and `websecure` and uses the
+  existing Authelia ForwardAuth. The official installer bundle is present and
+  reachable behind authentication.
+- **Boundary:** The manual web installer was not completed, no account or real
+  data was created, and no Gibbon import or migration occurred. The runtime
+  PVC is intentionally mutable because this is an official installer
+  requirement. Checkpoints 1 and 2 remain independent and untouched.
+- **Security:** The image is pinned by digest; the Pod has no privileged mode,
+  hostPath, hostPort or ServiceAccount token. Secret values and credentials are
+  runtime-only and absent from Git.

@@ -90,4 +90,4 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 |---|---|---|
 | Colegio staging foundation (Checkpoint 1) | `completed` | Web, split DNS, certificate SANs and Authelia ForwardAuth deployed and committed independently; later Moodle/Gibbon failures do not roll back this checkpoint. |
 | Moodle activities and recovery (Checkpoint 2) | `completed` | Official assign defaults, fictional activity persistence, CronJob, ClusterIP/HTTPRoute ForwardAuth, logical backup and isolated restore passed; artificial restore marker documented. |
-| Gibbon installer (Checkpoint 3) | `pending` | Deploy only after Moodle checkpoint; stop at the protected official manual installer. |
+| Gibbon installer (Checkpoint 3 declarative) | `completed` | Pinned bootstrap image, independent MariaDB/PVC/Secret, ClusterIP Service and Authelia-protected HTTPRoute deployed; official manual installer is available and remains intentionally incomplete. |

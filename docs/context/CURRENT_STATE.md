@@ -441,3 +441,17 @@ restore marker was an artificial operational marker (`filedir`), not user
 data; tar ownership warnings from local-path were handled with
 `--no-same-owner` in the temporary restore only. No backup contents, Secrets or
 private data are versioned.
+
+## Colegio María Rosario staging — Checkpoint 3 declarativo
+
+Gibbon 30.0.01 is deployed independently with its pinned bootstrap image,
+dedicated MariaDB, runtime Secret, database PVC and writable application PVC.
+The ClusterIP Service and HTTPRoute for `colegio-gestion.chomsmaster.com` are
+attached to both Gateway listeners and the existing Authelia ForwardAuth.
+
+The official web installer is accessible behind Authelia and the deployment is
+intentionally stopped at that manual-install boundary. No installer form was
+automated, no administration account was created, and no real Colegio data was
+imported. The runtime PVC remains mutable as required by the official bundle;
+the declarative rollback boundary covers only Gibbon resources and leaves
+Checkpoints 1 and 2 intact. Runtime Secret values are not versioned.

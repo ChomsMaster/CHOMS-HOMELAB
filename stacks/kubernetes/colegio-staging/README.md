@@ -31,4 +31,17 @@ real five-minute CronJob has completed successfully.
 ForwardAuth on both Gateway listeners. Backup and isolated restore validated
 the schema, fictional course/task and `moodledata/filedir`. The restore
 marker is artificial and operational only; no real user data was introduced.
-Gibbon remains a separate pending checkpoint.
+Gibbon is deployed in its separate declarative checkpoint; its manual installer
+remains pending.
+
+## Checkpoint 3 — Gibbon declarativo
+
+Gibbon 30.0.01 uses the pinned bootstrap image, an independent MariaDB and
+dedicated database/runtime PVCs plus a runtime-only Secret. Its ClusterIP
+Service and `colegio-gestion.chomsmaster.com` HTTPRoute use both Gateway
+listeners and the existing Authelia ForwardAuth.
+
+The official web installer is available behind Authelia. This checkpoint stops
+there deliberately: the installer is manual, no account or real data exists,
+and the writable runtime PVC remains mutable as required by the official
+bundle. Checkpoints 1 and 2 are not part of this rollback boundary.

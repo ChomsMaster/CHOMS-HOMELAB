@@ -1,0 +1,243 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: colegio-gibbon-db
+  namespace: colegio-maria-rosario-staging
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: colegio-gibbon-runtime
+  namespace: colegio-maria-rosario-staging
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: colegio-gibbon-db
+  namespace: colegio-maria-rosario-staging
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: colegio-gibbon-db
+  template:
+    metadata:
+      labels:
+        app: colegio-gibbon-db
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: mariadb
+        image: docker.io/library/mariadb@sha256:4f1d8d202fcf7bcb3902f63af09f9c1a050c2922a89652f22abaec0d4f015e83
+        args: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+        env:
+        - name: MARIADB_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: colegio-gibbon-db-runtime
+              key: database
+        - name: MARIADB_USER
+          valueFrom:
+            secretKeyRef:
+              name: colegio-gibbon-db-runtime
+              key: username
+        - name: MARIADB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: colegio-gibbon-db-runtime
+              key: password
+        - name: MARIADB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: colegio-gibbon-db-runtime
+              key: root-password
+        ports:
+        - name: mysql
+          containerPort: 3306
+        readinessProbe:
+          exec:
+            command: [sh, -c, 'healthcheck.sh --connect --innodb_initialized']
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          exec:
+            command: [sh, -c, 'healthcheck.sh --connect --innodb_initialized']
+          initialDelaySeconds: 60
+          periodSeconds: 20
+          timeoutSeconds: 5
+        resources:
+          requests: {cpu: 50m, memory: 256Mi}
+          limits: {cpu: 500m, memory: 1Gi}
+        volumeMounts:
+        - name: db
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: db
+        persistentVolumeClaim:
+          claimName: colegio-gibbon-db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: colegio-gibbon-db
+  namespace: colegio-maria-rosario-staging
+spec:
+  type: ClusterIP
+  selector:
+    app: colegio-gibbon-db
+  ports:
+  - name: mysql
+    port: 3306
+    targetPort: mysql
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: colegio-gibbon
+  namespace: colegio-maria-rosario-staging
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: colegio-gibbon
+  template:
+    metadata:
+      labels:
+        app: colegio-gibbon
+    spec:
+      automountServiceAccountToken: false
+      initContainers:
+      - name: bootstrap-runtime
+        image: ghcr.io/chomsmaster/colegio-gibbon@sha256:ba8df30273e6a29b8f5c502974a603cd3fb5a8daf6495cddd405c7d9905b383d
+        command: [sh, -c]
+        args: ["if [ ! -e /var/www/html/index.php ]; then cp -r --no-preserve=mode,ownership,timestamps /opt/gibbon-bootstrap/. /var/www/html/; fi"]
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: [ALL]
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - name: runtime
+          mountPath: /var/www/html
+      containers:
+      - name: gibbon
+        image: ghcr.io/chomsmaster/colegio-gibbon@sha256:ba8df30273e6a29b8f5c502974a603cd3fb5a8daf6495cddd405c7d9905b383d
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          runAsUser: 33
+          runAsGroup: 33
+          runAsNonRoot: true
+          privileged: false
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: [ALL]
+          seccompProfile:
+            type: RuntimeDefault
+        ports:
+        - name: http
+          containerPort: 8080
+        env:
+        - name: GIBBON_DB_HOST
+          value: colegio-gibbon-db
+        - name: GIBBON_DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: colegio-gibbon-db-runtime
+              key: database
+        - name: GIBBON_DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: colegio-gibbon-db-runtime
+              key: username
+        - name: GIBBON_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: colegio-gibbon-db-runtime
+              key: password
+        readinessProbe:
+          httpGet:
+            path: /index.php
+            port: http
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /index.php
+            port: http
+          initialDelaySeconds: 60
+          periodSeconds: 20
+          timeoutSeconds: 5
+        resources:
+          requests: {cpu: 100m, memory: 256Mi}
+          limits: {cpu: 1, memory: 1Gi}
+        volumeMounts:
+        - name: runtime
+          mountPath: /var/www/html
+        - name: tmp
+          mountPath: /tmp
+        - name: run
+          mountPath: /var/run/apache2
+      volumes:
+      - name: runtime
+        persistentVolumeClaim:
+          claimName: colegio-gibbon-runtime
+      - name: tmp
+        emptyDir: {}
+      - name: run
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: colegio-gibbon
+  namespace: colegio-maria-rosario-staging
+spec:
+  type: ClusterIP
+  selector:
+    app: colegio-gibbon
+  ports:
+  - name: http
+    port: 8080
+    targetPort: http
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: colegio-gibbon
+  namespace: colegio-maria-rosario-staging
+spec:
+  hostnames: [colegio-gestion.chomsmaster.com]
+  parentRefs:
+  - {group: gateway.networking.k8s.io, kind: Gateway, name: traefik, namespace: traefik, sectionName: web}
+  - {group: gateway.networking.k8s.io, kind: Gateway, name: traefik, namespace: traefik, sectionName: websecure}
+  rules:
+  - matches:
+    - path: {type: PathPrefix, value: /}
+    filters:
+    - type: ExtensionRef
+      extensionRef:
+        group: traefik.io
+        kind: Middleware
+        name: authelia-forwardauth
+    backendRefs:
+    - name: colegio-gibbon
+      port: 8080
