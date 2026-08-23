@@ -581,3 +581,21 @@ entries are immutable; append an explicit correction when needed.
   risk.
 - **Rollback boundary:** Later Moodle or Gibbon failures roll back only their
   own resources; this foundation remains intact.
+
+## 2026-08-23 — Colegio staging Checkpoint 2
+
+- **Scope:** Completed Moodle 5.2.2/MariaDB 11.4 staging only. The declarative
+  activity validation uses the complete official assign defaults, including
+  `visible=1`, the four authorized grading defaults and nullable multimarking
+  fields. No Gibbon resources were deployed.
+- **Validation:** Fictional course and task persist in the active PVCs; the
+  real CronJob completed successful cycles. The Moodle ClusterIP Service and
+  `colegio-aula.chomsmaster.com` HTTPRoute are healthy on `web` and `websecure`
+  with the existing Authelia ForwardAuth.
+- **Recovery:** Logical MariaDB, configuration and `moodledata` backup was
+  checksum-verified. An isolated restore preserved the schema, fictional
+  course/task and `moodledata/filedir`. The restore marker is explicitly
+  artificial/operational and contains no user data. Temporary restore
+  resources and backup artifacts were removed.
+- **Security:** No Secret values, dumps, private keys, personal data or logs
+  entered Git. Checkpoint 1 remains an independent rollback boundary.

@@ -424,3 +424,20 @@ Deployment Ready, EndpointSlice present, six pages served internally,
 `private-assets-review` returned 404, HTTPRoute Accepted/ResolvedRefs and
 anonymous external access redirected through ForwardAuth. No Secrets or
 private key material are versioned.
+
+## Colegio María Rosario staging — Checkpoint 2
+
+Moodle 5.2.2 and MariaDB 11.4 are deployed with independent ClusterIP
+Services, PVCs and runtime Secrets. The Moodle activity validation now uses the
+official assign defaults, including `visible=1`, the four required grading
+fields and nullable multimarking fields. A fictional course and assign task
+persist across the active PVCs; the real CronJob completed successful cycles.
+
+The Moodle HTTPRoute for `colegio-aula.chomsmaster.com` is Accepted and
+ResolvedRefs on both `web` and `websecure`, with the existing Authelia
+ForwardAuth. A logical backup and isolated restore were functionally valid:
+schema, fictional course, task and `moodledata/filedir` were present. The
+restore marker was an artificial operational marker (`filedir`), not user
+data; tar ownership warnings from local-path were handled with
+`--no-same-owner` in the temporary restore only. No backup contents, Secrets or
+private data are versioned.

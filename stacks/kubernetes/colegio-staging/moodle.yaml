@@ -1,0 +1,275 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: colegio-moodle-db
+  namespace: colegio-maria-rosario-staging
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: colegio-moodle-data
+  namespace: colegio-maria-rosario-staging
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: colegio-moodle-config
+  namespace: colegio-maria-rosario-staging
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: colegio-moodle-db
+  namespace: colegio-maria-rosario-staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: colegio-moodle-db}
+  template:
+    metadata:
+      labels: {app: colegio-moodle-db}
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: mariadb
+          image: docker.io/library/mariadb@sha256:4f1d8d202fcf7bcb3902f63af09f9c1a050c2922a89652f22abaec0d4f015e83
+          args: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+          env:
+            - name: MARIADB_DATABASE
+              value: moodle
+            - name: MARIADB_USER
+              value: moodle
+            - name: MARIADB_PASSWORD
+              valueFrom: {secretKeyRef: {name: colegio-moodle-db-runtime, key: password}}
+            - name: MARIADB_ROOT_PASSWORD
+              valueFrom: {secretKeyRef: {name: colegio-moodle-db-runtime, key: root-password}}
+          ports: [{name: mysql, containerPort: 3306}]
+          readinessProbe:
+            exec: {command: [sh, -c, 'healthcheck.sh --connect --innodb_initialized']}
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            exec: {command: [sh, -c, 'healthcheck.sh --connect --innodb_initialized']}
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            timeoutSeconds: 5
+          resources:
+            requests: {cpu: 50m, memory: 256Mi}
+            limits: {cpu: 500m, memory: 1Gi}
+          volumeMounts: [{name: db, mountPath: /var/lib/mysql}]
+      volumes: [{name: db, persistentVolumeClaim: {claimName: colegio-moodle-db}}]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: colegio-moodle-db
+  namespace: colegio-maria-rosario-staging
+spec:
+  type: ClusterIP
+  selector: {app: colegio-moodle-db}
+  ports: [{name: mysql, port: 3306, targetPort: mysql}]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: colegio-moodle-install
+  namespace: colegio-maria-rosario-staging
+spec:
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 86400
+  template:
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      initContainers:
+        - name: wait-db
+          image: ghcr.io/chomsmaster/colegio-moodle@sha256:0e798d4c8ea934152c500643f5d31caeb57d5991e41559239c3b964d001995e3
+          command: [sh, -c]
+          args:
+            - >-
+              until php -r '$m=@new mysqli("colegio-moodle-db","moodle",getenv("DB_PASSWORD"),"moodle",3306); exit($m->connect_errno ? 1 : 0);'; do sleep 2; done
+          env:
+            - name: DB_PASSWORD
+              valueFrom: {secretKeyRef: {name: colegio-moodle-db-runtime, key: password}}
+          securityContext: {runAsUser: 33, runAsGroup: 0, runAsNonRoot: true, allowPrivilegeEscalation: false, capabilities: {drop: [ALL]}, seccompProfile: {type: RuntimeDefault}}
+        - name: config
+          image: ghcr.io/chomsmaster/colegio-moodle@sha256:0e798d4c8ea934152c500643f5d31caeb57d5991e41559239c3b964d001995e3
+          securityContext: {runAsUser: 0, runAsGroup: 0, allowPrivilegeEscalation: false, capabilities: {drop: [ALL]}, seccompProfile: {type: RuntimeDefault}}
+          command: [sh, -c]
+          args:
+            - >-
+              cp -a /var/www/html/. /work/; chmod 0775 /work; chmod 0770 /data
+          volumeMounts:
+            - {name: code, mountPath: /work}
+            - {name: data, mountPath: /data}
+      containers:
+        - name: installer
+          image: ghcr.io/chomsmaster/colegio-moodle@sha256:0e798d4c8ea934152c500643f5d31caeb57d5991e41559239c3b964d001995e3
+          securityContext: {runAsUser: 33, runAsGroup: 0, runAsNonRoot: true, allowPrivilegeEscalation: false, capabilities: {drop: [ALL]}, readOnlyRootFilesystem: true, seccompProfile: {type: RuntimeDefault}}
+          command: [sh, -c]
+          args:
+            - >-
+              php admin/cli/install.php --non-interactive --agree-license --lang=es --wwwroot=https://colegio-aula.chomsmaster.com --dataroot=/var/moodledata --dbtype=mariadb --dbhost=colegio-moodle-db --dbname=moodle --dbuser=moodle --dbpass="${DB_PASSWORD}" --fullname='Colegio Staging Ficticio' --shortname='CSF' --adminuser=admin_eval --adminpass="${ADMIN_PASSWORD}" --adminemail=admin@example.invalid --supportemail=support@example.invalid --noreplyemail=noreply@example.invalid --chmod=0770 && cp /var/www/html/config.php /runtime/config.php && chmod 0600 /runtime/config.php
+          env:
+            - name: DB_PASSWORD
+              valueFrom: {secretKeyRef: {name: colegio-moodle-db-runtime, key: password}}
+            - name: ADMIN_PASSWORD
+              valueFrom: {secretKeyRef: {name: colegio-moodle-admin-runtime, key: password}}
+          volumeMounts:
+            - {name: code, mountPath: /var/www/html}
+            - {name: config, mountPath: /runtime}
+            - {name: data, mountPath: /var/moodledata}
+            - {name: tmp, mountPath: /tmp}
+            - {name: run, mountPath: /var/run/apache2}
+      volumes:
+        - {name: config, persistentVolumeClaim: {claimName: colegio-moodle-config}}
+        - {name: code, emptyDir: {}}
+        - {name: data, persistentVolumeClaim: {claimName: colegio-moodle-data}}
+        - {name: tmp, emptyDir: {}}
+        - {name: run, emptyDir: {}}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: colegio-moodle-validation
+  namespace: colegio-maria-rosario-staging
+data:
+  validate.php: |
+    <?php
+    define('CLI_SCRIPT', true);
+    require('/var/www/html/config.php');
+    require_once($CFG->dirroot.'/course/lib.php');
+    require_once($CFG->dirroot.'/course/modlib.php');
+    $course = $DB->get_record('course', ['shortname'=>'FICT-001']);
+    if (!$course) { $course = create_course((object)['fullname'=>'Curso Ficticio de Validación','shortname'=>'FICT-001','category'=>1,'visible'=>1]); }
+    $module = $DB->get_record('modules', ['name'=>'assign','visible'=>1]);
+    if (!$DB->record_exists('course_modules', ['course'=>$course->id,'module'=>$module->id])) {
+      $m = (object)['modulename'=>'assign','module'=>$module->id,'course'=>$course->id,'section'=>1,'name'=>'Tarea Ficticia','intro'=>'Actividad de validación','introformat'=>FORMAT_HTML,'visible'=>1,'alwaysshowdescription'=>1,'submissiondrafts'=>1,'requiresubmissionstatement'=>0,'sendnotifications'=>0,'sendstudentnotifications'=>1,'sendlatenotifications'=>0,'duedate'=>0,'allowsubmissionsfromdate'=>0,'grade'=>100,'cutoffdate'=>0,'gradingduedate'=>0,'teamsubmission'=>0,'requireallteammemberssubmit'=>0,'teamsubmissiongroupingid'=>0,'blindmarking'=>0,'attemptreopenmethod'=>'untilpass','maxattempts'=>1,'markingworkflow'=>0,'markingallocation'=>0,'markinganonymous'=>0,'markercount'=>0,'multimarkmethod'=>null,'multimarkrounding'=>null,'activityformat'=>0,'timelimit'=>0,'submissionattachments'=>0,'gradepenalty'=>0];
+      try { add_moduleinfo($m, $course); } catch (Throwable $e) { echo 'activity_exception='.get_class($e)."\n"; echo 'activity_message='.preg_replace('/[[:space:]]+/', ' ', $e->getMessage())."\n"; echo 'activity_code='.$e->getCode()."\n"; exit(3); }
+    }
+    file_put_contents($CFG->dataroot.'/checkpoint2-marker.txt','fictional-activity');
+    if (!$DB->record_exists('course', ['shortname'=>'FICT-001']) || !is_file($CFG->dataroot.'/checkpoint2-marker.txt')) { exit(2); }
+    echo "moodle_checkpoint2_activity=passed\n";
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: colegio-moodle-apache
+  namespace: colegio-maria-rosario-staging
+data:
+  000-default.conf: |
+    <VirtualHost *:8080>
+      DocumentRoot /var/www/html/public
+      <Directory /var/www/html/public>
+        AllowOverride All
+        Require all granted
+      </Directory>
+      ErrorLog /proc/self/fd/2
+      CustomLog /proc/self/fd/1 combined
+    </VirtualHost>
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: colegio-moodle
+  namespace: colegio-maria-rosario-staging
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: colegio-moodle}}
+  template:
+    metadata: {labels: {app: colegio-moodle}}
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: moodle
+          image: ghcr.io/chomsmaster/colegio-moodle@sha256:0e798d4c8ea934152c500643f5d31caeb57d5991e41559239c3b964d001995e3
+          securityContext: {runAsUser: 33, runAsGroup: 0, runAsNonRoot: true, allowPrivilegeEscalation: false, capabilities: {drop: [ALL]}, readOnlyRootFilesystem: true, seccompProfile: {type: RuntimeDefault}}
+          ports: [{name: http, containerPort: 8080}]
+          readinessProbe: {httpGet: {path: /login/index.php, port: http}, initialDelaySeconds: 20, periodSeconds: 10}
+          livenessProbe: {httpGet: {path: /login/index.php, port: http}, initialDelaySeconds: 60, periodSeconds: 20}
+          resources: {requests: {cpu: 100m, memory: 256Mi}, limits: {cpu: 1, memory: 1Gi}}
+          volumeMounts:
+            - {name: config, mountPath: /var/www/html/config.php, subPath: config.php}
+            - {name: apache, mountPath: /etc/apache2/sites-enabled/000-default.conf, subPath: 000-default.conf, readOnly: true}
+            - {name: data, mountPath: /var/moodledata}
+            - {name: tmp, mountPath: /tmp}
+            - {name: run, mountPath: /var/run/apache2}
+      volumes:
+        - {name: config, persistentVolumeClaim: {claimName: colegio-moodle-config}}
+        - {name: apache, configMap: {name: colegio-moodle-apache}}
+        - {name: data, persistentVolumeClaim: {claimName: colegio-moodle-data}}
+        - {name: tmp, emptyDir: {}}
+        - {name: run, emptyDir: {}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: colegio-moodle
+  namespace: colegio-maria-rosario-staging
+spec:
+  type: ClusterIP
+  selector: {app: colegio-moodle}
+  ports: [{name: http, port: 8080, targetPort: http}]
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: colegio-moodle
+  namespace: colegio-maria-rosario-staging
+spec:
+  hostnames: [colegio-aula.chomsmaster.com]
+  parentRefs:
+    - {group: gateway.networking.k8s.io, kind: Gateway, name: traefik, namespace: traefik, sectionName: web}
+    - {group: gateway.networking.k8s.io, kind: Gateway, name: traefik, namespace: traefik, sectionName: websecure}
+  rules:
+    - matches: [{path: {type: PathPrefix, value: /}}]
+      filters:
+        - type: ExtensionRef
+          extensionRef: {group: traefik.io, kind: Middleware, name: authelia-forwardauth}
+      backendRefs: [{name: colegio-moodle, port: 8080}]
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: colegio-moodle-cron
+  namespace: colegio-maria-rosario-staging
+spec:
+  schedule: "*/5 * * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          automountServiceAccountToken: false
+          containers:
+            - name: cron
+              image: ghcr.io/chomsmaster/colegio-moodle@sha256:0e798d4c8ea934152c500643f5d31caeb57d5991e41559239c3b964d001995e3
+              command: [php, /var/www/html/admin/cli/cron.php, --keep-alive=0]
+              securityContext: {runAsUser: 33, runAsGroup: 0, runAsNonRoot: true, allowPrivilegeEscalation: false, capabilities: {drop: [ALL]}, readOnlyRootFilesystem: true, seccompProfile: {type: RuntimeDefault}}
+              volumeMounts:
+                - {name: config, mountPath: /var/www/html/config.php, subPath: config.php}
+                - {name: data, mountPath: /var/moodledata}
+                - {name: tmp, mountPath: /tmp}
+                - {name: run, mountPath: /var/run/apache2}
+          volumes:
+            - {name: config, persistentVolumeClaim: {claimName: colegio-moodle-config}}
+            - {name: data, persistentVolumeClaim: {claimName: colegio-moodle-data}}
+            - {name: tmp, emptyDir: {}}
+            - {name: run, emptyDir: {}}

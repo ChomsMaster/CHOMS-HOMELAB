@@ -40,14 +40,25 @@ defaults del formulario oficial, como mínimo:
 'markingworkflow' => 0,
 'markingallocation' => 0,
 'gradepenalty' => 0,
-'markercount' => 1,
+'markercount' => 0,
 ```
 
-La corrección propuesta solo modifica el objeto de entrada de la API en el
-laboratorio del Checkpoint 2. No cambia MariaDB, permisos, esquema, imagen,
-configuración de producción ni datos reales. Debe repetirse en un laboratorio
-nuevo con instalación, actividad, cron, reinicio, persistencia, backup y
-restore antes de desplegar Moodle.
+La corrección aplicada incorpora los defaults oficiales del formulario
+`assign`: `visible=1`, `alwaysshowdescription=1`,
+`submissiondrafts=1`, `requiresubmissionstatement=0`,
+`sendnotifications=0`, `sendstudentnotifications=1`,
+`sendlatenotifications=0`, fechas y agrupación en cero,
+`blindmarking=0`, `attemptreopenmethod=untilpass`, `maxattempts=1`,
+`markinganonymous=0`, `activityformat=0`, `timelimit=0`,
+`submissionattachments=0`, `gradepenalty=0`, además de
+`multimarkmethod=null` y `multimarkrounding=null`. Se conservaron los cuatro
+defaults de grading autorizados.
 
-No se declara Moodle operativo ni se versionan Secrets, contraseñas, dumps,
-PVC, logs completos o certificados privados.
+La actividad pasó, el CronJob real completó ciclos y el backup/restore aislado
+conservó esquema, curso, tarea y `moodledata/filedir`. El marcador de restore
+se clasifica como artificial/operacional; no representa datos de usuarios. El
+restore temporal se eliminó completamente y no se versionaron sus contenidos.
+
+Moodle queda validado para el staging del Checkpoint 2; esto no autoriza la
+importación de datos reales ni el despliegue de Gibbon. No se versionan
+Secrets, contraseñas, dumps, PVC, logs completos o certificados privados.
