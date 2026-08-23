@@ -103,6 +103,25 @@ spec:
     port: 3306
     targetPort: mysql
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: colegio-gibbon-apache
+  namespace: colegio-maria-rosario-staging
+data:
+  000-default.conf: |
+    <VirtualHost *:8080>
+      ServerName colegio-gestion.chomsmaster.com
+      SetEnvIf X-Forwarded-Proto "^https$" HTTPS=on
+      DocumentRoot /var/www/html
+      <Directory /var/www/html>
+        AllowOverride All
+        Require all granted
+      </Directory>
+      ErrorLog /proc/self/fd/2
+      CustomLog /proc/self/fd/1 combined
+    </VirtualHost>
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -192,6 +211,10 @@ spec:
         volumeMounts:
         - name: runtime
           mountPath: /var/www/html
+        - name: apache
+          mountPath: /etc/apache2/sites-enabled/000-default.conf
+          subPath: 000-default.conf
+          readOnly: true
         - name: tmp
           mountPath: /tmp
         - name: run
@@ -200,6 +223,9 @@ spec:
       - name: runtime
         persistentVolumeClaim:
           claimName: colegio-gibbon-runtime
+      - name: apache
+        configMap:
+          name: colegio-gibbon-apache
       - name: tmp
         emptyDir: {}
       - name: run
