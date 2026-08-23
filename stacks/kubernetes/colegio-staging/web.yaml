@@ -1,0 +1,138 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: colegio-maria-rosario-staging
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: colegio-web
+  namespace: colegio-maria-rosario-staging
+automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: colegio-web
+  namespace: colegio-maria-rosario-staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: colegio-web
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: colegio-web
+    spec:
+      serviceAccountName: colegio-web
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        runAsGroup: 101
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: web
+        image: ghcr.io/chomsmaster/colegio-maria-rosario-web@sha256:bda565f8e529e7f897dd504e11baba21293bcc086a34ae096c36f9aa3bf20147
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8080
+        securityContext:
+          privileged: false
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop: [ALL]
+        resources:
+          requests:
+            cpu: 10m
+            memory: 24Mi
+          limits:
+            cpu: 100m
+            memory: 64Mi
+        startupProbe:
+          httpGet:
+            path: /healthz
+            port: http
+          periodSeconds: 2
+          failureThreshold: 30
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: http
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: http
+          periodSeconds: 30
+        volumeMounts:
+        - {name: cache, mountPath: /var/cache/nginx}
+        - {name: run, mountPath: /var/run}
+        - {name: tmp, mountPath: /tmp}
+      volumes:
+      - name: cache
+        emptyDir: {}
+      - name: run
+        emptyDir: {}
+      - name: tmp
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: colegio-web
+  namespace: colegio-maria-rosario-staging
+spec:
+  selector:
+    app: colegio-web
+  ports:
+  - name: http
+    port: 8080
+    targetPort: http
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: authelia-forwardauth
+  namespace: colegio-maria-rosario-staging
+spec:
+  forwardAuth:
+    address: http://authelia.security.svc.cluster.local:9091/api/authz/forward-auth
+    trustForwardHeader: true
+    authResponseHeaders:
+    - Remote-User
+    - Remote-Groups
+    - Remote-Email
+    - Remote-Name
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: colegio-web
+  namespace: colegio-maria-rosario-staging
+spec:
+  hostnames:
+  - colegio.chomsmaster.com
+  parentRefs:
+  - {group: gateway.networking.k8s.io, kind: Gateway, name: traefik, namespace: traefik, sectionName: web}
+  - {group: gateway.networking.k8s.io, kind: Gateway, name: traefik, namespace: traefik, sectionName: websecure}
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    filters:
+    - type: ExtensionRef
+      extensionRef:
+        group: traefik.io
+        kind: Middleware
+        name: authelia-forwardauth
+    backendRefs:
+    - name: colegio-web
+      port: 8080

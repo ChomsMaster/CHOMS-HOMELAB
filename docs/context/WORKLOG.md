@@ -564,3 +564,20 @@ entries are immutable; append an explicit correction when needed.
   backup and full isolated Hub/Spoke restore with API write/restart passed.
 - **Rollback:** Stop split workloads, remove S label, restore omnibus and
   config ownership `1000:1000`; restore data only on proven corruption.
+
+## 2026-08-23 — Colegio staging Checkpoint 1
+
+- **Scope:** Applied only the three educational Certificate SANs, three CoreDNS
+  split-DNS records, three Authelia one-factor rules and the institutional web
+  resources. Moodle and Gibbon remain separate checkpoints.
+- **Validation:** Certificate generation 10 is Ready; CoreDNS and Authelia are
+  1/1; the web Deployment is Ready with an EndpointSlice; six pages load,
+  `private-assets-review` is excluded, the HTTPRoute is Accepted with resolved
+  references, and anonymous HTTPS redirects through ForwardAuth.
+- **Security:** Web runs from the verified immutable public digest without a
+  ServiceAccount token, privilege escalation, capabilities, host access or a
+  writable root filesystem. No Secret values or private key material entered
+  Git. The shared staging cookie remains an explicitly authorized residual
+  risk.
+- **Rollback boundary:** Later Moodle or Gibbon failures roll back only their
+  own resources; this foundation remains intact.

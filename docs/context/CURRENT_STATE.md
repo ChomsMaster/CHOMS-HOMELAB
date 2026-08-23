@@ -404,3 +404,23 @@ required with all capabilities dropped; retained UID 0 is the residual risk.
 Three Kubernetes collectors plus NAS cover 11 active unique devices
 (`2+2+2+5`); one inactive July record remains intact. A fresh logical backup
 and complete isolated restore with API write and web restart passed.
+
+## Colegio María Rosario staging — Checkpoint 1
+
+The foundation checkpoint is deployed in namespace
+`colegio-maria-rosario-staging`. It contains only the institutional web,
+Service, EndpointSlice, ForwardAuth Middleware and the `colegio.*` web route.
+The web image is pinned to the verified public digest
+`sha256:bda565f8e529e7f897dd504e11baba21293bcc086a34ae096c36f9aa3bf20147`.
+
+The platform Certificate includes the three educational SANs and CoreDNS
+contains the three internal VIP records. Authelia has one-factor rules for the
+three staging hosts; its shared `chomsmaster.com` cookie remains the explicitly
+authorized temporary exception. Moodle and Gibbon are separate checkpoints and
+are not part of this foundation commit.
+
+Validation passed: Certificate Ready, CoreDNS and Authelia Ready, web
+Deployment Ready, EndpointSlice present, six pages served internally,
+`private-assets-review` returned 404, HTTPRoute Accepted/ResolvedRefs and
+anonymous external access redirected through ForwardAuth. No Secrets or
+private key material are versioned.

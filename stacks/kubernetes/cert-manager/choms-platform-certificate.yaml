@@ -25,3 +25,6 @@ spec:
   - auth.chomsmaster.com
   - traefik.chomsmaster.com
   - threadfin.chomsmaster.com
+  - colegio.chomsmaster.com
+  - colegio-aula.chomsmaster.com
+  - colegio-gestion.chomsmaster.com

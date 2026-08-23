@@ -25,6 +25,9 @@ data:
             192.168.1.240 auth.chomsmaster.com
             192.168.1.240 traefik.chomsmaster.com
             192.168.1.240 threadfin.chomsmaster.com
+            192.168.1.240 colegio.chomsmaster.com
+            192.168.1.240 colegio-aula.chomsmaster.com
+            192.168.1.240 colegio-gestion.chomsmaster.com
             fallthrough
         }
 

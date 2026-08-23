@@ -83,3 +83,11 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 | Work | Status | Closure criteria |
 |---|---|---|
 | Email platform, MX/SPF/DMARC/PTR, and mail-related router changes | `deferred` | Remains untouched until explicit authorization and a dedicated design covering provider constraints, DNS, deliverability, security, backup, and rollback. |
+
+## Colegio staging checkpoints
+
+| Work | Status | Closure criteria |
+|---|---|---|
+| Colegio staging foundation (Checkpoint 1) | `completed` | Web, split DNS, certificate SANs and Authelia ForwardAuth deployed and committed independently; later Moodle/Gibbon failures do not roll back this checkpoint. |
+| Moodle activities and recovery (Checkpoint 2) | `in_progress` | Isolated activity diagnosis, minimal correction, cron, persistence, backup and restore; deploy only after all pass. |
+| Gibbon installer (Checkpoint 3) | `pending` | Deploy only after Moodle checkpoint; stop at the protected official manual installer. |
