@@ -56,6 +56,7 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 
 | Work | Status | Closure criteria/evidence |
 |---|---|---|
+| Traefik Gateway Shim warning correction | `completed` | Reconciled the user-supplied Helm values to the live release and removed only the obsolete issuer annotation. The manual Certificate remained Ready at revision 6, Traefik stayed 2/2, Gateway status and HTTPS consumers passed, and the warning did not recur. |
 | Kubernetes backup and recovery automation | `completed` | Versioned automation and successful controlled Nextcloud restore test; `b5b8792`. |
 | Filebrowser image pinning (`IMG-003`) | `completed` | Pinned the exact effective digest only; validated route, native authentication path, storage mounts, consumer health and drift zero in the 2026-08-19 rollout. |
 | Home image pinning (`IMG-001`) | `completed` | Pinned the exact effective digest only; validated two replicas, route/auth response, ConfigMap metadata, mounted files, consumer health and controller drift zero in the 2026-08-19 rollout. |

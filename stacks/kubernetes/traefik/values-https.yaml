@@ -8,8 +8,8 @@ ports:
           permanent: true
 
 gateway:
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-production
+  enabled: true
+  name: traefik
 
   listeners:
     web:

@@ -120,6 +120,15 @@ Authelia protects selected routes through ForwardAuth. Prometheus, Grafana,
 Loki, Alloy, Uptime Kuma, and Scrutiny provide metrics, logs, availability, and
 disk-health visibility. The platform certificate was Ready at observation.
 
+On 2026-08-25 the Traefik release values were reconciled to the existing live
+Gateway, provider, replica, affinity, resource, RBAC and LoadBalancer contract.
+The obsolete `cert-manager.io/cluster-issuer` Gateway annotation was removed;
+the separate `traefik/choms-platform` Certificate remains the sole declarative
+TLS owner and retained Ready revision 6 with `choms-platform-tls`. Traefik
+remained 2/2, the Gateway remained Accepted and Programmed, public and
+ForwardAuth-protected HTTPS paths passed, and the hostname warning did not
+recur after reconciliation.
+
 Strong security contexts already exist for several control-plane workloads,
 but the audit identifies intentional privileged device access in Jellyfin and
 Scrutiny, missing controls in the Scrutiny collectors, mutable images, and

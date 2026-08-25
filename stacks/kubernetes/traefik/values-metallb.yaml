@@ -10,6 +10,7 @@ ports:
     expose:
       default: true
     exposedPort: 80
+    nodePort: 31080
     port: 8000
   websecure:
     expose:

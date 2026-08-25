@@ -615,3 +615,24 @@ entries are immutable; append an explicit correction when needed.
 - **Security:** The image is pinned by digest; the Pod has no privileged mode,
   hostPath, hostPort or ServiceAccount token. Secret values and credentials are
   runtime-only and absent from Git.
+
+## 2026-08-25 — Traefik Gateway Shim warning correction
+
+- **Cause:** The obsolete Gateway issuer annotation made cert-manager Gateway
+  Shim inspect intentionally hostname-less listeners, while TLS was already
+  owned by the separate `traefik/choms-platform` Certificate. The versioned
+  Helm values also omitted several user-supplied settings from the live
+  release, so an initial render correctly blocked application due to unrelated
+  drift.
+- **Change:** Recovered only the explicit live Gateway, provider, replica,
+  affinity, resource and Service contract into the existing Traefik values,
+  then removed `cert-manager.io/cluster-issuer`. Chart 41.1.0, Traefik v3.7.9,
+  listeners, redirect, LoadBalancer VIP, RBAC, ports and TLS Secret reference
+  were preserved.
+- **Validation:** Full Helm template, server dry-run and manifest comparison
+  reduced the effective diff to the single annotation removal before one
+  atomic release upgrade. Traefik remained 2/2; Gateway stayed Accepted and
+  Programmed; `choms-platform` stayed Ready at revision 6 and continued to
+  reference `choms-platform-tls`. Public HTTPS returned 200, the protected
+  dashboard redirected to Authelia, and the warning count remained zero after
+  reconciliation. No certificate issuance, renewal or ACME test occurred.
