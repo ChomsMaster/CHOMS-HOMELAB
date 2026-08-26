@@ -129,6 +129,17 @@ remained 2/2, the Gateway remained Accepted and Programmed, public and
 ForwardAuth-protected HTTPS paths passed, and the hostname warning did not
 recur after reconciliation.
 
+On 2026-08-27 Alertmanager Telegram delivery was enabled for `critical` alerts
+and resolved notifications. `Watchdog`, `warning` and unmatched alerts remain
+on the `null` receiver, including the three historical `KubeJobFailed`
+warnings. The Alertmanager configuration and bot token live in an external
+runtime Secret referenced and mounted by the locked monitoring release; Git
+contains only the Secret contract and a reusable interactive creation/rotation
+script. A real firing/resolved integration test passed. An initial
+`chat not found` response was corrected by reconciling the verified bot/chat
+pair without exposing either value. The same bot/chat may later be reused by
+the RP3, but the RP3 must manage its own credential copy and lifecycle.
+
 Strong security contexts already exist for several control-plane workloads,
 but the audit identifies intentional privileged device access in Jellyfin and
 Scrutiny, missing controls in the Scrutiny collectors, mutable images, and

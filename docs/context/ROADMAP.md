@@ -26,7 +26,7 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 | Scrutiny server privilege reduction | `completed` | `SEC-003` separated pinned Scrutiny web/API 0.8.2 and InfluxDB 2.2.0, removed server device privilege, and added the third Kubernetes collector on S. SQLite writes, restart persistence, 11 active devices and final backup/restore passed. |
 | Jellyfin device-access design | `pending` | Prove hardware transcoding with non-privileged, narrowly mapped devices; preserve library access and playback; document rollback. |
 | Independent/off-site backup copy | `pending` | Produce an encrypted copy outside the live NAS failure domain and complete a documented restore validation. |
-| NAS mdraid local monitoring | `completed` | Versioned systemd drop-ins add syslog delivery without modifying the array. The permanent monitor is active; the oneshot preserves its vendor `AUTOSCAN` environment and conditional execution and completes successfully. External alert delivery through Alertmanager remains separate pending work. |
+| NAS mdraid local monitoring | `completed` | Versioned systemd drop-ins add syslog delivery without modifying the array. The permanent monitor is active; the oneshot preserves its vendor `AUTOSCAN` environment and conditional execution and completes successfully. External critical delivery through Alertmanager is now completed separately. |
 
 ## Medium priority
 
@@ -56,6 +56,7 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 
 | Work | Status | Closure criteria/evidence |
 |---|---|---|
+| Alertmanager Telegram critical delivery | `completed` | The locked monitoring release references and mounts an external Git-free Secret. Critical firing and resolved delivery passed with a real synthetic alert; Watchdog, warning and unmatched alerts remain on `null`. The reusable interactive script supports creation and rotation without exposing credentials. |
 | Traefik Gateway Shim warning correction | `completed` | Reconciled the user-supplied Helm values to the live release and removed only the obsolete issuer annotation. The manual Certificate remained Ready at revision 6, Traefik stayed 2/2, Gateway status and HTTPS consumers passed, and the warning did not recur. |
 | Kubernetes backup and recovery automation | `completed` | Versioned automation and successful controlled Nextcloud restore test; `b5b8792`. |
 | Filebrowser image pinning (`IMG-003`) | `completed` | Pinned the exact effective digest only; validated route, native authentication path, storage mounts, consumer health and drift zero in the 2026-08-19 rollout. |

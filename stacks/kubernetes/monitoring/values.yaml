@@ -1,5 +1,6 @@
 alertmanager:
   alertmanagerSpec:
+    configSecret: choms-monitoring-alertmanager-config
     replicas: 1
     resources:
       limits:
@@ -8,6 +9,8 @@ alertmanager:
       requests:
         cpu: 20m
         memory: 80Mi
+    secrets:
+      - choms-monitoring-alertmanager-config
   enabled: true
 defaultRules:
   create: true

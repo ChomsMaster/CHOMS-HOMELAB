@@ -636,3 +636,23 @@ entries are immutable; append an explicit correction when needed.
   reference `choms-platform-tls`. Public HTTPS returned 200, the protected
   dashboard redirected to Authelia, and the warning count remained zero after
   reconciliation. No certificate issuance, renewal or ACME test occurred.
+
+## 2026-08-27 — Alertmanager Telegram critical delivery
+
+- **Change:** Configured the locked monitoring release to select and mount the
+  external `monitoring/choms-monitoring-alertmanager-config` Secret. Added a
+  reusable interactive SSH-based script that creates or rotates the Secret by
+  server-side apply over stdin without placing its bot token or chat identifier
+  in Git, arguments, logs or remote files.
+- **Routing:** `critical` alerts use Telegram with resolved notifications;
+  `Watchdog`, `warning` and unmatched alerts remain on `null`. The three
+  historical `KubeJobFailed` alerts therefore remain visible without sending
+  notifications.
+- **Validation:** A real `CHOMSTelegramIntegrationTest` firing and resolved
+  notification reached Telegram. An initial `chat not found` failure was
+  diagnosed and corrected by reconciling the verified bot/chat pair without
+  exposing credentials. The resulting delivery-failure alert then resolved
+  naturally, with no silence, rule change or deletion. Prometheus and
+  Alertmanager remained 1/1 and no new Telegram failure followed reconciliation.
+- **Reuse:** The RP3 may later reuse the same bot/chat destination, but must
+  keep and rotate its own credential material independently of Kubernetes.
