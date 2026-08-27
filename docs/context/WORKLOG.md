@@ -656,3 +656,36 @@ entries are immutable; append an explicit correction when needed.
   Alertmanager remained 1/1 and no new Telegram failure followed reconciliation.
 - **Reuse:** The RP3 may later reuse the same bot/chat destination, but must
   keep and rotate its own credential material independently of Kubernetes.
+
+## 2026-08-27 — Raspberry Pi external monitor phase 1
+
+- **Change:** Deployed one approximately 15.6 MiB ARMv7 monitor container on
+  the US RP3. It checks representative external DNS, HTTPS, TLS expiry,
+  expected response and latency plus restricted local capacity, mount,
+  temperature, throttling and exact-name Firefox-running signals. A hardened
+  user service supplies host facts without mounting `docker.sock`; the
+  container is non-privileged, read-only, capability-free and PID/CPU bounded.
+- **Alerting and secrets:** Persistent state sends one FIRING after three
+  consecutive failures, no periodic repeats, and one RESOLVED after recovery.
+  Controlled FIRING and RESOLVED notifications were received. Telegram token
+  and chat ID are independent mode-0600 files on the RP3, ignored by Git and
+  installed or rotated through a no-echo interactive script.
+- **Corrections:** Stable anonymous GETs established Nextcloud `302` to its
+  login and protected Home `302` to the declared `auth.chomsmaster.com`. The
+  HTTP client now explicitly avoids redirects. The initial read-only report
+  observed the helper's `ProtectSystem=strict` namespace, so it now reads the
+  PID 1 mount namespace and correctly reports the host root as read-write. Both
+  HTTP incidents and the read-only component emitted RESOLVED and are inactive.
+- **Residual incident:** `rp3-local` remains firing exclusively for
+  `throttled=0x50005`, meaning undervoltage and throttling are current and have
+  also occurred since boot. Temperature was 63.4–65.0 C with no thermal
+  throttle bits. Fit a known-good regulated 5.1 V / 2.5 A supply and a short,
+  low-resistance micro-USB cable; do not reboot before correcting power.
+  Current bits must clear with stable power and the alert should resolve
+  automatically. Historical bits require a later controlled reboot.
+- **Validation and limitation:** Final state was healthy with zero restarts;
+  public and protected checks had zero failures, host root was not read-only,
+  and only the electrical incident remained active. This RP3 kernel cannot
+  enforce the declared container memory limit; the limitation is accepted
+  without changing kernel or Docker configuration. WireGuard, SSH/SOCKS,
+  Firefox, Docker global state and other services were not modified.

@@ -475,3 +475,32 @@ automated, no administration account was created, and no real Colegio data was
 imported. The runtime PVC remains mutable as required by the official bundle;
 the declarative rollback boundary covers only Gibbon resources and leaves
 Checkpoints 1 and 2 intact. Runtime Secret values are not versioned.
+
+## Raspberry Pi external monitor — Phase 1
+
+The US Raspberry Pi 3 runs one approximately 15.6 MiB ARMv7 container that
+performs anonymous DNS, HTTPS, TLS-expiry, expected-status and latency checks
+for the main endpoint, a public Nextcloud route and an Authelia-protected
+route. A non-privileged user service supplies only microSD capacity/inodes,
+host-root mount state, temperature, firmware throttling flags and the
+exact-name running state of `firefox-web`; the Docker socket is not mounted.
+Alert state persists outside the container and sends one Telegram FIRING after
+three consecutive failures and one RESOLVED on recovery. Bot token and chat ID
+are independent RP3-local mode-0600 files ignored by Git and rotated with the
+interactive installation script.
+
+Observed HTTP behavior is declared as Nextcloud `302` to its login and
+protected Home `302` to `auth.chomsmaster.com`. An explicit non-following HTTP
+client corrected the initial Home behavior. A false read-only signal came from
+the helper's `ProtectSystem=strict` namespace; it now reads the PID 1 mount
+namespace and confirms the host root is read-write. The RP3 kernel cannot
+enforce the declared Compose memory limit, although the conservative
+declaration and the CPU/PID/read-only/capability controls remain.
+
+The monitor is healthy with zero restarts. Both HTTP alerts and the read-only
+signal are resolved, but `rp3-local` correctly remains firing for `0x50005`:
+undervoltage and throttling are current and have also occurred since boot. Use
+a known-good regulated 5.1 V / 2.5 A supply and a short, low-resistance
+micro-USB cable. Do not reboot merely to clear evidence; first stabilize power.
+Current bits should then disappear and the alert should resolve automatically.
+Historical bits require a later controlled reboot after the physical repair.

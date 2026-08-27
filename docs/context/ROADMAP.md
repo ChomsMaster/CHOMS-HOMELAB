@@ -56,6 +56,7 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 
 | Work | Status | Closure criteria/evidence |
 |---|---|---|
+| Raspberry Pi external monitor phase 1 | `completed` | One lightweight ARMv7 container checks representative external DNS/HTTPS/TLS/status/latency and restricted RP3 host signals with persistent three-failure alert state and independent Git-free Telegram credentials. HTTP and host-root false positives are resolved. The monitor is healthy with zero restarts; `rp3-local` intentionally remains firing for real current/historical undervoltage and throttling `0x50005` pending a 5.1 V / 2.5 A supply and short low-resistance micro-USB cable, followed later by a controlled reboot. |
 | Alertmanager Telegram critical delivery | `completed` | The locked monitoring release references and mounts an external Git-free Secret. Critical firing and resolved delivery passed with a real synthetic alert; Watchdog, warning and unmatched alerts remain on `null`. The reusable interactive script supports creation and rotation without exposing credentials. |
 | Traefik Gateway Shim warning correction | `completed` | Reconciled the user-supplied Helm values to the live release and removed only the obsolete issuer annotation. The manual Certificate remained Ready at revision 6, Traefik stayed 2/2, Gateway status and HTTPS consumers passed, and the warning did not recur. |
 | Kubernetes backup and recovery automation | `completed` | Versioned automation and successful controlled Nextcloud restore test; `b5b8792`. |
