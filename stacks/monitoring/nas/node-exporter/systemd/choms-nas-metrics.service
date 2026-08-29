@@ -1,0 +1,32 @@
+[Unit]
+Description=Publish CHOMS NAS summary metrics for node-exporter
+After=network-online.target nfs-server.service mdmonitor.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/chomsmaster/choms-node-exporter/choms-nas-metrics.py
+NoNewPrivileges=true
+CapabilityBoundingSet=
+AmbientCapabilities=
+PrivateDevices=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/chomsmaster/choms-node-exporter/textfile
+ProtectClock=true
+ProtectControlGroups=true
+ProtectHostname=true
+ProtectKernelLogs=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+SystemCallArchitectures=native
+
+[Install]
+WantedBy=multi-user.target

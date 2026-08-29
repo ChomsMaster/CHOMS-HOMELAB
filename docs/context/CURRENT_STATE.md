@@ -272,6 +272,19 @@ mounts, bridge network and six-hour schedule. Its normal startup collection
 refreshed the same five records without duplicates or publication errors;
 Scrutiny remained healthy and RAID/NFS were unchanged.
 
+On 2026-08-29 actionable NAS, Kubernetes-node and storage monitoring was
+completed. One digest-pinned, non-privileged node-exporter on `choms-nas`
+exposes only filesystem, diskstats, hwmon, mdadm and atomic textfile metrics to
+the private Prometheus target labeled `instance=choms-nas, role=nas`. An
+unprivileged persistent user timer summarizes NFS, mdmonitor, RAID and Scrutiny
+freshness every minute; `Linger=yes` preserves it across reboot. Thirteen
+CHOMS rules add only persistent actionable critical conditions while reusing
+upstream critical filesystem/PVC rules. Controlled synthetic FIRING and
+RESOLVED delivery reached Telegram. Final state had target UP, no CHOMS alert,
+Prometheus/Alertmanager 1/1, RAID `[UUUU]`, active NFS and fresh five-device
+Scrutiny ingestion. SMART failure prediction and kernel-log errors remain
+explicit gaps rather than inferred metrics.
+
 The follow-up NAS diagnosis confirmed one active, non-degraded mdraid array
 with no resynchronization in progress. Monitoring had exited because neither a
 notification address nor a notification program was configured, and the

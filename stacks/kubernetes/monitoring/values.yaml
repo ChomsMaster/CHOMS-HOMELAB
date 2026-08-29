@@ -14,6 +14,106 @@ alertmanager:
   enabled: true
 defaultRules:
   create: true
+additionalPrometheusRulesMap:
+  choms-actionable-storage:
+    groups:
+      - name: choms-nas-actionable
+        rules:
+          - alert: CHOMSNASExporterDown
+            expr: up{job="choms-nas"} == 0
+            for: 10m
+            labels: {severity: critical}
+            annotations:
+              summary: CHOMS NAS metrics are unavailable
+              description: Prometheus has been unable to scrape the private choms-nas exporter for ten minutes.
+          - alert: CHOMSNASSummaryMetricsStale
+            expr: time() - node_textfile_mtime_seconds{job="choms-nas"} > 300
+            for: 10m
+            labels: {severity: critical}
+            annotations:
+              summary: CHOMS NAS summary metrics are stale
+              description: The atomic NFS, RAID, mdmonitor and Scrutiny summary has not refreshed for at least five minutes.
+          - alert: CHOMSNASRAIDDegraded
+            expr: choms_nas_raid_healthy{job="choms-nas"} == 0 or choms_nas_raid_members_active{job="choms-nas"} != choms_nas_raid_members_expected{job="choms-nas"}
+            for: 5m
+            labels: {severity: critical}
+            annotations:
+              summary: CHOMS NAS RAID is degraded
+              description: md0 no longer has all four expected RAID5 members active. Inspect mdadm status without starting a repair.
+          - alert: CHOMSNASNFSUnavailable
+            expr: choms_nas_nfs_service_active{job="choms-nas"} == 0 or choms_nas_nfs_storage_export_present{job="choms-nas"} == 0
+            for: 5m
+            labels: {severity: critical}
+            annotations:
+              summary: CHOMS NAS NFS storage is unavailable
+              description: The NFS service is inactive or /srv/storage is absent from the effective export table.
+          - alert: CHOMSNASMDMonitorInactive
+            expr: choms_nas_mdmonitor_active{job="choms-nas"} == 0
+            for: 10m
+            labels: {severity: critical}
+            annotations:
+              summary: CHOMS NAS mdmonitor is inactive
+              description: The local mdadm monitor has remained inactive for ten minutes.
+          - alert: CHOMSNASScrutinyCollectorStale
+            expr: choms_nas_scrutiny_collector_stale{job="choms-nas"} == 1
+            for: 15m
+            labels: {severity: critical}
+            annotations:
+              summary: CHOMS NAS Scrutiny collector is stale
+              description: The latest publication is older than eight hours, exceeding the six-hour schedule plus safety margin.
+          - alert: CHOMSNASFilesystemUrgent
+            expr: node_filesystem_avail_bytes{job="choms-nas",mountpoint=~"/|/srv/storage"} / node_filesystem_size_bytes{job="choms-nas",mountpoint=~"/|/srv/storage"} < 0.03 and node_filesystem_readonly{job="choms-nas",mountpoint=~"/|/srv/storage"} == 0
+            for: 15m
+            labels: {severity: critical}
+            annotations:
+              summary: CHOMS NAS filesystem space is critically low
+              description: A production NAS filesystem has remained below three percent available space for fifteen minutes.
+          - alert: CHOMSNASInodesUrgent
+            expr: node_filesystem_files_free{job="choms-nas",mountpoint=~"/|/srv/storage"} / node_filesystem_files{job="choms-nas",mountpoint=~"/|/srv/storage"} < 0.03 and node_filesystem_readonly{job="choms-nas",mountpoint=~"/|/srv/storage"} == 0
+            for: 15m
+            labels: {severity: critical}
+            annotations:
+              summary: CHOMS NAS filesystem inodes are critically low
+              description: A production NAS filesystem has remained below three percent free inodes for fifteen minutes.
+          - alert: CHOMSNASDangerousTemperature
+            expr: node_hwmon_temp_celsius{job="choms-nas"} > 90
+            for: 10m
+            labels: {severity: critical}
+            annotations:
+              summary: CHOMS NAS hardware temperature is dangerous
+              description: A NAS hwmon sensor has exceeded 90 C for ten minutes; hardware critical limits are 99 C.
+      - name: choms-kubernetes-actionable
+        rules:
+          - alert: CHOMSKubernetesNodeUnavailable
+            expr: kube_node_status_condition{job="kube-state-metrics",condition="Ready",status="true"} == 0 or kube_node_spec_taint{job="kube-state-metrics",key="node.kubernetes.io/unreachable",effect="NoSchedule"} == 1
+            for: 15m
+            labels: {severity: critical}
+            annotations:
+              summary: CHOMS Kubernetes node is unavailable
+              description: A schedulable node has remained NotReady or unreachable for fifteen minutes.
+          - alert: CHOMSKubernetesNodePressure
+            expr: kube_node_status_condition{job="kube-state-metrics",condition=~"MemoryPressure|DiskPressure|PIDPressure",status="true"} == 1
+            for: 15m
+            labels: {severity: critical}
+            annotations:
+              summary: CHOMS Kubernetes node has persistent resource pressure
+              description: Memory, disk or PID pressure has remained active for fifteen minutes and requires operator action.
+          - alert: CHOMSKubernetesPVCNotBound
+            expr: kube_persistentvolumeclaim_status_phase{job="kube-state-metrics",phase=~"Pending|Lost"} == 1
+            for: 15m
+            labels: {severity: critical}
+            annotations:
+              summary: CHOMS persistent volume claim is not Bound
+              description: A PVC has remained Pending or Lost for fifteen minutes.
+      - name: choms-monitoring-controlled-test
+        rules:
+          - alert: CHOMSMonitoringSyntheticCritical
+            expr: choms_monitoring_synthetic_test{job="choms-nas"} == 1
+            for: 1m
+            labels: {severity: critical}
+            annotations:
+              summary: CHOMS controlled monitoring notification test
+              description: This isolated synthetic metric validates critical FIRING and RESOLVED delivery and does not represent a production fault.
 fullnameOverride: choms-monitoring
 grafana:
   admin:
@@ -69,6 +169,17 @@ prometheus:
   ingress:
     enabled: false
   prometheusSpec:
+    additionalScrapeConfigs:
+      - job_name: choms-nas
+        scrape_interval: 30s
+        scrape_timeout: 10s
+        static_configs:
+          - targets: [192.168.1.167:9100]
+            labels:
+              role: nas
+        relabel_configs:
+          - target_label: instance
+            replacement: choms-nas
     podMonitorSelectorNilUsesHelmValues: false
     probeSelectorNilUsesHelmValues: false
     replicas: 1

@@ -708,3 +708,33 @@ entries are immutable; append an explicit correction when needed.
   stayed healthy, and the collector runs with zero restarts. RAID remained
   `[UUUU]` and NFS active. No SMART self-test, disk, RAID, filesystem, NFS,
   Kubernetes, image, credential or unrelated-container change occurred.
+
+## 2026-08-29 — Actionable NAS, node and storage monitoring
+
+- **Change:** Added one private NAS node-exporter using the same pinned digest
+  as Kubernetes. It is non-privileged, read-only, capability-free and limited
+  to filesystem, diskstats, hwmon, mdadm and textfile collectors. An
+  unprivileged persistent user timer publishes atomic, unlabeled NFS,
+  mdmonitor, RAID and Scrutiny freshness summaries every minute. No raw device,
+  Docker socket, systemd collector, credential or SMART command is present.
+- **Prometheus:** The locked kube-prometheus-stack 88.0.1 release now scrapes
+  `instance=choms-nas, role=nas`. Thirteen CHOMS rules page only persistent
+  actionable NAS, node and PVC conditions; upstream critical filesystem/PVC
+  capacity rules are reused instead of duplicated. Routing and upstream
+  severities were unchanged.
+- **Corrections:** The first user timer used `OnUnitActiveSec`, which left no
+  next elapse for the completed oneshot and correctly triggered the stale
+  alert. It was reconciled to a per-minute calendar timer. `AF_UNIX` was added
+  to the hardened service so unprivileged systemd state queries work. Docker
+  bridge publication restricted to the NAS LAN address made the target
+  reachable without a firewall or privileged change. An ambiguous Scrutiny
+  device status was deliberately not converted into SMART failure telemetry.
+- **Validation:** YAML, Bash, Python, systemd units, Compose render, promtool
+  syntax and unit tests passed. Helm server dry-run passed and the persistent
+  diff contained only Prometheus, its generated scrape Secret and the new
+  PrometheusRule. A synthetic metric produced Telegram FIRING and RESOLVED as
+  confirmed by the operator, then was removed. Final evidence showed
+  `Linger=yes`, timer enabled/active, a 10-second-old textfile, exporter running
+  unprivileged with zero restarts, NAS target UP and no CHOMS alert. RAID,
+  NFS, Scrutiny, Prometheus and Alertmanager remained healthy. No RP3, disk,
+  RAID, filesystem, NFS, PVC, chart version or unrelated service changed.
