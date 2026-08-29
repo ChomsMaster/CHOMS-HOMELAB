@@ -264,6 +264,14 @@ Kubernetes and the Scrutiny server were not modified. Native collector
 migration, privilege reduction and the unrelated failed mdraid-monitoring
 units remain separate work.
 
+On 2026-08-29 the NAS collector's stale pre-Hub/Spoke endpoint was replaced
+with the existing HTTPS route backed by `monitoring/scrutiny:8080`. The
+collector is now reproducibly declared under `stacks/monitoring/nas`, retaining
+its pinned image, `choms-nas` identity, five-device discovery, privileges,
+mounts, bridge network and six-hour schedule. Its normal startup collection
+refreshed the same five records without duplicates or publication errors;
+Scrutiny remained healthy and RAID/NFS were unchanged.
+
 The follow-up NAS diagnosis confirmed one active, non-degraded mdraid array
 with no resynchronization in progress. Monitoring had exited because neither a
 notification address nor a notification program was configured, and the

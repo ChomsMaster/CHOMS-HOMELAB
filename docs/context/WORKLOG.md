@@ -689,3 +689,22 @@ entries are immutable; append an explicit correction when needed.
   enforce the declared container memory limit; the limitation is accepted
   without changing kernel or Docker configuration. WireGuard, SSH/SOCKS,
   Firefox, Docker global state and other services were not modified.
+
+## 2026-08-29 — NAS Scrutiny collector endpoint recovery
+
+- **Cause:** The manually created NAS collector retained the retired
+  `192.168.1.138:8083` endpoint after the Scrutiny Hub/Spoke migration and its
+  six-hour publications timed out. The current ClusterIP is not routed to the
+  NAS, while the existing HTTPS route to `monitoring/scrutiny:8080` is
+  reachable and healthy.
+- **Change:** Added a minimal Compose declaration and reusable SSH deployment
+  workflow. Recreated only `choms-scrutiny-collector` with the HTTPS endpoint;
+  image digest, host identity, startup collection, six-hour cron, privilege,
+  `/dev`, read-only udev, bridge networking and restart policy were preserved.
+- **Validation:** The guarded preflight proved the endpoint was the sole
+  effective delta. One normal startup collection read and published five
+  devices with no send error. The same five hashed identities refreshed, the
+  complete identity set remained unchanged, no duplicate appeared, Scrutiny
+  stayed healthy, and the collector runs with zero restarts. RAID remained
+  `[UUUU]` and NFS active. No SMART self-test, disk, RAID, filesystem, NFS,
+  Kubernetes, image, credential or unrelated-container change occurred.
