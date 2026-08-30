@@ -1,0 +1,8 @@
+[Unit]
+Description=CHOMS restic retention dry-run schedule
+[Timer]
+OnCalendar=*-*-* 06:30:00 Europe/Madrid
+Persistent=true
+Unit=choms-restic-maintenance.service
+[Install]
+WantedBy=timers.target

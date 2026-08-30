@@ -114,6 +114,22 @@ additionalPrometheusRulesMap:
             annotations:
               summary: CHOMS controlled monitoring notification test
               description: This isolated synthetic metric validates critical FIRING and RESOLVED delivery and does not represent a production fault.
+      - name: choms-encrypted-recovery
+        rules:
+          - alert: CHOMSEncryptedRecoveryBackupFailed
+            expr: choms_restic_backup_success == 0
+            for: 30m
+            labels: {severity: critical}
+            annotations:
+              summary: CHOMS encrypted recovery backup is persistently failing
+              description: A node has reported a failed encrypted recovery backup for at least thirty minutes.
+          - alert: CHOMSEncryptedRecoveryBackupStale
+            expr: (up{job=~".*node-exporter.*"} == 1 unless on(instance) choms_restic_backup_last_success_unixtime) or (time() - choms_restic_backup_last_success_unixtime > 129600)
+            for: 30m
+            labels: {severity: critical}
+            annotations:
+              summary: CHOMS encrypted recovery backup is stale
+              description: A node has no successful encrypted recovery backup within thirty-six hours.
 fullnameOverride: choms-monitoring
 grafana:
   admin:
@@ -205,6 +221,15 @@ prometheus:
           storageClassName: choms-nfs
 prometheus-node-exporter:
   enabled: true
+  extraArgs:
+    - '--collector.filesystem.mount-points-exclude=^/(dev|proc|sys|run/containerd/.+|var/lib/docker/.+|var/lib/kubelet/.+)($|/)'
+    - '--collector.filesystem.fs-types-exclude=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs|erofs)$'
+    - --collector.textfile.directory=/var/lib/node_exporter/textfile_collector
+  extraHostVolumeMounts:
+    - name: choms-restic-textfile
+      hostPath: /var/lib/node_exporter/textfile_collector
+      mountPath: /var/lib/node_exporter/textfile_collector
+      readOnly: true
 prometheusOperator:
   enabled: true
   resources:

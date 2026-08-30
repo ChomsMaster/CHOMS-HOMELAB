@@ -1,0 +1,16 @@
+[Unit]
+Description=CHOMS restic retention dry-run
+After=choms-restic-backup.service
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/choms-restic-maintenance.sh
+TimeoutStartSec=1h
+UMask=0077
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/run/lock /mnt/choms-local/backups/choms-platforms-restic

@@ -75,11 +75,36 @@ provides:
 - Nextcloud consistent snapshots and database dumps.
 - NAS synchronization, checksums, GFS retention, and controlled restore tests.
 
+An encrypted restic recovery copy is active on node-03 and declared under
+[`stacks/backup/restic/`](../../stacks/backup/restic/). The repository resides
+on the existing ext4 HDD at
+`/mnt/choms-local/backups/choms-platforms-restic`; node-01 and node-02 use
+source-restricted SFTP and node-03 uses the same repository locally. Restic
+encrypts and deduplicates at source, while the repository password is absent
+from Git and requires external custody. Six hostname/type snapshot categories
+cover the validated database package, authorized small platform/Kubernetes
+state, encrypted Secret exports, consistent SQLite K3s state, selected
+Nextcloud configuration/application state, Jellyfin configuration and
+qBittorrent configuration. The validated aggregate is 1,242,635,604 logical
+bytes and 1,108,695,459 stored bytes, below the 25 GiB guard.
+
+Bulk Nextcloud data, multimedia, downloads, Colegio, personal or historical
+backups, Prometheus TSDB, Loki, caches and unrelated `/srv/storage` content are
+excluded. Backup timers are active and waiting at 05:00, 05:30 and 06:00, with
+maintenance at 06:30 Europe/Madrid. Retention is declared as 7 daily, 4 weekly
+and 6 monthly, but maintenance currently performs only `forget --dry-run`;
+real forget, prune and automatic unlock remain disabled. Monitoring ingests
+Restic metrics from all three nodes and has two loaded critical rules. The
+controlled notification signal completed one FIRING/RESOLVED cycle, was
+removed, and ended inactive.
+
 Kubernetes and Nextcloud backup services most recently reported success during
 the 2026-08-17 observation. The last documented Nextcloud restore validation
-completed on 2026-08-14. Snapshots on the live NAS filesystem do not protect
-against total NAS loss; an encrypted independent or off-site copy remains a
-known gap. See [`stacks/backup/README.md`](../../stacks/backup/README.md).
+completed on 2026-08-14. The encrypted node-03 copy is separate from the NAS
+failure domain, but remains local rather than offsite and therefore does not
+protect against loss of the site or its recovery HDD. Recovery requires that
+HDD, the externally held password and a compatible Restic version. See
+[`stacks/backup/README.md`](../../stacks/backup/README.md).
 
 On 2026-08-30 the fixed Kubernetes package `20260830-031918` passed a complete
 isolated database recovery test. With the production image digests, temporary

@@ -1,0 +1,9 @@
+[Unit]
+Description=Finalize CHOMS Restic timer on node-02 after global validation
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/choms-restic-deploy-node02.sh finalize
+TimeoutStartSec=65min

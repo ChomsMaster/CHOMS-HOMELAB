@@ -770,3 +770,53 @@ entries are immutable; append an explicit correction when needed.
 - **Residual risk:** There is still no encrypted independent/off-site copy,
   external Secrets are not proven recoverable, and multiple application PVCs
   and node-local state paths remain without backup coverage.
+
+## 2026-08-30 — Encrypted recovery copy declarative preparation
+
+- **Scope:** Prepared a restic 0.18.0 design for the authorized existing ext4
+  destination on node-03. It declares a chrooted, key-only SFTP account,
+  independent source-restricted Ed25519 keys, direct per-node password entry,
+  local/SFTP backends, stable host/type tags, serialized timers, retention
+  dry-run only, source-side encryption, textfile metrics and critical alerts.
+- **Recovery content:** The scope covers the validated Kubernetes database
+  package, selected small configuration/state, encrypted Kubernetes Secrets,
+  and a transactional SQLite copy of the documented K3s datastore. It rejects
+  etcd, external datastore and cluster-init indicators rather than copying
+  `server/db` hot. Bulk Nextcloud data, media, downloads, Colegio, personal
+  backups, Prometheus, Loki, caches and unrelated NAS storage are excluded.
+- **Safety boundary:** No remote command or runtime mutation was performed.
+  No user, chroot, SSH key, known-host entry, repository, password, installed
+  unit, timer or backup was created. Real forget and prune remain disabled;
+  deployment and restore validation require a separate authorized block.
+
+## 2026-08-31 — Encrypted node-03 recovery checkpoint completed
+
+- **Deployment:** Initialized one encrypted Restic repository on the existing
+  node-03 ext4 HDD. Node-01 and node-02 use independent source-restricted SFTP
+  identities into a root-controlled chroot that exposes only the repository;
+  node-03 accesses the same destination locally. Password material and private
+  keys remain outside Git, and recovery-password custody was confirmed
+  externally.
+- **Scope:** Six hostname/type categories cover the validated database package,
+  authorized small platform/Kubernetes state, encrypted Secret exports,
+  consistent SQLite K3s state, selected Nextcloud configuration/application
+  state, Jellyfin configuration and qBittorrent configuration. Nextcloud data,
+  multimedia, downloads, Colegio, personal/historical backups, Prometheus TSDB,
+  Loki, caches and unrelated storage remain excluded.
+- **Validation:** `restic check`, hostname/tag and exclusion validation passed.
+  Aggregate size is 1,242,635,604 logical bytes and 1,108,695,459 stored bytes,
+  below the 25 GiB limit. Backup timers at 05:00, 05:30 and 06:00 plus the 06:30
+  maintenance timer are enabled, active and waiting in Europe/Madrid. Retention
+  is 7 daily, 4 weekly and 6 monthly; maintenance remains `forget --dry-run`
+  only, with no real forget, prune or automatic unlock.
+- **Monitoring and closure:** The authorized monitoring release change mounted
+  each node's textfile directory read-only, loaded two Restic rules and retained
+  Grafana PVC identity and binding. Node-exporter remained 3/3, Prometheus and
+  Alertmanager 1/1, all three node metric sets were ingested, and no unexpected
+  Restic alert was active. The operator confirmed the single controlled FIRING
+  and RESOLVED in Telegram; its temporary signal was removed and Prometheus
+  ended inactive.
+- **Recovery boundary:** This copy is independent of the NAS but still local,
+  not offsite. Recovery requires the node-03 HDD, the externally held password
+  and a compatible Restic version. Loss of the site or that HDD remains an open
+  risk addressed by the separate off-site roadmap item.

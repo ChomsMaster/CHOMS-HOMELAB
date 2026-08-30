@@ -1,0 +1,17 @@
+[Unit]
+Description=CHOMS encrypted recovery backup
+After=network-online.target
+Wants=network-online.target
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/choms-restic-backup.sh
+TimeoutStartSec=2h
+UMask=0077
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=read-only
+ProtectSystem=strict
+ReadWritePaths=/run/lock /run /var/lib/node_exporter/textfile_collector -/mnt/choms-local/backups/choms-platforms-restic
