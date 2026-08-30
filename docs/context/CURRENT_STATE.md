@@ -81,6 +81,20 @@ completed on 2026-08-14. Snapshots on the live NAS filesystem do not protect
 against total NAS loss; an encrypted independent or off-site copy remains a
 known gap. See [`stacks/backup/README.md`](../../stacks/backup/README.md).
 
+On 2026-08-30 the fixed Kubernetes package `20260830-031918` passed a complete
+isolated database recovery test. With the production image digests, temporary
+credentials, three independent local-path PVCs and namespace-wide default-deny
+network policy, MariaDB restored 1 database/127 tables in 24.880 seconds,
+PostgreSQL restored 1 non-system schema/1 table in 2.573 seconds, and Redis
+loaded 6 keys in 1.061 seconds. Each engine passed a write/read/delete probe;
+eight non-sensitive configuration files were structurally extracted without
+being applied. The namespace exposed no endpoint, production and monitoring
+resource versions did not change, the critical-alert count had zero delta, and
+guarded cleanup removed the namespace, PVCs, PVs and Secret without a Released
+PV. The reusable test script records only aggregate evidence. Off-site copies,
+external Secret recovery and coverage for the remaining stateful services/PVCs
+remain open risks.
+
 ## Databases
 
 MariaDB, PostgreSQL, and Redis each run as one Ready replica with zero observed
@@ -414,6 +428,9 @@ already contained the correct desired state.
 - NetworkPolicies and Pod Security controls have not yet received a dedicated
   platform-wide audit.
 - Complete NAS loss is not covered by the current same-filesystem snapshots.
+- External runtime Secrets do not have a verified independent recovery copy.
+- Several application PVCs and node-local state paths remain outside the
+  versioned backup system despite the successful central database restore.
 - MetalLB has no metrics ServiceMonitor/PodMonitor. Controller metrics are
   reachable, but only one of three speaker TCP/7472 endpoints was reachable
   from Prometheus; this is separate from the blocked TCP/UDP 7946 memberlist and

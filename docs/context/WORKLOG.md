@@ -738,3 +738,35 @@ entries are immutable; append an explicit correction when needed.
   unprivileged with zero restarts, NAS target UP and no CHOMS alert. RAID,
   NFS, Scrutiny, Prometheus and Alertmanager remained healthy. No RP3, disk,
   RAID, filesystem, NFS, PVC, chart version or unrelated service changed.
+
+## 2026-08-30 — Isolated Kubernetes database recovery validation
+
+- **Scope:** Used only package `20260830-031918` and the exact production
+  MariaDB, PostgreSQL and Redis image digests. Each run created a uniquely
+  labelled temporary namespace with default-deny ingress/egress, three
+  independent local-path PVCs and one ephemeral random-credential Secret. No
+  Service, route, public DNS, production PVC or production Secret was used.
+- **Corrections:** The first attempt timed out before restore because the
+  control-plane toleration was missing. The second restored successfully but
+  exposed weak acceptance logic: MariaDB's `--databases` dump restored its own
+  database name while the query checked another, and Redis parsing expected a
+  labelled result. Both attempts ran guarded cleanup with no residual PV. The
+  final script requires non-zero MariaDB database/table counts and a numeric
+  Redis key count before reporting success.
+- **Result:** Checksums passed. MariaDB restored 1 database and 127 tables from
+  a 1,886,603-byte artifact in 24.880 seconds. PostgreSQL restored 1 non-system
+  schema and 1 table from 4,736 bytes in 2.573 seconds. Redis loaded 6 keys
+  from 53,267 bytes in 1.061 seconds. All engines passed synthetic
+  write/read/delete checks without printing restored values or rows. Eight
+  non-sensitive configuration files were extracted into a temporary directory,
+  structurally checked and removed without application.
+- **Isolation and cleanup:** All three Pods became Ready, restore commands
+  returned without error, endpoint count remained zero, production database
+  Deployments plus Prometheus/Alertmanager resource versions were unchanged,
+  and the active critical-alert count had zero delta. Exact-name and label
+  guards then inventoried and deleted only the final namespace. Namespace,
+  temporary PVCs/PVs/Secret, outside resources and Released-PV residue were
+  absent; the backup package was preserved.
+- **Residual risk:** There is still no encrypted independent/off-site copy,
+  external Secrets are not proven recoverable, and multiple application PVCs
+  and node-local state paths remain without backup coverage.

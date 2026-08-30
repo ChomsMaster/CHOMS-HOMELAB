@@ -192,6 +192,25 @@ route or collector endpoint and deletes the Pod and restored data on exit.
 
 ## Restore Test
 
+Run the isolated central-database recovery validation for its explicitly
+authorized immutable package on `choms-node-01`:
+
+    /usr/local/sbin/choms-kubernetes-recovery-test.sh 20260830-031918
+
+The script validates package checksums, restores MariaDB, PostgreSQL and Redis
+with production image digests into independent temporary PVCs, performs only
+aggregate structural and synthetic checks, and extracts non-sensitive runtime
+configuration without applying it. The uniquely named namespace has explicit
+temporary labels, default-deny ingress/egress and no endpoint. Cleanup refuses
+to delete a namespace unless both labels match, then verifies namespace/PV
+removal and absence of new Released PVs.
+
+The accepted 2026-08-30 run measured RTOs of 24.880 seconds for MariaDB, 2.573
+seconds for PostgreSQL and 1.061 seconds for Redis. See the worklog for the
+aggregate restored-object counts and corrected preliminary attempts.
+
+## Nextcloud Restore Test
+
 Run the controlled Nextcloud recovery test on `choms-node-01`:
 
     sudo /usr/local/sbin/choms-nextcloud-restore-test.sh

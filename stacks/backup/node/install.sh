@@ -13,6 +13,7 @@ SCRIPTS=(
   choms-backup-gfs-retention.sh
   choms-nextcloud-data-backup.sh
   choms-nextcloud-restore-test.sh
+  choms-kubernetes-recovery-test.sh
   choms-scrutiny-bootstrap-backup.sh
   choms-scrutiny-bootstrap-restore-test.sh
   choms-scrutiny-logical-restore-test.sh
