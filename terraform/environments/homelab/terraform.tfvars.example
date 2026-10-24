@@ -1,0 +1,2 @@
+# Non-secret example. Provider credentials must remain outside repository and state inputs.
+cluster_endpoint = "https://127.0.0.1:65535"

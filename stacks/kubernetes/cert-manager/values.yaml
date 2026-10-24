@@ -1,0 +1,5 @@
+config:
+  gatewayAPI:
+    enabled: true
+crds:
+  enabled: true

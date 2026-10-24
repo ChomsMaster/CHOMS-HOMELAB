@@ -1,0 +1,209 @@
+# Propuesta local; NO aplicada. Véase docs/operations/NETWORK_POLICIES.md
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-default-deny
+  namespace: colegio-maria-rosario-staging
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress: []
+  egress: []
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-dns
+  namespace: colegio-maria-rosario-staging
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+      podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-edge-colegio-web-in
+  namespace: colegio-maria-rosario-staging
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app: colegio-web
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: traefik
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: traefik
+    ports:
+    - protocol: TCP
+      port: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-edge-colegio-gibbon-in
+  namespace: colegio-maria-rosario-staging
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app: colegio-gibbon
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: traefik
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: traefik
+    ports:
+    - protocol: TCP
+      port: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-edge-colegio-moodle-in
+  namespace: colegio-maria-rosario-staging
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app: colegio-moodle
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: traefik
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: traefik
+    ports:
+    - protocol: TCP
+      port: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-colegio-moodle-db-out
+  namespace: colegio-maria-rosario-staging
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: colegio-maria-rosario-staging
+      podSelector:
+        matchLabels:
+          app: colegio-moodle-db
+    ports:
+    - protocol: TCP
+      port: 3306
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-colegio-moodle-db-in
+  namespace: colegio-maria-rosario-staging
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app: colegio-moodle-db
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: colegio-maria-rosario-staging
+      podSelector:
+        matchLabels: {}
+    ports:
+    - protocol: TCP
+      port: 3306
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-colegio-gibbon-db-out
+  namespace: colegio-maria-rosario-staging
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: colegio-maria-rosario-staging
+      podSelector:
+        matchLabels:
+          app: colegio-gibbon-db
+    ports:
+    - protocol: TCP
+      port: 3306
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-colegio-gibbon-db-in
+  namespace: colegio-maria-rosario-staging
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app: colegio-gibbon-db
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: colegio-maria-rosario-staging
+      podSelector:
+        matchLabels: {}
+    ports:
+    - protocol: TCP
+      port: 3306

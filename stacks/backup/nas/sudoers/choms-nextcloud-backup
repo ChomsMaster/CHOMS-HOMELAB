@@ -1,0 +1,1 @@
+chomsmaster ALL=(root) NOPASSWD: /usr/local/sbin/choms-nextcloud-backup-control.sh *

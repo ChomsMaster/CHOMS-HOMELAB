@@ -1,0 +1,537 @@
+# Propuesta local; NO aplicada. Véase docs/operations/NETWORK_POLICIES.md
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-default-deny
+  namespace: traefik
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress: []
+  egress: []
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-dns
+  namespace: traefik
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+      podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-scrape-traefik-in
+  namespace: traefik
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: prometheus
+    ports:
+    - protocol: TCP
+      port: 9100
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-edge-authelia-out
+  namespace: traefik
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: security
+      podSelector:
+        matchLabels:
+          app: authelia
+    ports:
+    - protocol: TCP
+      port: 9091
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-edge-portainer-out
+  namespace: traefik
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: apps
+      podSelector:
+        matchLabels:
+          app: portainer
+    ports:
+    - protocol: TCP
+      port: 9000
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-edge-nextcloud-out
+  namespace: traefik
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: apps
+      podSelector:
+        matchLabels:
+          app: nextcloud
+    ports:
+    - protocol: TCP
+      port: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-edge-choms-controller-out
+  namespace: traefik
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: apps
+      podSelector:
+        matchLabels:
+          app: choms-controller
+    ports:
+    - protocol: TCP
+      port: 8000
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-edge-uptime-kuma-out
+  namespace: traefik
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: apps
+      podSelector:
+        matchLabels:
+          app: uptime-kuma
+    ports:
+    - protocol: TCP
+      port: 3001
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-edge-jellyfin-out
+  namespace: traefik
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: media
+      podSelector:
+        matchLabels:
+          app: jellyfin
+    ports:
+    - protocol: TCP
+      port: 8096
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-edge-scrutiny-out
+  namespace: traefik
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+      podSelector:
+        matchLabels:
+          app: scrutiny
+    ports:
+    - protocol: TCP
+      port: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-edge-home-out
+  namespace: traefik
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: apps
+      podSelector:
+        matchLabels:
+          app: home
+    ports:
+    - protocol: TCP
+      port: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-edge-filebrowser-out
+  namespace: traefik
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: filebrowser
+      podSelector:
+        matchLabels:
+          app: filebrowser
+    ports:
+    - protocol: TCP
+      port: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-edge-colegio-web-out
+  namespace: traefik
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: colegio-maria-rosario-staging
+      podSelector:
+        matchLabels:
+          app: colegio-web
+    ports:
+    - protocol: TCP
+      port: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-edge-colegio-gibbon-out
+  namespace: traefik
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: colegio-maria-rosario-staging
+      podSelector:
+        matchLabels:
+          app: colegio-gibbon
+    ports:
+    - protocol: TCP
+      port: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-edge-colegio-moodle-out
+  namespace: traefik
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: colegio-maria-rosario-staging
+      podSelector:
+        matchLabels:
+          app: colegio-moodle
+    ports:
+    - protocol: TCP
+      port: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-edge-grafana-out
+  namespace: traefik
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: grafana
+    ports:
+    - protocol: TCP
+      port: 3000
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-edge-prometheus-out
+  namespace: traefik
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: prometheus
+    ports:
+    - protocol: TCP
+      port: 9090
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-public-web
+  namespace: traefik
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+    ports:
+    - protocol: TCP
+      port: 8000
+    - protocol: TCP
+      port: 8443
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-acme-solver-out
+  namespace: traefik
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: traefik
+      podSelector:
+        matchLabels:
+          acme.cert-manager.io/http01-solver: 'true'
+    ports:
+    - protocol: TCP
+      port: 8089
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-acme-solver-in
+  namespace: traefik
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      acme.cert-manager.io/http01-solver: 'true'
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: traefik
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: traefik
+    ports:
+    - protocol: TCP
+      port: 8089
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-api-controllers
+  namespace: traefik
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 10.43.0.1/32
+    - ipBlock:
+        cidr: 192.168.1.138/32
+    ports:
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 6443
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-http01-selfcheck-in
+  namespace: traefik
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: cert-manager
+      podSelector:
+        matchLabels: {}
+    ports:
+    - protocol: TCP
+      port: 8000
+    - protocol: TCP
+      port: 8443

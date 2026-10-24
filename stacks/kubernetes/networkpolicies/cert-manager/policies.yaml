@@ -1,0 +1,233 @@
+# Propuesta local; NO aplicada. Véase docs/operations/NETWORK_POLICIES.md
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-default-deny
+  namespace: cert-manager
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress: []
+  egress: []
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-dns
+  namespace: cert-manager
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+      podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-scrape-cert-manager-in
+  namespace: cert-manager
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: prometheus
+    ports:
+    - protocol: TCP
+      port: 9402
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-api-controllers
+  namespace: cert-manager
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 10.43.0.1/32
+    - ipBlock:
+        cidr: 192.168.1.138/32
+    ports:
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 6443
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-admission-webhook
+  namespace: cert-manager
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: webhook
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - ipBlock:
+        cidr: 192.168.1.138/32
+    - ipBlock:
+        cidr: 192.168.1.172/32
+    - ipBlock:
+        cidr: 192.168.1.134/32
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+    ports:
+    - protocol: TCP
+      port: 10250
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-cert-manager-webhook-out
+  namespace: cert-manager
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: cert-manager
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/component: webhook
+    ports:
+    - protocol: TCP
+      port: 10250
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-cert-manager-webhook-in
+  namespace: cert-manager
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: webhook
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: cert-manager
+      podSelector:
+        matchLabels: {}
+    ports:
+    - protocol: TCP
+      port: 10250
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-http01-selfcheck
+  namespace: cert-manager
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 192.168.1.240/32
+    ports:
+    - protocol: TCP
+      port: 80
+    - protocol: TCP
+      port: 443
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-http01-selfcheck-out
+  namespace: cert-manager
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: traefik
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: traefik
+    ports:
+    - protocol: TCP
+      port: 8000
+    - protocol: TCP
+      port: 8443
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-acme
+  namespace: cert-manager
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: cert-manager
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+        except:
+        - 10.0.0.0/8
+        - 172.16.0.0/12
+        - 192.168.0.0/16
+        - 169.254.0.0/16
+    ports:
+    - protocol: TCP
+      port: 443

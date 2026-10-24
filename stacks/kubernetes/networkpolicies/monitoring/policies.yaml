@@ -1,0 +1,762 @@
+# Propuesta local; NO aplicada. Véase docs/operations/NETWORK_POLICIES.md
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-scrape-cert-manager-out
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: prometheus
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: cert-manager
+      podSelector:
+        matchLabels: {}
+    ports:
+    - protocol: TCP
+      port: 9402
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-scrape-logging-out
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: prometheus
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: logging
+      podSelector:
+        matchLabels: {}
+    ports:
+    - protocol: TCP
+      port: 12345
+    - protocol: TCP
+      port: 3100
+    - protocol: TCP
+      port: 3500
+    - protocol: TCP
+      port: 4040
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-scrape-metallb-system-out
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: prometheus
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: metallb-system
+      podSelector:
+        matchLabels: {}
+    ports:
+    - protocol: TCP
+      port: 7472
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-default-deny
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress: []
+  egress: []
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-dns
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+      podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-scrape-monitoring-out
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: prometheus
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+      podSelector:
+        matchLabels: {}
+    ports:
+    - protocol: TCP
+      port: 8080
+    - protocol: TCP
+      port: 8081
+    - protocol: TCP
+      port: 9090
+    - protocol: TCP
+      port: 9093
+    - protocol: TCP
+      port: 9100
+    - protocol: TCP
+      port: 10250
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-scrape-monitoring-in
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: prometheus
+    ports:
+    - protocol: TCP
+      port: 8080
+    - protocol: TCP
+      port: 8081
+    - protocol: TCP
+      port: 9090
+    - protocol: TCP
+      port: 9093
+    - protocol: TCP
+      port: 9100
+    - protocol: TCP
+      port: 10250
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-scrape-traefik-out
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: prometheus
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: traefik
+      podSelector:
+        matchLabels: {}
+    ports:
+    - protocol: TCP
+      port: 9100
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-edge-scrutiny-in
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app: scrutiny
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: traefik
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: traefik
+    ports:
+    - protocol: TCP
+      port: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-edge-grafana-in
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: grafana
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: traefik
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: traefik
+    ports:
+    - protocol: TCP
+      port: 3000
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-edge-prometheus-in
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: prometheus
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: traefik
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: traefik
+    ports:
+    - protocol: TCP
+      port: 9090
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-scrutiny-influx-out
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app: scrutiny
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+      podSelector:
+        matchLabels:
+          app: scrutiny-influxdb
+    ports:
+    - protocol: TCP
+      port: 8086
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-scrutiny-influx-in
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app: scrutiny-influxdb
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+      podSelector:
+        matchLabels:
+          app: scrutiny
+    ports:
+    - protocol: TCP
+      port: 8086
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-scrutiny-backup-out
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: scrutiny-logical-backup
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+      podSelector:
+        matchLabels:
+          app: scrutiny-influxdb
+    ports:
+    - protocol: TCP
+      port: 8086
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-scrutiny-backup-in
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app: scrutiny-influxdb
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: scrutiny-logical-backup
+    ports:
+    - protocol: TCP
+      port: 8086
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-scrutiny-collect-out
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app: scrutiny-collector
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+      podSelector:
+        matchLabels:
+          app: scrutiny
+    ports:
+    - protocol: TCP
+      port: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-scrutiny-collect-in
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app: scrutiny
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+      podSelector:
+        matchLabels:
+          app: scrutiny-collector
+    ports:
+    - protocol: TCP
+      port: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-nas-scrutiny
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app: scrutiny
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - ipBlock:
+        cidr: 192.168.1.167/32
+    ports:
+    - protocol: TCP
+      port: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-grafana-loki-out
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: grafana
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: logging
+      podSelector:
+        matchLabels: {}
+    ports:
+    - protocol: TCP
+      port: 80
+    - protocol: TCP
+      port: 8080
+    - protocol: TCP
+      port: 3100
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-grafana-prometheus-out
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: grafana
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: prometheus
+    ports:
+    - protocol: TCP
+      port: 9090
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-grafana-prometheus-in
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: prometheus
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: grafana
+    ports:
+    - protocol: TCP
+      port: 9090
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-prometheus-alertmanager-out
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: prometheus
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: alertmanager
+    ports:
+    - protocol: TCP
+      port: 9093
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-prometheus-alertmanager-in
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: alertmanager
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: prometheus
+    ports:
+    - protocol: TCP
+      port: 9093
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-alertmanager-gossip-out
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: alertmanager
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: alertmanager
+    ports:
+    - protocol: TCP
+      port: 9094
+    - protocol: UDP
+      port: 9094
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-alertmanager-gossip-in
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: alertmanager
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: alertmanager
+    ports:
+    - protocol: TCP
+      port: 9094
+    - protocol: UDP
+      port: 9094
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-api-controllers
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 10.43.0.1/32
+    - ipBlock:
+        cidr: 192.168.1.138/32
+    ports:
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 6443
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-admission-webhook
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app: kube-prometheus-stack-operator
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - ipBlock:
+        cidr: 192.168.1.138/32
+    - ipBlock:
+        cidr: 192.168.1.172/32
+    - ipBlock:
+        cidr: 192.168.1.134/32
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+    ports:
+    - protocol: TCP
+      port: 10250
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-scrape-hosts
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: prometheus
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 192.168.1.138/32
+    - ipBlock:
+        cidr: 192.168.1.172/32
+    - ipBlock:
+        cidr: 192.168.1.134/32
+    - ipBlock:
+        cidr: 192.168.1.167/32
+    ports:
+    - protocol: TCP
+      port: 9100
+    - protocol: TCP
+      port: 7472
+    - protocol: TCP
+      port: 10250
+    - protocol: TCP
+      port: 4194
+    - protocol: TCP
+      port: 10255
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+    ports:
+    - protocol: TCP
+      port: 9153
+    - protocol: TCP
+      port: 10250
+    - protocol: TCP
+      port: 4194
+    - protocol: TCP
+      port: 10255
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-telegram
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: alertmanager
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+        except:
+        - 10.0.0.0/8
+        - 172.16.0.0/12
+        - 192.168.0.0/16
+        - 169.254.0.0/16
+    ports:
+    - protocol: TCP
+      port: 443

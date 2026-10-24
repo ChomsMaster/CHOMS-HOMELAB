@@ -1,0 +1,11 @@
+[Unit]
+Description=Run CHOMS Kubernetes backup nightly
+
+[Timer]
+OnCalendar=*-*-* 03:15:00
+Persistent=true
+RandomizedDelaySec=5m
+Unit=choms-kubernetes-backup.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,26 @@
+name: Repository Check
+'on':
+  push:
+    branches: [main, feature/devops-hardening]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate-repository:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd
+        with:
+          terraform_version: 1.16.1
+          terraform_wrapper: false
+      - name: Install pinned local validation tools and charts
+        run: ./scripts/prepare-validation-tools.sh
+      - name: Run the same validation as local development
+        run: |
+          export PATH="$PWD/.cache/devops/bin:$PWD/.cache/devops/venv/bin:$PATH"
+          ./scripts/validate.sh

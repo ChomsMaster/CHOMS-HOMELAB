@@ -1,0 +1,36 @@
+services:
+  monitor:
+    build:
+      context: .
+    image: choms-external-monitor:local
+    container_name: choms-external-monitor
+    restart: unless-stopped
+    read_only: true
+    user: "1000:1000"
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 48m
+    cpus: 0.20
+    pids_limit: 32
+    tmpfs:
+      - /tmp:size=4m,mode=1777
+    volumes:
+      - ./state:/state
+      - ./host-status:/host-status:ro
+    secrets:
+      - telegram_bot_token
+      - telegram_chat_id
+    healthcheck:
+      test: ["CMD-SHELL", "test -e /state/heartbeat && age=$$(($$(date +%s)-$$(stat -c %Y /state/heartbeat))) && test $$age -le 600"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+
+secrets:
+  telegram_bot_token:
+    file: ./secrets/telegram-bot-token
+  telegram_chat_id:
+    file: ./secrets/telegram-chat-id

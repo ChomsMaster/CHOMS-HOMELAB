@@ -1,0 +1,9 @@
+[Unit]
+Description=Complete CHOMS Restic validation on node-03 after origin backups
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/choms-restic-deploy-node03.sh finalize
+TimeoutStartSec=65min

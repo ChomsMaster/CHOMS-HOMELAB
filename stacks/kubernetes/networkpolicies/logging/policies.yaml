@@ -1,0 +1,189 @@
+# Propuesta local; NO aplicada. Véase docs/operations/NETWORK_POLICIES.md
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-default-deny
+  namespace: logging
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress: []
+  egress: []
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-dns
+  namespace: logging
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+      podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-scrape-logging-in
+  namespace: logging
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: prometheus
+    ports:
+    - protocol: TCP
+      port: 12345
+    - protocol: TCP
+      port: 3100
+    - protocol: TCP
+      port: 3500
+    - protocol: TCP
+      port: 4040
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-loki-internal-out
+  namespace: logging
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: logging
+      podSelector:
+        matchLabels: {}
+    ports:
+    - protocol: TCP
+      port: 80
+    - protocol: TCP
+      port: 8080
+    - protocol: TCP
+      port: 3100
+    - protocol: TCP
+      port: 9095
+    - protocol: TCP
+      port: 9096
+    - protocol: TCP
+      port: 7946
+    - protocol: UDP
+      port: 7946
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-loki-internal-in
+  namespace: logging
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: logging
+      podSelector:
+        matchLabels: {}
+    ports:
+    - protocol: TCP
+      port: 80
+    - protocol: TCP
+      port: 8080
+    - protocol: TCP
+      port: 3100
+    - protocol: TCP
+      port: 9095
+    - protocol: TCP
+      port: 9096
+    - protocol: TCP
+      port: 7946
+    - protocol: UDP
+      port: 7946
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-grafana-loki-in
+  namespace: logging
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: grafana
+    ports:
+    - protocol: TCP
+      port: 80
+    - protocol: TCP
+      port: 8080
+    - protocol: TCP
+      port: 3100
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-api-controllers
+  namespace: logging
+  labels:
+    app.kubernetes.io/part-of: choms-network-hardening
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: alloy
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 10.43.0.1/32
+    - ipBlock:
+        cidr: 192.168.1.138/32
+    ports:
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 6443

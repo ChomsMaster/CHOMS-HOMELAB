@@ -1,0 +1,16 @@
+[Unit]
+Description=CHOMS Consistent Nextcloud Data Backup
+After=network-online.target remote-fs.target
+Wants=network-online.target remote-fs.target
+RequiresMountsFor=/mnt/choms-storage /mnt/choms-backups
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+Environment=KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+ExecStart=/usr/local/sbin/choms-nextcloud-data-backup.sh
+TimeoutStartSec=infinity
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7

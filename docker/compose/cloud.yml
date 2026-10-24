@@ -1,0 +1,35 @@
+services:
+  nextcloud-db:
+    image: mariadb:11
+    container_name: choms-nextcloud-db
+    restart: unless-stopped
+    command:
+      - --transaction-isolation=READ-COMMITTED
+      - --binlog-format=ROW
+    environment:
+      MYSQL_ROOT_PASSWORD: ${NEXTCLOUD_DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+      MYSQL_PASSWORD: ${NEXTCLOUD_DB_PASSWORD}
+    volumes:
+      - /data/projects/choms-homelab/docker/nextcloud/db:/var/lib/mysql
+
+  nextcloud:
+    image: nextcloud:latest
+    container_name: choms-nextcloud
+    restart: unless-stopped
+    depends_on:
+      - nextcloud-db
+    environment:
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+      MYSQL_PASSWORD: ${NEXTCLOUD_DB_PASSWORD}
+      MYSQL_HOST: nextcloud-db
+    volumes:
+      - /data/projects/choms-homelab/docker/nextcloud/html:/var/www/html
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nextcloud.rule=Host(`cloud.chomsmaster.com`)"
+      - "traefik.http.routers.nextcloud.entrypoints=websecure"
+      - "traefik.http.routers.nextcloud.tls.certresolver=letsencrypt"
+      - "traefik.http.services.nextcloud.loadbalancer.server.port=80"

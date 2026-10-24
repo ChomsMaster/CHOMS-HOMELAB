@@ -1,0 +1,155 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    pv.kubernetes.io/bind-completed: 'yes'
+    pv.kubernetes.io/bound-by-controller: 'yes'
+    volume.beta.kubernetes.io/storage-provisioner: cluster.local/choms-nfs-nfs-subdir-external-provisioner
+    volume.kubernetes.io/storage-provisioner: cluster.local/choms-nfs-nfs-subdir-external-provisioner
+  name: nextcloud-storage
+  namespace: apps
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: choms-nfs
+  volumeMode: Filesystem
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nextcloud
+  namespace: apps
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: nextcloud
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextcloud
+  namespace: apps
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: nextcloud
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/restartedAt: '2026-08-02T01:17:34+02:00'
+      labels:
+        app: nextcloud
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_HOST
+          value: mariadb.databases.svc.cluster.local
+        - name: MYSQL_DATABASE
+          value: nextcloud
+        - name: MYSQL_USER
+          value: nextcloud
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: MARIADB_PASSWORD
+              name: mariadb-secret
+        - name: REDIS_HOST
+          value: redis.databases.svc.cluster.local
+        - name: REDIS_HOST_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: REDIS_PASSWORD
+              name: redis-secret
+        - name: NEXTCLOUD_TRUSTED_DOMAINS
+          value: nextcloud.chomsmaster.com
+        - name: OVERWRITEHOST
+          value: nextcloud.chomsmaster.com
+        - name: OVERWRITEPROTOCOL
+          value: https
+        image: docker.io/library/nextcloud@sha256:07ec73cc816e58d6f45a162cd53ef886462c29271a23fc68d0124cec276e3767
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /status.php
+            port: http
+            scheme: HTTP
+          periodSeconds: 30
+          successThreshold: 1
+          timeoutSeconds: 5
+        name: nextcloud
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 6
+          httpGet:
+            path: /status.php
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: '2'
+            memory: 2Gi
+          requests:
+            cpu: 200m
+            memory: 512Mi
+        startupProbe:
+          failureThreshold: 120
+          periodSeconds: 5
+          successThreshold: 1
+          tcpSocket:
+            port: http
+          timeoutSeconds: 1
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/www/html
+          name: storage
+      dnsPolicy: ClusterFirst
+      initContainers:
+      - command:
+        - sh
+        - -c
+        - "set -eu\n\nmkdir -p   /storage/data   /storage/config   /storage/custom_apps\
+          \   /storage/themes\n\nchown 33:33 /storage\nchmod 0750 /storage\n\nfor\
+          \ directory in   /storage/data   /storage/config   /storage/custom_apps\
+          \   /storage/themes\ndo\n  chown 33:33 \"$directory\"\n  chmod 0770 \"$directory\"\
+          \ndone\n"
+        image: docker.io/library/busybox@sha256:9db7b59979c38555a39def84a31fb98b5296952f9e3afd4f6f11f05b07adfab0
+        imagePullPolicy: IfNotPresent
+        name: prepare-storage
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /storage
+          name: storage
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: storage
+        persistentVolumeClaim:
+          claimName: nextcloud-storage

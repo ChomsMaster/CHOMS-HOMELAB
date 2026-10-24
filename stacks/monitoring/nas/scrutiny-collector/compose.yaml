@@ -1,0 +1,18 @@
+services:
+  collector:
+    image: ghcr.io/analogj/scrutiny@sha256:3274a8c1e4b48bcc42089f9431f89604d4b3a661aeeaa2029c59c352d41762c2
+    container_name: choms-scrutiny-collector
+    command: [/entrypoint-collector.sh]
+    privileged: true
+    security_opt:
+      - label=disable
+    network_mode: bridge
+    restart: unless-stopped
+    environment:
+      COLLECTOR_API_ENDPOINT: https://scrutiny.chomsmaster.com
+      COLLECTOR_HOST_ID: choms-nas
+      COLLECTOR_RUN_STARTUP: "true"
+      COLLECTOR_CRON_SCHEDULE: "0 */6 * * *"
+    volumes:
+      - /run/udev:/run/udev:ro
+      - /dev:/dev

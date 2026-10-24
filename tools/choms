@@ -1,0 +1,56 @@
+#!/bin/bash
+set -euo pipefail
+
+BASE_DIR="${CHOMS_BASE_DIR:-/data/projects/choms-homelab}"
+COMMANDS_DIR="$BASE_DIR/tools/commands"
+
+usage() {
+    cat <<USAGE
+CHOMS-HOMELAB Operations CLI
+
+Usage:
+  choms platform    Show CHOMS Platform inventory
+  choms storage     Show disks, mounts and storage usage
+  choms shares      Show Samba shared resources
+  choms docker      Show Docker containers and compose services
+  choms deploy      Deploy a CHOMS stack
+  choms services    Show core systemd service states
+  choms doctor      Run CHOMS Doctor
+  choms status      Show global system status
+  choms monitoring  Show monitoring stack status
+  choms compose     Run Docker Compose using CHOMS stack files
+  choms update      Update the complete CHOMS stack
+  choms vault       Show admin secrets vault
+  choms health      Quick health check
+  choms version     Show CHOMS version info
+  choms urls        Show published URLs
+  choms logs        Show service logs
+  choms restart     Restart one service
+  choms service     Manage CHOMS services
+  choms help        Show this help
+USAGE
+}
+
+cmd="${1:-help}"
+shift || true
+
+case "$cmd" in
+    help|--help|-h)
+        usage
+        ;;
+
+    doctor)
+        "$COMMANDS_DIR/status.sh" "$@"
+        ;;
+
+    platform|status|storage|shares|docker|deploy|services|monitoring|compose|update|vault|health|version|urls|logs|restart|service)
+        "$COMMANDS_DIR/$cmd.sh" "$@"
+        ;;
+
+    *)
+        echo "Unknown command: $cmd"
+        echo
+        usage
+        exit 1
+        ;;
+esac

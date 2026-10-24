@@ -1,0 +1,31 @@
+{
+  "interval_seconds": 60,
+  "failure_threshold": 3,
+  "tls_warning_days": 21,
+  "response_warning_ms": 5000,
+  "host_status_max_age_seconds": 150,
+  "checks": [
+    {
+      "name": "main-endpoint",
+      "url": "https://chomsmaster.com/",
+      "expected_status": 200
+    },
+    {
+      "name": "public-nextcloud",
+      "url": "https://nextcloud.chomsmaster.com/",
+      "expected_status": 302,
+      "location_contains": "nextcloud.chomsmaster.com/index.php/login"
+    },
+    {
+      "name": "protected-home",
+      "url": "https://home.chomsmaster.com/",
+      "expected_status": 302,
+      "location_contains": "auth.chomsmaster.com"
+    }
+  ],
+  "local_thresholds": {
+    "disk_free_percent_min": 10,
+    "inode_free_percent_min": 10,
+    "temperature_c_max": 80
+  }
+}

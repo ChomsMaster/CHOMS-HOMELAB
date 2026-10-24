@@ -1,0 +1,115 @@
+# System files
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Secrets and local environment
+.env
+.env.*
+*.env
+docker/.env
+secrets/
+private/
+*.pem
+*.key
+*_private.key
+private.key
+docker/authelia/secrets/
+*/secrets/
+
+# Logs and generated reports
+*.log
+logs/
+tools/choms-doctor/health-report.json
+
+# Backups and archives
+*.bak
+*.backup
+*.tar.gz
+*.zip
+backup/
+
+# Versioned backup automation; backup data remains ignored.
+!stacks/backup/
+!stacks/backup/**
+
+# Runtime data
+docker-data/
+docker/pihole/etc-pihole/
+docker/pihole/etc-dnsmasq.d/
+pgdata/
+
+# Temporary files
+tmp/
+temp/
+
+# Traefik certificates and logs
+
+# Nextcloud persistent data
+docker/nextcloud/html/
+docker/nextcloud/db/
+
+# Authelia local runtime/config data
+docker/authelia/config/users_database.yml
+docker/authelia/config/db.sqlite3
+docker/authelia/config/notification.txt
+docker/authelia/secrets/
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
+.terraformrc
+terraform.rc
+*.auto.tfvars
+!*.tfvars.example
+
+
+
+
+# Kubernetes secrets bootstrap: track tooling, never real values
+!stacks/kubernetes/secrets/
+!stacks/kubernetes/secrets/secrets.env.example
+!stacks/kubernetes/secrets/apply-secrets.sh
+stacks/kubernetes/secrets/secrets.env
+
+# Local validation cache and private Terraform inputs
+.cache/
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+
+# Recovery inputs/identities must never enter this public repository.
+/recovery-input/
+/recovery-plaintext/
+/recovery-kits/
+/choms-recovery-private/
+*.agekey
+age-identity*
+*.decrypted
+*.decrypted.*
+*.dec.json
+*.dec.yaml
+kubernetes-secrets.json
+k3s-token
+k3s-snapshot
+k3s-snapshot-meta.json
+k3s-encryption-config.json
+authelia-configuration.yml
+authelia-users.yml
+restic-password
+ansible-vars.yml
+network-dns.md
+*.enc.json

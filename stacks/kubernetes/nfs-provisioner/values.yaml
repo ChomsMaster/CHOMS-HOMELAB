@@ -1,0 +1,8 @@
+nfs:
+  path: /srv/storage/kubernetes
+  server: 192.168.1.167
+storageClass:
+  archiveOnDelete: true
+  defaultClass: false
+  name: choms-nfs
+  reclaimPolicy: Retain

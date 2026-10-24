@@ -1,0 +1,13 @@
+[Unit]
+Description=CHOMS Restic repository bind mount inside restricted SFTP chroot
+RequiresMountsFor=/mnt/choms-local/backups/choms-platforms-restic
+Before=sshd.service
+
+[Mount]
+What=/mnt/choms-local/backups/choms-platforms-restic
+Where=/var/lib/choms-restic/chroot/choms-platforms-restic
+Type=none
+Options=bind
+
+[Install]
+WantedBy=multi-user.target

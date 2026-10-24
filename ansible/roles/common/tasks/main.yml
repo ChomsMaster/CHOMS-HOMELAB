@@ -1,0 +1,35 @@
+---
+- name: Validar sistema Debian
+  ansible.builtin.assert:
+    that:
+      - ansible_facts["os_family"] == "Debian"
+    fail_msg: "Este rol solo admite Debian o Ubuntu."
+
+- name: Instalar paquetes base
+  ansible.builtin.apt:
+    name:
+      - bash-completion
+      - ca-certificates
+      - curl
+      - git
+      - htop
+      - jq
+      - nfs-common
+      - rsync
+      - sudo
+      - unzip
+      - vim
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Configurar zona horaria
+  community.general.timezone:
+    name: Europe/Madrid
+
+- name: Activar sincronización horaria
+  ansible.builtin.systemd_service:
+    name: systemd-timesyncd
+    enabled: true
+    state: started
+  when: ansible_facts["service_mgr"] == "systemd"

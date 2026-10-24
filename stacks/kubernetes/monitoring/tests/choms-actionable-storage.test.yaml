@@ -1,0 +1,39 @@
+rule_files:
+  - choms-actionable-storage.rules.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: 'choms_monitoring_synthetic_test{job="choms-nas",instance="choms-nas"}'
+        values: '1 1 1'
+      - series: 'choms_nas_raid_healthy{job="choms-nas",instance="choms-nas"}'
+        values: '0 0 0 0 0 0 0'
+      - series: 'choms_nas_raid_members_active{job="choms-nas",instance="choms-nas"}'
+        values: '3 3 3 3 3 3 3'
+      - series: 'choms_nas_raid_members_expected{job="choms-nas",instance="choms-nas"}'
+        values: '4 4 4 4 4 4 4'
+    alert_rule_test:
+      - eval_time: 2m
+        alertname: CHOMSMonitoringSyntheticCritical
+        exp_alerts:
+          - exp_labels:
+              alertname: CHOMSMonitoringSyntheticCritical
+              instance: choms-nas
+              job: choms-nas
+              severity: critical
+            exp_annotations:
+              summary: CHOMS controlled monitoring notification test
+              description: This isolated synthetic metric validates critical FIRING and RESOLVED delivery and does not represent a production fault.
+      - eval_time: 6m
+        alertname: CHOMSNASRAIDDegraded
+        exp_alerts:
+          - exp_labels:
+              alertname: CHOMSNASRAIDDegraded
+              instance: choms-nas
+              job: choms-nas
+              severity: critical
+            exp_annotations:
+              summary: CHOMS NAS RAID is degraded
+              description: md0 no longer has all four expected RAID5 members active. Inspect mdadm status without starting a repair.

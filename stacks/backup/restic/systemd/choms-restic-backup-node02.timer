@@ -1,0 +1,8 @@
+[Unit]
+Description=CHOMS encrypted recovery backup node-02
+[Timer]
+OnCalendar=*-*-* 05:30:00 Europe/Madrid
+Persistent=true
+Unit=choms-restic-backup.service
+[Install]
+WantedBy=timers.target

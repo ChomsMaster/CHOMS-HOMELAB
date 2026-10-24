@@ -1,0 +1,13 @@
+[Unit]
+Description=CHOMS GFS Backup Retention
+After=network-online.target remote-fs.target choms-backup-nas-sync.service
+Wants=network-online.target remote-fs.target
+
+[Service]
+Type=oneshot
+User=chomsmaster
+Group=chomsmaster
+ExecStart=/usr/local/sbin/choms-backup-gfs-retention.sh
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7

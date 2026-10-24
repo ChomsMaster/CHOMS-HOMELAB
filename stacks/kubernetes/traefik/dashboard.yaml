@@ -1,0 +1,36 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: authelia-forwardauth
+  namespace: traefik
+spec:
+  forwardAuth:
+    address: http://authelia.security.svc.cluster.local:9091/api/authz/forward-auth
+    trustForwardHeader: true
+    authResponseHeaders:
+      - Remote-User
+      - Remote-Groups
+      - Remote-Email
+      - Remote-Name
+
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-dashboard
+  namespace: traefik
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: Host(`traefik.chomsmaster.com`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+      kind: Rule
+      middlewares:
+        - name: authelia-forwardauth
+      services:
+        - name: api@internal
+          kind: TraefikService
+
+  tls:
+    secretName: choms-platform-tls
