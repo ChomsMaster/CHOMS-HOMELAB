@@ -4,6 +4,20 @@ Estado: herramienta genérica preparada para pruebas sintéticas. **El kit real
 sigue sin generarse**. No se ha capturado información de producción, acreditado
 restauración real, RPO/RTO ni publicación. Terraform sigue siendo preparatorio.
 
+## Recipient público autorizado
+
+Para este proyecto, usar exclusivamente el recipient público siguiente:
+
+```text
+age1ky783mffhvjtuc8ysvgdy8zurtg5vhxpdkp99wpfcmmcetuv9y7qmp0r4k
+```
+
+Es una clave pública apta para documentación. El exportador es genérico y no
+incorpora claves por defecto; el operador pasa este valor explícitamente y
+verifica su autorización. No se genera ni se lee material privado. La configuración
+auxiliar SOPS del repositorio de custodia no cambia el formato age de los kits.
+La prueba ficticia de cifrado no equivale a restore ni genera un kit real.
+
 ## Contrato y autorización
 
 La exportación recibe un único recipient público nativo age X25519, una carpeta

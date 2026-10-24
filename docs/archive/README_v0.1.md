@@ -88,32 +88,32 @@ flowchart TD
 
 ## Project Documentation
 
-Detailed documentation is available inside the [`docs/`](docs/) directory.
+Detailed documentation is available inside the [`docs/`](..) directory.
 
 | Document | Description |
 |---|---|
-| [01-overview.md](docs/01-overview.md) | Project Overview |
-| [02-hardware.md](docs/02-hardware.md) | Hardware |
-| [03-network.md](docs/03-network.md) | Network Architecture |
-| [04-security.md](docs/04-security.md) | Security |
-| [05-wireguard.md](docs/05-wireguard.md) | WireGuard |
-| [06-pihole.md](docs/06-pihole.md) | Pi-hole |
-| [07-docker-services.md](docs/07-docker-services.md) | Docker Services |
-| [08-postgresql.md](docs/08-postgresql.md) | PostgreSQL |
-| [09-backup.md](docs/09-backup.md) | Backup Strategy |
-| [10-roadmap.md](docs/10-roadmap.md) | Roadmap |
-| [11-lessons-learned.md](docs/11-lessons-learned.md) | Lessons Learned |
+| [01-overview.md](../01-overview.md) | Project Overview |
+| [02-hardware.md](../02-hardware.md) | Hardware |
+| [03-network.md](../03-network.md) | Network Architecture |
+| [04-security.md](../04-security.md) | Security |
+| [05-wireguard.md](../05-wireguard.md) | WireGuard |
+| [06-pihole.md](../06-pihole.md) | Pi-hole |
+| [07-docker-services.md](../07-docker-services.md) | Docker Services |
+| [08-postgresql.md](../08-postgresql.md) | PostgreSQL |
+| [09-backup.md](../09-backup.md) | Backup Strategy |
+| [10-roadmap.md](../10-roadmap.md) | Roadmap |
+| [11-lessons-learned.md](../11-lessons-learned.md) | Lessons Learned |
 
 
 ```md
 Additional diagrams:
 
-- [Network Architecture](diagrams/network-architecture.md)
-- [Docker Architecture](diagrams/docker-architecture.md)
+- [Network Architecture](../../diagrams/network-architecture.md)
+- [Docker Architecture](../../diagrams/docker-architecture.md)
 
 ## Additional Documentation
 
-- [Project Case Study](portfolio/case-study.md)
+- [Project Case Study](../../portfolio/case-study.md)
 
 ---
 

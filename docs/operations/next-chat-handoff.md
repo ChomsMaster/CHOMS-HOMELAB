@@ -51,9 +51,9 @@ Jellyfin remains the generic library and playback service.
 
 The following canonical documents are being updated for the Kubernetes model:
 
-- `PROJECT_STATUS.md`
-- `SESSION_STATE.md`
-- `SYSTEM_OVERVIEW.md`
+- `docs/archive/PROJECT_STATUS.md`
+- `docs/archive/SESSION_STATE.md`
+- `docs/archive/SYSTEM_OVERVIEW.md`
 - `docs/operations/BOOTSTRAP.md`
 - `docs/operations/DEPLOY.md`
 - `docs/operations/next-chat-handoff.md`

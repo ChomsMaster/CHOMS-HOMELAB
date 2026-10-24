@@ -36,14 +36,15 @@ Ansible currently covers a node baseline, not complete provisioning.
 | 2. NetworkPolicies | Drafted for 13 public namespaces | Not applied; CNI/flows need testing |
 | 3. Terraform + recovery kit | Implemented, import-first | Not imported/exported; rebuild drill pending |
 | 4. Job retention + cleanup | Implemented/runbook | Not deployed; nothing deleted |
-| 5. Documentation + public review | Updated | Owner review pending |
+| 5. Documentation + public review | Root notes archived; roadmap reconciled | Owner review pending |
 
 **Start here:** [architecture and inventory](docs/inventory/BASELINE_2026-10-23.md) ·
 [network rollout](docs/operations/NETWORK_POLICIES.md) ·
 [Terraform adoption](terraform/environments/homelab/IMPORT.md) ·
 [recovery kit](docs/operations/RECOVERY_KIT.md) ·
 [rebuild procedure](docs/operations/REBUILD_RUNBOOK.md) ·
-[cleanup](docs/operations/CLEANUP_RUNBOOK.md) · [public scope](docs/operations/PUBLIC_SCOPE.md).
+[cleanup](docs/operations/CLEANUP_RUNBOOK.md) · [public scope](docs/operations/PUBLIC_SCOPE.md) ·
+[current roadmap](ROADMAP.md) · [historical notes](docs/archive/README.md).
 
 Local check: `./scripts/validate.sh`. No cluster or cloud access is needed;
 missing tools are reported; security findings remain visible as advisory backlog. Deployment,

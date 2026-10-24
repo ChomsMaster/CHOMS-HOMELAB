@@ -4,19 +4,20 @@ set -euo pipefail
 BASE_DIR="${CHOMS_BASE_DIR:-/data/projects/choms-homelab}"
 
 cd "$BASE_DIR"
+mkdir -p docs/archive
 
 mkdir -p \
   docs/architecture/ADR \
   docs/operations \
   docs/inventory
 
-cat > AI_HANDOFF.md <<'DOC'
+cat > docs/archive/AI_HANDOFF.md <<'DOC'
 # CHOMS AI Handoff
 
 When continuing CHOMS in a new chat:
 
 1. Read this file first.
-2. Read PROJECT_STATUS.md.
+2. Read docs/archive/PROJECT_STATUS.md.
 3. Read CHANGELOG.md.
 4. Read docs/architecture/DEPLOYMENT_MODEL.md.
 5. Read docs/architecture/ADR.
@@ -31,7 +32,7 @@ Rules:
 - If an architectural decision changes, create or update an ADR.
 DOC
 
-cat > PROJECT_STATUS.md <<'DOC'
+cat > docs/archive/PROJECT_STATUS.md <<'DOC'
 # CHOMS Project Status
 
 ## Current Phase
@@ -113,7 +114,7 @@ Continue building managed stacks. Candidate next stacks:
 - CHOMS Console
 DOC
 
-cat > ROADMAP.md <<'DOC'
+cat > docs/archive/ROADMAP.generated.md <<'DOC'
 # CHOMS Roadmap
 
 ## Current
@@ -147,7 +148,7 @@ cat > ROADMAP.md <<'DOC'
 - Add AI-assisted repair/documentation tools
 DOC
 
-cat > CHANGELOG.md <<'DOC'
+cat > docs/archive/CHANGELOG.generated.md <<'DOC'
 # CHOMS Changelog
 
 ## 2026-07-06

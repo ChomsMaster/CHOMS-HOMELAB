@@ -3,10 +3,11 @@ set -euo pipefail
 
 BASE_DIR="${CHOMS_BASE_DIR:-/data/projects/choms-homelab}"
 cd "$BASE_DIR"
+mkdir -p docs/archive
 
 echo "Updating CHOMS documentation..."
 
-cat > PROJECT_STATUS.md <<'DOC'
+cat > docs/archive/PROJECT_STATUS.md <<'DOC'
 # CHOMS Platform Status
 
 ## Current Phase

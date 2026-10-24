@@ -1,3 +1,11 @@
+## Presentación y custodia — 24-10-2026
+
+Notas de trabajo de raíz archivadas bajo docs/archive; README revisado sin IPs
+internas ni endpoints administrativos. Roadmap raíz reconcilia evidencia de
+código con aceptación operacional pendiente. Recipient público documentado;
+configuración auxiliar de cifrado en custodia, sin generación de kit real.
+La descripción/topics de About solo se proponen; no se aplican en GitHub.
+
 # Cambio de alcance local — kit privado de recuperación
 
 El diseño cloud previo queda retirado del código. Se prepara un kit offline

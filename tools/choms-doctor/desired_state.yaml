@@ -24,5 +24,5 @@ documentation:
   required_files:
     - README.md
     - CHANGELOG.md
-    - SESSION_STATE.md
-    - CHOMS-HOMELAB_MASTER_CONTEXT.md
+    - docs/archive/SESSION_STATE.md
+    - docs/archive/CHOMS-HOMELAB_MASTER_CONTEXT.md

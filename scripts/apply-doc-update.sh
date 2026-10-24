@@ -14,4 +14,4 @@ echo
 
 echo "Documentation update copied. Review with:"
 echo "  git status"
-echo "  git diff -- CHOMS-HOMELAB_MASTER_CONTEXT.md PROJECT_STATUS.md SESSION_STATE.md ROADMAP.md docs/"
+echo "  git diff -- docs/archive/CHOMS-HOMELAB_MASTER_CONTEXT.md docs/archive/PROJECT_STATUS.md docs/archive/SESSION_STATE.md ROADMAP.md docs/"

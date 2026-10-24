@@ -928,3 +928,13 @@ una ejecución, incluidos INT/TERM/HUP y descifrado sintético byte a byte.
 Bash, ShellCheck de los dos wrappers, sintaxis Python, diff y revisión sensible
 acotada PASS. SC2317 se anota solo en callbacks asíncronos probados. Kit real,
 restauración y alineación de reglas del destino permanecen pendientes.
+
+## 2026-10-24 — Recipient y presentación pública
+
+Recipient público autorizado documentado; configuración auxiliar SOPS en el
+repositorio de custodia y cifrado ficticio por stdin, sin plaintext persistente,
+PASS. Se conservó el formato age de kits y no se ejecutó exportación real.
+Siete notas de raíz movidas a docs/archive y referencias ajustadas. README
+sin IPs internas ni endpoints administrativos; roadmap fechado sin nuevas
+afirmaciones runtime. About solo propuesto. Validación única y acotada de
+sintaxis, links, exposición, contrato y revisión sensible; sin despliegues.
