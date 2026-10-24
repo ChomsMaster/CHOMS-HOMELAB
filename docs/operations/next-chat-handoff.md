@@ -51,9 +51,6 @@ Jellyfin remains the generic library and playback service.
 
 The following canonical documents are being updated for the Kubernetes model:
 
-- `docs/archive/PROJECT_STATUS.md`
-- `docs/archive/SESSION_STATE.md`
-- `docs/archive/SYSTEM_OVERVIEW.md`
 - `docs/operations/BOOTSTRAP.md`
 - `docs/operations/DEPLOY.md`
 - `docs/operations/next-chat-handoff.md`
@@ -62,7 +59,7 @@ Review these files together before committing.
 
 ## Next Actions
 
-1. Review the six-document diff and check for obsolete Docker-era statements.
+1. Review the operational documentation diff and check for obsolete Docker-era statements.
 2. Commit and push the canonical operational documentation update.
 3. Update README, ROADMAP and master context in a separate change.
 4. Validate backup and recovery for NFS-backed PVCs.

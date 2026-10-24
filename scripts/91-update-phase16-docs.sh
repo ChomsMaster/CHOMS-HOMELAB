@@ -3,45 +3,9 @@ set -euo pipefail
 
 BASE_DIR="${CHOMS_BASE_DIR:-/data/projects/choms-homelab}"
 cd "$BASE_DIR"
-mkdir -p docs/archive
 
 echo "Updating CHOMS documentation..."
 
-cat > docs/archive/PROJECT_STATUS.md <<'DOC'
-# CHOMS Platform Status
-
-## Current Phase
-
-Phase 16 — Core Platform Foundation
-
-## Current State
-
-Application Node: choms-node-02
-
-Completed:
-
-- Docker
-- Docker Compose
-- CHOMS Deploy Engine
-- PostgreSQL Stack
-- Redis Stack
-- Runtime deployment model
-- Git Source of Truth
-- AI Handoff
-- Architecture documentation
-
-Running services:
-
-- choms-postgres
-- choms-redis
-
-Next candidates:
-
-- Filebrowser
-- Nextcloud
-- Portainer
-- CHOMS Console
-DOC
 
 cat > docs/inventory/SERVICES.md <<'DOC'
 # CHOMS Services Inventory

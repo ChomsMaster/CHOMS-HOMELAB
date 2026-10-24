@@ -934,7 +934,12 @@ restauración y alineación de reglas del destino permanecen pendientes.
 Recipient público autorizado documentado; configuración auxiliar SOPS en el
 repositorio de custodia y cifrado ficticio por stdin, sin plaintext persistente,
 PASS. Se conservó el formato age de kits y no se ejecutó exportación real.
-Siete notas de raíz movidas a docs/archive y referencias ajustadas. README
+Notas de trabajo retiradas de la raíz y referencias ajustadas. README
 sin IPs internas ni endpoints administrativos; roadmap fechado sin nuevas
 afirmaciones runtime. About solo propuesto. Validación única y acotada de
 sintaxis, links, exposición, contrato y revisión sensible; sin despliegues.
+
+## 2026-10-24 — Referencias documentales retiradas
+
+Eliminadas rutas obsoletas del handoff y salidas retiradas de los generadores;
+contexto público simplificado, sin ejecutar scripts ni consultar producción.
