@@ -185,3 +185,10 @@ hermano local sin remoto. Copias originales preservadas antes del saneado de
 referencias compartidas; seis rutas de revisión/específicas retiradas del árbol
 público solo después de verificar. Sin cambios runtime, commits, publicación
 ni reescritura de historial. La comprobación final es local y acotada.
+
+## Prioridad de recuperación offline — 24-10-2026
+
+Exportador genérico solo con recipient público age, selección cerrada y salida
+atómica verificable. Véase [contrato](../operations/RECOVERY_KIT.md). Kit real,
+restauración real y publicación siguen pendientes; sin cambios de producción.
+Pruebas exclusivamente sintéticas; la política del destino se revisará aparte.

@@ -24,7 +24,8 @@ state.db. External datastore no está cubierto por este kit.
 
 1. Recuperar hardware/VMs, instalar Debian 13 y restaurar red/DNS/NTP según notas
    privadas; mantener endpoints públicos cerrados mientras se reconstruye.
-2. Descifrar `ansible-vars-yml.enc.json` hacia fichero 0600 en tmpfs. Revisar
+2. Recuperar del artefacto age opaco correspondiente las variables de Ansible
+   hacia fichero 0600 en tmpfs, según el mapa custodiado por el operador. Revisar
    inventario no sensible y confirmar destinos antes de usarlo.
 3. Desde `ansible/`, ejecutar con el archivo privado externo:
 

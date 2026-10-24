@@ -917,3 +917,14 @@ hermano local sin remoto. Copias originales preservadas antes del saneado de
 referencias compartidas; seis rutas de revisión/específicas retiradas del árbol
 público solo después de verificar. Sin cambios runtime, commits, publicación
 ni reescritura de historial. La comprobación final es local y acotada.
+
+## 2026-10-24 — Exportador offline genérico
+
+Sustituido el cifrado anterior por age con recipient público, allowlist explícita,
+streaming, comprobación de estabilidad, manifiesto sanitizado, checksums y
+publicación atómica. Harness aislado con fixtures sintéticos y claves efímeras;
+sin kit, captura ni restauración reales. Cierre: 22 tests sintéticos PASS en
+una ejecución, incluidos INT/TERM/HUP y descifrado sintético byte a byte.
+Bash, ShellCheck de los dos wrappers, sintaxis Python, diff y revisión sensible
+acotada PASS. SC2317 se anota solo en callbacks asíncronos probados. Kit real,
+restauración y alineación de reglas del destino permanecen pendientes.
