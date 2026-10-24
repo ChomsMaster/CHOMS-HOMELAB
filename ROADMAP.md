@@ -21,4 +21,4 @@ Keep capture, export, restore and publication as separate authorized operations.
 Do not treat code completion or synthetic encryption as operational recovery.
 
 The [detailed backlog](docs/context/ROADMAP.md) retains dated historical outcomes;
-[archived notes](docs/archive/README.md) are not the deployment authority.
+it is not the deployment authority.
