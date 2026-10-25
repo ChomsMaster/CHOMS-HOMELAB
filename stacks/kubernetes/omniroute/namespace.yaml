@@ -1,0 +1,16 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: choms-omniroute-local
+  labels:
+    app.kubernetes.io/part-of: choms-platforms
+provisioner: rancher.io/local-path
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: omniroute
+  labels:
+    app.kubernetes.io/part-of: choms-platforms

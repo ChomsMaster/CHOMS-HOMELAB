@@ -1,0 +1,199 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: omniroute-default-deny
+  labels:
+    app.kubernetes.io/part-of: choms-platforms
+  namespace: omniroute
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress: []
+  egress: []
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: omniroute-from-traefik
+  labels:
+    app.kubernetes.io/part-of: choms-platforms
+  namespace: omniroute
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/part-of: choms-platforms
+      app.kubernetes.io/name: omniroute
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: traefik
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: traefik
+    ports:
+    - protocol: TCP
+      port: 20128
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: omniroute-to-redis
+  labels:
+    app.kubernetes.io/part-of: choms-platforms
+  namespace: omniroute
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/part-of: choms-platforms
+      app.kubernetes.io/name: omniroute
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/part-of: choms-platforms
+          app.kubernetes.io/name: omniroute-redis
+    ports:
+    - protocol: TCP
+      port: 6379
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: redis-from-omniroute
+  labels:
+    app.kubernetes.io/part-of: choms-platforms
+  namespace: omniroute
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/part-of: choms-platforms
+      app.kubernetes.io/name: omniroute-redis
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/part-of: choms-platforms
+          app.kubernetes.io/name: omniroute
+    ports:
+    - protocol: TCP
+      port: 6379
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: omniroute-dns
+  labels:
+    app.kubernetes.io/part-of: choms-platforms
+  namespace: omniroute
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/part-of: choms-platforms
+      app.kubernetes.io/name: omniroute
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+      podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: omniroute-public-https
+  labels:
+    app.kubernetes.io/part-of: choms-platforms
+  namespace: omniroute
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/part-of: choms-platforms
+      app.kubernetes.io/name: omniroute
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+        except:
+        - 0.0.0.0/8
+        - 10.0.0.0/8
+        - 100.64.0.0/10
+        - 127.0.0.0/8
+        - 169.254.0.0/16
+        - 172.16.0.0/12
+        - 192.168.0.0/16
+        - 198.18.0.0/15
+        - 224.0.0.0/4
+        - 240.0.0.0/4
+    ports:
+    - protocol: TCP
+      port: 443
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: omniroute-http-monitor
+  labels:
+    app.kubernetes.io/part-of: choms-platforms
+  namespace: omniroute
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/part-of: choms-platforms
+      app.kubernetes.io/name: omniroute
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: apps
+      podSelector:
+        matchLabels:
+          app: uptime-kuma
+    ports:
+    - protocol: TCP
+      port: 20128
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: omniroute-api-control-plane
+  namespace: omniroute
+  labels:
+    app.kubernetes.io/part-of: choms-platforms
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: omniroute
+      app.kubernetes.io/part-of: choms-platforms
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - ipBlock:
+        cidr: 192.168.1.138/32
+    - ipBlock:
+        cidr: 10.42.0.0/32
+    ports:
+    - protocol: TCP
+      port: 20129

@@ -40,6 +40,8 @@ data:
         policy: one_factor
       - domain: colegio-gestion.chomsmaster.com
         policy: one_factor
+      - domain: omniroute.chomsmaster.com
+        policy: one_factor
     session:
       cookies:
       - name: authelia_session
@@ -104,6 +106,8 @@ spec:
     type: Recreate
   template:
     metadata:
+      annotations:
+        choms.platforms/omniroute-policy: v3.8.52
       labels:
         app: authelia
     spec:

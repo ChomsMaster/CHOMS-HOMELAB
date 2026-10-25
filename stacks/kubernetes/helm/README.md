@@ -50,3 +50,14 @@ release automatically when its upgrade fails.
 The timeout defaults to 15 minutes and can be overridden:
 
     HELM_TIMEOUT=25m ./stacks/kubernetes/helm/apply-releases.sh apply
+
+
+## Scoped cert-manager change
+
+Use `./stacks/kubernetes/helm/apply-releases.sh plan cert-manager` and, after
+reviewing the exact rendered diff, `./stacks/kubernetes/helm/apply-releases.sh apply cert-manager`.
+The optional selector processes only cert-manager and its chart repository;
+the original command without a selector still processes all locked releases.
+The version remains v1.21.1. The HTTP-01 nameserver override is declared in its
+existing values file. Rollback removes only that extra argument and uses the
+same scoped plan/apply flow after checking the render; CoreDNS is untouched.

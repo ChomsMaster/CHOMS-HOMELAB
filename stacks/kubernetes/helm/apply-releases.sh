@@ -1,18 +1,24 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-script_dir="$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-repo_root="$(CDPATH= cd -- "$script_dir/../../.." && pwd)"
+script_dir="$(CDPATH='' cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+repo_root="$(CDPATH='' cd -- "$script_dir/../../.." && pwd)"
 
 operation="${1:-plan}"
+release_filter="${2:-}"
 helm_timeout="${HELM_TIMEOUT:-15m}"
 
 usage() {
-  echo "Usage: $0 [plan|apply]"
+  echo "Usage: $0 [plan|apply] [cert-manager]"
   echo
   echo "  plan   Validate every locked release using server-side dry-run."
   echo "  apply  Install or upgrade every locked release."
 }
+
+if [ "$#" -gt 2 ] || { [ -n "$release_filter" ] && [ "$release_filter" != cert-manager ]; }; then
+  usage >&2
+  exit 2
+fi
 
 case "$operation" in
   plan|apply)
@@ -35,6 +41,12 @@ for command_name in helm kubectl; do
 done
 
 add_repositories() {
+  if [ "$release_filter" = cert-manager ]; then
+    helm repo add jetstack https://charts.jetstack.io --force-update
+    helm repo update jetstack
+    return
+  fi
+
   echo "========== HELM REPOSITORIES =========="
 
   helm repo add jetstack \
@@ -66,6 +78,9 @@ add_repositories() {
 
 process_release() {
   local release_name="$1"
+  if [ -n "$release_filter" ] && [ "$release_name" != "$release_filter" ]; then
+    return
+  fi
   local namespace_name="$2"
   local chart_name="$3"
   local chart_version="$4"

@@ -943,3 +943,74 @@ sintaxis, links, exposición, contrato y revisión sensible; sin despliegues.
 
 Eliminadas rutas obsoletas del handoff y salidas retiradas de los generadores;
 contexto público simplificado, sin ejecutar scripts ni consultar producción.
+
+## 2026-10-25 — Preparación de OmniRoute, preflight detenido
+
+Checkout público main limpio y sincronizado al inicio; release oficial v3.8.52
+verificada. Imagen publicada como 3.8.52 sin prefijo v; digest real fijado junto
+a Redis 8.6.5-alpine. Preparados namespace, clase local Retain dedicada por
+SQLite WAL, PVC, Deployments Recreate, ClusterIP, rutas y default-deny. Regla
+Authelia exacta con default deny y ampliación SAN preparadas, no aplicadas.
+Acceso kubectl por SSH sin sudo disponible. No colisiones namespace/hostname;
+preflight posterior detenido porque una ruta protegida existente no cumplió
+la redirección esperada. Causa HTTP exacta no registrada; no se repitió live.
+No se llegó a dry-run servidor, generación de Secrets, aplicaciones ni rollout.
+Sin solicitudes a modelos, backups/timers ejecutados o cambios en otros repos.
+Validación final exclusivamente local; sin commit/push por falta de aceptación
+runtime. Backup independiente, monitor Kuma y recuperación siguen pendientes.
+
+
+## 2026-10-25 — cert-manager DNS aplicado; OmniRoute detenido
+
+Un Pod diagnóstico temporal sin privilegios en cert-manager verificó
+1.1.1.1/1.0.0.1 por UDP/TCP 53 y se eliminó. No hay NetworkPolicies en ese
+namespace. Values Helm añaden únicamente el override de nameservers HTTP-01;
+chart v1.21.1 conservado. El render comparó 51 objetos con la release/hooks:
+solo un argumento del controller cambia; rollback del argumento reproduce la
+baseline. Flujo versionado filtrado a cert-manager, sin actualizar otras releases.
+Controller/webhook/cainjector 1/1 Ready; flag exactamente una vez; CoreDNS intacto.
+
+Único reintento: Challenge valid, Order valid y Certificate Ready, SAN OmniRoute
+y cobertura anterior conservados. Se validó y aplicó la regla exacta Authelia,
+un rollout y contratos Home/Prometheus/Grafana correctos; OmniRoute/Redis Ready
+en node-02 y dashboard 302 a Authelia. La verificación final falló con una
+aserción sin checkpoint detallado: causa concreta no recuperada, no se declara
+un defecto de aplicación ni aceptación operacional. Rollback del servicio:
+réplicas 0, rutas/regla/SAN retirados; datos y Secrets preservados. Corrección
+DNS permanece aplicada. Helper pendiente, sin proveedores, inferencia ni
+commit/push. Ver [runbook](../operations/OMNIROUTE.md).
+
+
+## 2026-10-25 — OmniRoute activo; API privada y túnel demostrados
+
+Corrección explícita de los estados detenidos anteriores: la política del API
+permitía un origen CNI distinto del seleccionado por node-01. Se sustituyó solo
+10.42.0.1/32 por 10.42.0.0/32, preservando LAN /32, selector y TCP/20129; validación
+estructural, dry-run servidor y diff limitado antes de aplicar. Después, PodIP y
+ClusterIP desde node-01 devolvieron 401 sin clave. Túnel temporal loopback desde
+node-dev-01 también devolvió 401 y se cerró; helper bash -n/ShellCheck PASS.
+
+Sin reescalar de nuevo: SAN Ready preservando cobertura anterior, regla exacta
+Authelia validada y un rollout controlado, dashboard/administración solo 20128.
+Checks nombrados PASS: Home/Prometheus 302 a Authelia, Grafana 302 /login,
+dashboard 302 a Authelia; /v1 público 404 sin regla backend coincidente; API solo
+ClusterIP:20129. Ambos workloads 1/1 Ready en choms-node-02, cero reinicios,
+digests declarados, PVC Bound y PV Retain/afinidad node-02; endpoints Ready.
+Se mantienen activos. cert-manager/CoreDNS no se modificaron en este cierre.
+
+Backup independiente, restore controlado, alta Kuma y matriz negativa completa
+de NetworkPolicies siguen pendientes. No se leyeron claves ni cuerpos HTTP,
+no se configuraron proveedores ni se hicieron inferencias. Validación local
+final en una pasada al cierre; resultado en el informe. Sin commit ni push.
+Véase [operación y rollback](../operations/OMNIROUTE.md).
+
+
+## 2026-10-25 — Cierre en Git de OmniRoute
+
+Helper de túnel versionado sin IP fija: destino SSH obligatorio, descubrimiento
+del ClusterIP por kubectl de solo lectura, validación IPv4 y bind loopback.
+Ejecución foreground y cierre con Ctrl+C; sin credenciales. Pruebas del helper
+exclusivamente sintéticas; no se reabre el túnel ni se repiten rollouts.
+Cierre autorizado mediante un commit lógico y push normal tras fetch, revisión
+de alcance/sensibilidad y confirmación declarativa/live de solo lectura.
+Backup/restore, monitor Kuma y matriz negativa de aislamiento siguen pendientes.

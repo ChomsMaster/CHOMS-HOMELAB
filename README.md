@@ -38,10 +38,15 @@ Ansible currently covers a node baseline, not complete provisioning.
 | 4. Job retention + cleanup | Implemented/runbook | Not deployed; nothing deleted |
 | 5. Documentation + public review | Root notes archived; roadmap reconciled | Owner review pending |
 
+**Runtime update — 25 October 2026:** OmniRoute dashboard behind Authelia;
+API available only through a private ClusterIP and a loopback SSH tunnel.
+Independent backup and restore verification remain pending.
+
 **Start here:** [architecture and inventory](docs/inventory/BASELINE_2026-10-23.md) ·
 [network rollout](docs/operations/NETWORK_POLICIES.md) ·
 [Terraform adoption](terraform/environments/homelab/IMPORT.md) ·
 [recovery kit](docs/operations/RECOVERY_KIT.md) ·
+[private API gateway](docs/operations/OMNIROUTE.md) ·
 [rebuild procedure](docs/operations/REBUILD_RUNBOOK.md) ·
 [cleanup](docs/operations/CLEANUP_RUNBOOK.md) · [public scope](docs/operations/PUBLIC_SCOPE.md) ·
 [current roadmap](ROADMAP.md).

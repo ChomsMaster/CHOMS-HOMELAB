@@ -274,3 +274,13 @@ A backup is considered valid only after:
 3. Database dump structure is verified.
 4. A controlled restore test succeeds.
 5. Application functionality is checked after restoration.
+
+## Cobertura del servicio OmniRoute
+
+El inventario Kubernetes existente captura los recursos declarativos, claims y
+rutas del namespace independiente; no Secrets. Los dos PVC nuevos, los Secrets
+runtime y el material de cifrado requieren una copia consistente independiente
+y prueba de restore todavía pendientes. No se amplía Restic ni se ejecutan timers
+o backups en este bloque. AOF/persistencia no son backup. Véase el
+[runbook](../../docs/operations/OMNIROUTE.md). No cargar proveedores antes de
+aceptar la custodia y recuperación de su estado.

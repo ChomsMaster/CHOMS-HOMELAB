@@ -1,0 +1,330 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: omniroute-config
+  labels:
+    app.kubernetes.io/part-of: choms-platforms
+  namespace: omniroute
+data:
+  NODE_ENV: production
+  PORT: '20128'
+  DASHBOARD_PORT: '20128'
+  HOSTNAME: 0.0.0.0
+  API_PORT: '20129'
+  API_HOST: 0.0.0.0
+  DATA_DIR: /app/data
+  REQUIRE_API_KEY: 'true'
+  AUTH_COOKIE_SECURE: 'true'
+  ALLOW_API_KEY_REVEAL: 'false'
+  OMNIROUTE_HEADLESS: 'false'
+  OMNIROUTE_DISABLE_BACKGROUND_SERVICES: 'true'
+  OMNIROUTE_ENABLE_LIVE_WS: 'false'
+  FREE_PROXY_AUTO_SYNC_ENABLED: 'false'
+  PRICING_SYNC_ENABLED: 'false'
+  MODELS_DEV_SYNC_ENABLED: 'false'
+  ARENA_ELO_SYNC_ENABLED: 'false'
+  OMNIROUTE_AUTO_SYNC_CODEX_PROFILES: 'false'
+  OMNIROUTE_AUTO_SYNC_CLAUDE_PROFILES: 'false'
+  CLI_ALLOW_CONFIG_WRITES: 'false'
+  STORAGE_ENCRYPTION_KEY_VERSION: v1
+  OMNIROUTE_MEMORY_MB: '1024'
+  NODE_OPTIONS: --max-old-space-size=1024
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: omniroute-data
+  labels:
+    app.kubernetes.io/part-of: choms-platforms
+  namespace: omniroute
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: choms-omniroute-local
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: omniroute-redis-data
+  labels:
+    app.kubernetes.io/part-of: choms-platforms
+  namespace: omniroute
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: choms-omniroute-local
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: omniroute
+  labels:
+    app.kubernetes.io/part-of: choms-platforms
+  namespace: omniroute
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/part-of: choms-platforms
+    app.kubernetes.io/name: omniroute
+  ports:
+  - name: dashboard
+    port: 20128
+    targetPort: dashboard
+    protocol: TCP
+  - name: api
+    port: 20129
+    targetPort: api
+    protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: omniroute-redis
+  labels:
+    app.kubernetes.io/part-of: choms-platforms
+  namespace: omniroute
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/part-of: choms-platforms
+    app.kubernetes.io/name: omniroute-redis
+  ports:
+  - name: redis
+    port: 6379
+    targetPort: redis
+    protocol: TCP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omniroute
+  labels:
+    app.kubernetes.io/part-of: choms-platforms
+  namespace: omniroute
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  revisionHistoryLimit: 3
+  progressDeadlineSeconds: 600
+  selector:
+    matchLabels:
+      app.kubernetes.io/part-of: choms-platforms
+      app.kubernetes.io/name: omniroute
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/part-of: choms-platforms
+        app.kubernetes.io/name: omniroute
+    spec:
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 60
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: omniroute
+        image: docker.io/diegosouzapw/omniroute:3.8.52@sha256:b08a12e876baa8a5ccadd1ebbe346fe7267dba3b1c9f4fd6bb02070fae41ab6c
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: dashboard
+          containerPort: 20128
+        - name: api
+          containerPort: 20129
+        envFrom:
+        - configMapRef:
+            name: omniroute-config
+        env:
+        - name: OMNIROUTE_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: omniroute-runtime
+              key: OMNIROUTE_API_KEY
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: omniroute-runtime
+              key: JWT_SECRET
+        - name: API_KEY_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: omniroute-runtime
+              key: API_KEY_SECRET
+        - name: STORAGE_ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: omniroute-runtime
+              key: STORAGE_ENCRYPTION_KEY
+        - name: INITIAL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: omniroute-runtime
+              key: INITIAL_PASSWORD
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: omniroute-runtime
+              key: REDIS_URL
+        securityContext:
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          seccompProfile:
+            type: RuntimeDefault
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: '2'
+            memory: 2Gi
+        startupProbe:
+          httpGet: &id001
+            path: /healthz
+            port: dashboard
+          timeoutSeconds: 5
+          periodSeconds: 5
+          failureThreshold: 60
+        readinessProbe:
+          httpGet: *id001
+          timeoutSeconds: 5
+          periodSeconds: 10
+          failureThreshold: 3
+        livenessProbe:
+          httpGet: *id001
+          timeoutSeconds: 5
+          periodSeconds: 15
+          failureThreshold: 6
+        volumeMounts:
+        - name: data
+          mountPath: /app/data
+        - name: tmp
+          mountPath: /tmp
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: omniroute-data
+      - name: tmp
+        emptyDir: {}
+      nodeSelector:
+        kubernetes.io/hostname: choms-node-02
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omniroute-redis
+  labels:
+    app.kubernetes.io/part-of: choms-platforms
+  namespace: omniroute
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  revisionHistoryLimit: 3
+  progressDeadlineSeconds: 600
+  selector:
+    matchLabels:
+      app.kubernetes.io/part-of: choms-platforms
+      app.kubernetes.io/name: omniroute-redis
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/part-of: choms-platforms
+        app.kubernetes.io/name: omniroute-redis
+    spec:
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 60
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: redis
+        image: docker.io/library/redis:8.6.5-alpine@sha256:cd218f4b106a332c5c992e38a9480bfb9d7e9f8f7b0ec9a0023bfa36d9a408f9
+        imagePullPolicy: IfNotPresent
+        args:
+        - redis-server
+        - /run/redis/redis.conf
+        ports:
+        - name: redis
+          containerPort: 6379
+        env:
+        - name: REDISCLI_AUTH
+          valueFrom:
+            secretKeyRef:
+              name: omniroute-redis-auth
+              key: password
+        securityContext:
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          seccompProfile:
+            type: RuntimeDefault
+        resources:
+          requests:
+            cpu: 25m
+            memory: 64Mi
+          limits:
+            cpu: '1'
+            memory: 512Mi
+        startupProbe:
+          exec: &id001
+            command:
+            - sh
+            - -ec
+            - test "$(redis-cli --no-auth-warning ping)" = PONG
+          timeoutSeconds: 3
+          periodSeconds: 5
+          failureThreshold: 60
+        readinessProbe:
+          exec: *id001
+          timeoutSeconds: 3
+          periodSeconds: 5
+          failureThreshold: 3
+        livenessProbe:
+          exec: *id001
+          timeoutSeconds: 3
+          periodSeconds: 15
+          failureThreshold: 6
+        volumeMounts:
+        - name: data
+          mountPath: /data
+        - name: auth
+          mountPath: /run/redis
+          readOnly: true
+        - name: tmp
+          mountPath: /tmp
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: omniroute-redis-data
+      - name: auth
+        secret:
+          secretName: omniroute-redis-auth
+          defaultMode: 288
+          items:
+          - key: redis.conf
+            path: redis.conf
+      - name: tmp
+        emptyDir: {}
+      nodeSelector:
+        kubernetes.io/hostname: choms-node-02

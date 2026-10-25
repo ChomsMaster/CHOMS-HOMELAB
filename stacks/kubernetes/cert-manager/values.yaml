@@ -3,3 +3,5 @@ config:
     enabled: true
 crds:
   enabled: true
+extraArgs:
+- --acme-http01-solver-nameservers=1.1.1.1:53,1.0.0.1:53
