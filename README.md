@@ -41,12 +41,15 @@ Ansible currently covers a node baseline, not complete provisioning.
 **Runtime update — 25 October 2026:** OmniRoute dashboard behind Authelia;
 API available only through a private ClusterIP and a loopback SSH tunnel.
 Independent backup and restore verification remain pending.
+Cognee public-corpus retrieval and restart persistence are verified;
+Cognee MCP authentication and recovery validation remain pending.
 
 **Start here:** [architecture and inventory](docs/inventory/BASELINE_2026-10-23.md) ·
 [network rollout](docs/operations/NETWORK_POLICIES.md) ·
 [Terraform adoption](terraform/environments/homelab/IMPORT.md) ·
 [recovery kit](docs/operations/RECOVERY_KIT.md) ·
 [private API gateway](docs/operations/OMNIROUTE.md) ·
+[private Cognee API and local code memory](docs/operations/MEMORY_PLATFORM.md) ·
 [rebuild procedure](docs/operations/REBUILD_RUNBOOK.md) ·
 [cleanup](docs/operations/CLEANUP_RUNBOOK.md) · [public scope](docs/operations/PUBLIC_SCOPE.md) ·
 [current roadmap](ROADMAP.md).

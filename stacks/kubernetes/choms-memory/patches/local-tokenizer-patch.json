@@ -1,0 +1,35 @@
+{
+  "base_commit": "37f788bd287750e10d7610173e5332b3843f6ebd",
+  "base_files_match_verified_official_archive": true,
+  "files": [
+    {
+      "path": "cognee/infrastructure/databases/vector/embeddings/FastembedEmbeddingEngine.py",
+      "base_sha256": "4116127b19513e60077f45ae90097795131c3da7f00dab286d195cea27b07d74",
+      "patched_sha256": "e5386f52c3df3cb1b74129fbeb4b80a9994cdd5fc00f023b6a85c69374d4657a"
+    },
+    {
+      "path": "cognee/infrastructure/databases/vector/embeddings/get_embedding_engine.py",
+      "base_sha256": "797b13b5eb7ff6661d0fa28d0c1d5fda6e351cc5524d83d1799577b39093c2c3",
+      "patched_sha256": "ea3c45010b8daf5c10c1fe5c7b82b663349bca2e5343cd6f9864eefb1563ddc9"
+    },
+    {
+      "path": "cognee/infrastructure/llm/tokenizer/HuggingFace/adapter.py",
+      "base_sha256": "a3a1ac262904d0160eafffda1b06f8d6c0ca2427b39a1512d8dab3e5d380ffca",
+      "patched_sha256": "0c01bbcc402e5012cbe61868856f13329ffa68efabcc0d9ec62a6671329f13c5"
+    },
+    {
+      "path": "cognee/infrastructure/llm/tokenizer/resolver.py",
+      "base_sha256": "7f49dadf6ee0d6e979b21ed4cdfc76fcf07ff80f64c20bf5b1fe747111f43800",
+      "patched_sha256": "8e0de20a807c6807175d6dad0f8081a2bb1827646c269e202aa6843d069aa074"
+    }
+  ],
+  "patch_sha256": "204a2a7e1d17b20c21d43a6f83cec2e45d7b09351444cc2c5b6189532d24e7f2",
+  "test_script": "scripts/memory/test_local_tokenizer_patch.py",
+  "test_script_sha256": "4150473a658a207d21b2249b8e2428553bfffa4d6bb15035b2f63704c683df10",
+  "regression_tests": 10,
+  "exit_code": 0,
+  "network_attempts": 0,
+  "test_mode": "same_image_explicit_readonly_source_overlay_network_none_uid_1000",
+  "new_image_built": false,
+  "runtime_applied": false
+}

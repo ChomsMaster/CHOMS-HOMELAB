@@ -1,0 +1,431 @@
+{
+  "observed_at": "2026-10-25T17:48:02.217301+00:00",
+  "status": "PASS_API_INDEX_QUERY_PERSISTENCE",
+  "previous_gate": {
+    "observed_date": "2026-10-25",
+    "stage": "local_gliner_cognify",
+    "classification": "container_limit_exceeded",
+    "status": "FAIL",
+    "previous_resources": {
+      "requests_memory": "2Gi",
+      "limits_memory": "6Gi"
+    },
+    "current_declarative_resources": {
+      "requests_memory": "6Gi",
+      "limits_memory": "8Gi"
+    },
+    "sizing_basis": {
+      "historical_peak_insufficient": true,
+      "estimated_budget_gib": 6.2,
+      "estimated_margin_percent": 29.03,
+      "estimate_not_measured_peak": true,
+      "gliner_observed_gib_approx": 2.1
+    },
+    "node": {
+      "memory_pressure_before": "False",
+      "memory_pressure_after": "False",
+      "allocatable_memory_ki": 24501612,
+      "available_memory_ki_before": 19251980,
+      "remaining_after_requests_gib": 13.66
+    },
+    "previous_prometheus_sampled_peaks_bytes": {
+      "usage": 1972228096,
+      "working_set": 1970868224,
+      "rss": 1915252736
+    },
+    "attempt": {
+      "count": 1,
+      "sample_count": 57,
+      "sample_window_seconds": 555.159,
+      "cgroup_limit_bytes": 8589934592,
+      "cgroup_peak_bytes": 8589934592,
+      "peak_censored_by_limit": true,
+      "termination_reason": "OOMKilled",
+      "exit_code": 137,
+      "finished_at": "2026-10-25T16:33:44Z",
+      "restarts": 1,
+      "network_guard_active": true,
+      "final_network_attempt_count": null,
+      "public_documents": 36,
+      "query_accepted": false
+    },
+    "rollback": {
+      "count": 1,
+      "api_replicas": 0,
+      "api_pods_remaining": 0,
+      "postgresql_ready": 1,
+      "pvc_bound": 2,
+      "runtime_secrets_preserved": true,
+      "partial_dataset_preserved": true
+    },
+    "pending": [
+      "memory_capacity_gate",
+      "complete_cognify",
+      "traceable_query",
+      "restart_persistence",
+      "controlled_restore",
+      "MCP"
+    ],
+    "future_lower_bound_example": {
+      "memory_limit": "10Gi",
+      "basis": "8Gi censored peak plus 25 percent; not applied or guaranteed"
+    }
+  },
+  "node_precheck": {
+    "node": "choms-node-02",
+    "Ready": "True",
+    "MemoryPressure": "False",
+    "allocatable_memory": "32759140Ki",
+    "capacity_memory": "32759140Ki"
+  },
+  "resources": {
+    "requests_memory": "8Gi",
+    "limits_memory": "16Gi",
+    "cpu_unchanged": true
+  },
+  "requests_remaining_gib": 19.54,
+  "controlled_attempt": {
+    "count": 1,
+    "duration_seconds": 1895.629,
+    "cpu_seconds": 3522.18,
+    "process_max_rss_kib": 9612352,
+    "cgroup_peak_bytes": 13102444544,
+    "sampled_working_set_peak_bytes": 12769841152,
+    "sample_count": 191,
+    "oom_events": 0,
+    "oom_kill_events": 0,
+    "container_restarts": 0,
+    "exit_code": 0,
+    "unauthorized_http_attempts": 0,
+    "rollback_count": 0,
+    "growth_cut_policy": "after initial 120s, 5-minute window, minute medians rising >=32Mi each, >=1Gi overall and no drop >128Mi; absolute cut at 16Gi"
+  },
+  "corpus": {
+    "documents": 36,
+    "base_git_commit": "c1af248f1f060393d5543f1a5e4c5f7ee41ffa3f",
+    "snapshot_before_closure_documentation": true,
+    "uncommitted_files_identified_by_sha256_not_claimed_in_commit": true,
+    "inventory": [
+      {
+        "path": "README.md",
+        "sha256": "2db2fdefce519bec74c778ec00256c513121819db8c79e1b96cc46e6b9dead8d",
+        "bytes": 3152
+      },
+      {
+        "path": "docs/context/CURRENT_STATE.md",
+        "sha256": "46531b3a0fe3fee7451456b43fa81a4fc0917ec94578a5d2eedeff427ef7f9f3",
+        "bytes": 70996
+      },
+      {
+        "path": "docs/context/ROADMAP.md",
+        "sha256": "f6c983f59f7494747b11c70a842957944b6aaaa4ea7135aa5b78673407107685",
+        "bytes": 51311
+      },
+      {
+        "path": "docs/context/WORKLOG.md",
+        "sha256": "19f06b67729b2e29ca25e61d7b482e250f85b5a6910e459bef734dc98bfae742",
+        "bytes": 88957
+      },
+      {
+        "path": "docs/incidents/2026-10-25-omniroute.md",
+        "sha256": "493676130b567da685b990045b9906ef3b1aa89e1e285a7d26a1b444acc0f6d8",
+        "bytes": 1599
+      },
+      {
+        "path": "docs/operations/BACKUP_POLICY.md",
+        "sha256": "dbe9dce3c1f7032c5db8b720f3a8afffbfdd78c34b6cacf40a9932f31c549080",
+        "bytes": 4799
+      },
+      {
+        "path": "docs/operations/BOOTSTRAP.md",
+        "sha256": "603bab14336219fe5c59761ed1825143dcc0a3c271f9a0b317afd2850e2a2bd7",
+        "bytes": 1936
+      },
+      {
+        "path": "docs/operations/CAPACITY_MANAGEMENT.md",
+        "sha256": "646b95e323b69947faed4b537bcaf04bac4fb9916d917fe2546fe9bc4e3bb415",
+        "bytes": 4574
+      },
+      {
+        "path": "docs/operations/CLEANUP_RUNBOOK.md",
+        "sha256": "96da6a8dea83181bbb49f5cebfe4d225370136efd6df1e71ec33e5de1edb6bae",
+        "bytes": 5568
+      },
+      {
+        "path": "docs/operations/DEPLOY.md",
+        "sha256": "3d8820348b6a0852dd012d67e391572f6c07c55cc77cf888d4633cb3ed400a34",
+        "bytes": 2624
+      },
+      {
+        "path": "docs/operations/DEVOPS_HANDOFF.md",
+        "sha256": "be654a0069acb0689c7cea5ec2ed98421aa0810b25e87684ce7680092c1c2041",
+        "bytes": 1902
+      },
+      {
+        "path": "docs/operations/IMAGE_PINNING.md",
+        "sha256": "e3a7e95aaec2d25713f067a64603fa9418269eb8fca8f08b9382b8231b50a80f",
+        "bytes": 1732
+      },
+      {
+        "path": "docs/operations/INCIDENT_RESPONSE.md",
+        "sha256": "c87f16d4c6de8c410501aa1d57912fee9f22822b5cc21675eee8f15b55d767ac",
+        "bytes": 5233
+      },
+      {
+        "path": "docs/operations/KUBERNETES_WORKLOAD_AUDIT.md",
+        "sha256": "e9e9aa0a9e9cdde96dd3918b250095d303e982ab4bf6eddb50d161e9bc43432c",
+        "bytes": 28214
+      },
+      {
+        "path": "docs/operations/LOCAL_VALIDATION.md",
+        "sha256": "44e8d651ac63d7a28cf3b8f61af32f35d56d79d83f91c251a10feb5e6b2fe546",
+        "bytes": 2613
+      },
+      {
+        "path": "docs/operations/MAINTENANCE_POLICY.md",
+        "sha256": "42e3533d3b6deaf9d209120649a625d1ffc25cc95cf79972d45e72b2f08d85fc",
+        "bytes": 5415
+      },
+      {
+        "path": "docs/operations/MEMORY_PLATFORM.md",
+        "sha256": "50aaa0ab88cfc1e88b35748bd1daa9586f5e2fd9f509a2434a1f083d447f9c10",
+        "bytes": 37468
+      },
+      {
+        "path": "docs/operations/MONITORING_PROCEDURES.md",
+        "sha256": "6865e335ba2a38a7de2aae916482b8279a151f8ca98f8e8b5aa60e1dd5763a8a",
+        "bytes": 4571
+      },
+      {
+        "path": "docs/operations/NAS_NODE_STORAGE_MONITORING.md",
+        "sha256": "5505fe11e79e51c10a1571214d886b230e3d96791c04b4832936c3e35b46ca7e",
+        "bytes": 3068
+      },
+      {
+        "path": "docs/operations/NETWORK_POLICIES.md",
+        "sha256": "c74606bba58ea27be585933aa17863cd0037f93169b07fde9b7252b08634b91e",
+        "bytes": 7411
+      },
+      {
+        "path": "docs/operations/NEXTCLOUD_SHARING.md",
+        "sha256": "9c05c79aaebee1c739cf5f0d7945b5e16f9defd73954f5c5ff3dc4e8189a6e3f",
+        "bytes": 2894
+      },
+      {
+        "path": "docs/operations/NODE_LIFECYCLE.md",
+        "sha256": "fcb26afa8d9dfcb65cb933b68649974559d97dcf8118d98867948975d27a7dbf",
+        "bytes": 850
+      },
+      {
+        "path": "docs/operations/OMNIROUTE.md",
+        "sha256": "2c4bd944727aed6263dd622cd443aa5d3d0c012b654a2c0249b62ef479ccb301",
+        "bytes": 13874
+      },
+      {
+        "path": "docs/operations/OPERATIONS_MANUAL.md",
+        "sha256": "d9365eadc1f6d1358f8d9f7f0ec0f8a65fbd8b34473555ff6f6a5e4453a5ad3b",
+        "bytes": 5621
+      },
+      {
+        "path": "docs/operations/PATCH_MANAGEMENT.md",
+        "sha256": "edb4f0b9055886ae2422848c4598c704fbdc534ffe938d0800c13d28cd8db355",
+        "bytes": 4376
+      },
+      {
+        "path": "docs/operations/PUBLIC_SCOPE.md",
+        "sha256": "5567b2e93511268249265293c8fe3ccfb8212fac25329b60cb1bf0db2b84a5dd",
+        "bytes": 2085
+      },
+      {
+        "path": "docs/operations/REBUILD_RUNBOOK.md",
+        "sha256": "a76775519367085eafe0fb5ac3e7972282bacf8ce539de0e8f540edbc6233b66",
+        "bytes": 9946
+      },
+      {
+        "path": "docs/operations/RECOVERY_KIT.md",
+        "sha256": "0c2970759e1e8554e449a9d5e2e579f915ed2538df1f59507d60634d445c7c33",
+        "bytes": 7168
+      },
+      {
+        "path": "docs/operations/SERVICE_LIFECYCLE.md",
+        "sha256": "72be57a47b784c2e1a94e5f2f1ce755e4dbb2b0ac0fbc5b7b4bd8bd47099ca40",
+        "bytes": 5293
+      },
+      {
+        "path": "docs/operations/TROUBLESHOOTING.md",
+        "sha256": "60d989c1f1fb17b5a5f5ffdd21fb6e9bab4e2804020e9db5aad069bdef8dbd26",
+        "bytes": 515
+      },
+      {
+        "path": "docs/operations/jellyfin-media-and-tv-troubleshooting.md",
+        "sha256": "1dac4a98649ce80dd29f136dd60c5d1d4468c4688b29f7659e348bfeb3131b63",
+        "bytes": 1394
+      },
+      {
+        "path": "docs/operations/next-chat-handoff.md",
+        "sha256": "a55dce55dca2148ea66036c6e7440cb80905a6ebd69b008c58bdc7e768865eb8",
+        "bytes": 2588
+      },
+      {
+        "path": "docs/operations/power-recovery-validation.md",
+        "sha256": "419305de4064ba9f9ff1780d568712e2b8283066d8ffd8c95568f89456ab78bc",
+        "bytes": 1257
+      },
+      {
+        "path": "docs/operations/removable-usb-policy.md",
+        "sha256": "f5e4ae80facabfa2ef9f45115ab4c5feb45879096829b507ff876b8be823f619",
+        "bytes": 918
+      },
+      {
+        "path": "docs/operations/service-validation.md",
+        "sha256": "cd999d5cae96f95fee110765bf3138ba51a55082aa01b3afa5754f62106c6020",
+        "bytes": 51
+      },
+      {
+        "path": "GIT_COMMITS.txt",
+        "sha256": "1ae12f0ea4de8f9d0a02ce38192db62ed19c19bef641088261ba3b0f77d8c6a4",
+        "bytes": 647
+      }
+    ]
+  },
+  "initial_query": {
+    "query_type": "CHUNKS",
+    "retrieved_results": 40,
+    "facts": {
+      "SERVFAIL": true,
+      "solver-nameservers": true,
+      "10.42.0.1": true,
+      "10.42.0.0": true,
+      "c1af248": true
+    },
+    "source_references": [
+      "docs/incidents/2026-10-25-omniroute.md",
+      "docs/operations/OMNIROUTE.md"
+    ]
+  },
+  "persistence": {
+    "status": "PASS",
+    "restart_count": 1,
+    "dataset_id_preserved": true,
+    "document_ids_preserved": true,
+    "documents": 36,
+    "cognify_completed": 36,
+    "nodes": 2226,
+    "edges": 6040,
+    "actual_graph_read_http": 200,
+    "query_http_status": 200,
+    "facts": {
+      "SERVFAIL": true,
+      "solver-nameservers": true,
+      "10.42.0.1": true,
+      "10.42.0.0": true,
+      "c1af248": true
+    },
+    "source_references": [
+      "docs/incidents/2026-10-25-omniroute.md",
+      "docs/operations/OMNIROUTE.md"
+    ],
+    "node": "choms-node-02",
+    "pod": "cognee-api-5846f77bd8-zsjwt",
+    "container_restarts": 0,
+    "sdk_probe_failure_classification": "SECOND_PROCESS_GRAPH_LOCK",
+    "sdk_probe_failure_preserved": "/tmp/choms-cognee-persistence16-result.json",
+    "api_query_client_unauthorized_network_attempts": 0
+  },
+  "mcp_review": {
+    "status": "BLOCKED_NOT_ADMITTED",
+    "method": "static only; no image build/pull or MCP test repeated",
+    "official_source_commit": "37f788bd287750e10d7610173e5332b3843f6ebd",
+    "candidate_tag": "main-37f788b",
+    "candidate_index_digest": "sha256:dcc1ac6941bd662d74283ec4aa133fd3f0183f53dc064032e44bae61b84ecc26",
+    "constructors": [
+      {
+        "line": 76,
+        "explicit_keywords": [
+          "version"
+        ]
+      }
+    ],
+    "locked_packages": {
+      "cognee": "1.6.3",
+      "cognee-mcp": "0.5.7",
+      "fastmcp": "3.4.6"
+    },
+    "api_target_version": "1.6.5",
+    "incoming_authentication": "NOT_DEMONSTRATED: server FastMCP constructor has no explicit auth configuration; HTTP app wiring provides Host/Origin and CORS guards, not a demonstrated client identity contract",
+    "outgoing_api_token_is_not_incoming_mcp_auth": true,
+    "compatibility": "NOT_DEMONSTRATED: MCP lock resolves Cognee 1.6.3; different version is not itself proof of incompatibility",
+    "handshake": "NOT_RUN_GATE_NOT_ADMITTED",
+    "tools_list": "NOT_RUN_GATE_NOT_ADMITTED",
+    "resources_created": 0,
+    "api_preserved": true,
+    "source_references": [
+      "cognee-mcp/src/server.py:76",
+      "cognee-mcp/src/server.py:267",
+      "cognee-mcp/src/server.py:1144",
+      "cognee-mcp/uv.lock:879"
+    ]
+  },
+  "final_runtime": {
+    "api": {
+      "replicas": 1,
+      "ready": 1,
+      "node": "choms-node-02",
+      "resources": {
+        "limits": {
+          "cpu": "2",
+          "memory": "16Gi"
+        },
+        "requests": {
+          "cpu": "500m",
+          "memory": "8Gi"
+        }
+      },
+      "imageID": "docker.io/library/choms-cognee-local-tokenizer@sha256:a56ec10ad5624ffdfccc8dc6de7f14c857914001c4ba8c68b4dabcd1acc51df9",
+      "restarts": 0
+    },
+    "postgresql_ready": 1,
+    "node_conditions": {
+      "MemoryPressure": "False",
+      "Ready": "True"
+    },
+    "services": [
+      {
+        "name": "cognee-api",
+        "type": "ClusterIP",
+        "external_ips_present": false,
+        "ports": [
+          8000
+        ]
+      },
+      {
+        "name": "postgresql",
+        "type": "ClusterIP",
+        "external_ips_present": false,
+        "ports": [
+          5432
+        ]
+      }
+    ],
+    "pvcs": [
+      {
+        "name": "cognee-data",
+        "phase": "Bound"
+      },
+      {
+        "name": "postgresql-data",
+        "phase": "Bound"
+      }
+    ],
+    "httproutes_count": 0,
+    "ingresses_count": 0,
+    "referencegrants_count": 0,
+    "deployments": [
+      "cognee-api",
+      "postgresql"
+    ],
+    "runtime_secret_names_preserved": true
+  },
+  "backup_restore": "DEFERRED_SEPARATE_BLOCK_NOT_EXECUTED",
+  "rpo_rto": "NOT_ACCREDITED"
+}

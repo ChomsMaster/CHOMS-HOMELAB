@@ -1,0 +1,86 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cognee-config
+  namespace: choms-memory
+  labels:
+    app.kubernetes.io/part-of: choms-memory
+data:
+  ENV: production
+  DEBUG: 'false'
+  HTTP_PORT: '8000'
+  BIND_ADDRESS: 0.0.0.0
+  LOG_LEVEL: ERROR
+  TELEMETRY_DISABLED: 'true'
+  LITELLM_LOCAL_MODEL_COST_MAP: 'True'
+  HF_HUB_DISABLE_TELEMETRY: '1'
+  ENABLE_BACKEND_ACCESS_CONTROL: 'true'
+  REQUIRE_AUTHENTICATION: 'true'
+  DEFAULT_USER_EMAIL: choms-memory@example.com
+  DB_PROVIDER: postgres
+  DB_HOST: postgresql.choms-memory.svc.cluster.local
+  DB_PORT: '5432'
+  DB_NAME: cognee
+  DB_USERNAME: cognee
+  VECTOR_DB_PROVIDER: pgvector
+  VECTOR_DB_HOST: postgresql.choms-memory.svc.cluster.local
+  VECTOR_DB_PORT: '5432'
+  VECTOR_DB_NAME: cognee
+  VECTOR_DB_USERNAME: cognee
+  GRAPH_DATABASE_PROVIDER: kuzu
+  SYSTEM_ROOT_DIRECTORY: /cognee-storage/system
+  DATA_ROOT_DIRECTORY: /cognee-storage/data
+  GRAPH_EXTRACTOR: gliner_demo
+  SUMMARY_METHOD: from_extraction
+  AUTO_FEEDBACK: 'false'
+  EMBEDDING_PROVIDER: fastembed
+  EMBEDDING_MODEL: BAAI/bge-small-en-v1.5
+  EMBEDDING_DIMENSIONS: '384'
+  EMBEDDING_BATCH_SIZE: '8'
+  GLINER_INFERENCE_THREADS: '1'
+  KUZU_BUFFER_POOL_SIZE: '268435456'
+  KUZU_NUM_THREADS: '2'
+  HF_HOME: /cognee-storage/models-76fb6636f317812a
+  HF_HUB_CACHE: /cognee-storage/models-76fb6636f317812a/hub
+  FASTEMBED_CACHE_PATH: /cognee-storage/models-76fb6636f317812a/hub
+  HUGGINGFACE_TOKENIZER: /cognee-storage/models-76fb6636f317812a/hub/models--BAAI--bge-small-en-v1.5/snapshots/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a
+  HF_HUB_OFFLINE: '1'
+  TRANSFORMERS_OFFLINE: '1'
+  TOKENIZERS_PARALLELISM: 'false'
+  OMP_NUM_THREADS: '2'
+  MKL_NUM_THREADS: '2'
+  ALLOW_HTTP_REQUESTS: 'false'
+  LLM_API_KEY: ''
+  OPENAI_API_KEY: ''
+  ANTHROPIC_API_KEY: ''
+  GEMINI_API_KEY: ''
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgresql-init
+  namespace: choms-memory
+  labels:
+    app.kubernetes.io/part-of: choms-memory
+data:
+  10-cognee.sh: '#!/usr/bin/env bash
+
+    set -euo pipefail
+
+    psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname postgres <<''SQL''
+
+    \getenv app_password COGNEE_APP_PASSWORD
+
+    CREATE ROLE cognee LOGIN CREATEDB NOSUPERUSER NOCREATEROLE PASSWORD :''app_password'';
+
+    \connect template1
+
+    CREATE EXTENSION IF NOT EXISTS vector;
+
+    \connect postgres
+
+    CREATE DATABASE cognee OWNER cognee;
+
+    SQL
+
+    '

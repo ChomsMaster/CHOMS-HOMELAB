@@ -1,0 +1,9 @@
+# The build wrapper must first verify the local tag's confirmed OCI index.
+FROM docker.io/library/choms-cognee-frozen:1.6.5
+USER 0:0
+RUN --network=none --mount=type=bind,source=inputs,target=/patch-input,readonly \
+    /src/.venv/bin/python -B /patch-input/apply_local_tokenizer_patch.py /src /patch-input
+USER 1000:1000
+ENV LITELLM_LOCAL_MODEL_COST_MAP=True
+LABEL org.choms.base.oci-index="sha256:a90ce0eb7a3048fa66c494ac6f6eeee939183319373bef31a2906bcd9bf0b4ea" \
+      org.choms.tokenizer.patch-sha256="204a2a7e1d17b20c21d43a6f83cec2e45d7b09351444cc2c5b6189532d24e7f2"

@@ -1,0 +1,117 @@
+--- a/cognee/infrastructure/databases/vector/embeddings/FastembedEmbeddingEngine.py
++++ b/cognee/infrastructure/databases/vector/embeddings/FastembedEmbeddingEngine.py
+@@ -172,8 +172,10 @@
+         dimensions: int | None = 3072,
+         max_completion_tokens: int | None = None,
+         batch_size: int = 100,
++        huggingface_tokenizer: str | None = None,
+     ):
+         self.model = model
++        self.huggingface_tokenizer = huggingface_tokenizer
+         self.dimensions = dimensions
+         self.batch_size = batch_size
+         cache_dir = resolve_fastembed_cache_dir()
+@@ -392,6 +394,9 @@
+             A tokenizer object configured for the specified model and maximum token size.
+         """
+         logger.debug("Loading tokenizer for FastembedEmbeddingEngine...")
+-        tokenizer = resolve_embedding_tokenizer(provider="fastembed", model=self.model)
++        tokenizer = resolve_embedding_tokenizer(
++            provider="fastembed", model=self.model,
++            huggingface_tokenizer=self.huggingface_tokenizer,
++        )
+         logger.debug("Tokenizer loaded for FastembedEmbeddingEngine")
+         return tokenizer
+--- a/cognee/infrastructure/databases/vector/embeddings/get_embedding_engine.py
++++ b/cognee/infrastructure/databases/vector/embeddings/get_embedding_engine.py
+@@ -131,6 +131,7 @@
+             dimensions=embedding_dimensions,
+             max_completion_tokens=embedding_max_completion_tokens,
+             batch_size=embedding_batch_size,
++            huggingface_tokenizer=huggingface_tokenizer,
+         )
+ 
+     if embedding_provider == "ollama":
+--- a/cognee/infrastructure/llm/tokenizer/HuggingFace/adapter.py
++++ b/cognee/infrastructure/llm/tokenizer/HuggingFace/adapter.py
+@@ -5,6 +5,21 @@
+ from typing import Any
+ 
+ from ..tokenizer_interface import TokenizerInterface
++
++
++
++def _local_snapshot(model: str) -> Path | None:
++    path = Path(model)
++    if not path.is_absolute():
++        return None
++    if path.resolve(strict=True) != path or not path.is_dir():
++        raise ValueError("Tokenizer snapshot must be a real local directory")
++    if any(child.is_symlink() for child in path.iterdir()):
++        raise ValueError("Tokenizer snapshot symlinks are forbidden")
++    for name in ("tokenizer.json", "tokenizer_config.json"):
++        if not (path / name).is_file():
++            raise FileNotFoundError("Required local tokenizer metadata is missing")
++    return path
+ 
+ 
+ def _load(model: str) -> tuple[Callable[[str], list[str]], int]:
+@@ -20,6 +35,15 @@
+     importing it before the GLiNER auto-installer adds torch leaves gliner2 unable to
+     load its model in this process (SDK-810).
+     """
++    local = _local_snapshot(model)
++    if local is not None:
++        from transformers import AutoTokenizer
++
++        tokenizer = AutoTokenizer.from_pretrained(
++            str(local), local_files_only=True, trust_remote_code=False
++        )
++        return tokenizer.tokenize, tokenizer.num_special_tokens_to_add(pair=False)
++
+     from huggingface_hub import hf_hub_download
+     from tokenizers import Tokenizer
+ 
+@@ -55,10 +79,14 @@
+     from huggingface_hub import hf_hub_download
+     from huggingface_hub.errors import EntryNotFoundError
+ 
+-    try:
+-        path = hf_hub_download(model, "tokenizer_config.json")
+-    except EntryNotFoundError:
+-        return None
++    local = _local_snapshot(model)
++    if local is not None:
++        path = local / "tokenizer_config.json"
++    else:
++        try:
++            path = hf_hub_download(model, "tokenizer_config.json")
++        except EntryNotFoundError:
++            return None
+     limit = json.loads(Path(path).read_text(encoding="utf-8")).get("model_max_length")
+     if isinstance(limit, bool) or not isinstance(limit, int) or limit <= 0:
+         return None
+--- a/cognee/infrastructure/llm/tokenizer/resolver.py
++++ b/cognee/infrastructure/llm/tokenizer/resolver.py
+@@ -33,6 +33,7 @@
+ """
+ 
+ from collections.abc import Callable
++from pathlib import Path
+ 
+ from cognee.infrastructure.llm.tokenizer.HuggingFace import HuggingFaceTokenizer
+ from cognee.infrastructure.llm.tokenizer.Mistral import MistralTokenizer
+@@ -207,6 +208,13 @@
+         )
+ 
+     if "fastembed" in provider_lower:
++        if huggingface_tokenizer is not None:
++            # An explicit local profile fails closed: never use Hub or TikToken.
++            if not Path(huggingface_tokenizer).is_absolute():
++                raise ValueError("FastEmbed tokenizer override must be an absolute local snapshot")
++            return HuggingFaceTokenizer(
++                model=huggingface_tokenizer, max_completion_tokens=max_completion_tokens
++            )
+         repo = _fastembed_hf_repo(model)
+         if repo is None:
+             logger.warning(

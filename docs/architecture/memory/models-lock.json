@@ -1,0 +1,110 @@
+{
+  "models": [
+    {
+      "repository": "qdrant/bge-small-en-v1.5-onnx-q",
+      "revision": "aa8f8b060edb00e03bfdd08813a2949946c8ba55",
+      "files": [
+        {
+          "path": "config.json",
+          "bytes": 706,
+          "expected_sha256": null,
+          "git_blob_sha1": "0d7726d0cdccb62ee17c03bd1595cff07199b8f8"
+        },
+        {
+          "path": "model_optimized.onnx",
+          "bytes": 66465124,
+          "expected_sha256": "51f1bd0addd6e859e42c2c8021a5e5461385bb676a649f4b269aa445449f2431",
+          "git_blob_sha1": "94f6925f5e2ad78878198fa757195c25f74d6bc2"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 695,
+          "expected_sha256": null,
+          "git_blob_sha1": "9bbecc17cabbcbd3112c14d6982b51403b264bfa"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 711396,
+          "expected_sha256": null,
+          "git_blob_sha1": "688882a79f44442ddc1f60d70334a7ff5df0fb47"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 1242,
+          "expected_sha256": null,
+          "git_blob_sha1": "75305659f7795d4549f0e23688b52fa20a32f925"
+        }
+      ]
+    },
+    {
+      "repository": "fastino/gliner2.5-base-v1",
+      "revision": "54785d51df8d86a0d8f2eb212fec15871aad2c4d",
+      "files": [
+        {
+          "path": "config.json",
+          "bytes": 4103,
+          "expected_sha256": null,
+          "git_blob_sha1": "df5c609f4fcf65408b411bdaae6566c00c438a1c"
+        },
+        {
+          "path": "encoder_config/config.json",
+          "bytes": 857,
+          "expected_sha256": null,
+          "git_blob_sha1": "9ca7536e3b59a7087058bfc099bac9136958db91"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 774366564,
+          "expected_sha256": "7274094de2e0c2a37a386f55fc4e23061a954da5bd7a335e7dfe56f2743c277a",
+          "git_blob_sha1": "cf16e4843664fa8544e368eb6047606710c2762f"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 8341713,
+          "expected_sha256": null,
+          "git_blob_sha1": "a93077b30f99647415b09c3534fed78681ffc853"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 645,
+          "expected_sha256": null,
+          "git_blob_sha1": "5efd586306801b08ca13390b0619a94c943046e4"
+        }
+      ]
+    },
+    {
+      "repository": "BAAI/bge-small-en-v1.5",
+      "revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a",
+      "files": [
+        {
+          "path": "tokenizer.json",
+          "bytes": 711396,
+          "expected_sha256": "d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66",
+          "git_blob_sha1": "688882a79f44442ddc1f60d70334a7ff5df0fb47",
+          "reused_qdrant": true
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 366,
+          "expected_sha256": "9261e7d79b44c8195c1cada2b453e55b00aeb81e907a6664974b4d7776172ab3",
+          "git_blob_sha1": "37fca74771bc76a8e01178ce3a6055a0995f8093",
+          "reused_qdrant": false
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 125,
+          "expected_sha256": "b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3",
+          "git_blob_sha1": "a8b3208c2884c4efb86e49300fdd3dc877220cdf",
+          "reused_qdrant": false
+        },
+        {
+          "path": "vocab.txt",
+          "bytes": 231508,
+          "expected_sha256": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3",
+          "git_blob_sha1": "fb140275c155a9c7c5a3b3e0e77a9e839594a938",
+          "reused_qdrant": false
+        }
+      ]
+    }
+  ]
+}

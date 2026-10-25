@@ -1,0 +1,140 @@
+{
+  "checked_on": "2026-10-25",
+  "codebase_memory": {
+    "version": "v0.12.1",
+    "archive": "codebase-memory-mcp-linux-amd64-portable.tar.gz",
+    "sha256": "8c3d0341064301e78ecc84cf7348d4e2c6562a0f57448243ea560aaa34de36c1",
+    "signature": "PASS",
+    "identity": "https://github.com/DeusData/codebase-memory-mcp/.github/workflows/release.yml@refs/heads/main",
+    "verifier_version": "v3.1.4"
+  },
+  "cognee": {
+    "latest_api_release": "v1.6.6rc1",
+    "selected_stable_api": "v1.6.5",
+    "release_mcp_tag_http_status": 404,
+    "mcp_candidate_status": "BLOCKED_NOT_ADMITTED: incoming auth and API 1.6.5 compatibility not demonstrated; official MCP lock resolves Cognee 1.6.3",
+    "frozen_runtime": {
+      "source": {
+        "commit": "37f788bd287750e10d7610173e5332b3843f6ebd",
+        "signature_fingerprint": "968479A1AFF927E37D1A566BB5690EEEBB952194",
+        "archive_sha256": "a690eb90f241643a4f4e74a4a4b229c634aa79c2a70a86c0b6f56453e07c06ca",
+        "lock_sha256": "e3e967207129f64513944dad1806a54683249589bb73f7f1f6823bf5f1293d7c",
+        "signed_git_tree": "7fd2f7c3e0a68814e55480cf016334ba2eb3c595",
+        "archive_git_tree": "7fd2f7c3e0a68814e55480cf016334ba2eb3c595",
+        "archive_matches_signed_tree": true
+      },
+      "versions": {
+        "python": "3.12.12",
+        "cognee": "1.6.5",
+        "gliner2": "2.0.0",
+        "torch": "2.14.0",
+        "transformers": "4.57.6",
+        "tokenizers": "0.22.2",
+        "huggingface-hub": "0.36.2",
+        "sentencepiece": "0.2.2",
+        "protobuf": "7.36.2"
+      },
+      "image": "docker.io/library/choms-cognee-frozen@sha256:a90ce0eb7a3048fa66c494ac6f6eeee939183319373bef31a2906bcd9bf0b4ea",
+      "platform_manifest": "sha256:79224dd49819c61ef4d2202933f9ced822b9594389bd8712c9bd90432c76b8f1",
+      "dockerfile": "stacks/kubernetes/choms-memory/Dockerfile",
+      "dockerfile_sha256": "da9513187f25c8a35ddf3646f3c044b570df798c21459a1a49f2717ad88599dd",
+      "sync": "uv sync --frozen --no-dev --no-editable --extra gliner --extra postgres-binary",
+      "published_to_registry": false,
+      "archive": {
+        "name": "final-image.tar",
+        "bytes": 3714336768,
+        "sha256": "7729e4f8eb30476f8f3a1e2c73a69f6242743d219d68851cdd74e330d4dedb9a"
+      },
+      "modelset_directory": "models-5e3cf446963b6c90",
+      "deployment_ref": "docker.io/library/choms-cognee-frozen:1.6.5",
+      "deployment_pull_policy": "Never",
+      "operator_confirmed_tag_digest": "sha256:a90ce0eb7a3048fa66c494ac6f6eeee939183319373bef31a2906bcd9bf0b4ea"
+    },
+    "derived_local_tokenizer_runtime": {
+      "base_ref": "docker.io/library/choms-cognee-frozen:1.6.5",
+      "base_oci_index": "sha256:a90ce0eb7a3048fa66c494ac6f6eeee939183319373bef31a2906bcd9bf0b4ea",
+      "deployment_ref": "docker.io/library/choms-cognee-local-tokenizer:1.6.5-p204a2a7e1d17",
+      "oci_digest": "sha256:b9c82ac89e7eaed83fc01e9a620e51dab7a97d994925b675e3785998395cef6c",
+      "linux_amd64_manifest_digest": "sha256:a57317edb1aef8c3a1ae2377b0e52c37f8eb62a5bb99691709192f97a9ec7bc1",
+      "patch": "stacks/kubernetes/choms-memory/patches/cognee-1.6.5-local-tokenizer.patch",
+      "patch_sha256": "204a2a7e1d17b20c21d43a6f83cec2e45d7b09351444cc2c5b6189532d24e7f2",
+      "changed_source_files": 4,
+      "patch_fuzz": 0,
+      "dockerfile": "stacks/kubernetes/choms-memory/Dockerfile.local-tokenizer",
+      "dependencies_and_uv_lock": "UNCHANGED",
+      "regression_tests": 10,
+      "regression_exit_code": 0,
+      "synthetic_smoke": {
+        "process_exit_code": 0,
+        "rootfs": "ephemeral_writable_as_deployment",
+        "model_mounts": "readonly",
+        "network": "none",
+        "status": "PASS",
+        "synthetic_dataset_count": 1,
+        "synthetic_data_rows": 1,
+        "stores": {
+          "relational": "sqlite_temporary",
+          "vector": "lancedb_temporary",
+          "graph": "kuzu_temporary_no_cognify"
+        },
+        "network_attempts": 0,
+        "duration_seconds": 13.76,
+        "cpu_seconds": 14.779,
+        "max_rss_kib": 1319564
+      },
+      "modelset_directory": "models-76fb6636f317812a",
+      "deployment_pull_policy": "Never",
+      "required_node": "choms-node-02",
+      "archive": {
+        "directory": "cognee-1.6.5-local-tokenizer-p204a2a7e1d17",
+        "name": "image.tar",
+        "bytes": 3714351104,
+        "sha256": "f9cd80cf1e2737d29feadc841cb640e3bf293fb2b7e5904da53a1b3f57199d37"
+      },
+      "operator_import_status": "OPERATOR_CONFIRMED_PASS",
+      "live_deployment_status": "API_READY_INDEX_QUERY_PERSISTENCE_PASS_MCP_BLOCKED",
+      "published_to_registry": false,
+      "observed_cri_image_id": "sha256:a56ec10ad5624ffdfccc8dc6de7f14c857914001c4ba8c68b4dabcd1acc51df9",
+      "observed_memory_resources": {
+        "requests": "8Gi",
+        "limits": "16Gi"
+      }
+    }
+  },
+  "openhands": {
+    "version": "v1.33.0",
+    "chart_version": "0.1.0",
+    "status": "BLOCKED_ISOLATION_CONTRACT",
+    "source": "https://github.com/OpenHands/OpenHands/blob/v1.33.0/helm/agent-canvas/README.md"
+  },
+  "images": [
+    {
+      "registry": "registry-1.docker.io",
+      "repository": "cognee/cognee",
+      "version": "1.6.5",
+      "digest": "sha256:29427e968f8b273db0bb7b037a7bb119d7695d960f73a59d649f00c5111a85bd",
+      "amd64_digest": "sha256:2e0eb765e255ce9acb84fb43fb2f8a4dca24ffcc6ef1e79c300f797badeeb87f"
+    },
+    {
+      "registry": "registry-1.docker.io",
+      "repository": "pgvector/pgvector",
+      "version": "0.8.2-pg17-bookworm",
+      "digest": "sha256:feb68f4f15446397d8cac7f4fe48fe4586de83160d1fc48b46283312d1a33966",
+      "amd64_digest": "sha256:e04af45eb526378554a24ed05b37d9ea56fd623feca9adf264d4f47d875c9a93"
+    },
+    {
+      "registry": "ghcr.io",
+      "repository": "openhands/agent-canvas",
+      "version": "1.33.0",
+      "digest": "sha256:49e2517eb14a133cb952e0575c24ec59db963ac096b404932f7a1bc9a12e666c",
+      "amd64_digest": "sha256:3c515738bcaf0bee7a509a5a12c18f7251fb82ede9cac6adc94977aa275a6888"
+    }
+  ],
+  "mcp_candidate": {
+    "registry": "registry-1.docker.io",
+    "repository": "cognee/cognee-mcp",
+    "version": "main-37f788b",
+    "digest": "sha256:dcc1ac6941bd662d74283ec4aa133fd3f0183f53dc064032e44bae61b84ecc26",
+    "amd64_digest": "sha256:b95d39910e8eb3e2324d99caf9097fdcab331345be5d41bdc89e3a50071903a3"
+  }
+}

@@ -1,0 +1,432 @@
+{
+  "status": "LOCAL_MODELS_OFFLINE_PASS_API_BLOCKED_IMAGEID_ASSERTION",
+  "check": "local_models_offline",
+  "cognee": "1.6.5",
+  "fastembed": "0.8.0",
+  "gliner2": "2.0.0",
+  "transformers": "4.57.6",
+  "torch": "2.14.0",
+  "embedding_dimensions_observed": 384,
+  "gliner_extraction_completed": true,
+  "network": "none",
+  "fixture": "artificial text only",
+  "downloaded_files": {
+    "files": [
+      {
+        "repository": "qdrant/bge-small-en-v1.5-onnx-q",
+        "revision": "aa8f8b060edb00e03bfdd08813a2949946c8ba55",
+        "path": "config.json",
+        "sha256": "13582bcf2effc85b7bf3d3f5532e686bc1c9ce86bb009d10f0ec33cbe92299dd",
+        "bytes": 706
+      },
+      {
+        "repository": "qdrant/bge-small-en-v1.5-onnx-q",
+        "revision": "aa8f8b060edb00e03bfdd08813a2949946c8ba55",
+        "path": "model_optimized.onnx",
+        "sha256": "51f1bd0addd6e859e42c2c8021a5e5461385bb676a649f4b269aa445449f2431",
+        "bytes": 66465124
+      },
+      {
+        "repository": "qdrant/bge-small-en-v1.5-onnx-q",
+        "revision": "aa8f8b060edb00e03bfdd08813a2949946c8ba55",
+        "path": "special_tokens_map.json",
+        "sha256": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+        "bytes": 695
+      },
+      {
+        "repository": "qdrant/bge-small-en-v1.5-onnx-q",
+        "revision": "aa8f8b060edb00e03bfdd08813a2949946c8ba55",
+        "path": "tokenizer.json",
+        "sha256": "d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66",
+        "bytes": 711396
+      },
+      {
+        "repository": "qdrant/bge-small-en-v1.5-onnx-q",
+        "revision": "aa8f8b060edb00e03bfdd08813a2949946c8ba55",
+        "path": "tokenizer_config.json",
+        "sha256": "0b29c7bfc889e53b36d9dd3e686dd4300f6525110eaa98c76a5dafceb2029f53",
+        "bytes": 1242
+      },
+      {
+        "repository": "fastino/gliner2.5-base-v1",
+        "revision": "54785d51df8d86a0d8f2eb212fec15871aad2c4d",
+        "path": "config.json",
+        "sha256": "d6b515c21ae2100c12267fb42a3f02c1e99ad87580366aebedb161efd74441c7",
+        "bytes": 4103
+      },
+      {
+        "repository": "fastino/gliner2.5-base-v1",
+        "revision": "54785d51df8d86a0d8f2eb212fec15871aad2c4d",
+        "path": "encoder_config/config.json",
+        "sha256": "d36a845b9f25dcaf1ec45a1c4bdf65ea4ac20596537e14530ec9f660a63aeca4",
+        "bytes": 857
+      },
+      {
+        "repository": "fastino/gliner2.5-base-v1",
+        "revision": "54785d51df8d86a0d8f2eb212fec15871aad2c4d",
+        "path": "model.safetensors",
+        "sha256": "7274094de2e0c2a37a386f55fc4e23061a954da5bd7a335e7dfe56f2743c277a",
+        "bytes": 774366564
+      },
+      {
+        "repository": "fastino/gliner2.5-base-v1",
+        "revision": "54785d51df8d86a0d8f2eb212fec15871aad2c4d",
+        "path": "tokenizer.json",
+        "sha256": "cbc8ae6037812709c9c26f2a160f8dc48b0440bcb79c8141804259ae2d6adac3",
+        "bytes": 8341713
+      },
+      {
+        "repository": "fastino/gliner2.5-base-v1",
+        "revision": "54785d51df8d86a0d8f2eb212fec15871aad2c4d",
+        "path": "tokenizer_config.json",
+        "sha256": "0bf3ea0873234bd9bfdd3853c440395009ac6365a925b91654daed5396d655e1",
+        "bytes": 645
+      }
+    ],
+    "total_bytes": 849893045
+  },
+  "peak_resource_use_observed": {
+    "wall_seconds": 8.645,
+    "cpu_seconds": 8.741,
+    "maxrss_KiB": 2526940
+  },
+  "resource_measurement_limit": "Synthetic offline process only; no deployed API measurements.",
+  "disk_usage_note": "total_bytes counts file contents, not allocated filesystem blocks",
+  "primary_error": "AttributeError: legacy list-valued extra_special_tokens",
+  "fallback_error": "JSONDecodeError while reloading tokenizer; cause not determined",
+  "all_downloaded_json_valid": true,
+  "all_downloaded_json_official_git_blob_match": true,
+  "kubernetes_mutations": false,
+  "ingestion_performed": false,
+  "generative_inference": false,
+  "previous_attempt_exceptions_sanitized": "You are using a model of type gliner2 to instantiate a model of type extractor. This is not supported for all configurations of models and can yield errors.\n<site-packages>/gliner2/models/boundary/model.py:2212: UserWarning: Checkpoint uses legacy list-valued extra_special_tokens metadata; loading with compatibility normalization.\n  tokenizer = load_extractor_tokenizer(tokenizer_source)\nTraceback (most recent call last):\n  File \"<site-packages>/gliner2/models/base.py\", line 46, in load_extractor_tokenizer\n    return AutoTokenizer.from_pretrained(repo_or_dir)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<site-packages>/transformers/models/auto/tokenization_auto.py\", line 1156, in from_pretrained\n    return tokenizer_class.from_pretrained(pretrained_model_name_or_path, *inputs, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<site-packages>/transformers/tokenization_utils_base.py\", line 2113, in from_pretrained\n    return cls._from_pretrained(\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"<site-packages>/transformers/tokenization_utils_base.py\", line 2359, in _from_pretrained\n    tokenizer = cls(*init_inputs, **init_kwargs)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<site-packages>/transformers/models/deberta_v2/tokenization_deberta_v2_fast.py\", line 103, in __init__\n    super().__init__(\n  File \"<site-packages>/transformers/tokenization_utils_fast.py\", line 178, in __init__\n    super().__init__(**kwargs)\n  File \"<site-packages>/transformers/tokenization_utils_base.py\", line 1472, in __init__\n    self._set_model_specific_special_tokens(special_tokens=self.extra_special_tokens)\n  File \"<site-packages>/transformers/tokenization_utils_base.py\", line 1210, in _set_model_specific_special_tokens\n    self.SPECIAL_TOKENS_ATTRIBUTES = self.SPECIAL_TOKENS_ATTRIBUTES + list(special_tokens.keys())\n                                                                           ^^^^^^^^^^^^^^^^^^^\nAttributeError: 'list' object has no attribute 'keys'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\n  File \"<site-packages>/gliner2/auto.py\", line 125, in from_pretrained\n    return model_class.from_pretrained(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<site-packages>/gliner2/models/boundary/model.py\", line 2212, in from_pretrained\n    tokenizer = load_extractor_tokenizer(tokenizer_source)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<site-packages>/gliner2/models/base.py\", line 56, in load_extractor_tokenizer\n    return AutoTokenizer.from_pretrained(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<site-packages>/transformers/models/auto/tokenization_auto.py\", line 1156, in from_pretrained\n    return tokenizer_class.from_pretrained(pretrained_model_name_or_path, *inputs, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<site-packages>/transformers/tokenization_utils_base.py\", line 2113, in from_pretrained\n    return cls._from_pretrained(\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"<site-packages>/transformers/tokenization_utils_base.py\", line 2340, in _from_pretrained\n    tokenizer_file_handle = json.load(tokenizer_file_handle)\n                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<python-stdlib>/json/__init__.py\", line 293, in load\n    return loads(fp.read(),\n           ^^^^^^^^^^^^^^^^\n  File \"<python-stdlib>/json/__init__.py\", line 346, in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<python-stdlib>/json/decoder.py\", line 338, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<python-stdlib>/json/decoder.py\", line 354, in raw_decode\n    obj, end = self.scan_once(s, idx)\n               ^^^^^^^^^^^^^^^^^^^^^^\njson.decoder.JSONDecodeError: Expecting ',' delimiter: line 158732 column 27 (char 2525122)\n",
+  "offline_matrix": {
+    "python": "3.12.14",
+    "network": "Docker --network none",
+    "stages": [
+      {
+        "name": "recommended_tokenizer_official_legacy_normalization",
+        "result": "PASS",
+        "seconds": 0.288
+      },
+      {
+        "name": "autoextractor_local_snapshot",
+        "result": "PASS",
+        "seconds": 3.504
+      },
+      {
+        "name": "synthetic_entity_extraction",
+        "result": "PASS",
+        "seconds": 0.181
+      }
+    ],
+    "versions": {
+      "cognee": {
+        "runtime": "1.6.5",
+        "official_lock": [
+          "1.6.5"
+        ],
+        "match": true
+      },
+      "gliner2": {
+        "runtime": "2.1.0",
+        "official_lock": [
+          "2.0.0"
+        ],
+        "match": false
+      },
+      "transformers": {
+        "runtime": "4.57.6",
+        "official_lock": [
+          "4.57.6"
+        ],
+        "match": true
+      },
+      "tokenizers": {
+        "runtime": "0.22.2",
+        "official_lock": [
+          "0.22.2"
+        ],
+        "match": true
+      },
+      "huggingface-hub": {
+        "runtime": "0.36.2",
+        "official_lock": [
+          "0.36.2"
+        ],
+        "match": true
+      },
+      "protobuf": {
+        "runtime": "7.36.2",
+        "official_lock": [
+          "7.36.2"
+        ],
+        "match": true
+      },
+      "sentencepiece": {
+        "runtime": "0.2.2",
+        "official_lock": [
+          "0.2.2"
+        ],
+        "match": true
+      },
+      "torch": {
+        "runtime": "2.14.1+cpu",
+        "official_lock": [
+          "2.14.0"
+        ],
+        "match": false
+      }
+    },
+    "inventory": [
+      {
+        "file": "config.json",
+        "present": true,
+        "sha256": "d6b515c21ae2100c12267fb42a3f02c1e99ad87580366aebedb161efd74441c7",
+        "registered_match": true
+      },
+      {
+        "file": "tokenizer_config.json",
+        "present": true,
+        "sha256": "0bf3ea0873234bd9bfdd3853c440395009ac6365a925b91654daed5396d655e1",
+        "registered_match": true
+      },
+      {
+        "file": "tokenizer.json",
+        "present": true,
+        "sha256": "cbc8ae6037812709c9c26f2a160f8dc48b0440bcb79c8141804259ae2d6adac3",
+        "registered_match": true
+      },
+      {
+        "file": "spm.model",
+        "present": false,
+        "sha256": null,
+        "registered_match": null
+      },
+      {
+        "file": "special_tokens_map.json",
+        "present": false,
+        "sha256": null,
+        "registered_match": null
+      },
+      {
+        "file": "added_tokens.json",
+        "present": false,
+        "sha256": null,
+        "registered_match": null
+      },
+      {
+        "file": "model.safetensors",
+        "present": true,
+        "sha256": "7274094de2e0c2a37a386f55fc4e23061a954da5bd7a335e7dfe56f2743c277a",
+        "registered_match": true
+      }
+    ],
+    "synthetic_entity_count": 3,
+    "wall_seconds": 9.332,
+    "process_maxrss_KiB": 2178836,
+    "cpu_seconds": 10.165,
+    "cgroup_memory_peak_bytes": 1377746944,
+    "weights_unchanged": true,
+    "status": "PASS",
+    "python_stages_status": "PASS",
+    "process_status": "FAIL",
+    "container_exit_code": 139
+  },
+  "resolution": "Previous failure classified as incompatibility of the unfrozen runtime; no individual package blamed.",
+  "remaining_uncertainty": "Original fallback JSONDecodeError on repository-ID resolution was not reproduced using the local snapshot.",
+  "container_exit_code": 0,
+  "native_diagnostic": null,
+  "failed_operation": null,
+  "native_library_responsible": null,
+  "gate_accepted": true,
+  "live_state": {
+    "postgresql": "Ready after rollback; not modified",
+    "api": "not applied",
+    "mcp": "absent; blocked",
+    "openhands": "not deployed",
+    "pvcs_and_secrets": "both PVC Bound; existing Secrets preserved by name",
+    "model_preload": "transfer not started; no new atomic modelset published",
+    "temporary_pod": "removed by original rollback; absence confirmed"
+  },
+  "downloaded_model_weights_this_attempt": false,
+  "official_lock": {
+    "source": "https://github.com/topoteretes/cognee/blob/v1.6.5/uv.lock",
+    "sha256": "e3e967207129f64513944dad1806a54683249589bb73f7f1f6823bf5f1293d7c",
+    "requires_python": ">=3.10, <3.15"
+  },
+  "historical_unfrozen_failure": {
+    "container_exit_code": 139,
+    "native_diagnostic": "munmap_chunk(): invalid pointer",
+    "failed_operation": "Native process shutdown after successful tokenizer/model load and synthetic extraction",
+    "gliner2": "2.1.0",
+    "torch": "2.14.1+cpu",
+    "status": "FAIL_NATIVE_RUNTIME_SHUTDOWN",
+    "kubernetes_mutations": true
+  },
+  "frozen_probe": {
+    "image": "sha256:eeeec4dab9ce7db1d444b28d352172253d717d7f467ccb870787092ca454a598",
+    "source": {
+      "commit": "37f788bd287750e10d7610173e5332b3843f6ebd",
+      "signature_fingerprint": "968479A1AFF927E37D1A566BB5690EEEBB952194",
+      "archive_sha256": "a690eb90f241643a4f4e74a4a4b229c634aa79c2a70a86c0b6f56453e07c06ca",
+      "lock_sha256": "e3e967207129f64513944dad1806a54683249589bb73f7f1f6823bf5f1293d7c"
+    },
+    "network": "none",
+    "matrix": [],
+    "full": {
+      "name": "full",
+      "exit_code": 0,
+      "signal": null,
+      "last_stage": "interpreter_shutdown_pending"
+    },
+    "host_duration_seconds": 11.32,
+    "versions": {
+      "python": "3.12.12",
+      "cognee": "1.6.5",
+      "gliner2": "2.0.0",
+      "torch": "2.14.0",
+      "transformers": "4.57.6",
+      "tokenizers": "0.22.2",
+      "huggingface-hub": "0.36.2",
+      "sentencepiece": "0.2.2",
+      "protobuf": "7.36.2"
+    },
+    "measurements": {
+      "wall_seconds": 8.531,
+      "cpu_seconds": 8.278,
+      "maxrss_KiB": 2542216
+    },
+    "entity_count": 3,
+    "allocator_diagnostics_present": false,
+    "snapshot_hashes_unchanged": true,
+    "snapshot_sha256": [
+      {
+        "file": "config.json",
+        "sha256": "d6b515c21ae2100c12267fb42a3f02c1e99ad87580366aebedb161efd74441c7"
+      },
+      {
+        "file": "encoder_config/config.json",
+        "sha256": "d36a845b9f25dcaf1ec45a1c4bdf65ea4ac20596537e14530ec9f660a63aeca4"
+      },
+      {
+        "file": "model.safetensors",
+        "sha256": "7274094de2e0c2a37a386f55fc4e23061a954da5bd7a335e7dfe56f2743c277a"
+      },
+      {
+        "file": "tokenizer.json",
+        "sha256": "cbc8ae6037812709c9c26f2a160f8dc48b0440bcb79c8141804259ae2d6adac3"
+      },
+      {
+        "file": "tokenizer_config.json",
+        "sha256": "0bf3ea0873234bd9bfdd3853c440395009ac6365a925b91654daed5396d655e1"
+      }
+    ],
+    "status": "PASS"
+  },
+  "final_frozen_runtime": {
+    "image": "sha256:a90ce0eb7a3048fa66c494ac6f6eeee939183319373bef31a2906bcd9bf0b4ea",
+    "source": {
+      "commit": "37f788bd287750e10d7610173e5332b3843f6ebd",
+      "signature_fingerprint": "968479A1AFF927E37D1A566BB5690EEEBB952194",
+      "archive_sha256": "a690eb90f241643a4f4e74a4a4b229c634aa79c2a70a86c0b6f56453e07c06ca",
+      "lock_sha256": "e3e967207129f64513944dad1806a54683249589bb73f7f1f6823bf5f1293d7c",
+      "signed_git_tree": "7fd2f7c3e0a68814e55480cf016334ba2eb3c595",
+      "archive_git_tree": "7fd2f7c3e0a68814e55480cf016334ba2eb3c595",
+      "archive_matches_signed_tree": true
+    },
+    "network": "none",
+    "matrix": [],
+    "full": {
+      "name": "full",
+      "exit_code": 0,
+      "signal": null,
+      "last_stage": "interpreter_shutdown_pending"
+    },
+    "host_duration_seconds": 11.492,
+    "versions": {
+      "python": "3.12.12",
+      "cognee": "1.6.5",
+      "gliner2": "2.0.0",
+      "torch": "2.14.0",
+      "transformers": "4.57.6",
+      "tokenizers": "0.22.2",
+      "huggingface-hub": "0.36.2",
+      "sentencepiece": "0.2.2",
+      "protobuf": "7.36.2"
+    },
+    "measurements": {
+      "wall_seconds": 8.645,
+      "cpu_seconds": 8.741,
+      "maxrss_KiB": 2526940
+    },
+    "semantic_match": true,
+    "entity_count": 3,
+    "allocator_diagnostics_present": false,
+    "snapshot_hashes_unchanged": true,
+    "snapshot_sha256": [
+      {
+        "file": "config.json",
+        "sha256": "d6b515c21ae2100c12267fb42a3f02c1e99ad87580366aebedb161efd74441c7"
+      },
+      {
+        "file": "encoder_config/config.json",
+        "sha256": "d36a845b9f25dcaf1ec45a1c4bdf65ea4ac20596537e14530ec9f660a63aeca4"
+      },
+      {
+        "file": "model.safetensors",
+        "sha256": "7274094de2e0c2a37a386f55fc4e23061a954da5bd7a335e7dfe56f2743c277a"
+      },
+      {
+        "file": "tokenizer.json",
+        "sha256": "cbc8ae6037812709c9c26f2a160f8dc48b0440bcb79c8141804259ae2d6adac3"
+      },
+      {
+        "file": "tokenizer_config.json",
+        "sha256": "0bf3ea0873234bd9bfdd3853c440395009ac6365a925b91654daed5396d655e1"
+      }
+    ],
+    "status": "PASS"
+  },
+  "official_signed_source": {
+    "commit": "37f788bd287750e10d7610173e5332b3843f6ebd",
+    "signature_fingerprint": "968479A1AFF927E37D1A566BB5690EEEBB952194",
+    "archive_sha256": "a690eb90f241643a4f4e74a4a4b229c634aa79c2a70a86c0b6f56453e07c06ca",
+    "lock_sha256": "e3e967207129f64513944dad1806a54683249589bb73f7f1f6823bf5f1293d7c",
+    "signed_git_tree": "7fd2f7c3e0a68814e55480cf016334ba2eb3c595",
+    "archive_git_tree": "7fd2f7c3e0a68814e55480cf016334ba2eb3c595",
+    "archive_matches_signed_tree": true
+  },
+  "final_stderr_unfiltered": "You are using a model of type gliner2 to instantiate a model of type extractor. This is not supported for all configurations of models and can yield errors.\n/src/.venv/lib/python3.12/site-packages/gliner2/models/boundary/model.py:2101: UserWarning: Checkpoint uses legacy list-valued extra_special_tokens metadata; loading with compatibility normalization.\n  tokenizer = load_extractor_tokenizer(tokenizer_source)\n/src/.venv/lib/python3.12/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.\n  warnings.warn(\n/src/.venv/lib/python3.12/site-packages/gliner2/models/boundary/model.py:1147: RuntimeWarning: Encoder rejected attn_implementation='sdpa'; falling back to 'eager' (DebertaV2Model does not support an attention implementation through torch.nn.functional.scaled_dot_product_attention yet. Please request the support for this architecture: https://github.com/huggingface/transformers/issues/28005. If you believe this error is a bug, please open an issue in Transformers GitHub repository and load your model with the argument `attn_implementation=\"eager\"` meanwhile. Example: `model = AutoModel.from_pretrained(\"openai/whisper-tiny\", attn_implementation=\"eager\")`)\n  self.encoder = self._load_encoder(\n",
+  "deployment_blocker": "Exact local tag reached Ready with Never on node-02; strict imageID index-digest assertion returned false. Observed imageID was not retained before rollback; no claim of wrong image or root cause.",
+  "models_redownloaded": false,
+  "fastembed_repeated": false,
+  "image_archive": {
+    "path": "/tmp/choms-cognee-frozen/final-image.tar",
+    "bytes": 3714336768,
+    "sha256": "7729e4f8eb30476f8f3a1e2c73a69f6242743d219d68851cdd74e330d4dedb9a"
+  },
+  "operator_import_confirmation": {
+    "status": "PASS",
+    "ref": "docker.io/library/choms-cognee-frozen:1.6.5",
+    "digest": "sha256:a90ce0eb7a3048fa66c494ac6f6eeee939183319373bef31a2906bcd9bf0b4ea",
+    "platform": "linux/amd64",
+    "cri_managed": true
+  },
+  "api_preload_attempt": {
+    "status": "FAIL",
+    "stage": "temporary_seed_imageid_exact_digest",
+    "expected_digest": "sha256:a90ce0eb7a3048fa66c494ac6f6eeee939183319373bef31a2906bcd9bf0b4ea",
+    "observed_digest_preserved": false,
+    "check_observed": false,
+    "seed_pod_ready": true,
+    "seed_node": "choms-node-02",
+    "local_tag_resolution": "PASS: Pod reached Ready with Never",
+    "transfer_started": false,
+    "api_applied": false,
+    "rollback": "original rollback removed Pod; absence confirmed; no second deletion",
+    "models": "not modified",
+    "postgresql_pvc_secrets_image": "preserved",
+    "operator_authoritative_tag_digest": "accepted"
+  }
+}
