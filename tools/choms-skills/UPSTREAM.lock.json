@@ -1,0 +1,13 @@
+{
+  "repository": "https://github.com/affaan-m/ECC",
+  "tag": "v2.2.3",
+  "commit": "c05b2d6614f62f6db0047669aa4eefb223d478f9",
+  "tag_object": "93f9f6154d164ccb9f4dc38858a2bc2d5dcab222",
+  "github_commit_verified": {
+    "verified": true,
+    "reason": "valid",
+    "verified_at": "2026-10-01T22:50:41Z"
+  },
+  "git_tree": "ae3070ee183d0bae220745ec9120964e6b671175",
+  "release_published": "2026-10-01T23:00:36Z"
+}

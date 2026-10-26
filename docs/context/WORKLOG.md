@@ -1510,3 +1510,25 @@ y evidencia sanitizada; sin copiar launchers, dumps, modelos o logs de /tmp.
 Este cierre no ejecuta sudo, backup, restore, reindexación ni cambios K3s.
 RPO periódico, offsite y automatización no acreditados. Listos para iniciar MCP
 como bloque separado, sin desplegarlo ni rebajar sus gates de auth/compatibilidad.
+
+### 2026-10-26 — CHOMS Skills: promoción mínima Codex/Hermes
+
+Perfil ECC v2.2.3 previamente revisado, hashes originales verificados y Git
+limpio/sincronizado antes de editar. Copia canónica en tools/choms-skills con
+licencia MIT, fuente fijada, hashes y seis adaptaciones. Solo se renombra la
+skill MCP a choms-mcp-server-patterns; verification-loop queda bajo optional/.
+Sin colisiones: doce enlaces individuales, seis por runtime, a los archivos
+canónicos. Codex app-server skills/list detectó las seis habilitadas sin errores.
+Hermes verificó listado, contenido parseado y expansión de seis slash commands;
+no se habilitó el bundle skills ni skill_manage. Configuraciones, OAuth y las
+cuatro herramientas MCP existentes no cambian. No se ejecutaron inferencias,
+instaladores ECC, hooks ni código de las skills; memoria oficial sin cambios.
+Kubernetes, Cognee, backups y repositorios privados permanecen fuera del alcance.
+Evidencia sanitizada: tools/choms-skills/DISCOVERY_VALIDATION.json. Los enlaces
+son reversibles y optional/ queda fuera de todas las raíces activadas.
+La validación sensible detectó únicamente tres falsos positivos heredados del
+tag OCI público en estos documentos. .gitleaks.toml conserva las reglas por
+defecto y exceptúa solo el valor público exacto capturado por generic-api-key
+en los tres archivos de contexto; no se reescribe el historial ni se excluyen
+archivos completos u otros valores. Tres fixtures verifican la excepción,
+la detección de claves sintéticas y el alcance por archivo.

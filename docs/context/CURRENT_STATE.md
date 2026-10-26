@@ -1,3 +1,17 @@
+## CHOMS Skills — promoción local, 26-10-2026
+
+Perfil canónico 1.0.0 en [tools/choms-skills](../../tools/choms-skills/README.md),
+adaptado de ECC v2.2.3 con commit, licencia y SHA-256 fijados. Seis skills
+activadas mediante enlaces individuales en las raíces nativas de Codex y Hermes;
+la variante MCP se llama `choms-mcp-server-patterns`. Verification queda en
+optional/, sin enlace ni descubrimiento. Codex skills/list: 6 habilitadas, cero
+errores; Hermes: listado, parseo y expansión slash 6/6, sin inferencias.
+No se amplían toolsets: Hermes usa carga explícita, sin habilitar skill_manage.
+Configuraciones y OAuth intactos; sin hooks, aprendizaje, memoria ECC ni MCP
+nuevos. Cognee + Codebase Memory siguen siendo la única memoria oficial.
+Evidencia acotada en [DISCOVERY_VALIDATION.json](../../tools/choms-skills/DISCOVERY_VALIDATION.json).
+Este bloque no consulta ni modifica Kubernetes ni repite pruebas de Cognee.
+
 ## Cognee — backup/restore aceptado, 26-10-2026
 
 Backup set `20261025T222914Z-2e9b33c6`, marker

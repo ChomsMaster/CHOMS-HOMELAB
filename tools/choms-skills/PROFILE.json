@@ -1,0 +1,126 @@
+{
+  "name": "CHOMS Skills",
+  "state": "promoted-native-discovery",
+  "upstream": {
+    "repository": "https://github.com/affaan-m/ECC",
+    "tag": "v2.2.3",
+    "commit": "c05b2d6614f62f6db0047669aa4eefb223d478f9",
+    "tag_object": "93f9f6154d164ccb9f4dc38858a2bc2d5dcab222",
+    "github_commit_verified": {
+      "verified": true,
+      "reason": "valid",
+      "verified_at": "2026-10-01T22:50:41Z"
+    },
+    "git_tree": "ae3070ee183d0bae220745ec9120964e6b671175",
+    "release_published": "2026-10-01T23:00:36Z"
+  },
+  "skills": [
+    {
+      "name": "choms-frontend-direction",
+      "source": "skills/frontend-design-direction/SKILL.md",
+      "source_sha256": "fa254de821f708e5791c4c80d30309ac7da89c2888301e967becb3b21ac73331",
+      "path": "skills/choms-frontend-direction/SKILL.md",
+      "sha256": "c55cd5711e4fad4fcc4d697d7d6a4e5cf4cbfe7d6ef8e56171c9bec396e29f8c",
+      "kind": "CHOMS adaptation of ECC, not an unmodified upstream skill",
+      "prepared_sha256": "c55cd5711e4fad4fcc4d697d7d6a4e5cf4cbfe7d6ef8e56171c9bec396e29f8c",
+      "activation": "user-authorized-native-discovery"
+    },
+    {
+      "name": "choms-design-system",
+      "source": "skills/design-system/SKILL.md",
+      "source_sha256": "1969e4cb6cd13cdafff5f84353047d6e55cebc24e1a595ec48e6e2c666f3d8b1",
+      "path": "skills/choms-design-system/SKILL.md",
+      "sha256": "b15767b144d8e63ad7a9e40ae6f22cc0d811bd19847dc25234b1e0f3f51aebeb",
+      "kind": "CHOMS adaptation of ECC, not an unmodified upstream skill",
+      "prepared_sha256": "b15767b144d8e63ad7a9e40ae6f22cc0d811bd19847dc25234b1e0f3f51aebeb",
+      "activation": "user-authorized-native-discovery"
+    },
+    {
+      "name": "choms-seo",
+      "source": "skills/seo/SKILL.md",
+      "source_sha256": "4b744d2ff5c9313e903e4e5139322cc98adb9f9778a7231d4826216ab0f6873a",
+      "path": "skills/choms-seo/SKILL.md",
+      "sha256": "93368f9b05b7715ae17bc5880d4137086ad6ff11c9423a8d217180d3d98e57b9",
+      "kind": "CHOMS adaptation of ECC, not an unmodified upstream skill",
+      "prepared_sha256": "93368f9b05b7715ae17bc5880d4137086ad6ff11c9423a8d217180d3d98e57b9",
+      "activation": "user-authorized-native-discovery"
+    },
+    {
+      "name": "choms-mcp-server-patterns",
+      "source": "skills/mcp-server-patterns/SKILL.md",
+      "source_sha256": "eacb07c953e0440c758e3ee7d92984d2c9128e3444005ea7ad5da7bc0201d43d",
+      "path": "skills/choms-mcp-server-patterns/SKILL.md",
+      "sha256": "335a310d9396c75ab9c096df01b231ec663371202b8fcc5e7759f3e3ddaf5b51",
+      "kind": "CHOMS adaptation of ECC, not an unmodified upstream skill",
+      "prepared_sha256": "9506e9b439a2e76723819e6fd4d7ef1cd3f2680e1091db3ae216130c5a0e4d19",
+      "activation": "user-authorized-native-discovery",
+      "renamed_from": "choms-mcp-patterns"
+    },
+    {
+      "name": "choms-security-review",
+      "source": "skills/security-review/SKILL.md",
+      "source_sha256": "b9eb6416eebc8dda046674f0a2dbb3be88aff526d182b60a0f55998d3d6d0d8d",
+      "path": "skills/choms-security-review/SKILL.md",
+      "sha256": "15d86cd879ccac5abf089fb62440ea3e2a39e8c8a3d65e57871f3670c7a5fdf5",
+      "kind": "CHOMS adaptation of ECC, not an unmodified upstream skill",
+      "prepared_sha256": "15d86cd879ccac5abf089fb62440ea3e2a39e8c8a3d65e57871f3670c7a5fdf5",
+      "activation": "user-authorized-native-discovery"
+    },
+    {
+      "name": "choms-verification-loop",
+      "source": "skills/verification-loop/SKILL.md",
+      "source_sha256": "503aebee7d414f559c4874600081a40b1e7aea269b58073c5c9660c6641b00a0",
+      "path": "optional/choms-verification-loop/SKILL.md",
+      "sha256": "67ada9b8299e71578e60a8d3af7e44729ab0e92ccdaa081ab014b2f3365ee1c7",
+      "kind": "CHOMS adaptation of ECC, not an unmodified upstream skill",
+      "prepared_sha256": "67ada9b8299e71578e60a8d3af7e44729ab0e92ccdaa081ab014b2f3365ee1c7",
+      "activation": "disabled-optional"
+    },
+    {
+      "name": "choms-kubernetes-patterns",
+      "source": "skills/kubernetes-patterns/SKILL.md",
+      "source_sha256": "808b2ec032224e251f1bef9f6e9879e88e2e7abd0feb393632fb6042d8ac5ecc",
+      "path": "skills/choms-kubernetes-patterns/SKILL.md",
+      "sha256": "e9d2dc14d2c2ff94967e21345361ed1e5168269983da825bebfcf7201454cdd3",
+      "kind": "CHOMS adaptation of ECC, not an unmodified upstream skill",
+      "prepared_sha256": "e9d2dc14d2c2ff94967e21345361ed1e5168269983da825bebfcf7201454cdd3",
+      "activation": "user-authorized-native-discovery"
+    }
+  ],
+  "runtime_dependencies": [],
+  "bundled_executable_scripts": [],
+  "memory": [
+    "existing Cognee",
+    "existing Codebase Memory"
+  ],
+  "excluded": [
+    "ECC memory of every kind",
+    "Memory Vault",
+    "all new MCP servers",
+    "automatic hooks",
+    "instincts and automatic learning",
+    "agents",
+    "credentials",
+    "telemetry",
+    "persistent services"
+  ],
+  "compatibility": {
+    "codex": "Native user skills discovery and skills/list; individual links only.",
+    "hermes": "Native catalog and explicit slash loading; existing toolset unchanged. No skills management bundle."
+  },
+  "version": "1.0.0",
+  "activation": {
+    "selected": [
+      "choms-frontend-direction",
+      "choms-design-system",
+      "choms-seo",
+      "choms-mcp-server-patterns",
+      "choms-security-review",
+      "choms-kubernetes-patterns"
+    ],
+    "optional": [
+      "choms-verification-loop"
+    ],
+    "mechanism": "Individual directory symlinks into runtime-resolved native user roots; no installer or runtime config expansion."
+  }
+}

@@ -1,0 +1,14 @@
+title = "CHOMS scoped false-positive exception"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "generic-api-key"
+
+[[rules.allowlists]]
+description = "Verified public OCI tag in three historical context documents; not a credential"
+condition = "AND"
+paths = ['''(^|/)docs/context/(CURRENT_STATE|ROADMAP|WORKLOG)\.md$''']
+regexTarget = "secret"
+regexes = ['''^1\.6\.5\-p204a2a7e1d17$''']

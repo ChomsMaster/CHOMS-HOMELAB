@@ -1,3 +1,13 @@
+## CHOMS Skills — estado 26-10-2026
+
+- `completed`: perfil mínimo versionado en [tools/choms-skills](../../tools/choms-skills/README.md),
+  seis skills activas en Codex/Hermes con descubrimiento y parseo sin inferencias.
+- `deferred`: verification-loop opcional, context-budget y prompt-caching específicos
+  de CHOMS; navegador Hermes fuera de este bloque.
+- `excluded`: memoria ECC, Vault, hooks, instincts, agentes y MCP adicionales.
+- La promoción local conserva las configuraciones existentes; Hermes permite
+  carga slash explícita sin habilitar gestión/creación automática de skills.
+
 ## Cognee — backup/restore aceptado, 26-10-2026
 
 Backup set `20261025T222914Z-2e9b33c6`, marker

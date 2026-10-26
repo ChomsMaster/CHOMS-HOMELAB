@@ -1,0 +1,45 @@
+{
+  "profile_version": "1.0.0",
+  "source_release": "ECC v2.2.3",
+  "source_commit": "c05b2d6614f62f6db0047669aa4eefb223d478f9",
+  "selected": [
+    "choms-frontend-direction",
+    "choms-design-system",
+    "choms-seo",
+    "choms-mcp-server-patterns",
+    "choms-security-review",
+    "choms-kubernetes-patterns"
+  ],
+  "codex": {
+    "version": "0.160.0",
+    "mechanism": "native user root, individual directory symlinks",
+    "check": "app-server skills/list, forceReload=true",
+    "enabled": 6,
+    "parse_errors": 0,
+    "inference_turns": 0
+  },
+  "hermes": {
+    "version": "0.22.5",
+    "mechanism": "native user catalog and explicit slash loading, individual symlinks",
+    "checks": [
+      "skills_list",
+      "skill_view preprocess=false content comparison",
+      "native build_skill_invocation_message"
+    ],
+    "discovered": 6,
+    "parsed": 6,
+    "slash_payloads": 6,
+    "toolsets_changed": false,
+    "skill_manage_enabled": false,
+    "inference_turns": 0
+  },
+  "configuration_files_changed": false,
+  "collisions": 0,
+  "optional_discovered": false,
+  "new_mcp_servers": 0,
+  "new_hooks": 0,
+  "new_memory_systems": 0,
+  "kubernetes_changes": 0,
+  "status": "PASS",
+  "scope": "Runtime discovery and native parsing/expansion only; does not claim model quality or task execution."
+}
