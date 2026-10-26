@@ -1,0 +1,39 @@
+{
+  "source_repository": "https://github.com/diegosouzapw/OmniRoute",
+  "source_tag": "v3.8.52",
+  "source_commit": "ad6f33f66bda34eba98645d3bfdabbde294bc843",
+  "dockerfile_sha256": "011270e26c2d30cc69c9f4ec6533581557d196c9a126d54b684819e1bb1b3f89",
+  "package_lock_sha256": "31f0fad9e440e4e8f7318db4f482dd7e617cce77ec0deefa03cbd0ff5bba6bdc",
+  "target": "runner-cli",
+  "platform": "linux/amd64",
+  "runtime_user": "node",
+  "image_ref": "docker.io/library/choms-omniroute-codex-cli:3.8.52-ad6f33f",
+  "oci_target_digest": "sha256:5545bc6c944f92a5a392142ed83e914733151776367085b88fec70485269a8ff",
+  "docker_config_digest": "sha256:a0c472ebc206f049dd632ea12fac07bb8c6448324bb6ac58a5239b7e13b40d57",
+  "oci_graph": {
+    "sha256:5545bc6c944f92a5a392142ed83e914733151776367085b88fec70485269a8ff": "application/vnd.oci.image.index.v1+json",
+    "sha256:e0d4d030181a2ffe40b41635dbea211af90a7cce731427fbe02c28e9baddbaf0": "application/vnd.oci.image.manifest.v1+json",
+    "sha256:28b02859981ebcefdcb89003d53bf1dd65abb06b1919e778cee72e34c2b2fad7": "application/vnd.oci.image.manifest.v1+json"
+  },
+  "archive_bytes": 1205696512,
+  "archive_sha256": "4f1e35c49ec1f55e4dd27878a02482b2d71d8aa8d6505cd95e55e7f3802619fb",
+  "main_image_unchanged": "sha256:b08a12e876baa8a5ccadd1ebbe346fe7267dba3b1c9f4fd6bb02070fae41ab6c",
+  "imported": true,
+  "stage": "deployed; isolated ChatGPT Plus OAuth and provider health/PONG verified",
+  "checks": {
+    "codex_version": "0.159.2",
+    "app_server_help": "PASS",
+    "ws_capability_flags": "PASS",
+    "uid": 1000,
+    "loopback_ready": "PASS offline Docker",
+    "sbom_components": 837,
+    "vulnerability_scan": "NOT RUN: no offline vulnerability database available",
+    "importer_executed": true,
+    "import_evidence": "operator authenticated PASS: digest, CRI-managed and digest reference",
+    "live_loopback_ready": "PASS HTTP 200",
+    "provider_valid": true,
+    "pong": "PASS HTTP 200 cxa/gpt-6-sol"
+  },
+  "sbom_sha256": "e75430e3e778e27c7a7be134d6869b133024937166ea5d80025dba8bf058e53e",
+  "importer_sha256": "0ee06a6a77471e6e5807d08ec86c327492ad7dc01c23a4d98c2ec3346d8546df"
+}

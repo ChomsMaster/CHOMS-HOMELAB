@@ -26,6 +26,12 @@ data:
   OMNIROUTE_AUTO_SYNC_CODEX_PROFILES: 'false'
   OMNIROUTE_AUTO_SYNC_CLAUDE_PROFILES: 'false'
   CLI_ALLOW_CONFIG_WRITES: 'false'
+  OMNIROUTE_CODEX_APP_SERVER_ENABLED: 'true'
+  OMNIROUTE_CODEX_APPSERVER_WS: ws://127.0.0.1:1456
+  OMNIROUTE_CODEX_APPSERVER_WS_TOKEN_FILE: /run/codex-appserver/token
+  OMNIROUTE_CODEX_APPSERVER_CWD: /workspace
+  OMNIROUTE_CODEX_APPSERVER_SANDBOX: read-only
+  OMNIROUTE_CODEX_APPSERVER_AUTO_APPROVE: 'false'
   STORAGE_ENCRYPTION_KEY_VERSION: v1
   OMNIROUTE_MEMORY_MB: '1024'
   NODE_OPTIONS: --max-old-space-size=1024
@@ -213,12 +219,102 @@ spec:
           mountPath: /app/data
         - name: tmp
           mountPath: /tmp
+        - name: codex-capability
+          mountPath: /run/codex-appserver
+          readOnly: true
+        - name: wreq-loader-hotfix
+          mountPath: /app/.build/next/server/chunks/1056.js
+          subPath: 1056.js
+          readOnly: true
+        - name: wreq-loader-hotfix
+          mountPath: /app/.build/next/server/chunks/34899.js
+          subPath: 34899.js
+          readOnly: true
+      - name: codex-app-server
+        image: docker.io/library/choms-omniroute-codex-cli@sha256:5545bc6c944f92a5a392142ed83e914733151776367085b88fec70485269a8ff
+        imagePullPolicy: Never
+        command: [/bin/sh, -ec]
+        args:
+        - |
+          umask 077
+          node -e 'const f=require("fs"),p="/run/codex-appserver/token";if(!f.existsSync(p)){f.writeFileSync(p,require("crypto").randomBytes(32).toString("hex"),{mode:0o600,flag:"wx"});}const s=f.lstatSync(p);if(!s.isFile()||s.isSymbolicLink()||s.uid!==process.getuid()||(s.mode&0o077)!==0||!/^[a-f0-9]{64}$/.test(f.readFileSync(p,"utf8")))process.exit(1);'
+          exec codex app-server --listen ws://127.0.0.1:1456 --ws-auth capability-token --ws-token-file /run/codex-appserver/token
+        env:
+        - name: CODEX_HOME
+          value: /home/node/.codex
+        - name: RUST_LOG
+          value: warn
+        workingDir: /workspace
+        securityContext:
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop: [ALL]
+          seccompProfile:
+            type: RuntimeDefault
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            cpu: '1'
+            memory: 1Gi
+        startupProbe:
+          exec:
+            command: [node, -e, 'const r=require("http").get("http://127.0.0.1:1456/readyz",s=>{s.resume();process.exit(s.statusCode===200?0:1)});r.setTimeout(3000,()=>r.destroy());r.on("error",()=>process.exit(1))']
+          timeoutSeconds: 4
+          periodSeconds: 5
+          failureThreshold: 36
+        readinessProbe:
+          exec:
+            command: [node, -e, 'const r=require("http").get("http://127.0.0.1:1456/readyz",s=>{s.resume();process.exit(s.statusCode===200?0:1)});r.setTimeout(3000,()=>r.destroy());r.on("error",()=>process.exit(1))']
+          timeoutSeconds: 4
+          periodSeconds: 10
+          failureThreshold: 3
+        livenessProbe:
+          exec:
+            command: [node, -e, 'const r=require("http").get("http://127.0.0.1:1456/readyz",s=>{s.resume();process.exit(s.statusCode===200?0:1)});r.setTimeout(3000,()=>r.destroy());r.on("error",()=>process.exit(1))']
+          timeoutSeconds: 4
+          periodSeconds: 20
+          failureThreshold: 3
+        volumeMounts:
+        - name: codex-home
+          mountPath: /home/node/.codex
+        - name: codex-capability
+          mountPath: /run/codex-appserver
+        - name: codex-workspace
+          mountPath: /workspace
+        - name: codex-tmp
+          mountPath: /tmp
       volumes:
+      - name: wreq-loader-hotfix
+        configMap:
+          name: omniroute-wreq-loader-43e57fc7bdb1
+          defaultMode: 0444
+          items:
+          - key: 1056.js
+            path: 1056.js
+          - key: 34899.js
+            path: 34899.js
       - name: data
         persistentVolumeClaim:
           claimName: omniroute-data
       - name: tmp
         emptyDir: {}
+      - name: codex-home
+        persistentVolumeClaim:
+          claimName: omniroute-codex-home
+      - name: codex-capability
+        emptyDir:
+          medium: Memory
+          sizeLimit: 1Mi
+      - name: codex-workspace
+        emptyDir:
+          sizeLimit: 256Mi
+      - name: codex-tmp
+        emptyDir:
+          sizeLimit: 128Mi
       nodeSelector:
         kubernetes.io/hostname: choms-node-02
 ---
@@ -328,3 +424,18 @@ spec:
         emptyDir: {}
       nodeSelector:
         kubernetes.io/hostname: choms-node-02
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: omniroute-codex-home
+  namespace: omniroute
+  labels:
+    app.kubernetes.io/part-of: choms-platforms
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: choms-omniroute-local
+  resources:
+    requests:
+      storage: 1Gi

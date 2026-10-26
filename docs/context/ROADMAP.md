@@ -1,3 +1,14 @@
+## OmniRoute Codex app-server — operativo, 26-10-2026
+
+OmniRoute 2/2 Ready, cero reinicios en node-02. Imagen principal intacta;
+sidecar runner-cli fijado por digest, Never y WebSocket solo 127.0.0.1:1456.
+CODEX_HOME persistente aislado autenticado con ChatGPT Plus; proveedor
+codex-app-server registrado sin API key de proveedor. Overlay mínimo wreq-js
+aplicado: hashes montados correctos, initialize/account/read y valid=true PASS.
+Única prueba autorizada tras hotfix: cxa/gpt-6-sol, HTTP 200, respuesta PONG.
+Codex/Hermes no se redirigen. Backup de CODEX_HOME y escaneo CVE pendientes.
+[Procedencia, hashes y rollback](../../stacks/kubernetes/omniroute/hotfix/README.md).
+
 ## CHOMS Skills — ampliación 1.1.0, 26-10-2026
 
 - `completed`: context-budget y prompt-caching-strategy propias de CHOMS,

@@ -1,7 +1,8 @@
 # OmniRoute privado — operación y rollback
 
 Estado 25-10-2026: **ACTIVO; CHECKS RUNTIME NOMBRADOS PASS**.
-OmniRoute y Redis están 1/1 Ready en choms-node-02, sin reinicios. Los digests
+Estado inicial: OmniRoute y Redis estaban 1/1 Ready en choms-node-02.
+Actualización 26-10: OmniRoute 2/2 Ready con sidecar Codex; véase sección final. Los digests
 corresponden a los declarados; PVC Bound y PV Retain con afinidad al mismo nodo.
 El certificado está Ready con el SAN nuevo y conserva los SAN anteriores.
 Authelia validó la regla exacta con default deny y completó un rollout controlado.
@@ -23,7 +24,8 @@ no modificó cert-manager, CoreDNS, Traefik, Gateway ni ClusterIssuer. La aserci
 anónima del primer intento sigue sin poder identificarse retrospectivamente;
 no se reescribe como diagnóstico demostrado. Los fallos posteriores del acceso
 desde node-01 se resolvieron con el cambio /32 y su prueba positiva.
-No se configuraron proveedores ni se invocaron modelos. La validación local
+En el despliegue inicial no se configuraron proveedores ni modelos; el cierre
+Codex autorizado del 26-10 se documenta al final. La validación local
 final se ejecuta una sola vez al cierre y su resultado se entrega en el informe.
 
 ## Versión y contrato verificados
@@ -46,14 +48,14 @@ La imagen plain corresponde al runtime base, usuario node; no incorpora los CLI
 ni Chromium de los perfiles cli/web. Se usa base con dashboard y
 `OMNIROUTE_HEADLESS=false`: headless estricto responde 404 al dashboard y por eso
 no satisface el requisito de administración desde navegador. No se configuran
-proveedores OAuth ni sesiones web, ni se montan credenciales de clientes ni se
-habilitan servicios embebidos. El bloqueo de background services conserva el
+sesiones web ni se montan credenciales de clientes. La excepción autorizada es
+el sidecar Codex aislado con OAuth ChatGPT Plus, documentado al final. El bloqueo de background services conserva el
 API bridge, la inicialización de seguridad y el proxy; se desactivan syncs
 opcionales y el WebSocket de monitorización. No se publica puerto WebSocket.
 
 ## Recursos, secretos y acceso
 
-Namespace omniroute, dos Deployments Recreate monorréplica, dos PVC y dos Services
+Namespace omniroute, dos Deployments Recreate monorréplica, tres PVC y dos Services
 ClusterIP. OmniRoute usa 20128 para dashboard y 20129 para API bridge; Redis solo
 6379 interno. Sin NodePort/LoadBalancer nuevos ni hostPath o namespaces host.
 No se modifica la release Helm de Traefik ni se reinician bases existentes.
@@ -119,7 +121,7 @@ recursos/claims/rutas del namespace nuevo, sin Secrets; no se ejecutó aquí. Fu
 por Git/inventario; **los datos de estos PVC y las claves runtime aún no tienen
 copia independiente ni restore acreditado**. Persistencia/AOF o snapshots internos
 SQLite no sustituyen backup. No se modifican timers ni se ejecutan backups/Restic.
-Antes de cargar proveedores: autorizar copia consistente de SQLite y sus claves
+Pendiente tras el alta autorizada de Codex: autorizar copia consistente de SQLite y sus claves
 de cifrado/bootstrap por canales privados; revisar Redis y demostrar restore.
 
 ## Añadir proveedores posteriormente
@@ -128,7 +130,8 @@ de cifrado/bootstrap por canales privados; revisar Redis y demostrar restore.
    inicial de OmniRoute solo por un canal privado autorizado, sin terminal/logs.
 2. En Providers, añadir exclusivamente un proveedor API-key y su clave mediante
    el formulario protegido. No usar OAuth, importaciones de CLI, cookies/web o
-   credenciales locales de agentes. No se configuran durante este bloque.
+   credenciales locales de agentes. Excepción ya autorizada: codex-app-server
+   mediante ChatGPT Plus aislado, según la sección final; no habilitar otros flujos.
 3. No activar pruebas de generación, playground ni tests de modelos sin una nueva
    autorización de gasto. Descubrimiento/health no equivale a inferencia.
 4. Revisar copia consistente y custodia de claves antes de almacenar credenciales.
@@ -219,3 +222,45 @@ exigir que solo cambien los args del controller; usar el flujo versionado
 `plan cert-manager` / `apply cert-manager`. No modificar CoreDNS ni otros valores.
 Backup independiente de PVC y claves runtime, restore controlado y monitor Kuma
 siguen pendientes. La persistencia local y AOF no sustituyen un backup.
+
+## Codex app-server — operativo con ChatGPT Plus
+
+Fuente oficial v3.8.52, commit ad6f33f66bda34eba98645d3bfdabbde294bc843.
+Target runner-cli construido sin modificar su Dockerfile ni la imagen principal.
+Codex 0.159.2, app-server/help y capability flags: PASS; UID 1000 y linux/amd64.
+Smoke sin red: /readyz 200 y bind exclusivo 127.0.0.1:1456. No hubo inferencias.
+Digest, SHA del archivo y SBOM se registran en codex-image.lock.json; SBOM local
+CycloneDX de 837 componentes. No se acredita escaneo CVE: falta DB offline.
+El target oficial empaqueta otros CLI y utilidades; no se arrancan ni se montan
+socket Docker, repositorios, credenciales locales o kubeconfig en el sidecar.
+
+El diff añade solo sidecar/configuración y un PVC CODEX_HOME de 1 GiB en la SC
+local Retain/WaitForFirstConsumer existente, fijado con el Pod a node-02.
+Capability token aleatorio en emptyDir Memory; OmniRoute solo lee ese volumen.
+CODEX_HOME pertenece exclusivamente al sidecar, nunca copia auth.json del host.
+WebSocket de loopback sin Service/puerto publicado; sandbox read-only y sin
+aprobación automática. /v1 conserva exclusivamente ClusterIP:20129.
+
+Importación confirmada por el operador y rollout completado: OmniRoute 2/2 Ready
+con cero reinicios; imagen principal preservada, CODEX_HOME aislado autenticado
+con ChatGPT Plus. Proveedor codex-app-server registrado, health valid=true.
+El intento anterior devolvió HTTP 502 por contexts vacíos MODULE_NOT_FOUND.
+El overlay mínimo fue aplicado tras dry-run/diff: dos mounts subPath read-only
+y ConfigMap inmutable, sin modificar la imagen principal. Ambos hashes live
+coinciden; no aparece wreq-js import failed. WS, initialize, account/read y
+proveedor valid=true PASS. Una sola nueva solicitud cxa/gpt-6-sol respondió
+HTTP 200 y contenido exacto PONG. No se realizaron más inferencias.
+
+[Procedencia, SHA-256, validación y rollback del overlay](../../stacks/kubernetes/omniroute/hotfix/README.md).
+Codex/Hermes siguen sin apuntar a OmniRoute; no se usa OpenAI API ni API key de
+proveedor. La clave propia de OmniRoute continúa siendo obligatoria en /v1.
+Para reautenticar, ejecutar el flujo oficial codex login --device-auth dentro
+del contenedor codex-app-server, con autorización explícita del operador;
+completar la URL/código en navegador. No copiar auth.json de node-dev-01 ni
+mostrar tokens; verificar login status y el proveedor antes de una prueba.
+
+Rollback futuro: retirar el sidecar y sus referencias de configuración/mounts,
+restaurando el Deployment anterior; preservar todos los PVC y Secrets.
+La cobertura de backup del nuevo CODEX_HOME queda pendiente, no se ejecutan
+backups ni se exportan credenciales en este bloque. Para retirar solo el hotfix,
+seguir su rollback específico y conservar el sidecar y su CODEX_HOME.

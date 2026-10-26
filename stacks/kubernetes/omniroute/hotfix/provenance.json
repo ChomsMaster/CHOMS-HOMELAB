@@ -1,0 +1,47 @@
+{
+  "source_repository": "https://github.com/diegosouzapw/OmniRoute",
+  "source_tag": "v3.8.52",
+  "source_commit": "ad6f33f66bda34eba98645d3bfdabbde294bc843",
+  "base_image_digest": "sha256:b08a12e876baa8a5ccadd1ebbe346fe7267dba3b1c9f4fd6bb02070fae41ab6c",
+  "artifact_origin": "Two compiled JavaScript chunks read from the pinned official runtime image; not a reproducible rebuild from TypeScript. CHOMS local loader-only adaptation.",
+  "source_files": {
+    "open-sse/executors/codex.ts": "74b3bb3008bd0ba7b903508397f5f20ab2584bb90e436e356a022147a71ad2a0",
+    "open-sse/executors/codex/wreqLoader.ts": "86df52a8ce571321be7233d5f310878d3138bba23a3bd7fce5eae22cff9256d1"
+  },
+  "configmap": "omniroute-wreq-loader-43e57fc7bdb1",
+  "artifacts": {
+    "1056.js": {
+      "module_id": 379401,
+      "original_sha256": "7fbdf1499aaaea015405ef25b0df964e3cda8ad4d54db55b7a7118068ecc839f",
+      "patched_sha256": "39707efac6d4d50bab72aa77bd6ebb1504176c2057f23371455425d6f0ca2bc8",
+      "original_bytes": 102384,
+      "patched_bytes": 102312,
+      "before": "379401:a=>{function b(a){var b=Error(\"Cannot find module '\"+a+\"'\");throw b.code=\"MODULE_NOT_FOUND\",b}b.keys=()=>[],b.resolve=b,b.id=379401,a.exports=b}",
+      "after": "379401:a=>{a.exports=require(\"node:module\").createRequire(\"/app/package.json\")}"
+    },
+    "34899.js": {
+      "module_id": 506208,
+      "original_sha256": "be791dcd7d3ee6598955cf39a3ec5a0016a12f8417d30ec579fef88b4fed5f0d",
+      "patched_sha256": "90427d79d7d90e621d431869ef352bc3b2cc170f92bab3bf4a529aec39bd01e6",
+      "original_bytes": 69704,
+      "patched_bytes": 69632,
+      "before": "506208:a=>{function b(a){var b=Error(\"Cannot find module '\"+a+\"'\");throw b.code=\"MODULE_NOT_FOUND\",b}b.keys=()=>[],b.resolve=b,b.id=506208,a.exports=b}",
+      "after": "506208:a=>{a.exports=require(\"node:module\").createRequire(\"/app/package.json\")}"
+    }
+  },
+  "applied": true,
+  "runtime_checks": {
+    "mounted_hashes": "PASS both chunks",
+    "pod_ready": "2/2",
+    "node": "choms-node-02",
+    "restarts": 0,
+    "wreq_import_failure_absent": true,
+    "websocket": "PASS",
+    "initialize": "PASS",
+    "account_read": "authenticated ChatGPT Plus",
+    "provider_valid": true,
+    "pong_model": "cxa/gpt-6-sol",
+    "pong_http": 200,
+    "pong_result": "PONG"
+  }
+}

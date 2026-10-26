@@ -1544,3 +1544,38 @@ Las seis skills previas y verification-loop opcional se conservan sin cambios.
 Activación mediante dos enlaces nuevos por runtime, sin sobrescrituras;
 validación de descubrimiento/parseo 8/8 sin inferencias. Configuraciones intactas;
 sin hooks, MCP, agentes, aprendizaje, servicios ni cambios Kubernetes.
+
+### 2026-10-26 — OmniRoute runner-cli separado; gate de importación manual
+
+Build oficial v3.8.52, commit ad6f33f66bda34eba98645d3bfdabbde294bc843,
+target runner-cli sin alterar Dockerfile. Imagen principal b08a12e… preservada.
+Codex 0.159.2/help/capability flags, UID 1000, amd64 y readyz loopback sin red:
+PASS. Artefacto persistente verificado y SBOM de 837 componentes; no se afirma
+escaneo CVE sin DB offline. Sidecar, configuración y PVC preparados sin aplicar.
+Importador reutiliza el patrón CHOMS, verifica hash/espacio/identidad, importación
+idempotente y alias digest CRI; requiere una sola elevación visible del operador.
+No se ejecuta, no hay OAuth/PONG ni cambios K3s. Commit/push sujetos al cierre
+operativo posterior. No se copian credenciales ni se modifican Codex/Hermes.
+
+### 2026-10-26 — Corrección de estado y preparación overlay wreq-js
+
+La importación fue confirmada por el operador; sidecar 2/2 Ready en node-02,
+CODEX_HOME aislado autenticado con ChatGPT Plus y proveedor registrado.
+La única prueba PONG devolvió 502. Se demostró que los loaders compilados son
+contexts vacíos MODULE_NOT_FOUND, aunque require nativo y WS directo funcionan.
+Overlay CHOMS de dos módulos en dos chunks, derivado de imagen oficial fijada
+y contrastado con fuente v3.8.52/ad6f33f; sin reconstruir imagen. Hashes,
+licencia, 16 pruebas offline y rollback documentados. NO aplicado; no nueva
+inferencia, cambio OAuth/sidecar/clientes, commit ni push en este bloque.
+
+### 2026-10-26 — OmniRoute codex-app-server operativo con overlay mínimo
+
+Tras autorización explícita: hashes originales, dry-run servidor y diff final
+limitado a ConfigMap inmutable, dos mounts subPath read-only y su volumen.
+Rollout 2/2 Ready en node-02, cero reinicios; imágenes principal y sidecar
+preservadas. Hashes montados coinciden; no aparece wreq-js import failed.
+WS/initialize/account/read autenticado Plus y proveedor valid=true: PASS.
+Una sola nueva solicitud cxa/gpt-6-sol: HTTP 200, contenido exacto PONG.
+No se redirigen Codex/Hermes ni se copian credenciales locales. Overlay ligado
+a la imagen fijada; rollback conserva sidecar, OAuth y claims. Backup de
+CODEX_HOME y escaneo CVE siguen pendientes, sin afirmar cobertura acreditada.
