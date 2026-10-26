@@ -1,0 +1,18 @@
+{
+  "fixture_only": true,
+  "source_reference": "fixture:continuity-regression",
+  "project_id": "fixture-project",
+  "user_signal": "Cuando te diga 'seguimos skill' continuaremos con esto",
+  "minimum": [
+    "diseño",
+    "navegador",
+    "MCP",
+    "Figma",
+    "Playwright",
+    "Image to Code",
+    "vídeo/social"
+  ],
+  "summary": "Mínimo de continuidad: diseño, navegador, MCP, Figma, Playwright, Image to Code y vídeo/social.",
+  "complement_constraint": "ECC puede complementar; no sustituye la lista mínima aprobada.",
+  "trigger": "seguimos skill"
+}

@@ -1,3 +1,14 @@
+## CHOMS Memory Governance v1 — 27-10-2026
+
+Perfil CHOMS Skills 1.2.0: nueve skills por enlaces individuales Codex/Hermes;
+las ocho anteriores intactas. Gobernanza original con consentimiento, corrección,
+purga y checkpoints; pruebas exclusivamente sintéticas. MCP enumera 17 tools;
+sus escrituras ADR/index/trazas no demuestran CRUD/CAS/purga de memoria personal.
+Persistencia central deshabilitada, cola solo temporal de fixtures; nada escrito
+en Cognee. Siguiente gate: adaptador estrecho sobre backend existente con
+consentimiento, concurrencia, aislamiento y borrado demostrables. Sin Kubernetes,
+OAuth, inferencias, servicios, hooks ni memoria ECC.
+
 ## OmniRoute Codex app-server — operativo, 26-10-2026
 
 OmniRoute 2/2 Ready, cero reinicios en node-02. Imagen principal intacta;

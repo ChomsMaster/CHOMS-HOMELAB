@@ -101,10 +101,22 @@
       "kind": "CHOMS original skill",
       "origin": "CHOMS operator requirements; original authorship, not copied from ECC",
       "activation": "user-authorized-native-discovery"
+    },
+    {
+      "name": "choms-memory-governance",
+      "path": "skills/choms-memory-governance/SKILL.md",
+      "sha256": "426b632330d0a67268829dea1c5ac6d6b3372d5673fb149c279e1908c24bd88f",
+      "kind": "CHOMS original skill",
+      "origin": "CHOMS Memory Governance v1 operator requirements; no ECC memory code",
+      "activation": "user-authorized-native-discovery"
     }
   ],
-  "runtime_dependencies": [],
-  "bundled_executable_scripts": [],
+  "runtime_dependencies": [
+    "Python 3 standard library on POSIX (synthetic governance helper only)"
+  ],
+  "bundled_executable_scripts": [
+    "skills/choms-memory-governance/scripts/governance.py"
+  ],
   "memory": [
     "existing Cognee",
     "existing Codebase Memory"
@@ -124,7 +136,7 @@
     "codex": "Native user skills discovery and skills/list; individual links only.",
     "hermes": "Native catalog and explicit slash loading; existing toolset unchanged. No skills management bundle."
   },
-  "version": "1.1.0",
+  "version": "1.2.0",
   "activation": {
     "selected": [
       "choms-frontend-direction",
@@ -134,12 +146,21 @@
       "choms-security-review",
       "choms-kubernetes-patterns",
       "choms-context-budget",
-      "choms-prompt-caching-strategy"
+      "choms-prompt-caching-strategy",
+      "choms-memory-governance"
     ],
     "optional": [
       "choms-verification-loop"
     ],
     "mechanism": "Individual directory symlinks into runtime-resolved native user roots; no installer or runtime config expansion."
   },
-  "provenance_scope": "ECC lock applies only to ECC-derived entries; the two context/prompt skills are original CHOMS works."
+  "provenance_scope": "ECC lock applies only to ECC-derived entries; context, prompt caching and governance are original CHOMS works.",
+  "governance": {
+    "schema_version": "choms-memory-v1",
+    "central_persistence": false,
+    "queue": "synthetic temporary fixtures only",
+    "backend": "disabled until CRUD/CAS/purge verified",
+    "hooks": false,
+    "automatic_flush": false
+  }
 }

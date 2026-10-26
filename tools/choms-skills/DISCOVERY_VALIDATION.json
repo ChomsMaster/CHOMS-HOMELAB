@@ -1,5 +1,5 @@
 {
-  "profile_version": "1.1.0",
+  "profile_version": "1.2.0",
   "source_release": "ECC v2.2.3",
   "source_commit": "c05b2d6614f62f6db0047669aa4eefb223d478f9",
   "selected": [
@@ -8,6 +8,7 @@
     "choms-frontend-direction",
     "choms-kubernetes-patterns",
     "choms-mcp-server-patterns",
+    "choms-memory-governance",
     "choms-prompt-caching-strategy",
     "choms-security-review",
     "choms-seo"
@@ -16,7 +17,7 @@
     "version": "0.160.0",
     "mechanism": "native user root, individual directory symlinks",
     "check": "app-server skills/list, forceReload=true",
-    "enabled": 8,
+    "enabled": 9,
     "parse_errors": 0,
     "inference_turns": 0
   },
@@ -28,14 +29,14 @@
       "skill_view preprocess=false content comparison",
       "native build_skill_invocation_message"
     ],
-    "discovered": 8,
-    "parsed": 8,
-    "slash_payloads": 8,
+    "discovered": 9,
+    "parsed": 9,
+    "slash_payloads": 9,
     "toolsets_changed": false,
     "skill_manage_enabled": false,
-    "inference_turns": 0
+    "inference_turns": 0,
+    "source_commit": "bf0203a794a07aac3ff764972ab9087baa4e4f4e"
   },
-  "configuration_files_changed": false,
   "collisions": 0,
   "optional_discovered": false,
   "new_mcp_servers": 0,
@@ -43,10 +44,22 @@
   "new_memory_systems": 0,
   "kubernetes_changes": 0,
   "status": "PASS",
-  "scope": "Runtime discovery and native parsing/expansion only; does not claim model quality or task execution.",
+  "scope": "Native parsing/discovery 9/9, synthetic governance tests only; no inference, ingestion, central persistence or configuration changes.",
   "previous_validation": {
-    "profile_version": "1.0.0",
-    "codex_enabled": 6,
-    "hermes_parsed": 6
-  }
+    "profile_version": "1.1.0",
+    "codex_enabled": 8,
+    "hermes_parsed": 8
+  },
+  "governance": {
+    "schema": "choms-memory-v1",
+    "central_persistence": false,
+    "mcp_observed_tools": 17,
+    "mcp_record_write_contract_verified": false,
+    "synthetic_queue_only": true,
+    "unit_tests": 30,
+    "profile_validator_tests": 4,
+    "mcp_evidence": "scripts/tests/fixtures/memory-governance/mcp-capabilities.json"
+  },
+  "configuration_files_changed": false,
+  "source_scope": "ECC source applies only to derived skills; governance/context/prompt caching are original CHOMS."
 }

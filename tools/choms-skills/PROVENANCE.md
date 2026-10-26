@@ -31,3 +31,12 @@ Su origen se distingue por entrada en PROFILE.json y sus SHA-256 canónicos se
 incluyen también en SHA256SUMS. Se distribuyen bajo MIT junto al perfil.
 Las seis skills activas previas y verification-loop opcional no cambian.
 La nueva versión no activa memoria, hooks, agentes, MCP ni aprendizaje.
+
+## Obra original CHOMS — perfil 1.2.0
+
+choms-memory-governance nace de los requisitos del operador del 27-10-2026.
+Skill, esquema/política y helper sintético son código original MIT; no proceden
+de memoria, hooks, agentes o aprendizaje ECC. Las ocho skills previas no cambian.
+Los esquemas MCP observados se conservan como evidencia de tools/list, sin
+invocar mutaciones ni afirmar escritura central. SHA256SUMS cubre todos los
+archivos canónicos, incluidos referencias/helper y los recibos de descubrimiento.

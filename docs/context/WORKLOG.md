@@ -1579,3 +1579,15 @@ Una sola nueva solicitud cxa/gpt-6-sol: HTTP 200, contenido exacto PONG.
 No se redirigen Codex/Hermes ni se copian credenciales locales. Overlay ligado
 a la imagen fijada; rollback conserva sidecar, OAuth y claims. Backup de
 CODEX_HOME y escaneo CVE siguen pendientes, sin afirmar cobertura acreditada.
+
+### 2026-10-27 — CHOMS Memory Governance v1
+
+Skill original, perfil 1.2.0; referencias de esquema/política y helper sintético
+stdlib, sin DB/servicio nuevo. Consentimiento explícito frente a candidato
+inferido, dedup, supersede, purga real en cola temporal, expiración y contexto
+acotado. Regresión seguimos skill conserva el mínimo diseño/navegador/MCP/Figma/
+Playwright/Image to Code/vídeo-social; ECC solo complementa. Tools/list real de
+MCP 0.12.1 (17 tools), sin escrituras: ADR/index/trazas no cubren el contrato
+central. Backend deshabilitado con error explícito; no se guardan datos reales.
+Se añaden solo dos enlaces reversibles; configuraciones/allowlist Hermes y las
+ocho skills previas permanecen intactas. Sin Kubernetes, OAuth ni inferencias.
