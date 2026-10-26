@@ -1,3 +1,11 @@
+## CHOMS Skills — ampliación 1.1.0, 26-10-2026
+
+- `completed`: context-budget y prompt-caching-strategy propias de CHOMS,
+  añadidas al perfil canónico y activadas por enlaces reversibles en Codex/Hermes.
+- El perfil pasa a ocho skills; verification-loop permanece opcional sin activar.
+- `deferred`: navegador Hermes; no se modifica ese alcance.
+- No se activan componentes ECC adicionales ni memoria/aprendizaje automático.
+
 ## CHOMS Skills — estado 26-10-2026
 
 - `completed`: perfil mínimo versionado en [tools/choms-skills](../../tools/choms-skills/README.md),

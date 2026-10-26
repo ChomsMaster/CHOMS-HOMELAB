@@ -1,6 +1,7 @@
 # CHOMS Skills
 
-Perfil 1.0.0, adaptado de ECC v2.2.3 y fijado por commit y SHA-256.
+Perfil 1.1.0: seis adaptaciones de ECC v2.2.3 y dos skills originales CHOMS,
+con procedencia y SHA-256 por entrada.
 Solo instrucciones Markdown: sin ejecutables, hooks, servicios ni MCP nuevos.
 
 ## Selección activa
@@ -11,13 +12,15 @@ Solo instrucciones Markdown: sin ejecutables, hooks, servicios ni MCP nuevos.
 - choms-mcp-server-patterns
 - choms-security-review
 - choms-kubernetes-patterns
+- choms-context-budget
+- choms-prompt-caching-strategy
 
 `optional/choms-verification-loop` queda fuera de las raíces enlazadas.
 
 ## Activación nativa
 
 En node-dev-01 se resolvieron las raíces nativas: Codex `~/.agents/skills`
-y Hermes `~/.hermes/skills`. Se enlaza cada uno de los seis directorios de
+y Hermes `~/.hermes/skills`. Se enlaza cada uno de los ocho directorios de
 skills/ por separado, tras comprobar colisiones por ruta y nombre. No enlazar
 este directorio completo: incluiría optional/ en un escaneo recursivo.
 
@@ -38,7 +41,14 @@ no asumir rutas ni sobrescribir archivos existentes.
 Desde este directorio: `sha256sum -c SHA256SUMS`.
 PROFILE.json y [PROVENANCE.md](PROVENANCE.md) conservan fuente, licencia y hashes.
 No promover optional/ ni copiar configuración ECC.
-Para desactivar, retirar únicamente los seis enlaces después de verificar
+Para desactivar, retirar únicamente los ocho enlaces después de verificar
 que cada uno sigue apuntando a esta copia canónica. No borrar sus destinos,
 la memoria, configuraciones, skills ajenas o credenciales. Recargar el catálogo
 o reiniciar la sesión si el runtime mantiene una caché previa.
+
+## Contexto y prompts
+
+context-budget acota lecturas y checkpoints sin sacrificar evidencia.
+prompt-caching-strategy separa contenido estable/variable sin asumir una caché
+real, alterar proveedores o prometer ahorro. Ambas son instrucciones portables
+para Codex y Hermes, sin scripts ni dependencias adicionales.

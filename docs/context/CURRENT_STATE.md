@@ -1,3 +1,13 @@
+## CHOMS Skills — ampliación propia 1.1.0, 26-10-2026
+
+Se añaden choms-context-budget y choms-prompt-caching-strategy al
+[perfil canónico](../../tools/choms-skills/README.md). Son obras originales CHOMS:
+selección de contexto/checkpoints y organización estable/variable de prompts,
+sin sacrificar evidencia ni asumir caché, parámetros de proveedor o ahorro.
+Ocho skills activas por enlaces individuales; verification-loop sigue opcional.
+Sin cambios en las seis skills previas, configuración de modelos, memoria,
+hooks, MCP, agentes, aprendizaje o servicios. No se consulta Kubernetes.
+
 ## CHOMS Skills — promoción local, 26-10-2026
 
 Perfil canónico 1.0.0 en [tools/choms-skills](../../tools/choms-skills/README.md),

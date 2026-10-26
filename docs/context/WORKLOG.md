@@ -1532,3 +1532,15 @@ defecto y exceptúa solo el valor público exacto capturado por generic-api-key
 en los tres archivos de contexto; no se reescribe el historial ni se excluyen
 archivos completos u otros valores. Tres fixtures verifican la excepción,
 la detección de claves sintéticas y el alcance por archivo.
+
+### 2026-10-26 — CHOMS Skills 1.1.0: contexto y prompt caching propios
+
+Se incorporan dos SKILL.md originales CHOMS, sin scripts ni referencias extra.
+Context-budget limita lecturas a evidencia relevante y conserva checkpoints;
+prompt-caching-strategy separa estable/variable sin asumir cache hit ni alterar
+modelos o proveedores. No sustituyen validaciones, memoria o contratos de seguridad.
+PROFILE/procedencia/hashes distinguen autoría propia de las adaptaciones ECC.
+Las seis skills previas y verification-loop opcional se conservan sin cambios.
+Activación mediante dos enlaces nuevos por runtime, sin sobrescrituras;
+validación de descubrimiento/parseo 8/8 sin inferencias. Configuraciones intactas;
+sin hooks, MCP, agentes, aprendizaje, servicios ni cambios Kubernetes.

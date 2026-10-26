@@ -85,6 +85,22 @@
       "kind": "CHOMS adaptation of ECC, not an unmodified upstream skill",
       "prepared_sha256": "e9d2dc14d2c2ff94967e21345361ed1e5168269983da825bebfcf7201454cdd3",
       "activation": "user-authorized-native-discovery"
+    },
+    {
+      "name": "choms-context-budget",
+      "path": "skills/choms-context-budget/SKILL.md",
+      "sha256": "483924be49262c4ef0dac1a86cf49c1571a630f90c27f7729ca1e95129c1eec0",
+      "kind": "CHOMS original skill",
+      "origin": "CHOMS operator requirements; original authorship, not copied from ECC",
+      "activation": "user-authorized-native-discovery"
+    },
+    {
+      "name": "choms-prompt-caching-strategy",
+      "path": "skills/choms-prompt-caching-strategy/SKILL.md",
+      "sha256": "f43cde4b732151833eeaa061ab3e1c0b6d3346e4b2c755c2a8f69e559a14019b",
+      "kind": "CHOMS original skill",
+      "origin": "CHOMS operator requirements; original authorship, not copied from ECC",
+      "activation": "user-authorized-native-discovery"
     }
   ],
   "runtime_dependencies": [],
@@ -108,7 +124,7 @@
     "codex": "Native user skills discovery and skills/list; individual links only.",
     "hermes": "Native catalog and explicit slash loading; existing toolset unchanged. No skills management bundle."
   },
-  "version": "1.0.0",
+  "version": "1.1.0",
   "activation": {
     "selected": [
       "choms-frontend-direction",
@@ -116,11 +132,14 @@
       "choms-seo",
       "choms-mcp-server-patterns",
       "choms-security-review",
-      "choms-kubernetes-patterns"
+      "choms-kubernetes-patterns",
+      "choms-context-budget",
+      "choms-prompt-caching-strategy"
     ],
     "optional": [
       "choms-verification-loop"
     ],
     "mechanism": "Individual directory symlinks into runtime-resolved native user roots; no installer or runtime config expansion."
-  }
+  },
+  "provenance_scope": "ECC lock applies only to ECC-derived entries; the two context/prompt skills are original CHOMS works."
 }
