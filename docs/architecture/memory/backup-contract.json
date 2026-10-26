@@ -1,0 +1,133 @@
+{
+  "schema": "choms-cognee-backup-sources-v1",
+  "source_commit": "11d9150447128a34a29b4b4141a75ed773d86a2a",
+  "status": "BACKUP_AND_ISOLATED_RESTORE_ACCEPTED",
+  "checked_at": "2026-10-26",
+  "blockers": [],
+  "sources": {
+    "postgresql": {
+      "namespace": "choms-memory",
+      "workload": "postgresql",
+      "pvc": "postgresql-data",
+      "databases": [
+        "cognee",
+        "<dataset-id>"
+      ],
+      "tools": [
+        "pg_dump --format=custom --no-owner --no-privileges",
+        "pg_restore"
+      ],
+      "cluster_role_password_dump": false,
+      "note": "Two separate custom dumps; checksum before use; isolated restore from verified files in root-only tmpfs, never a Restic-to-kubectl stdin pipeline."
+    },
+    "graph": {
+      "pvc": "cognee-data",
+      "provider": "kuzu",
+      "directory_pattern": "SYSTEM_ROOT_DIRECTORY/databases/<owner_id>",
+      "database": "<dataset-id>.pkl",
+      "physical_hot_copy": "FORBIDDEN",
+      "graph_http_dto_not_complete_backup": true,
+      "engine": "Ladybug 0.19.0; kuzu provider alias",
+      "cold_unit_allowlist": [
+        "main",
+        "main.wal (optional)",
+        "main.shadow (optional)"
+      ],
+      "consistency": "All Cognee writers stopped, zero writable mounts, stable inode/size/mtime; include WAL and shadow without checkpoint or exclusion; native replay only in isolated writable restore."
+    },
+    "documents": {
+      "pvc": "cognee-data",
+      "root": "/cognee-storage/data",
+      "contents": [
+        "original admitted public source files",
+        "source path/commit/checksum metadata"
+      ],
+      "exclude": [
+        "unrelated datasets",
+        "transcripts",
+        "private repositories"
+      ]
+    },
+    "models": {
+      "pvc": "cognee-data",
+      "directory": "/cognee-storage/models-76fb6636f317812a",
+      "lock": "docs/architecture/memory/models-lock.json",
+      "additional_verified_hashes": "docs/architecture/memory/offline-gate.json",
+      "restore_without_download": true
+    },
+    "declarative": {
+      "source_git_commit": "11d9150447128a34a29b4b4141a75ed773d86a2a",
+      "paths": [
+        "stacks/kubernetes/choms-memory",
+        "docs/architecture/memory",
+        "scripts/memory",
+        "docs/operations/MEMORY_PLATFORM.md",
+        "docs/operations/COGNEE_LOCAL_TOKENIZER_PATCH.md"
+      ],
+      "secrets": "reference names only; separate private custody; no Secret payload export"
+    },
+    "oci": {
+      "operator_artifact_directory_relative_to_home": ".local/share/choms-memory/images/cognee-1.6.5-local-tokenizer-p204a2a7e1d17",
+      "artifact": "image.tar",
+      "bytes": 3714351104,
+      "archive_sha256": "f9cd80cf1e2737d29feadc841cb640e3bf293fb2b7e5904da53a1b3f57199d37",
+      "index_digest": "sha256:b9c82ac89e7eaed83fc01e9a620e51dab7a97d994925b675e3785998395cef6c",
+      "source": "docs/architecture/memory/release-lock.json",
+      "note": "Existing locked metadata, not rebuilt/rehashed/imported in this block."
+    }
+  },
+  "restic_integration": {
+    "origin": "node-01",
+    "existing_common": "stacks/backup/restic/scripts/choms-restic-common.sh",
+    "password_reference": "/etc/choms-backup/restic-password",
+    "private_staging": "Mutable plaintext only in root-only tmpfs. Exception: verified immutable OCI regular file in temporary persistent root-only staging; preserved pending explicit cleanup authorization.",
+    "proposed_tag": "type-cognee",
+    "scope_limit_bytes": 26843545600,
+    "publication": "encrypted parts verified first; atomically publish completed manifest/snapshot reference last; never accept an incomplete run",
+    "node02_node03_configuration_changes": false,
+    "timers_changed": false,
+    "prune": false,
+    "unlock": false,
+    "executed": true
+  },
+  "restore_contract": {
+    "temporary_namespace_pattern": "choms-memory-restore-<run-id>",
+    "public_routes": false,
+    "live_pvc_mounts": false,
+    "live_credentials_reused": false,
+    "temporary_storage": "Isolated emptyDir Memory; never live PVCs",
+    "models_and_oci": "same locked artifacts; no models, tokenizer, embeddings or graph reindexing",
+    "expected_counts": {
+      "documents": 36,
+      "nodes": 2226,
+      "edges": 6040
+    },
+    "cleanup": "only UID-recorded resources from this run; no live namespace/claims/secrets deletion",
+    "performed": true,
+    "postgresql": "Verified files; exact COMMENT - EXTENSION vector TOC entry omitted if present in each database; EXTENSION retained; --role=cognee --exit-on-error; vector 0.8.2 remains owned by postgres; non-extension restored objects owned by cognee.",
+    "result": "36 documents / 2226 nodes / 6040 edges; live Ready; temporary resources removed"
+  },
+  "live_baseline": {
+    "processing": {
+      "total": 36,
+      "completed": 36,
+      "pending": 0
+    },
+    "graph": [
+      {
+        "nodes": 2226,
+        "edges": 6040
+      }
+    ]
+  },
+  "api_restarts_baseline": 0,
+  "postgresql_restarts_baseline": 1,
+  "backup_id": "20261025T222914Z-2e9b33c6",
+  "snapshot_id": "062cfac7883306df2e5d13a92b6e8bf367dfe91049d0b184e26d9f027fceba41",
+  "checksums_of_real_backup": "Per-part sizes/SHA-256 authenticated by the encrypted COMMITTED.json marker; values are not copied to Git. OCI archive hash remains pinned in sources.oci.",
+  "rpo_seconds": null,
+  "rto_seconds": 482.09,
+  "real_corruption_detection_test": "Not re-executed at closure; synthetic corruption/missing-member tests and authenticated real restore integrity gates are distinct evidence.",
+  "package_unit_tests": "Synthetic tests validate contracts; actual isolated restore acceptance comes from the operator receipt.",
+  "periodic_rpo": "NOT_ACCREDITED: single completed backup/restore does not establish frequency or retention execution"
+}

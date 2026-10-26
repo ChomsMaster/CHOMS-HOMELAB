@@ -695,3 +695,11 @@ pertenezcan al árbol de ese commit. Evidencia en memory-gate.json.
   copiar a ciegas un WAL/grafo activo. No se ejecutó prueba destructiva, timer,
   dump real ni restore de producción. La retención/localidad del PVC no
   sustituye un backup independiente.
+
+## Backup/restore — seguimiento del bloque separado
+
+Backup y restore aislado aceptados: 36/2226/6040, RTO 482,09 s.
+Evidencia, corrección PostgreSQL y límites en [Cognee backup/restore](COGNEE_BACKUP_RESTORE.md).
+Live Ready y temporales eliminados según confirmación del operador; snapshots
+y OCI preservados. RPO periódico y offsite pendientes. El verificador legacy
+por sí solo no acredita restore. Siguiente bloque autorizado a preparar: MCP.

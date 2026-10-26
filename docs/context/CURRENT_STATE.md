@@ -1,3 +1,16 @@
+## Cognee — backup/restore aceptado, 26-10-2026
+
+Backup set `20261025T222914Z-2e9b33c6`, marker
+`062cfac7883306df2e5d13a92b6e8bf367dfe91049d0b184e26d9f027fceba41`:
+restore aislado PASS con 36 documentos, 2.226 nodos y 6.040 aristas; RTO 482,09 s.
+Confirmación del operador: live Ready, temporales eliminados, snapshots y OCI
+preservados. Restore PostgreSQL por archivo tmpfs verificado; omite solo
+`COMMENT - EXTENSION vector` y mantiene vector 0.8.2 propiedad de postgres, tablas como
+cognee y --exit-on-error. No se repitió backup/restore ni sudo durante el cierre.
+RPO periódico/offsite/automatización pendientes. Evidencia y límites en
+[runbook](../operations/COGNEE_BACKUP_RESTORE.md). Siguiente bloque: MCP, todavía
+no desplegado y sujeto a autenticación/compatibilidad/handshake.
+
 ## Cognee — cierre funcional verificado, 25-10-2026
 
 API y PostgreSQL/pgvector Ready en node-02, solo ClusterIP. Tras la ampliación
@@ -8,7 +21,7 @@ Consulta trazable y persistencia tras un único restart API: PASS; 2.226 nodos
 y 6.040 aristas conservados. Consultar por API HTTP: un segundo cliente SDK
 puede competir por el bloqueo de archivos del grafo local.
 MCP no admitido (auth entrante/compatibilidad pendientes); no se desplegó.
-Backup/restore queda en bloque separado; no se acredita recuperación ni RPO/RTO.
+El bloque backup/restore se aceptó posteriormente; véase el cierre del 26-10-2026 arriba.
 El historial inferior conserva fases anteriores; este cierre actualiza su estado.
 Véase [operación](../operations/MEMORY_PLATFORM.md).
 
@@ -1190,3 +1203,22 @@ Como referencia para una futura decisión, 8 GiB +25 % =10 GiB; sigue siendo
 un mínimo estimado con pico censurado, no una garantía ni un cambio autorizado
 ya aplicado. Sin ampliación hardware, swap, otros servicios, commit o push.
 Evidencia pública sanitizada: docs/architecture/memory/memory-gate.json.
+
+### 2026-10-25 — Backup Cognee preparado; ejecución bloqueada antes de capturar
+
+Base 11d9150. Se identificaron por metadata las dos bases (relacional y
+pgvector por dataset), grafo Ladybug/kuzu, documentos, modelos publicados,
+fuente/locks/parche e imagen OCI preservada. Sin dumps ni copias live.
+Restic root-only en node-01 requiere sudo interactivo; no se solicitó ni leyó
+la contraseña. El dataset_lock de Cognee es local al proceso y no constituye
+una barrera de captura entre stores. No se copiará el grafo abierto ni se
+forzará mantenimiento/rollout sin una vía comprobada y autorización concreta.
+
+Contrato y runbook en docs/architecture/memory/backup-contract.json y
+docs/operations/COGNEE_BACKUP_RESTORE.md. Se prepara verificador read-only
+root-only/tmpfs y pruebas artificiales de corrupción/ausencia; no representan
+un colector ejecutado ni una restauración real. Snapshot, publicación atómica,
+checksums reales, RPO/RTO y restore siguen NO MEDIDOS/NO EJECUTADOS.
+API Ready, cero reinicios; PostgreSQL Ready (contador previo 1). Dataset
+observado 36/36, 2.226 nodos y 6.040 aristas. Sin cambios live, recursos
+Kubernetes temporales, Secrets, timers, prune/unlock, commit o push.

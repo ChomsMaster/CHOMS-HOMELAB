@@ -1475,3 +1475,38 @@ Sin proveedores, inferencia generativa, otros servicios, commit o push.
 Corpus: snapshot público admitido con hashes y base Git c1af248; los documentos
 de cierre posteriores no se reingirieron. No implica que cambios sin commit
 pertenezcan al árbol de ese commit. Evidencia en memory-gate.json.
+
+### 2026-10-25 — Backup Cognee preparado; ejecución bloqueada antes de capturar
+
+Base 11d9150. Se identificaron por metadata las dos bases (relacional y
+pgvector por dataset), grafo Ladybug/kuzu, documentos, modelos publicados,
+fuente/locks/parche e imagen OCI preservada. Sin dumps ni copias live.
+Restic root-only en node-01 requiere sudo interactivo; no se solicitó ni leyó
+la contraseña. El dataset_lock de Cognee es local al proceso y no constituye
+una barrera de captura entre stores. No se copiará el grafo abierto ni se
+forzará mantenimiento/rollout sin una vía comprobada y autorización concreta.
+
+Contrato y runbook en docs/architecture/memory/backup-contract.json y
+docs/operations/COGNEE_BACKUP_RESTORE.md. Se prepara verificador read-only
+root-only/tmpfs y pruebas artificiales de corrupción/ausencia; no representan
+un colector ejecutado ni una restauración real. Snapshot, publicación atómica,
+checksums reales, RPO/RTO y restore siguen NO MEDIDOS/NO EJECUTADOS.
+API Ready, cero reinicios; PostgreSQL Ready (contador previo 1). Dataset
+observado 36/36, 2.226 nodos y 6.040 aristas. Sin cambios live, recursos
+Kubernetes temporales, Secrets, timers, prune/unlock, commit o push.
+
+### 2026-10-26 — Cierre backup/restore Cognee; corrección de la preparación anterior
+
+La entrada 25-10 describía un bloqueo de preparación, ya resuelto mediante
+ventana consistente autorizada. Backup set 20261025T222914Z-2e9b33c6; marker
+062cfac7883306df2e5d13a92b6e8bf367dfe91049d0b184e26d9f027fceba41.
+Confirmación autoritativa del operador: restore aislado 36/2226/6040, RTO
+482,09 s, live Ready, recursos temporales eliminados. Snapshots y staging OCI
+preservados. Corrección final: pg_restore por archivo tmpfs verificado y
+exclusión únicamente de COMMENT - EXTENSION vector, conservando extensión
+0.8.2 de postgres, restore como cognee y --exit-on-error.
+Se incorporan contrato actualizado, helpers reutilizables, pruebas artificiales
+y evidencia sanitizada; sin copiar launchers, dumps, modelos o logs de /tmp.
+Este cierre no ejecuta sudo, backup, restore, reindexación ni cambios K3s.
+RPO periódico, offsite y automatización no acreditados. Listos para iniciar MCP
+como bloque separado, sin desplegarlo ni rebajar sus gates de auth/compatibilidad.

@@ -1,0 +1,30 @@
+{
+  "schema": "choms-cognee-restore-acceptance-v1",
+  "accepted_on": "2026-10-26",
+  "evidence_source": "operator-confirmed successful resume-restore in this session; no additional runtime test executed at closure",
+  "backup_set_id": "20261025T222914Z-2e9b33c6",
+  "marker_snapshot": "062cfac7883306df2e5d13a92b6e8bf367dfe91049d0b184e26d9f027fceba41",
+  "counts": {
+    "documents": 36,
+    "nodes": 2226,
+    "edges": 6040
+  },
+  "rto_seconds": 482.09,
+  "rpo_seconds": null,
+  "periodic_rpo_accredited": false,
+  "live_ready": true,
+  "temporary_resources_removed": true,
+  "snapshots_preserved": true,
+  "oci_staging_preserved": true,
+  "integrity": "Marker membership and per-part size/SHA gates required by the accepted operator; detailed checksums remain inside encrypted backup metadata.",
+  "postgresql_correction": {
+    "precreated_vector_version": "0.8.2",
+    "precreated_vector_owner": "postgres",
+    "restore_role": "cognee",
+    "exit_on_error": true,
+    "excluded_toc_descriptor": "COMMENT - EXTENSION vector",
+    "extension_entry_retained": true,
+    "relational_toc_entries": 199
+  },
+  "closure_scope": "Documentation, reusable contracts and synthetic validation only; no backup, restore, sudo, prune or OCI cleanup."
+}
