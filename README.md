@@ -42,7 +42,9 @@ Ansible currently covers a node baseline, not complete provisioning.
 API available only through a private ClusterIP and a loopback SSH tunnel.
 Independent backup and restore verification remain pending.
 Cognee public-corpus retrieval and restart persistence are verified;
-Cognee MCP authentication and recovery validation remain pending.
+CHOMS Memory now provides eight authenticated internal MCP tools to Codex/Hermes;
+synthetic E2E and purge are verified. Real memories remain backup-policy gated.
+See the [memory runbook](docs/operations/CHOMS_MEMORY.md).
 
 **Start here:** [architecture and inventory](docs/inventory/BASELINE_2026-10-23.md) ·
 [network rollout](docs/operations/NETWORK_POLICIES.md) ·

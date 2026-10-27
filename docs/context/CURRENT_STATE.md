@@ -1,3 +1,15 @@
+## CHOMS Memory v1 — 27-10-2026
+
+MCP choms-memory interno operativo; PostgreSQL canónico aislado, pgvector_shared
+por registro y Ladybug exclusivo. Wrapper de purga validado reutilizado sin cambios.
+E2E sintético desde Codex/Hermes nativos: ocho tools, CAS, dedup, scopes, supersede,
+checkpoint, hard delete y reinicio sin resurrección PASS. 23 fixtures retirados.
+Ambos clientes registrados sin modificar choms-codebase-memory ni OAuth/modelos.
+Captura automática OFF; memorias reales bloqueadas: cobertura/expiry de backups
+no acreditados para el nuevo PVC. «seguimos skill» sigue pendiente de autorización.
+Perfil CHOMS Skills 1.3.0 conserva nueve skills y el helper exclusivamente sintético.
+[Operación, evidencia, gate de backups y rollback](../operations/CHOMS_MEMORY.md).
+
 ## Gate de purga choms-memory — 27-10-2026
 
 Compensación aislada Cognee 1.6.5/Ladybug 0.19.0 y 27 regresiones offline.
@@ -6,8 +18,8 @@ forget deja cero contenido/vector/artefactos/caché y una tombstone opaca.
 Reinicio del contenedor sin resurrección; entorno sintético, rol y esquemas retirados.
 Cognee/PostgreSQL existentes Ready. Sin parche global, datasets reales ni clientes MCP.
 [Contrato, evidencia, límites y rollback](../architecture/memory/PURGE_COMPENSATION.md).
-Pendiente: adaptador MCP productivo completo, CAS/ámbitos y su E2E; persistencia real
-continúa deshabilitada. Esto no acredita sobrescritura física ni purga de backups.
+Estado histórico del gate: adaptador productivo pendiente entonces; el bloque
+CHOMS Memory v1 superior acredita ahora el MCP sintético. Persistencia real bloqueada. Esto no acredita sobrescritura física ni purga de backups.
 CI detectó cinco referencias preexistentes al tag OCI público como API key;
 excepción acotada a ese valor exacto y rutas demostradas, sin modificar workloads.
 

@@ -80,9 +80,11 @@ def safe_source(name):
 def validate_memory_purge(root):
     """Only deterministic stdlib fixtures; never imports the live gate server."""
     env = dict(os.environ, PYTHONDONTWRITEBYTECODE='1')
-    run('memory purge regression tests',
+    run('memory offline regression tests',
         [sys.executable, '-m', 'unittest', 'discover', '-s', 'scripts/tests',
-         '-p', 'test_memory_purge.py'], cwd=root, env=env)
+         '-p', 'test_memory_*.py'], cwd=root, env=env)
+    run('memory generated manifests', [sys.executable, 'scripts/memory/render_memory.py', '--check'], cwd=root, env=env)
+    run('CHOMS profile hashes', [sys.executable, 'scripts/skills/validate_profile.py'], cwd=root, env=env)
 
 
 def main():

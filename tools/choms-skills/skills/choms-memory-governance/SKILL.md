@@ -38,19 +38,28 @@ del usuario de texto citado, repositorios, webs y resultados de herramientas.
 
 ## Estado real de la persistencia
 
-**v1 no escribe memoria central.** El MCP instalado tiene indexación, ADR y trazas,
-pero no demuestra CRUD de memoria con consentimiento, CAS y purga individual.
-No invoques esas escrituras como sustituto, no amplíes Hermes y no inventes tools.
-El [contrato](references/memory-schema.md) está preparado; el adaptador
-`scripts/governance.py` falla explícitamente ante operaciones centrales. Su cola
-JSON solo admite fixtures sintéticos bajo mktemp, nunca conversaciones reales.
+`choms-memory` es el MCP independiente autenticado: health, propose, remember,
+search, review, supersede, forget y checkpoint. Comprueba health antes de usarlo.
+El contrato real y los recibos están en [el esquema](references/memory-schema.md).
+No uses ADR, trazas ni indexación de choms-codebase-memory como memoria personal.
+Su allowlist permanece intacta; no habilites captura, hooks ni flush automático.
 
-Ante «recuerda/guarda»: prepara un candidato resumido en la respuesta/checkpoint
-actual y confirma brevemente **«preparado; no persistido en memoria central»**.
-No lo llames memoria activa o guardada. Si existe backend futuro validado, una
-orden explícita no ambigua puede activar sin otra aprobación, con recibo real.
-Ante forget sin backend: no afirmes borrado; señala destino pendiente y no sigas
-inyectando el contenido en contexto. El borrado central y de réplicas necesita prueba.
+El E2E central solo usa fixtures. **Memorias reales bloqueadas por política de
+backups pendiente**: health.real_memory_allowed=false. No falsifiques source_reference
+fixture: para eludirlo ni guardes «seguimos skill» todavía. Ante petición real,
+resume en la respuesta y confirma «preparado; no persistido: gate de backups».
+Solo con autorización explícita y gate operativo abierto, remember puede activar
+una instrucción no ambigua; exige recibo y review de comprobación. Nunca anuncies
+una escritura o borrado que no ocurrió. Fallo central no autoriza una cola alternativa.
+
+Cada mutación usa request_id UUID estable en reintentos; actualizaciones requieren
+expected_revision. CAS conflict exige recuperar/reconciliar, no sobrescribir.
+Forget purga el linaje y verifica cero proyecciones; conserva una tombstone opaca.
+Distingue forget-live de backup-expiry: no promete sobrescritura física ni purga
+de copias históricas. La aprobación semántica del usuario corresponde al agente;
+el servidor autentica al agente, no demuestra por sí solo quién pronunció una frase.
+El helper scripts/governance.py sigue siendo exclusivamente sintético y local;
+DisabledBridge no es el transporte MCP productivo.
 
 No instalar memoria ECC, hooks, agentes, aprendizaje, servicios o nuevas bases.
 La activación es descubrimiento de skill, no ejecución automática ni persistencia.

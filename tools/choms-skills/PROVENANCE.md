@@ -40,3 +40,10 @@ de memoria, hooks, agentes o aprendizaje ECC. Las ocho skills previas no cambian
 Los esquemas MCP observados se conservan como evidencia de tools/list, sin
 invocar mutaciones ni afirmar escritura central. SHA256SUMS cubre todos los
 archivos canónicos, incluidos referencias/helper y los recibos de descubrimiento.
+
+## Integración original CHOMS — perfil 1.3.0
+
+Se conecta únicamente la gobernanza original al MCP choms-memory autenticado,
+tras E2E sintético Codex/Hermes, CAS y purga con reinicio. No cambia código ECC
+ni las otras ocho skills. La persistencia real continúa bloqueada por backups;
+la cola de prueba no es un fallback. No se activan captura, hooks ni aprendizaje.

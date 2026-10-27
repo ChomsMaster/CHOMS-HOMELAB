@@ -1,0 +1,769 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: choms-memory-code-646657870b52
+  namespace: choms-memory
+  labels:
+    app.kubernetes.io/name: choms-memory
+    app.kubernetes.io/part-of: choms-memory
+immutable: true
+data:
+  server.py: "\"\"\"Authenticated internal MCP JSON-RPC endpoint; stdio bridge is\
+    \ the client transport.\"\"\"\nimport collections\nimport hmac\nfrom http.server\
+    \ import BaseHTTPRequestHandler, HTTPServer\nimport json\nimport logging\nimport\
+    \ os\nfrom pathlib import Path\nimport signal\nimport sys\nimport time\nimport\
+    \ traceback\nimport warnings\n\nlogging.disable(logging.CRITICAL)\nwarnings.filterwarnings('ignore',\
+    \ category=UserWarning)\nfrom contract import Fault, TOOLS, OPERATIONS\nimport\
+    \ network_guard\n\nCOUNTERS=collections.Counter()\nDURATION=collections.Counter()\n\
+    BACKEND=None\nTOKENS={}\nMAX_REQUEST=16384\n\n\ndef authenticated(header):\n \
+    \   return any(hmac.compare_digest(header.encode(),('Bearer '+token).encode())\
+    \ for token in TOKENS.values())\n\n\ndef rpc(request):\n    if not isinstance(request,dict)\
+    \ or request.get('jsonrpc')!='2.0':\n        return {'jsonrpc':'2.0','id':None,'error':{'code':-32600,'message':'invalid_request'}}\n\
+    \    method=request.get('method'); identifier=request.get('id')\n    if not isinstance(request.get('params',{}),dict):\n\
+    \        return {'jsonrpc':'2.0','id':identifier,'error':{'code':-32602,'message':'invalid_params'}}\n\
+    \    if method=='notifications/initialized' or (isinstance(method,str) and method.startswith('notifications/')):\n\
+    \        return None\n    if method=='initialize':\n        version=request.get('params',{}).get('protocolVersion','2024-11-05')\n\
+    \        supported=('2024-11-05','2025-03-26','2025-06-18','2025-11-25')\n   \
+    \     return {'jsonrpc':'2.0','id':identifier,'result':{'protocolVersion':version\
+    \ if version in supported else supported[-1],\n            'capabilities':{'tools':{'listChanged':False}},'serverInfo':{'name':'choms-memory','version':'1.0.0'}}}\n\
+    \    if method=='ping':return {'jsonrpc':'2.0','id':identifier,'result':{}}\n\
+    \    if method=='tools/list':return {'jsonrpc':'2.0','id':identifier,'result':{'tools':TOOLS}}\n\
+    \    if method!='tools/call':return {'jsonrpc':'2.0','id':identifier,'error':{'code':-32601,'message':'method_not_found'}}\n\
+    \    params=request.get('params',{}); name=params.get('name'); start=time.monotonic()\n\
+    \    if name not in OPERATIONS:\n        return {'jsonrpc':'2.0','id':identifier,'error':{'code':-32602,'message':'unknown_tool'}}\n\
+    \    try:\n        data=BACKEND.call(name,params.get('arguments',{}))\n      \
+    \  if name=='health':data['blocked_automatic_outbound_attempts']=network_guard.BLOCKED\n\
+    \        result={'ok':True,'data':data}; outcome='success'\n    except Fault as\
+    \ e:\n        result={'ok':False,'error':{'code':e.code,'retryable':e.retryable}};outcome='rejected'\n\
+    \    except Exception as error:\n        print(json.dumps({'event':'backend_error','operation':name,'class':type(error).__name__,\n\
+    \            'sqlstate':getattr(error,'pgcode',None),'errno':getattr(error,'errno',None),\n\
+    \            'frames':[{'module':Path(f.filename).name,'line':f.lineno} for f\
+    \ in traceback.extract_tb(error.__traceback__)[-4:]]}),file=sys.stderr)\n    \
+    \    result={'ok':False,'error':{'code':'backend_unavailable','retryable':True}};outcome='error'\n\
+    \    COUNTERS[name,outcome]+=1;DURATION[name]+=time.monotonic()-start\n    return\
+    \ {'jsonrpc':'2.0','id':identifier,'result':{'content':[{'type':'text','text':json.dumps(result)}],\n\
+    \            'structuredContent':result,'isError':not result['ok']}}\n\n\nclass\
+    \ Handler(BaseHTTPRequestHandler):\n    def setup(self):\n        super().setup();self.connection.settimeout(20)\n\
+    \    def log_message(self,*args):pass\n    def do_GET(self):\n        if self.path=='/ready':\n\
+    \            try:\n                BACKEND.call('health',{});status=200\n    \
+    \        except Exception:status=503\n            self.send_response(status);self.end_headers();return\n\
+    \        if self.path!='/metrics' or not authenticated(self.headers.get('Authorization','')):\n\
+    \            self.send_response(401);self.end_headers();return\n        lines=[f'choms_memory_blocked_outbound_attempts_total\
+    \ {network_guard.BLOCKED}']\n        for (operation,outcome),value in sorted(COUNTERS.items()):\n\
+    \            lines.append(f'choms_memory_operations_total{{operation=\"{operation}\"\
+    ,outcome=\"{outcome}\"}} {value}')\n        for operation,value in sorted(DURATION.items()):\n\
+    \            lines.append(f'choms_memory_operation_seconds_sum{{operation=\"{operation}\"\
+    }} {value:.6f}')\n        self.send_response(200);self.end_headers();self.wfile.write(('\\\
+    n'.join(lines)+'\\n').encode())\n    def do_POST(self):\n        if self.path!='/mcp'\
+    \ or not authenticated(self.headers.get('Authorization','')):\n            self.send_response(401);self.end_headers();return\n\
+    \        try:\n            length=int(self.headers.get('Content-Length','0'))\n\
+    \            if not 0<length<=MAX_REQUEST:raise ValueError\n            request=json.loads(self.rfile.read(length))\n\
+    \            result=rpc(request)\n            if result is None:self.send_response(202);self.end_headers();return\n\
+    \            raw=json.dumps(result).encode()\n            self.send_response(200);self.send_header('Content-Type','application/json');self.end_headers();self.wfile.write(raw)\n\
+    \        except (ValueError,TypeError,KeyError):\n            self.send_response(400);self.end_headers()\n\
+    \n\ndef main():\n    global BACKEND,TOKENS\n    try:\n        TOKENS={client:Path('/auth/'+client).read_text().strip()\
+    \ for client in ('codex','hermes')}\n        if len(set(TOKENS.values()))!=2 or\
+    \ any(len(token)<32 for token in TOKENS.values()):raise Fault('authentication_config_invalid')\n\
+    \        network_guard.install()\n        from backend import Backend\n      \
+    \  BACKEND=Backend();BACKEND.initialize()\n        def terminate(signum,frame):raise\
+    \ SystemExit(0)\n        signal.signal(signal.SIGTERM,terminate)\n        HTTPServer(('0.0.0.0',8080),Handler).serve_forever()\n\
+    \    except (KeyboardInterrupt,SystemExit):pass\n    except Exception as error:\n\
+    \        print(json.dumps({'event':'startup_failed','class':type(error).__name__,'code':error.code\
+    \ if isinstance(error,Fault) else 'backend_unavailable'}),file=sys.stderr)\n \
+    \       raise SystemExit(1)\n\nif __name__=='__main__':main()\n"
+  backend.py: "\"\"\"Canonical PostgreSQL + isolated Cognee projections. No raw-content\
+    \ logging.\"\"\"\nimport asyncio\nfrom contextlib import contextmanager\nfrom\
+    \ datetime import datetime, timezone\nimport hashlib\nimport importlib.metadata\n\
+    import inspect\nimport json\nimport os\nfrom pathlib import Path\nfrom types import\
+    \ SimpleNamespace\nimport uuid\nimport threading\n\nimport psycopg2\nfrom psycopg2\
+    \ import sql\nfrom psycopg2.extras import RealDictCursor, register_uuid\nregister_uuid()\n\
+    import ladybug\nimport cognee\nfrom cognee.infrastructure.databases.dataset_database_handler\
+    \ import supported_dataset_database_handlers  # noqa: F401\nfrom cognee.infrastructure.databases.graph.ladybug.LadybugDatasetDatabaseHandler\
+    \ import LadybugDatasetDatabaseHandler as GH\nfrom cognee.infrastructure.databases.vector.pgvector.PGVectorSharedDatasetDatabaseHandler\
+    \ import PGVectorSharedDatasetDatabaseHandler as VH\nfrom fastembed import TextEmbedding\n\
+    import governance\nfrom contract import Fault, arguments, partition, record_input,\
+    \ bounded, now, identifier\nfrom purge import RegistryEntry, purge, SUFFIXES\n\
+    \n\nclass Backend:\n    def __init__(self):\n        self.root = Path(os.environ['SYSTEM_ROOT_DIRECTORY'])/'databases'\n\
+    \        self.root.mkdir(mode=0o700, parents=True, exist_ok=True)\n        self.root.chmod(0o700)\n\
+    \        self.lock = threading.RLock()\n        self.cache = {}  # No query/result\
+    \ cache; retained for explicit purge checks.\n        self.backup_ack = os.environ.get('MEMORY_BACKUP_POLICY_ACKNOWLEDGED')\
+    \ == 'true'\n        self.real = os.environ.get('MEMORY_ALLOW_REAL') == 'true'\
+    \ and self.backup_ack\n        self.model = None\n\n    def connect(self):\n \
+    \       c = psycopg2.connect(host=os.environ['DB_HOST'], port=int(os.environ['DB_PORT']),\n\
+    \            dbname=os.environ['DB_NAME'], user=os.environ['DB_USERNAME'],\n \
+    \           password=os.environ['DB_PASSWORD'], connect_timeout=10,\n        \
+    \    options='-c statement_timeout=20000 -c lock_timeout=15000 -c idle_in_transaction_session_timeout=30000')\n\
+    \        c.autocommit = True\n        return c\n\n    @contextmanager\n    def\
+    \ session(self):\n        with self.lock:\n            conn = self.connect()\n\
+    \            try:\n                with conn.cursor(cursor_factory=RealDictCursor)\
+    \ as c:\n                    c.execute(\"SELECT pg_advisory_lock(hashtext('choms-memory-v1'))\"\
+    )\n                    try:\n                        yield c\n               \
+    \     finally:\n                        c.execute(\"SELECT pg_advisory_unlock(hashtext('choms-memory-v1'))\"\
+    )\n            finally:\n                conn.close()\n\n    def initialize(self):\n\
+    \        lock = json.loads(Path('/app/purge-contract.json').read_text())\n   \
+    \     if importlib.metadata.version('cognee') != lock['cognee'] or ladybug.Database.get_version()\
+    \ != lock['ladybug']:\n            raise Fault('backend_version_mismatch')\n \
+    \       if hashlib.sha256(Path(inspect.getfile(GH)).read_bytes()).hexdigest()\
+    \ != lock['handler_sha256']:\n            raise Fault('handler_contract_mismatch')\n\
+    \        with self.session() as c:\n            with c.connection:\n         \
+    \       c.execute(Path('/app/001.sql').read_text())\n            c.execute('SELECT\
+    \ version FROM choms_memory.schema_version ORDER BY version')\n            if\
+    \ [r['version'] for r in c.fetchall()] != [1]:\n                raise Fault('migration_version_mismatch')\n\
+    \        self.model = TextEmbedding(model_name='BAAI/bge-small-en-v1.5', threads=1,\n\
+    \            specific_model_path=os.environ['MEMORY_EMBEDDING_PATH'], local_files_only=True)\n\
+    \        with self.session() as c:\n            c.execute('SELECT * FROM choms_memory.purge_jobs\
+    \ ORDER BY id')\n            for job in c.fetchall():\n                self._finish_forget(c,job)\n\
+    \            c.execute(\"SELECT * FROM choms_memory.records WHERE projection_state\
+    \ IN ('pending','purge_pending') ORDER BY id\")\n            for row in c.fetchall():\n\
+    \                if row['projection_state'] == 'purge_pending':\n            \
+    \        raise Fault('purge_registry_incomplete')\n                else:\n   \
+    \                 self._project(c, row)\n\n    def _expire(self, c):\n       \
+    \ c.execute(\"SELECT * FROM choms_memory.records WHERE state IN ('active','candidate')\
+    \ AND body->>'expires_at' IS NOT NULL\")\n        for row in c.fetchall():\n \
+    \           if datetime.fromisoformat(row['body']['expires_at'].replace('Z','+00:00'))\
+    \ <= datetime.now(timezone.utc):\n                body = row['body']; body.update(state='expired',\
+    \ revision=row['revision']+1, updated_at=now())\n                c.execute(\"\
+    UPDATE choms_memory.records SET state='expired',revision=%s,body=%s WHERE id=%s\"\
+    ,\n                          (body['revision'], json.dumps(body), str(row['id'])))\n\
+    \n    def _get(self, c, memory_id, scope=None):\n        c.execute('SELECT * FROM\
+    \ choms_memory.records WHERE id=%s', (identifier(str(memory_id)),))\n        row\
+    \ = c.fetchone()\n        if row and scope is not None and (row['scope'],row['project'])\
+    \ != scope:\n            raise Fault('not_found')\n        return row\n\n    def\
+    \ _cas(self, row, revision):\n        if row is None:\n            raise Fault('not_found')\n\
+    \        if type(revision) is not int or row['revision'] != revision:\n      \
+    \      raise Fault('cas_conflict')\n        if row['state'] == 'purge_pending':\n\
+    \            raise Fault('purge_pending', retryable=True)\n\n    def _receipt(self,\
+    \ row):\n        return {'id':str(row['id']), 'state':row['state'], 'revision':row['revision']}\n\
+    \n    def _vector(self, text):\n        return '['+','.join(str(float(n)) for\
+    \ n in next(iter(self.model.embed([text]))))+']'\n\n    def _descriptor(self,\
+    \ row):\n        if row['vector_info']:\n            from cognee.infrastructure.databases.postgres\
+    \ import dataset_schema_name\n            info=row['vector_info']\n          \
+    \  if info['schema']!=dataset_schema_name(uuid.UUID(str(row['id']))) or info['host']!=os.environ['DB_HOST']\
+    \ or int(info['port'])!=int(os.environ['DB_PORT']):\n                raise Fault('dataset_registry_mismatch')\n\
+    \        return SimpleNamespace(owner_id=row['id'], graph_database_name=str(row['id'])+'.pkl',\n\
+    \            vector_database_provider='pgvector', vector_database_url='', vector_database_name=os.environ['DB_NAME'],\n\
+    \            vector_database_key='', vector_database_connection_info=dict(row['vector_info']\
+    \ or {}),\n            vector_dataset_database_handler='pgvector_shared')\n\n\
+    \    def _official_graph(self, row):\n        asyncio.run(GH.delete_dataset(self._descriptor(row)))\n\
+    \n    def _owned_vector(self,c,row):\n        c.execute('SELECT r.rolname FROM\
+    \ pg_namespace n JOIN pg_roles r ON r.oid=n.nspowner WHERE n.nspname=%s',\n  \
+    \                (row['vector_info']['schema'],))\n        owner=c.fetchone()\n\
+    \        if owner and owner['rolname']!=os.environ['DB_USERNAME']:\n         \
+    \   raise Fault('shared_dataset_rejected')\n\n    def _clean_graph(self, row):\n\
+    \        async def official():\n            await GH.delete_dataset(self._descriptor(row))\n\
+    \        asyncio.run(purge(self.root, RegistryEntry(str(row['id']),str(row['id']),True),\
+    \ official))\n\n    def _project(self, c, row):\n        # The canonical record\
+    \ is committed first. Pending projection repair uses\n        # the same private\
+    \ UUID unit and official deletion before rebuilding.\n        self._clean_graph(row)\n\
+    \        if row['vector_info']:\n            self._owned_vector(c,row)\n     \
+    \       asyncio.run(VH.delete_dataset(self._descriptor(row)))\n        from cognee.infrastructure.databases.postgres\
+    \ import dataset_schema_name\n        info={'schema':dataset_schema_name(uuid.UUID(str(row['id']))),\n\
+    \              'host':os.environ['DB_HOST'],'port':int(os.environ['DB_PORT'])}\n\
+    \        c.execute('UPDATE choms_memory.records SET vector_info=%s WHERE id=%s',\
+    \ (json.dumps(info),str(row['id'])))\n        row['vector_info']=info\n      \
+    \  self._owned_vector(c,row)\n        info = asyncio.run(VH.create_dataset(uuid.UUID(str(row['id'])),\
+    \ None))['vector_database_connection_info']\n        c.execute('UPDATE choms_memory.records\
+    \ SET vector_info=%s WHERE id=%s', (json.dumps(info),str(row['id'])))\n      \
+    \  row['vector_info'] = info\n        directory = self.root/str(row['id'])\n \
+    \       body = row['body']; text = body['summary']+' '+body.get('details','')\n\
+    \        db = ladybug.Database(directory/(str(row['id'])+'.pkl'), buffer_pool_size=67108864,\
+    \ max_num_threads=1)\n        connection = ladybug.Connection(db)\n        try:\n\
+    \            connection.execute('CREATE NODE TABLE Memory(id STRING, text STRING,\
+    \ PRIMARY KEY(id))').close()\n            connection.execute('CREATE (m:Memory\
+    \ {id: $id, text: $text})', {'id':str(row['id']),'text':text}).close()\n     \
+    \   finally:\n            connection.close(); db.close()\n        c.execute(sql.SQL('CREATE\
+    \ TABLE {} (id uuid PRIMARY KEY, embedding public.vector(384))').format(\n   \
+    \         sql.Identifier(info['schema'],'embeddings')))\n        c.execute(sql.SQL('INSERT\
+    \ INTO {} VALUES (%s,%s::public.vector)').format(\n            sql.Identifier(info['schema'],'embeddings')),\
+    \ (str(row['id']),self._vector(text)))\n        c.execute(\"UPDATE choms_memory.records\
+    \ SET projection_state='ready' WHERE id=%s\",(str(row['id']),))\n        row['projection_state']='ready'\n\
+    \n    def _insert(self, c, body, lineage=None):\n        c.execute('SELECT count(*)\
+    \ AS n FROM choms_memory.records WHERE scope=%s AND project=%s',(body['scope'],body.get('project_id')\
+    \ or ''))\n        if c.fetchone()['n']>=200:raise Fault('partition_capacity_limit')\n\
+    \        c.execute('SELECT id FROM choms_memory.records WHERE scope=%s AND project=%s\
+    \ AND content_hash=%s AND state IN (%s,%s)',\n                  (body['scope'],body.get('project_id')\
+    \ or '',body['content_hash'],'active','candidate'))\n        if c.fetchone():\n\
+    \            raise Fault('duplicate')\n        if body['state']=='active':\n \
+    \           c.execute(\"SELECT id FROM choms_memory.records WHERE scope=%s AND\
+    \ project=%s AND topic=%s AND state='active'\",\n                      (body['scope'],body.get('project_id')\
+    \ or '',body['topic']))\n            if c.fetchone():\n                raise Fault('ambiguous_contradiction_use_supersede')\n\
+    \        c.execute('INSERT INTO choms_memory.records VALUES(%s,%s,%s,%s,%s,%s,%s,%s,NULL,%s,%s)',\n\
+    \            (body['id'],lineage or body['id'],json.dumps(body),body['scope'],body.get('project_id')\
+    \ or '',\n             body['topic'],body['state'],body['revision'],'pending'\
+    \ if body['state']=='active' else 'none',body['content_hash']))\n        return\
+    \ self._get(c,body['id'])\n\n    def _purge(self, c, row):\n        memory_id=str(row['id'])\n\
+    \        # Clear canonical content/hash before effects, preserving only internal\n\
+    \        # UUID metadata needed for safe reconciliation. Never acknowledge early.\n\
+    \        c.execute(\"UPDATE choms_memory.records SET body=NULL,content_hash=NULL,state='purge_pending',projection_state='purge_pending'\
+    \ WHERE id=%s\",(memory_id,))\n        self._clean_graph(row)\n        if row['vector_info']:\n\
+    \            self._owned_vector(c,row)\n            asyncio.run(VH.delete_dataset(self._descriptor(row)))\n\
+    \            c.execute('SELECT EXISTS(SELECT 1 FROM pg_namespace WHERE nspname=%s)\
+    \ AS remains',\n                      (row['vector_info']['schema'],))\n     \
+    \       if c.fetchone()['remains']:\n                raise Fault('purge_pending',retryable=True)\n\
+    \        self.cache.pop(memory_id,None)\n        if os.listdir(self.root/memory_id)\
+    \ or memory_id in self.cache:\n            raise Fault('purge_pending',retryable=True)\n\
+    \        with c.connection:\n            c.execute('SELECT request_id FROM choms_memory.receipts\
+    \ WHERE target_id=%s',(memory_id,))\n            requests=[str(r['request_id'])\
+    \ for r in c.fetchall()]\n            c.execute('DELETE FROM choms_memory.receipts\
+    \ WHERE target_id=%s',(memory_id,))\n            c.execute(\"INSERT INTO choms_memory.tombstones\
+    \ VALUES(%s,'forgotten',%s,%s::uuid[]) ON CONFLICT(id) DO NOTHING\",\n       \
+    \               (memory_id,row['revision']+1,requests))\n            c.execute('DELETE\
+    \ FROM choms_memory.records WHERE id=%s',(memory_id,))\n\n    def _finish_forget(self,c,job):\n\
+    \        try:\n            for value in job['members']:\n                row=self._get(c,str(value))\n\
+    \                if row:self._purge(c,row)\n            c.execute('SELECT count(*)\
+    \ AS n FROM choms_memory.records WHERE id=ANY(%s::uuid[])',\n                \
+    \      ([str(v) for v in job['members']],))\n            if c.fetchone()['n']:raise\
+    \ Fault('purge_pending',retryable=True)\n            with c.connection:\n    \
+    \            c.execute('UPDATE choms_memory.tombstones SET request_ids=request_ids||%s::uuid[]\
+    \ WHERE id=%s',\n                          ([str(v) for v in job['request_ids']],str(job['id'])))\n\
+    \                c.execute('DELETE FROM choms_memory.purge_jobs WHERE id=%s',(str(job['id']),))\n\
+    \        except Exception:\n            raise Fault('purge_pending',retryable=True)\
+    \ from None\n\n    def _audit(self,c,ids):\n        if self.real:\n          \
+    \  raise Fault('synthetic_audit_disabled')\n        if not isinstance(ids,list)\
+    \ or len(ids)>20:\n            raise Fault('invalid_audit')\n        result=[]\n\
+    \        for value in ids:\n            value=identifier(value)\n            row=self._get(c,value)\n\
+    \            c.execute('SELECT * FROM choms_memory.tombstones WHERE id=%s',(value,));\
+    \ tomb=c.fetchone()\n            if row is None and tomb is None:\n          \
+    \      raise Fault('not_found')\n            # Only internally registered opaque\
+    \ IDs can reach filesystem checks.\n            trusted=str(row['id'] if row else\
+    \ tomb['id'])\n            directory=self.root/trusted\n            files=len(os.listdir(directory))\
+    \ if directory.is_dir() else 0\n            from cognee.infrastructure.databases.postgres\
+    \ import dataset_schema_name\n            vector_schema=dataset_schema_name(uuid.UUID(trusted))\n\
+    \            c.execute('SELECT count(*) AS n FROM pg_namespace WHERE nspname=%s',(vector_schema,))\n\
+    \            vectors=c.fetchone()['n']\n            c.execute('SELECT count(*)\
+    \ AS n FROM choms_memory.receipts WHERE target_id=%s',(trusted,))\n          \
+    \  receipts=c.fetchone()['n']\n            result.append({'id':trusted,'canonical_rows':int(row\
+    \ is not None), 'graph_artifacts':files,\n                           'vector_schemas':vectors,'cache_entries':int(trusted\
+    \ in self.cache),\n                           'content_receipts':receipts,'tombstone':bool(tomb),\n\
+    \                           'tombstone_fields':sorted(tomb) if tomb else []})\n\
+    \        return result\n\n    def call(self, operation, args):\n        arguments(operation,args)\n\
+    \        try:\n            governance.safe(args)\n        except governance.Rejected:\n\
+    \            raise Fault('sensitive_or_untrusted_input') from None\n        with\
+    \ self.session() as c:\n            self._expire(c)\n            if operation=='health':\n\
+    \                c.execute('SELECT version FROM choms_memory.schema_version');\
+    \ versions=[r['version'] for r in c.fetchall()]\n                return {'status':'ready','schema_versions':versions,'automatic_capture':False,\n\
+    \                        'real_memory_allowed':self.real,'backup_policy_approved':self.backup_ack,\n\
+    \                        'audit':self._audit(c,args['audit_ids']) if 'audit_ids'\
+    \ in args else []}\n            if operation in ('search','review'):\n       \
+    \         scope=partition(args)\n                if 'id' in args:\n          \
+    \          row=self._get(c,args['id'],scope)\n                    rows=[row['body']]\
+    \ if row and row['body'] is not None else []\n                else:\n        \
+    \            states=args.get('states',['active'] if operation=='search' else ['candidate','active'])\n\
+    \                    if not isinstance(states,list) or not states or set(states)-{'candidate','active','superseded','expired'}:\n\
+    \                        raise Fault('invalid_states')\n                    c.execute('SELECT\
+    \ * FROM choms_memory.records WHERE scope=%s AND project=%s AND state=ANY(%s)\
+    \ ORDER BY id',(*scope,states))\n                    found=c.fetchall(); rows=[]\n\
+    \                    query=args.get('query','')\n                    if operation=='search':\n\
+    \                        if not isinstance(query,str) or not 0<len(query)<=500:\n\
+    \                            raise Fault('invalid_query')\n                  \
+    \      vector=self._vector(query)\n                        ranked=[]\n       \
+    \                 for row in found:\n                            body=row['body']\n\
+    \                            if body['importance']=='low' and not args.get('include_low'):continue\n\
+    \                            if body['importance']=='medium' and not args.get('include_medium'):continue\n\
+    \                            if row['projection_state']!='ready':raise Fault('projection_unavailable',retryable=True)\n\
+    \                            c.execute(sql.SQL('SELECT 1-(embedding <=> %s::public.vector)\
+    \ AS score FROM {}').format(\n                                sql.Identifier(row['vector_info']['schema'],'embeddings')),(vector,))\n\
+    \                            score=c.fetchone()['score'];ranked.append((score,body))\n\
+    \                        rows=[r for _,r in sorted(ranked,key=lambda v:v[0],reverse=True)]\n\
+    \                    else:rows=[r['body'] for r in found if r['body'] is not None]\n\
+    \                return bounded(rows,args)\n            request_id=args['request_id']\n\
+    \            if 'id' in args:\n                c.execute('SELECT * FROM choms_memory.purge_jobs\
+    \ WHERE %s::uuid=ANY(members)',(args['id'],))\n                job=c.fetchone()\n\
+    \                if job:\n                    self._finish_forget(c,job)\n   \
+    \                 return {'id':args['id'],'state':'forgotten'}\n            #\
+    \ Content-free tombstones fence retries of requests already erased.\n        \
+    \    c.execute('SELECT id,revision FROM choms_memory.tombstones WHERE %s::uuid=ANY(request_ids)',(request_id,))\n\
+    \            tomb=c.fetchone()\n            if tomb:return {'id':str(tomb['id']),'state':'forgotten','revision':tomb['revision']}\n\
+    \            fingerprint=hashlib.sha256(json.dumps(args,sort_keys=True,separators=(',',':')).encode()).hexdigest()\n\
+    \            c.execute('SELECT * FROM choms_memory.receipts WHERE request_id=%s',(request_id,))\n\
+    \            replay=c.fetchone()\n            if replay:\n                if replay['operation']!=operation\
+    \ or replay['fingerprint']!=fingerprint:\n                    raise Fault('idempotency_conflict')\n\
+    \                row=self._get(c,str(replay['target_id']))\n                if\
+    \ row and row['projection_state']=='pending':self._project(c,row)\n          \
+    \      if row and row['state']=='purge_pending':raise Fault('purge_pending',retryable=True)\n\
+    \                return self._receipt(row) if row else {'state':'forgotten','id':str(replay['target_id'])}\n\
+    \            if operation=='forget':\n                row=self._get(c,args['id'],partition(args))\n\
+    \                if row is None:\n                    c.execute('SELECT id,revision\
+    \ FROM choms_memory.tombstones WHERE id=%s',(args['id'],))\n                 \
+    \   tomb=c.fetchone()\n                    if tomb:return {'id':str(tomb['id']),'state':'forgotten','revision':tomb['revision']}\n\
+    \                self._cas(row,args['expected_revision'])\n                c.execute('SELECT\
+    \ id FROM choms_memory.records WHERE lineage_id=%s ORDER BY id',(str(row['lineage_id']),))\n\
+    \                members=[str(r['id']) for r in c.fetchall()]\n              \
+    \  with c.connection:\n                    c.execute('INSERT INTO choms_memory.purge_jobs\
+    \ VALUES(%s,%s::uuid[],%s::uuid[])',\n                              (args['id'],members,[request_id]))\n\
+    \                    c.execute(\"UPDATE choms_memory.records SET body=NULL,content_hash=NULL,state='purge_pending',projection_state='purge_pending'\
+    \ WHERE id=ANY(%s::uuid[])\",(members,))\n                job={'id':args['id'],'members':members,'request_ids':[request_id]}\n\
+    \                self._finish_forget(c,job)\n                return {'id':args['id'],'state':'forgotten','revision':row['revision']+1,'lineage_erased':len(members)}\n\
+    \            body=None\n            if operation=='remember' and 'id' in args:\n\
+    \                row=self._get(c,args['id'],partition(args));self._cas(row,args['expected_revision'])\n\
+    \                if row['state']!='candidate':raise Fault('candidate_required')\n\
+    \                body=dict(row['body']);body.update(state='active',revision=row['revision']+1,updated_at=now(),source_kind='user_explicit')\n\
+    \                # Enforce one active topic and dedup before transitioning.\n\
+    \                c.execute(\"SELECT id FROM choms_memory.records WHERE scope=%s\
+    \ AND project=%s AND topic=%s AND state='active'\",(row['scope'],row['project'],row['topic']))\n\
+    \                if c.fetchone():raise Fault('ambiguous_contradiction_use_supersede')\n\
+    \                with c.connection:\n                    c.execute(\"UPDATE choms_memory.records\
+    \ SET body=%s,state='active',revision=%s,projection_state='pending' WHERE id=%s\"\
+    ,(json.dumps(body),body['revision'],args['id']))\n                    c.execute('INSERT\
+    \ INTO choms_memory.receipts VALUES(%s,%s,%s,%s)',(request_id,operation,args['id'],fingerprint))\n\
+    \                row=self._get(c,args['id'])\n            else:\n            \
+    \    body=record_input(args['record'],explicit=operation in ('remember','supersede')\
+    \ or args.get('explicit',False),\n                                  real_allowed=self.real,checkpoint=operation=='checkpoint')\n\
+    \                with c.connection:\n                    lineage=None\n      \
+    \              if operation=='supersede':\n                        prior=self._get(c,args['id'],partition(args));self._cas(prior,args['expected_revision'])\n\
+    \                        if prior['state']!='active' or (body['scope'],body.get('project_id')\
+    \ or '')!=(prior['scope'],prior['project']):raise Fault('invalid_supersede_target')\n\
+    \                        old=dict(prior['body']);old.update(state='superseded',revision=prior['revision']+1,updated_at=now())\n\
+    \                        c.execute(\"UPDATE choms_memory.records SET body=%s,state='superseded',revision=%s\
+    \ WHERE id=%s\",(json.dumps(old),old['revision'],str(prior['id'])))\n        \
+    \                body['supersedes']=str(prior['id']);lineage=str(prior['lineage_id'])\n\
+    \                    row=self._insert(c,body,lineage)\n                    c.execute('INSERT\
+    \ INTO choms_memory.receipts VALUES(%s,%s,%s,%s)',(request_id,operation,body['id'],fingerprint))\n\
+    \            if row['projection_state']=='pending':self._project(c,row)\n    \
+    \        return self._receipt(row)\n"
+  contract.py: "\"\"\"CHOMS Memory v1: bounded MCP contract and governance validation\
+    \ (stdlib).\"\"\"\nfrom datetime import datetime, timezone\nimport json\nimport\
+    \ uuid\nimport governance\n\nOPERATIONS = ('health', 'propose', 'remember', 'search',\
+    \ 'review', 'supersede', 'forget', 'checkpoint')\n\n\nclass Fault(Exception):\n\
+    \    def __init__(self, code, *, retryable=False):\n        self.code, self.retryable\
+    \ = code, retryable\n        super().__init__(code)\n\n\ndef now():\n    return\
+    \ datetime.now(timezone.utc).isoformat(timespec='seconds').replace('+00:00', 'Z')\n\
+    \n\ndef identifier(value):\n    try:\n        parsed = uuid.UUID(value)\n    \
+    \    if str(parsed) != value or parsed.version != 4:\n            raise ValueError\n\
+    \        return value\n    except (ValueError, TypeError, AttributeError):\n \
+    \       raise Fault('invalid_identifier') from None\n\n\ndef partition(args):\n\
+    \    scope, project = args.get('scope'), args.get('project_id')\n    if scope\
+    \ not in ('global', 'personal', 'project') or (scope == 'project') != bool(project):\n\
+    \        raise Fault('invalid_scope')\n    if project is not None and (not isinstance(project,\
+    \ str) or not 1 <= len(project) <= 100):\n        raise Fault('invalid_project')\n\
+    \    return scope, project or ''\n\n\ndef record_input(payload, *, explicit, real_allowed=False,\
+    \ checkpoint=False):\n    allowed = {'summary', 'details', 'type', 'importance',\
+    \ 'scope', 'project_id',\n               'source_kind', 'source_reference', 'sensitivity',\
+    \ 'topic', 'trigger', 'expires_at'}\n    if not isinstance(payload, dict) or set(payload)\
+    \ - allowed:\n        raise Fault('invalid_record_fields')\n    try:\n       \
+    \ governance.safe(payload)\n        scope, project = partition(payload)\n    \
+    \    source = payload.get('source_kind')\n        if source in ('repository',\
+    \ 'web', 'tool'):\n            raise Fault('untrusted_source')\n        if source\
+    \ != ('user_explicit' if explicit else 'agent_inferred'):\n            raise Fault('consent_source_mismatch')\n\
+    \        ref = payload.get('source_reference', '')\n        if not real_allowed\
+    \ and not ref.startswith('fixture:'):\n            raise Fault('real_memory_backup_gate_closed')\n\
+    \        r = governance.make_record('remember this' if explicit else 'inferred\
+    \ context',\n            payload['summary'], project=project, scope=scope, source=source,\n\
+    \            kind='checkpoint' if checkpoint else payload.get('type', 'decision'),\n\
+    \            importance=payload.get('importance', 'high' if explicit else 'medium'),\n\
+    \            topic=payload.get('topic', 'memory'), now=now(), details=payload.get('details'),\n\
+    \            trigger=payload.get('trigger'), expires_at=payload.get('expires_at'))\n\
+    \        r.update(source_reference=ref, sensitivity=payload.get('sensitivity',\
+    \ 'internal'),\n                 state='active' if explicit else 'candidate')\n\
+    \        r['content_hash'] = governance.content_hash(r)\n        governance.validate(r)\n\
+    \        return r\n    except Fault:\n        raise\n    except (governance.Rejected,\
+    \ KeyError, TypeError, ValueError):\n        raise Fault('record_rejected') from\
+    \ None\n\n\ndef bounded(rows, args):\n    limit, budget = args.get('limit', 5),\
+    \ args.get('budget_chars', 2400)\n    if type(limit) is not int or not 1 <= limit\
+    \ <= 10 or type(budget) is not int or not 256 <= budget <= 6000:\n        raise\
+    \ Fault('invalid_context_budget')\n    output = []\n    for row in rows:\n   \
+    \     if len(output) >= limit:\n            break\n        if len(json.dumps(output\
+    \ + [row], ensure_ascii=False)) <= budget:\n            output.append(row)\n \
+    \   return {'records': output, 'omitted': len(rows)-len(output),\n           \
+    \ 'characters': len(json.dumps(output, ensure_ascii=False))}\n\n\nSCOPE = {'scope':\
+    \ {'type': 'string', 'enum': ['global', 'personal', 'project']},\n         'project_id':\
+    \ {'type': ['string', 'null'], 'maxLength': 100}}\nRECORD = {'type': 'object',\
+    \ 'additionalProperties': False, 'properties': {\n    **SCOPE, 'summary': {'type':\
+    \ 'string', 'minLength': 1, 'maxLength': 500},\n    'details': {'type': 'string',\
+    \ 'maxLength': 1500},\n    'type': {'type': 'string', 'enum': sorted(governance.TYPES)},\n\
+    \    'importance': {'type': 'string', 'enum': ['critical', 'high', 'medium', 'low']},\n\
+    \    'source_kind': {'type': 'string', 'enum': ['user_explicit', 'agent_inferred']},\n\
+    \    'source_reference': {'type': 'string', 'minLength': 1, 'maxLength': 160},\n\
+    \    'sensitivity': {'type': 'string', 'enum': ['public', 'internal', 'personal']},\n\
+    \    'topic': {'type': 'string', 'minLength': 1, 'maxLength': 100},\n    'trigger':\
+    \ {'type': 'string', 'maxLength': 160},\n    'expires_at': {'type': 'string',\
+    \ 'format': 'date-time'}},\n    'required': ['summary', 'scope', 'source_kind',\
+    \ 'source_reference', 'topic']}\nUUID = {'type': 'string', 'format': 'uuid'}\n\
+    BUDGET = {'limit': {'type': 'integer', 'minimum': 1, 'maximum': 10},\n       \
+    \   'budget_chars': {'type': 'integer', 'minimum': 256, 'maximum': 6000}}\nSCHEMAS\
+    \ = {\n    'health': {'audit_ids': {'type': 'array', 'items': UUID, 'maxItems':\
+    \ 20}},\n    'propose': {'request_id': UUID, 'record': RECORD},\n    'remember':\
+    \ {**SCOPE, 'request_id': UUID, 'record': RECORD, 'id': UUID,\n              \
+    \   'expected_revision': {'type': 'integer', 'minimum': 1}, 'explicit': {'const':\
+    \ True}},\n    'search': {**SCOPE, **BUDGET, 'query': {'type': 'string', 'minLength':\
+    \ 1, 'maxLength': 500},\n               'include_medium': {'type': 'boolean'},\
+    \ 'include_low': {'type': 'boolean'}},\n    'review': {**SCOPE, **BUDGET, 'id':\
+    \ UUID, 'states': {'type': 'array', 'items': {\n        'enum': ['candidate',\
+    \ 'active', 'superseded', 'expired']}, 'maxItems': 4}},\n    'supersede': {**SCOPE,\
+    \ 'request_id': UUID, 'id': UUID, 'expected_revision': {'type': 'integer', 'minimum':\
+    \ 1},\n                  'record': RECORD, 'explicit': {'const': True}},\n   \
+    \ 'forget': {**SCOPE, 'request_id': UUID, 'id': UUID, 'expected_revision': {'type':\
+    \ 'integer', 'minimum': 1},\n               'explicit': {'const': True}},\n  \
+    \  'checkpoint': {'request_id': UUID, 'record': RECORD, 'explicit': {'type': 'boolean'}},\n\
+    }\nREQUIRED = {'health': [], 'propose': ['request_id', 'record'],\n    'remember':\
+    \ ['request_id', 'explicit'], 'search': ['scope', 'query'], 'review': ['scope'],\n\
+    \    'supersede': ['request_id', 'id', 'scope', 'expected_revision', 'record',\
+    \ 'explicit'],\n    'forget': ['request_id', 'id', 'scope', 'expected_revision',\
+    \ 'explicit'],\n    'checkpoint': ['request_id', 'record']}\nTOOLS = [{'name':\
+    \ name, 'description': 'CHOMS governed memory: '+name+'; no automatic capture.',\n\
+    \          'inputSchema': {'type': 'object', 'properties': SCHEMAS[name],\n  \
+    \                        'required': REQUIRED[name], 'additionalProperties': False},\n\
+    \          'annotations': {'readOnlyHint': name in ('health', 'search', 'review'),\n\
+    \                          'destructiveHint': name == 'forget', 'openWorldHint':\
+    \ False}}\n         for name in OPERATIONS]\n\n\ndef schema_check(value, schema):\n\
+    \    types = schema.get('type')\n    valid = {'object':type(value) is dict, 'array':type(value)\
+    \ is list,\n             'string':type(value) is str, 'integer':type(value) is\
+    \ int,\n             'boolean':type(value) is bool, 'null':value is None}\n  \
+    \  if types and not any(valid.get(t,False) for t in ([types] if isinstance(types,str)\
+    \ else types)):\n        raise Fault('invalid_argument_type')\n    if 'const'\
+    \ in schema and (type(value) is not type(schema['const']) or value!=schema['const']):\n\
+    \        raise Fault('invalid_argument_value')\n    if 'enum' in schema and value\
+    \ not in schema['enum']:raise Fault('invalid_argument_value')\n    if type(value)\
+    \ is dict:\n        if set(schema.get('required',[]))-set(value):raise Fault('missing_arguments')\n\
+    \        if schema.get('additionalProperties') is False and set(value)-set(schema.get('properties',{})):raise\
+    \ Fault('invalid_arguments')\n        for key,item in value.items():\n       \
+    \     if key in schema.get('properties',{}):schema_check(item,schema['properties'][key])\n\
+    \    if type(value) is list:\n        if len(value)>schema.get('maxItems',100):raise\
+    \ Fault('argument_limit')\n        for item in value:schema_check(item,schema.get('items',{}))\n\
+    \    if type(value) is str and not schema.get('minLength',0)<=len(value)<=schema.get('maxLength',10000):raise\
+    \ Fault('argument_limit')\n    if type(value) is int and not schema.get('minimum',-10**10)<=value<=schema.get('maximum',10**10):raise\
+    \ Fault('argument_limit')\n\n\ndef arguments(operation, args):\n    if operation\
+    \ in OPERATIONS:\n        schema_check(args,next(t['inputSchema'] for t in TOOLS\
+    \ if t['name']==operation))\n    if operation not in OPERATIONS or not isinstance(args,\
+    \ dict) or set(args)-set(SCHEMAS[operation]):\n        raise Fault('invalid_arguments')\n\
+    \    if set(REQUIRED[operation])-set(args):\n        raise Fault('missing_arguments')\n\
+    \    if 'request_id' in args:\n        identifier(args['request_id'])\n    if\
+    \ 'id' in args:\n        identifier(args['id'])\n    if operation in ('remember',\
+    \ 'supersede', 'forget') and args.get('explicit') is not True:\n        raise\
+    \ Fault('explicit_consent_required')\n    if operation == 'remember' and (('id'\
+    \ in args) == ('record' in args)):\n        raise Fault('choose_candidate_or_record')\n\
+    \    if 'expected_revision' in args and (type(args['expected_revision']) is not\
+    \ int or args['expected_revision'] < 1):\n        raise Fault('invalid_revision')\n\
+    \    if operation == 'remember' and 'id' in args and 'expected_revision' not in\
+    \ args:\n        raise Fault('revision_required')\n    return args\n"
+  purge.py: "\"\"\"Versioned, registry-only logical purge for Cognee 1.6.5 / Ladybug\
+    \ 0.19.0.\n\nThe caller fences all writers and commits purge_pending before calling\
+    \ this module.\nNo user-provided path or dataset name is accepted by the public\
+    \ adapter.\n\"\"\"\nimport os\nimport stat\nimport uuid\nfrom dataclasses import\
+    \ dataclass\nfrom pathlib import Path\n\nCONTRACT = \"cognee-1.6.5-ladybug-0.19.0-v1\"\
+    \nSUFFIXES = (\"\", \".wal\", \".lock\", \".shadow\", \".tmp\", \".wal.checkpoint\"\
+    ,\n            \".checkpoint.intent.lock\", \".checkpoint.apply.lock\")\n\n\n\
+    class PurgePending(RuntimeError):\n    \"\"\"Sanitized failure: caller must retain\
+    \ its content-free reconciliation record.\"\"\"\n\n\n@dataclass(frozen=True)\n\
+    class RegistryEntry:\n    owner_id: str\n    dataset_id: str\n    exclusive: bool\n\
+    \    contract: str = CONTRACT\n\n    def names(self):\n        if not self.exclusive\
+    \ or self.contract != CONTRACT:\n            raise PurgePending(\"dataset_not_exclusive_or_version_mismatch\"\
+    )\n        for value in (self.owner_id, self.dataset_id):\n            try:\n\
+    \                if str(uuid.UUID(value)) != value:\n                    raise\
+    \ ValueError\n            except (ValueError, TypeError, AttributeError):\n  \
+    \              raise PurgePending(\"invalid_registry_id\") from None\n       \
+    \ return tuple(self.dataset_id + \".pkl\" + suffix for suffix in SUFFIXES)\n\n\
+    \ndef open_trusted_root(root):\n    \"\"\"Walk without resolving links. Return\
+    \ an fd anchored to the trusted directory.\"\"\"\n    path = Path(root)\n    if\
+    \ not path.is_absolute() or \"..\" in path.parts:\n        raise PurgePending(\"\
+    invalid_root\")\n    fd = os.open(\"/\", os.O_RDONLY | os.O_DIRECTORY)\n    try:\n\
+    \        for component in path.parts[1:]:\n            new = os.open(component,\
+    \ os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW,\n                          dir_fd=fd)\n\
+    \            os.close(fd)\n            fd = new\n        s = os.fstat(fd)\n  \
+    \      if s.st_uid != os.geteuid() or stat.S_IMODE(s.st_mode) != 0o700:\n    \
+    \        raise PurgePending(\"untrusted_root_permissions\")\n        return fd\n\
+    \    except BaseException:\n        os.close(fd)\n        raise\n\n\ndef inventory(fd,\
+    \ names):\n    \"\"\"Closed directory, not a prefix scan: any unregistered object\
+    \ blocks deletion.\"\"\"\n    observed = os.listdir(fd)\n    if set(observed)\
+    \ - set(names):\n        raise PurgePending(\"unexpected_artifact\")\n    result\
+    \ = {}\n    for name in observed:\n        s = os.stat(name, dir_fd=fd, follow_symlinks=False)\n\
+    \        if not stat.S_ISREG(s.st_mode) or s.st_nlink != 1:\n            raise\
+    \ PurgePending(\"unexpected_type_or_link\")\n        result[name] = (s.st_dev,\
+    \ s.st_ino, s.st_size, s.st_mtime_ns, s.st_ctime_ns)\n    return result\n\n\n\
+    async def purge(root, entry, official_delete, *, checkpoint=None):\n    \"\"\"\
+    Official deletion first, then exact leftovers. Never report a partial success.\n\
+    \n    The root is service configuration; entry is read from the private registry\
+    \ under\n    a DB transaction/advisory lock. Root and owner directories are private\
+    \ to this\n    service. No other process may write during the call. No subgraphs\
+    \ are allowed.\n    checkpoint is only an interruption injection point for offline\
+    \ regression tests.\n    \"\"\"\n    names = entry.names()\n    root_fd = child_fd\
+    \ = None\n    try:\n        root_fd = open_trusted_root(root)\n        try:\n\
+    \            child_fd = os.open(entry.owner_id,\n                            \
+    \   os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW,\n                          \
+    \     dir_fd=root_fd)\n        except FileNotFoundError:\n            # Keep a\
+    \ private empty owner directory even for absent datasets so\n            # the\
+    \ official callback cannot bypass the final inventory check.\n            os.mkdir(entry.owner_id,\
+    \ mode=0o700, dir_fd=root_fd)\n            child_fd = os.open(entry.owner_id,\n\
+    \                               os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW,\n\
+    \                               dir_fd=root_fd)\n        s = os.fstat(child_fd)\n\
+    \        if s.st_uid != os.geteuid() or stat.S_IMODE(s.st_mode) != 0o700:\n  \
+    \          raise PurgePending(\"untrusted_dataset_permissions\")\n        before\
+    \ = inventory(child_fd, names)\n        # Preflight every object BEFORE a handler\
+    \ that otherwise follows paths.\n        await official_delete()\n        if checkpoint:\n\
+    \            checkpoint(\"after_official\")\n        current_dir = os.stat(entry.owner_id,\
+    \ dir_fd=root_fd, follow_symlinks=False)\n        if (current_dir.st_dev, current_dir.st_ino)\
+    \ != (s.st_dev, s.st_ino):\n            raise PurgePending(\"dataset_directory_changed\"\
+    )\n        after = inventory(child_fd, names)\n        for name, signature in\
+    \ after.items():\n            if before.get(name) != signature:\n            \
+    \    raise PurgePending(\"artifact_changed\")\n            latest = os.stat(name,\
+    \ dir_fd=child_fd, follow_symlinks=False)\n            if (latest.st_dev, latest.st_ino,\
+    \ latest.st_size,\n                    latest.st_mtime_ns, latest.st_ctime_ns)\
+    \ != signature:\n                raise PurgePending(\"artifact_changed\")\n  \
+    \          os.unlink(name, dir_fd=child_fd)\n            if checkpoint:\n    \
+    \            checkpoint(\"after_unlink\")\n        os.fsync(child_fd)\n      \
+    \  if os.listdir(child_fd):\n            raise PurgePending(\"postcondition_incomplete\"\
+    )\n        # Preserve an empty owner directory: absence of all main/companions\
+    \ is the\n        # postcondition; retaining an opaque directory avoids unsafe\
+    \ recursive rm.\n        os.fsync(root_fd)\n    except PurgePending:\n       \
+    \ raise\n    except OSError:\n        raise PurgePending(\"filesystem_error\"\
+    ) from None\n    finally:\n        for fd in (child_fd, root_fd):\n          \
+    \  if fd is not None:\n                os.close(fd)\n"
+  purge-contract.json: "{\n  \"contract\": \"cognee-1.6.5-ladybug-0.19.0-v1\",\n \
+    \ \"cognee\": \"1.6.5\",\n  \"ladybug\": \"0.19.0\",\n  \"handler_sha256\": \"\
+    5ad7da3737c4dc56fe1864a324274077b24be206c71668a56eca86a5e31b5d48\",\n  \"native_sha256\"\
+    : \"61e5ab375d294a0c09ed975e66b20d03e30db092e16843689f721c8215a21585\",\n  \"\
+    repository\": \"https://github.com/LadybugDB/ladybug\",\n  \"tag\": \"v0.19.0\"\
+    ,\n  \"commit\": \"c934f673b6b1c5b680bdae3295cbd909b5855cef\",\n  \"source_sha256\"\
+    : {\n    \"src/include/common/constants.h\": \"2ab70fed0476557626449946c646f1b5fdbc186289297153d4b4d2b217e94ca9\"\
+    ,\n    \"src/include/storage/storage_utils.h\": \"2fd9df2e3a612a2d6c484a0d4e72415572e956b5ac04f5038dbf5b0012085a9c\"\
+    ,\n    \"src/common/file_system/local_file_system.cpp\": \"dd02f6018a2065d67d8c637cc2a5fb19b0c8c57998488d0a8bdad2a210d752ad\"\
+    ,\n    \"src/main/database_manager.cpp\": \"2088e60d1c29d57a82df34cdfff3f47c39bd0150c31b07a6cf3adbbf90e6687d\"\
+    \n  },\n  \"suffixes\": [\n    \"\",\n    \".wal\",\n    \".lock\",\n    \".shadow\"\
+    ,\n    \".tmp\",\n    \".wal.checkpoint\",\n    \".checkpoint.intent.lock\",\n\
+    \    \".checkpoint.apply.lock\"\n  ],\n  \"subgraphs\": \"not allowed; any unregistered\
+    \ directory entry blocks purge\",\n  \"physical_secure_erasure\": false\n}\n"
+  stdio_bridge.py: "\"\"\"Runs INSIDE the adapter Pod. Credentials never traverse\
+    \ SSH or agent config.\"\"\"\nimport argparse\nimport json\nfrom pathlib import\
+    \ Path\nimport sys\nimport urllib.request\nimport urllib.error\n\n\ndef main():\n\
+    \    parser=argparse.ArgumentParser()\n    parser.add_argument('--client',choices=('codex','hermes'),required=True)\n\
+    \    args=parser.parse_args()\n    token=Path('/auth/'+args.client).read_text().strip()\n\
+    \    while True:\n        line=sys.stdin.buffer.readline(16385)\n        if not\
+    \ line:return\n        if len(line)>16384 or not line.strip():raise SystemExit('invalid_mcp_frame')\n\
+    \        try:\n            payload=json.loads(line)\n            request=urllib.request.Request('http://127.0.0.1:8080/mcp',data=json.dumps(payload).encode(),\n\
+    \                headers={'Content-Type':'application/json','Authorization':'Bearer\
+    \ '+token})\n            with urllib.request.urlopen(request,timeout=90) as response:\n\
+    \                raw=response.read(65537)\n                if len(raw)>65536:raise\
+    \ ValueError\n                if raw:print(json.dumps(json.loads(raw)),flush=True)\n\
+    \        except Exception:\n            print(json.dumps({'event':'mcp_transport_failed'}),file=sys.stderr)\n\
+    \            raise SystemExit(1)\n\nif __name__=='__main__':main()\n"
+  network_guard.py: "\"\"\"Defense in depth for Python-origin automatic egress; NetworkPolicy\
+    \ covers native code.\"\"\"\nimport os\nimport socket\nimport sys\n\nBLOCKED=0\n\
+    \n\ndef install():\n    host=os.environ['DB_HOST']\n    ips={entry[4][0] for entry\
+    \ in socket.getaddrinfo(host,int(os.environ['DB_PORT']),type=socket.SOCK_STREAM)}\n\
+    \    def audit(event,args):\n        global BLOCKED\n        denied=False\n  \
+    \      if event=='socket.getaddrinfo':\n            denied=args[0] not in ({host}|ips)\n\
+    \        elif event=='socket.connect':\n            address=args[1]\n        \
+    \    denied=not isinstance(address,tuple) or address[0] not in ips or address[1]!=int(os.environ['DB_PORT'])\n\
+    \        if denied:\n            BLOCKED+=1\n            raise PermissionError('unauthorized_outbound_blocked')\n\
+    \    sys.addaudithook(audit)\n"
+  admin.py: "\"\"\"Explicit operator-only cleanup of already-forgotten SYNTHETIC acceptance\
+    \ IDs.\n\nNot an MCP tool. Refuses real mode, surviving records/jobs/receipts\
+    \ or unknown IDs.\nNever removes a file, schema, backup, PVC or Secret; only empty\
+    \ UUID directories\nand content-free test tombstones. Production tombstones are\
+    \ retained.\n\"\"\"\nimport argparse\nimport json\nimport os\nimport sys\nfrom\
+    \ backend import Backend\nfrom contract import identifier, Fault\nfrom purge import\
+    \ open_trusted_root\n\n\ndef main():\n    p=argparse.ArgumentParser();p.add_argument('--cleanup-forgotten-synthetic',action='store_true',required=True)\n\
+    \    p.parse_args()\n    ids=json.load(sys.stdin)\n    if not isinstance(ids,list)\
+    \ or not ids or len(ids)>100:raise Fault('invalid_fixture_ids')\n    ids=list({identifier(v)\
+    \ for v in ids})\n    b=Backend()\n    if b.real or os.environ.get('MEMORY_ALLOW_REAL')!='false':raise\
+    \ Fault('real_mode_cleanup_forbidden')\n    with b.session() as c:\n        for\
+    \ table in ('records','receipts','purge_jobs'):\n            c.execute('SELECT\
+    \ count(*) AS n FROM choms_memory.'+table)\n            if c.fetchone()['n']:raise\
+    \ Fault('synthetic_cleanup_not_quiescent')\n        c.execute('SELECT id FROM\
+    \ choms_memory.tombstones')\n        stored={str(row['id']) for row in c.fetchall()}\n\
+    \        if stored!=set(ids):raise Fault('unknown_or_missing_tombstone')\n   \
+    \     audit=[row for start in range(0,len(ids),20) for row in b._audit(c,ids[start:start+20])]\n\
+    \        if any(any(row[k] for k in ('canonical_rows','graph_artifacts','vector_schemas','cache_entries','content_receipts'))\
+    \ for row in audit):\n            raise Fault('purge_not_complete')\n        fd=open_trusted_root(b.root)\n\
+    \        try:\n            for memory_id in stored:\n                os.rmdir(memory_id,dir_fd=fd)\
+    \  # Only empty private directories; never recursive deletion.\n            os.fsync(fd)\n\
+    \        finally:os.close(fd)\n        c.execute('DELETE FROM choms_memory.tombstones\
+    \ WHERE id=ANY(%s::uuid[])',(ids,))\n        c.execute('SELECT count(*) AS n FROM\
+    \ choms_memory.tombstones')\n        if c.fetchone()['n']:raise Fault('cleanup_incomplete')\n\
+    \    print(json.dumps({'synthetic_cleanup':'PASS','remaining_records':0,'remaining_receipts':0,'remaining_tombstones':0}))\n\
+    \nif __name__=='__main__':main()\n"
+  001.sql: "CREATE TABLE IF NOT EXISTS choms_memory.schema_version(version integer\
+    \ PRIMARY KEY);\nCREATE TABLE IF NOT EXISTS choms_memory.records (\n id uuid PRIMARY\
+    \ KEY, lineage_id uuid NOT NULL, body jsonb,\n scope text NOT NULL CHECK(scope\
+    \ IN ('global','personal','project')),\n project text NOT NULL, topic text NOT\
+    \ NULL,\n state text NOT NULL CHECK(state IN ('candidate','active','superseded','expired','purge_pending')),\n\
+    \ revision integer NOT NULL CHECK(revision>0), vector_info jsonb,\n projection_state\
+    \ text NOT NULL CHECK(projection_state IN ('none','pending','ready','purge_pending')),\n\
+    \ content_hash text\n);\nCREATE UNIQUE INDEX IF NOT EXISTS one_active_topic ON\
+    \ choms_memory.records(scope,project,topic) WHERE state='active';\nCREATE INDEX\
+    \ IF NOT EXISTS memory_scope ON choms_memory.records(scope,project,state);\nCREATE\
+    \ TABLE IF NOT EXISTS choms_memory.receipts(\n request_id uuid PRIMARY KEY, operation\
+    \ text NOT NULL, target_id uuid NOT NULL,\n fingerprint text NOT NULL\n);\nCREATE\
+    \ TABLE IF NOT EXISTS choms_memory.tombstones(\n id uuid PRIMARY KEY, state text\
+    \ NOT NULL CHECK(state='forgotten'),\n revision integer NOT NULL, request_ids\
+    \ uuid[] NOT NULL\n);\nINSERT INTO choms_memory.schema_version VALUES(1) ON CONFLICT\
+    \ DO NOTHING;\nCREATE TABLE IF NOT EXISTS choms_memory.purge_jobs (\n id uuid\
+    \ PRIMARY KEY, members uuid[] NOT NULL, request_ids uuid[] NOT NULL\n);\n"
+  governance.py: "\"\"\"CHOMS governance reference mechanics. Synthetic temporary\
+    \ queues ONLY; no network.\"\"\"\nimport copy\nimport datetime as dt\nimport fcntl\n\
+    import hashlib\nimport json\nimport os\nfrom pathlib import Path\nimport re\n\
+    import stat\nimport tempfile\nimport unicodedata\nimport uuid\n\nVERSION = 'choms-memory-v1'\n\
+    OPERATIONS = {'propose', 'remember', 'supersede', 'forget', 'review', 'search',\
+    \ 'checkpoint', 'health'}\nTYPES = {'requirement', 'decision', 'objective', 'preference',\
+    \ 'constraint', 'correction', 'checkpoint'}\nSTATES = {'candidate', 'active',\
+    \ 'superseded', 'forgotten', 'expired'}\nIMPORTANCE = {'critical': 0, 'high':\
+    \ 1, 'medium': 2, 'low': 3}\nSOURCES = {'user_explicit', 'agent_inferred', 'repository',\
+    \ 'web', 'tool'}\nREQUIRED = {'id','type','scope','project_id','importance','summary','state','source_kind',\n\
+    \            'source_reference','created_at','updated_at','sensitivity','content_hash','schema_version',\n\
+    \            'revision','topic'}\nOPTIONAL = {'details','expires_at','supersedes','trigger'}\n\
+    SECRET = re.compile(\n    r'(?i)(?:AGE-SECRET-KEY|-----BEGIN [\\w ]*PRIVATE KEY|\\\
+    bBearer\\s+\\S+|'\n    r'\\b(?:password|passwd|contrase[n\xF1]a|token|cookie|api[_\
+    \ -]?key|client_secret|authorization)\\s*[=:]\\s*\\S+|'\n    r'\\b(?:sk|ghp|github_pat)[_-][A-Za-z0-9_-]{12,}|\\\
+    bauth\\.json\\s*[:=]\\s*\\{|'\n    r'[\"\\'](?:access_token|refresh_token|id_token)[\"\
+    \\']\\s*:|\\bkind\\s*:\\s*Secret\\b)')\n\nclass Rejected(ValueError):\n    \"\"\
+    \"Safe reason codes only; never include submitted text.\"\"\"\n\nclass Conflict(Rejected):\n\
+    \    pass\n\nclass BackendUnavailable(Rejected):\n    pass\n\ndef normalized(text):\n\
+    \    return ' '.join(re.findall(r'\\w+', ''.join(c for c in unicodedata.normalize('NFKD',\
+    \ text).casefold() if not unicodedata.combining(c))))\n\ndef safe(value):\n  \
+    \  if isinstance(value,dict):\n        if any(str(k).casefold() in {'password','passwd','access_token','refresh_token','id_token','cookie','authorization','private_key','client_secret'}\
+    \ for k in value):raise Rejected('sensitive_input')\n        for v in value.values():safe(v)\n\
+    \    elif isinstance(value,list):\n        for v in value:safe(v)\n    if isinstance(value,dict)\
+    \ and str(value.get('kind','')).casefold()=='secret':raise Rejected('sensitive_input')\n\
+    \    text=json.dumps(value,ensure_ascii=False) if not isinstance(value,str) else\
+    \ value\n    if re.search(r'(?i)\\b[A-Z][A-Z0-9_]*(?:TOKEN|SECRET|PASSWORD|API_KEY)\\\
+    s*[=:]\\s*\\S+',text):raise Rejected('sensitive_environment_assignment')\n   \
+    \ if len(text)>12000 or SECRET.search(text) or '```' in text or text.count('\\\
+    n')>25:\n        raise Rejected('sensitive_or_unbounded_input')\n    return value\n\
+    \ndef utc(value):\n    if not isinstance(value,str) or not value.endswith('Z'):\n\
+    \        raise Rejected('utc_required')\n    try: return dt.datetime.fromisoformat(value[:-1]+'+00:00')\n\
+    \    except ValueError: raise Rejected('utc_invalid') from None\n\ndef content_hash(record):\n\
+    \    data={k:normalized(record.get(k) or '') for k in ('type','scope','project_id','summary','details','importance','sensitivity','trigger','expires_at')}\n\
+    \    return hashlib.sha256(json.dumps(data,sort_keys=True).encode()).hexdigest()\n\
+    \ndef interpret(text):\n    \"\"\"Conservative bilingual routing hint; the runtime\
+    \ must resolve meaning and ambiguity.\"\"\"\n    safe(text)\n    n=normalized(text)\n\
+    \    continuity=bool(re.search(r'\\b(cuando|when)\\b.*\\b(diga|say|digo)\\b.*\\\
+    b(continu|retom|resume|continue)',n))\n    if continuity:return {'operation':'remember','type':'requirement','importance':'high','continuity':True}\n\
+    \    if re.search(r'\\b(no olvides|don t forget|do not forget|keep this)\\b',n):return\
+    \ {'operation':'remember','type':'requirement','importance':'high'}\n    for operation,pattern\
+    \ in [\n        ('forget',r'\\b(olvida|borra|elimina|forget|delete|erase)\\b'),\n\
+    \        ('supersede',r'\\b(corrige|sustituye|reemplaza|replace|supersede|correct)\\\
+    b'),\n        ('checkpoint',r'\\b(checkpoint|punto de control)\\b'),\n       \
+    \ ('search',r'\\b(retomemos|seguimos skill|resume|what did we decide|que hab[i\xED\
+    ]amos decidido)\\b')]:\n        if re.search(pattern,n): return {'operation':operation}\n\
+    \    continuity=bool(re.search(r'\\b(cuando|when)\\b.*\\b(diga|say|digo)\\b.*\\\
+    b(continu|retom|resume|continue)',n))\n    explicit=continuity or bool(re.search(r'\\\
+    b(recuerda|guarda|tenlo presente|no se pierda|importante|a partir de ahora|requisito|minimo|remember|save|keep\
+    \ in mind|from now on|requirement|minimum|important)\\b',n))\n    if not explicit\
+    \ and not re.search(r'\\b(architecture|arquitectura|objective|objetivo|constraint|restriction|prefer|reusable|reutilizable|decision|deberia|should)\\\
+    b',n):return {'operation':'review','actionable':False}\n    return {'operation':'remember'\
+    \ if explicit else 'propose',\n            'type':'requirement' if continuity\
+    \ else 'decision',\n            'importance':'high' if explicit else 'medium',\
+    \ 'continuity':continuity}\n\ndef make_record(text, summary, *, project='fixture-project',\
+    \ topic='fixture-topic',\n                source='user_explicit', importance=None,\
+    \ kind=None, now='2026-10-27T00:00:00Z',\n                details=None, trigger=None,\
+    \ expires_at=None, scope='project'):\n    # Raw conversation text is used only\
+    \ for routing; it is never stored.\n    safe(text);safe(summary)\n    hint=interpret(text)\n\
+    \    record={'schema_version':VERSION,'id':str(uuid.uuid4()),'type':kind or hint.get('type','decision'),\n\
+    \            'scope':scope,'project_id':project if scope=='project' else None,\n\
+    \            'importance':importance or hint.get('importance','medium'),'summary':summary,\n\
+    \            'state':'candidate','source_kind':source,'source_reference':'fixture:synthetic-turn',\n\
+    \            'created_at':now,'updated_at':now,'sensitivity':'internal','revision':1,'topic':topic}\n\
+    \    for k,v in [('details',details),('trigger',trigger),('expires_at',expires_at)]:\n\
+    \        if v is not None:record[k]=v\n    record['content_hash']=content_hash(record)\n\
+    \    validate(record)\n    return record\n\ndef validate(r):\n    safe(r)\n  \
+    \  if not isinstance(r,dict) or set(r)-REQUIRED-OPTIONAL or REQUIRED-set(r):raise\
+    \ Rejected('record_schema')\n    if r['schema_version']!=VERSION or r['type']\
+    \ not in TYPES or r['state'] not in STATES:raise Rejected('record_enum')\n   \
+    \ if r['scope'] not in {'global','personal','project'} or (r['scope']=='project')!=bool(r['project_id']):raise\
+    \ Rejected('scope_invalid')\n    if r['importance'] not in IMPORTANCE or r['source_kind']\
+    \ not in SOURCES or r['sensitivity'] not in {'public','internal','personal'}:raise\
+    \ Rejected('record_enum')\n    for k,maxlen in [('summary',500),('details',1500),('source_reference',160),('topic',100),('trigger',160),('project_id',100)]:\n\
+    \        if k in r and r[k] is not None and (not isinstance(r[k],str) or not 0<len(r[k])<=maxlen):raise\
+    \ Rejected('field_bound')\n    try:uuid.UUID(r['id'])\n    except (ValueError,TypeError,AttributeError):raise\
+    \ Rejected('id_invalid') from None\n    if type(r['revision']) is not int or r['revision']<1:raise\
+    \ Rejected('revision_invalid')\n    if utc(r['updated_at'])<utc(r['created_at']):raise\
+    \ Rejected('time_order')\n    if r.get('expires_at') and utc(r['expires_at'])<=utc(r['created_at']):raise\
+    \ Rejected('expiry_invalid')\n    if r['content_hash']!=content_hash(r):raise\
+    \ Rejected('content_hash_invalid')\n    return r\n\nclass DisabledBridge:\n  \
+    \  \"\"\"No implicit MCP dispatch, fallback, queue flush or network access.\"\"\
+    \"\n    def health(self):\n        return {'central_persistence':False,'reason':'record_crud_cas_and_purge_not_verified'}\n\
+    \    def call(self, operation, payload=None):\n        if operation not in OPERATIONS:raise\
+    \ Rejected('operation_invalid')\n        if operation=='health':return self.health()\n\
+    \        raise BackendUnavailable('central_memory_disabled_no_write_or_read_claim')\n\
+    \nclass SyntheticQueue:\n    \"\"\"Versioned JSON fixture, NOT a second production\
+    \ memory system.\"\"\"\n    def __init__(self, directory, *, synthetic=False):\n\
+    \        p=Path(directory)\n        if not synthetic or p.is_symlink() or not\
+    \ p.is_dir() or p.resolve().parent!=Path(tempfile.gettempdir()).resolve() or not\
+    \ p.name.startswith('choms-memory-test-'):\n            raise Rejected('synthetic_temporary_directory_required')\n\
+    \        s=p.stat()\n        if s.st_uid!=os.getuid() or stat.S_IMODE(s.st_mode)!=0o700:raise\
+    \ Rejected('private_directory_required')\n        self.root=p\n        self.path=p/'queue.json'\n\
+    \        self.lock=p/'queue.lock'\n\n    def _read(self):\n        if self.path.is_symlink():raise\
+    \ Rejected('unsafe_queue')\n        if not self.path.exists():return {'schema_version':VERSION,'revision':0,'records':[],'audit':[]}\n\
+    \        if self.path.is_symlink() or stat.S_IMODE(self.path.stat().st_mode)!=0o600:raise\
+    \ Rejected('unsafe_queue')\n        raw=self.path.read_bytes()\n        if len(raw)>1024*1024:raise\
+    \ Rejected('queue_limit')\n        value=json.loads(raw)\n        if set(value)!={'schema_version','revision','records','audit'}\
+    \ or value['schema_version']!=VERSION:raise Rejected('queue_schema')\n       \
+    \ return value\n\n    def read(self):\n        # A rename exposes only a complete\
+    \ old or new generation.\n        return copy.deepcopy(self._read())\n\n    def\
+    \ apply(self, operation, *, expected_revision, record=None, target=None, explicit=False,\n\
+    \              equivalent_to=None, now='2026-10-27T00:00:00Z'):\n        if operation\
+    \ not in OPERATIONS-{'health','review','search'}:raise Rejected('mutation_invalid')\n\
+    \        utc(now)\n        fd=os.open(self.lock,os.O_CREAT|os.O_RDWR|os.O_NOFOLLOW,0o600)\n\
+    \        try:\n            if os.fstat(fd).st_uid!=os.getuid() or not stat.S_ISREG(os.fstat(fd).st_mode)\
+    \ or stat.S_IMODE(os.fstat(fd).st_mode)!=0o600:raise Rejected('unsafe_lock')\n\
+    \            fcntl.flock(fd,fcntl.LOCK_EX)\n            doc=self._read()\n   \
+    \         if doc['revision']!=expected_revision:raise Conflict('stale_revision_reload_and_reconcile')\n\
+    \            rows=doc['records']\n            if operation=='forget':\n      \
+    \          if not explicit:raise Rejected('explicit_forget_required')\n      \
+    \          found=[r for r in rows if r['id']==target]\n                if not\
+    \ found:raise Rejected('target_missing')\n                doc['records']=[r for\
+    \ r in rows if r['id']!=target]\n                # Purge content, source, original\
+    \ hash and details; only opaque ID remains.\n                doc['audit'].append({'operation':'forget','id':target,'state':'forgotten'})\n\
+    \                result={'id':target,'state':'forgotten','content_removed':True}\n\
+    \            else:\n                validate(record)\n                if not record['source_reference'].startswith('fixture:'):raise\
+    \ Rejected('synthetic_reference_required')\n                if record['source_kind']\
+    \ in {'web','tool','repository'}:raise Rejected('untrusted_source_not_user_instruction')\n\
+    \                if explicit and record['source_kind']!='user_explicit':raise\
+    \ Rejected('explicit_user_source_required')\n                if operation in {'remember','supersede'}\
+    \ and not explicit:raise Rejected('explicit_consent_required')\n             \
+    \   active=[r for r in rows if r['state']=='active' and (not r.get('expires_at')\
+    \ or utc(r['expires_at'])>utc(now))]\n                matches=[r for r in rows\
+    \ if r['state'] in {'active','candidate'} and r['content_hash']==record['content_hash']\
+    \ and (not r.get('expires_at') or utc(r['expires_at'])>utc(now))]\n          \
+    \      if matches and matches[0]['state']=='candidate' and operation=='remember'\
+    \ and explicit:\n                    prior=matches[0];rows.remove(prior);record=copy.deepcopy(record)\n\
+    \                    record.update(id=prior['id'],created_at=prior['created_at'],revision=prior['revision']+1)\n\
+    \                    matches=[]\n                if equivalent_to:\n         \
+    \           match=next((r for r in active if r['id']==equivalent_to),None)\n \
+    \                   if not explicit or match is None or (match['scope'],match['project_id'])!=(record['scope'],record['project_id']):raise\
+    \ Rejected('semantic_equivalence_requires_explicit_scoped_review')\n         \
+    \           matches=[match]\n                if matches:return {'duplicate_of':matches[0]['id'],'revision':doc['revision']}\n\
+    \                result=copy.deepcopy(record)\n                result['state']='active'\
+    \ if explicit and operation in {'remember','supersede','checkpoint'} else 'candidate'\n\
+    \                conflicts=[r for r in active if (r['scope'],r['project_id'],r['topic'])==(result['scope'],result['project_id'],result['topic'])]\n\
+    \                if operation=='supersede':\n                    prior=next((r\
+    \ for r in rows if r['id']==target and r['state']=='active'),None)\n         \
+    \           if prior is None or (prior['scope'],prior['project_id'])!=(result['scope'],result['project_id']):raise\
+    \ Rejected('correction_target_invalid')\n                    if any(r['id']!=target\
+    \ for r in conflicts):raise Rejected('unresolved_conflicts')\n               \
+    \     prior.update(state='superseded',updated_at=now,revision=prior['revision']+1)\n\
+    \                    result['supersedes']=target\n                elif conflicts:\n\
+    \                    result['state']='candidate' # A later timestamp never silently\
+    \ wins.\n                result['updated_at']=now\n                validate(result);rows.append(result)\n\
+    \            doc['revision']+=1\n            data=json.dumps(doc,sort_keys=True,ensure_ascii=False).encode()\n\
+    \            if len(data)>1024*1024:raise Rejected('queue_limit')\n          \
+    \  # No journal, backup copy or payload in error messages.\n            tmpfd,name=tempfile.mkstemp(prefix='.queue-',dir=self.root)\n\
+    \            try:\n                with os.fdopen(tmpfd,'wb') as f:f.write(data);f.flush();os.fsync(f.fileno())\n\
+    \                os.replace(name,self.path)\n                dfd=os.open(self.root,os.O_RDONLY|os.O_DIRECTORY)\n\
+    \                try:os.fsync(dfd)\n                finally:os.close(dfd)\n  \
+    \          finally:\n                if os.path.exists(name):os.unlink(name)\n\
+    \            return {**result,'queue_revision':doc['revision'],'central_persisted':False}\n\
+    \        finally:os.close(fd)\n\n    def search(self, query, *, project, now='2026-10-27T00:00:00Z',\
+    \ include_medium=False,\n               explicit_low=False, limit=5, budget_chars=2400,\
+    \ include_personal=False):\n        safe(query);utc(now)\n        if not 1<=limit<=10\
+    \ or not 128<=budget_chars<=6000:raise Rejected('context_budget_invalid')\n  \
+    \      hits=[]\n        for r in self.read()['records']:\n            validate(r)\n\
+    \            if r['state']!='active' or r.get('expires_at') and utc(r['expires_at'])<=utc(now):continue\n\
+    \            if r['scope']=='project' and r['project_id']!=project:continue\n\
+    \            if r['scope']=='personal' and not include_personal:continue\n   \
+    \         if r['importance']=='medium' and not include_medium:continue\n     \
+    \       if r['importance']=='low' and not explicit_low:continue\n            terms=set(normalized(query).split());hay=normalized('\
+    \ '.join([r['summary'],r.get('details',''),r.get('trigger','')]))\n          \
+    \  if not terms.intersection(hay.split()):continue\n            hits.append(r)\n\
+    \        hits.sort(key=lambda r:(IMPORTANCE[r['importance']],r['created_at'],r['id']))\n\
+    \        selected=[]\n        for r in hits:\n            if len(selected)>=limit:break\n\
+    \            # Bound actual serialized context including provenance, not only\
+    \ summary length.\n            if len(json.dumps(selected+[r],ensure_ascii=False))<=budget_chars:selected.append(r)\n\
+    \        return {'records':selected,'central_persisted':False,'used_chars':len(json.dumps(selected,ensure_ascii=False))}\n\
+    \n    def review(self, *, project):\n        return [validate(r) for r in self.read()['records']\
+    \ if r['scope']=='project' and r['project_id']==project]\n\n    def expire(self,\
+    \ *, expected_revision, now):\n        # Expiry is derived on reads; no content\
+    \ is injected after expiry.\n        if self.read()['revision']!=expected_revision:raise\
+    \ Conflict('stale_revision_reload_and_reconcile')\n        return [{'id':r['id'],'state':'expired'}\
+    \ for r in self.read()['records'] if r.get('expires_at') and utc(r['expires_at'])<=utc(now)]\n\
+    \nif __name__=='__main__':\n    print(json.dumps(DisabledBridge().health(),sort_keys=True))\n"

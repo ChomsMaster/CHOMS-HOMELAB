@@ -8,10 +8,10 @@ import yaml
 
 def validate(root):
     profile=json.loads((root/'PROFILE.json').read_text())
-    assert profile['version']=='1.2.0','profile_version'
+    assert profile['version']=='1.3.0','profile_version'
     names=profile['activation']['selected']
     assert len(names)==len(set(names))==9,'selected_count'
-    assert profile['governance']['central_persistence'] is False,'central_disabled'
+    assert profile['governance']['central_persistence']=='synthetic-only' and profile['governance']['real_memories'] is False,'real_memory_gate'
     assert profile['activation']['optional']==['choms-verification-loop'],'optional_unchanged'
     indexed={e['name']:e for e in profile['skills']}
     for name in names:

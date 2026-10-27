@@ -1,0 +1,86 @@
+{
+  "date": "2026-10-27",
+  "source_gates": [
+    "0b77620",
+    "958f3e9"
+  ],
+  "tools": [
+    "health",
+    "propose",
+    "remember",
+    "search",
+    "review",
+    "supersede",
+    "forget",
+    "checkpoint"
+  ],
+  "codex_native_e2e": "PASS",
+  "hermes_native_e2e": "PASS",
+  "native_registered_discovery": {
+    "codex": 8,
+    "hermes": 8
+  },
+  "synthetic_records": 23,
+  "cas_simultaneous": {
+    "success": 1,
+    "cas_conflict": 1
+  },
+  "authentication": {
+    "absent": 401,
+    "invalid": 401
+  },
+  "states": [
+    "candidate",
+    "active",
+    "superseded",
+    "forgotten",
+    "expired"
+  ],
+  "scopes": [
+    "global",
+    "personal",
+    "project"
+  ],
+  "persistence_restart": "PASS",
+  "purge_after_restart": "PASS",
+  "canonical_rows_after_cleanup": 0,
+  "vector_schemas_after_cleanup": 0,
+  "graph_artifacts_after_cleanup": 0,
+  "content_receipts_after_cleanup": 0,
+  "tombstones_after_cleanup": 0,
+  "automatic_outbound_attempts": 0,
+  "automatic_capture": false,
+  "real_memories_allowed": false,
+  "backup_complete_coverage": false,
+  "backup_expiry_maximum": "not_accredited",
+  "retention_proposal": "7 days time based; audited expiry within 24h; target max 8 days; NOT APPLIED",
+  "backups_executed": false,
+  "restore_executed": false,
+  "rollback": "server dry-run only",
+  "offline_unit_regressions": 85,
+  "codex_skill_parser": 9,
+  "hermes_skill_parser": 9,
+  "local_validator": "PASS failures=0 omissions=0",
+  "gitleaks_scoped": "PASS",
+  "kubeconform": {
+    "valid": 7,
+    "invalid": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "declarative_functional_drift": 0,
+  "kubectl_diff_metadata_only": "generation increment in server dry-run",
+  "readiness": {
+    "choms-memory": true,
+    "cognee-api": true,
+    "postgresql": true
+  },
+  "memory_restarts": 0,
+  "memory_node": "choms-node-02",
+  "pvc": "Bound Retain node-02",
+  "backup_evidence": {
+    "installed_node01_script_sha256": "88d3634ed946e071b896d54040ece07002664f2aa979413210a1ed3d475dc0b3",
+    "git_node01_script_sha256": "608c5166009c337c461f05a60ca74584356a63dfa81952051b72915801525aa8",
+    "installed_logical_script_matches_git_sha256": "37276c06e7a200e5369bfc8dd28a6b8df17282fa79481dcc00f9766606b8d48d"
+  }
+}

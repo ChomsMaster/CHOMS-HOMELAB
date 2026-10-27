@@ -118,3 +118,10 @@ investigar su versión/propiedad; no ampliar la allowlist por prefijo.
 Pendiente: conectar esta compensación al MCP productivo con esquema completo de
 gobernanza, autorización por ámbito, CAS y ocho operaciones; volver a acreditar
 su E2E antes de registrar clientes o aceptar la primera memoria real.
+
+## Integración posterior — 27-10-2026
+
+El gate histórico anterior permanece sin cambios. El MCP independiente completo
+lo reutiliza y acredita el E2E sintético desde ambos clientes; ver
+[CHOMS Memory](../../operations/CHOMS_MEMORY.md). Memorias reales y captura
+automática siguen bloqueadas hasta aprobar cobertura y backup-expiry.

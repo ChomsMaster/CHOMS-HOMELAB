@@ -60,10 +60,11 @@ check_index_coverage, detect_changes, manage_adr, ingest_traces.
 | ingest_traces | pares caller/callee de símbolos indexados | no admite esquema de memoria de usuario |
 | delete_project | elimina un proyecto completo del índice | nunca mapear a forget individual |
 
-No se ha demostrado una interfaz Cognee independiente con estas garantías: no
-se declara ausente toda escritura en Cognee. Falta un adaptador mínimo autenticado
-sobre almacenamiento existente con esquema, consentimiento, aislamiento, CAS,
-idempotencia y purga comprobables. No requiere desplegar otra DB ni servicio ahora.
-El fixture mcp-capabilities.json registra los esquemas reales relevantes; no tokens,
-configuraciones completas, datos indexados ni respuestas a búsquedas personales.
-Persistencia central permanece DESHABILITADA. Nunca afirmar «guardado» sin recibo.
+El registro anterior documenta el gate inicial de 1.2.0, no el estado productivo
+actual. En 1.3.0, choms-memory independiente acredita CRUD/CAS/purga y reinicio
+con datos sintéticos desde ambos clientes. choms-codebase-memory conserva sus
+cuatro herramientas permitidas en Hermes y no almacena memorias personales.
+
+Memorias reales siguen bloqueadas hasta aprobar el gate de backups. forget-live
+no acredita backup-expiry ni sobrescritura física. No almacenar «seguimos skill»
+aún. El fixture mcp-capabilities.json conserva la evidencia histórica del índice.

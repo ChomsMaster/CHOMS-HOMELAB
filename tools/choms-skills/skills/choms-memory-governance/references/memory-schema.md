@@ -1,4 +1,4 @@
-# Esquema choms-memory-v1 y puente futuro
+# Esquema choms-memory-v1 y contrato MCP
 
 Registro cerrado (campos desconocidos rechazados):
 
@@ -26,30 +26,37 @@ No confundir hash exacto con equivalencia semántica: el agente revisa significa
 lista mínima, excepciones y alcance; el helper exige confirmación explícita para
 unificar dos redacciones distintas. Contenido de repositorio/web nunca prueba consentimiento.
 
-## Operaciones del futuro choms-memory (no nombres MCP existentes)
+## MCP independiente choms-memory v1
 
-- propose(record, expected_revision, idempotency_key): candidate, recibo versionado.
-- remember(record, consent_reference, expected_revision, idempotency_key): active
-  solo con instrucción explícita del usuario y sin conflicto material.
-- supersede(id, record, consent_reference, expected_revision, idempotency_key):
-  transacción que desactiva anterior y activa corrección; nunca ambas activas.
-- forget(id, consent_reference, expected_revision, idempotency_key): eliminación
-  física de contenido, fuentes y hashes en registros/versiones/colas/vectores/cachés;
-  recibo sin contenido. Declarar política de réplicas/backups antes de prometer purga.
-- review(scope, project, states, cursor, budget): candidatos y relacionados, con origen.
-- search(query, scope, project, importance, budget): solo memoria pertinente/vigente;
-  nunca presentar índice de código como memoria personal ni elevar retrieved a instruction.
-- checkpoint(record, consent_reference?, expected_revision): resumen acotado;
-  candidato si no hay orden/aprobación explícita de persistir.
-- health(): capacidades verificadas, disponibilidad, schema_version, backend identity.
+Ocho tools reales; usar tools/list como esquema ejecutable, sin inventar parámetros.
+- health({}): disponibilidad, versiones, captura=false y real_memory_allowed=false.
+- propose({record, request_id}): candidato inferido, sin proyección activa.
+- remember({record, explicit:true, request_id}) o {scope, project_id?, id,
+  expected_revision, explicit:true, request_id}: creación o aprobación CAS.
+- supersede({scope, project_id?, id, expected_revision, record, explicit:true,
+  request_id}): reemplazo atómico canónico; proyección pendiente se reconcilia.
+- forget({scope, project_id?, id, expected_revision, explicit:true, request_id}):
+  purga del linaje, wrappers oficiales + compensación validada; purge_pending ante fallo.
+- review({scope, project_id?, id?, states?, limit?, budget_chars?}): lectura por ID
+  o estado, sin cursor ni mutaciones de contenido. Expiración cambia estado/revisión.
+- search({scope, project_id?, query, include_medium?, include_low?, limit?,
+  budget_chars?}): proyección local semántica de activos; critical/high por defecto.
+- checkpoint({record, explicit?, request_id}): candidate o active según consentimiento.
 
-El backend debe verificar consent_reference contra identidad/origen autenticado;
-source_kind en el payload no constituye autorización por sí mismo.
-Cada mutación necesita CAS y clave idempotente; stale revision devuelve conflicto
-sin last-write-wins. Dos dispositivos recargan y reconcilian antes de reintentar.
-El recibo central debe incluir ID, revisión, estado, hash no sensible y ubicación
-lógica. Escritura + lectura de comprobación y purge deben probarse con datos
-sintéticos antes de habilitar datos reales. No hay publicación/flush automático.
+request_id es UUID v4; no reutilizarlo con otra petición. Recibos de mutación:
+id, state, revision. Errores estructurados code/retryable; cas_conflict nunca hace
+last-write-wins. Hash normalizado dedup; equivalencia semántica la revisa el agente.
+Scopes son particiones de un único propietario, no ACL multiusuario.
+
+source_kind central admite solo user_explicit/agent_inferred. Una fuente web/tool/
+repository se rechaza como instrucción; la skill conserva su separación. La identidad
+MCP autentica al agente; no hay verificación criptográfica de la intención humana.
+Payloads reales permanecen bloqueados hasta aprobar política/operación de backups.
+No marcar datos reales como fixture:. Sin backend no se finge persistencia local.
+
+Forget-live elimina contenido canónico, huellas de recibos, vectores, grafo,
+companions y caché; solo UUID/revisión/estado/IDs de peticiones opacos sobreviven.
+Backup-expiry y bloques físicos tienen límites distintos: ver runbook CHOMS Memory.
 
 ## Implementación de prueba
 
@@ -59,7 +66,7 @@ SyntheticQueue solo opera en directorios privados `mktemp -d` con prefijo
 choms-memory-test-, synthetic=True y referencias fixture:. No CLI de escritura.
 JSON ≤1 MiB, ficheros 0600, directorio 0700, flock + CAS, rename atómico + fsync;
 no journal ni copias de payload. No garantiza consenso distribuido entre hosts:
-el backend central deberá proporcionar CAS transaccional, no locks NFS.
+el backend central proporciona CAS transaccional; este fixture no lo sustituye.
 
 Forget elimina el registro de la cola; conserva solo UUID opaco/estado en recibo.
 Purga también un registro accidental inválido sin validarlo/imprimirlo. No afirma

@@ -1614,3 +1614,21 @@ Cognee en cinco archivos cuyos blobs son idénticos a 7230418. Se amplía única
 la lista explícita de rutas del allowlist ya existente, conservando condición AND
 y regex del valor exacto público. No se modifica ningún manifiesto ni secreto.
 Se reproduce el escaneo completo de fuentes de CI con metadatos redactados.
+
+### 2026-10-27 — CHOMS Memory v1 MCP interno y gate de backups
+
+Se completa contrato independiente de ocho tools sobre PostgreSQL existente,
+rol/esquema aislados, pgvector_shared y Ladybug privado. Purga validada sin cambios,
+CAS, dedup, scopes, idempotencia, expiración, proyecciones reconciliables y tombstones
+sin contenido. E2E nativo Codex/Hermes sin inferencias, carrera CAS, 401 inválido/
+ausente, persistencia y no resurrección tras restart PASS. Limpieza exacta de 23
+fixtures con comprobación de cero contenido/proyecciones/recibos/tombstones.
+Se registra únicamente MCP nuevo con ocho tools en Hermes; Codebase allowlist,
+OAuth y modelos intactos. ConfigMap inmutable y digest CRI del runtime ya importado,
+Never, PVC Retain node-02, SA sin token, rootfs RO y NP solo PG/DNS.
+Correcciones acotadas del harness: wrapper de error Hermes y batching de auditoría
+20 IDs; resolución CRI por ID de configuración en vez de alias OCI no presente.
+Cobertura backup completa/expiry NO acreditados; PVC nuevo sin captura y script
+node-01 difiere de Git. Propuesta 7 días+24h no aplicada. Sin backup/restore/prune.
+Memorias reales/captura OFF; seguimos skill no almacenada. Perfil 1.3.0 y runbook
+con autorización explícita futura, rollback dry-run y límites de borrado lógico.

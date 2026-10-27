@@ -1,0 +1,14 @@
+{
+  "index": "sha256:b9c82ac89e7eaed83fc01e9a620e51dab7a97d994925b675e3785998395cef6c",
+  "config": "sha256:8ceaeca731beb3c888384e3837c9232de05c1090e935dbb1997f76049e037d4d",
+  "os": "linux",
+  "architecture": "amd64",
+  "contract": "choms-memory-runtime-v1",
+  "cognee": "1.6.5",
+  "ladybug": "0.19.0",
+  "manifest": "sha256:a57317edb1aef8c3a1ae2377b0e52c37f8eb62a5bb99691709192f97a9ec7bc1",
+  "runtime_image_id": "docker.io/library/choms-cognee-local-tokenizer@sha256:a56ec10ad5624ffdfccc8dc6de7f14c857914001c4ba8c68b4dabcd1acc51df9",
+  "pull_policy": "Never",
+  "resolution": "containerd 2.3.2 CRI LocalResolve raw config digest; graph checked from existing archive JSON blobs",
+  "source": "https://github.com/containerd/containerd/blob/v2.3.2/internal/cri/server/images/service.go"
+}

@@ -105,7 +105,7 @@
     {
       "name": "choms-memory-governance",
       "path": "skills/choms-memory-governance/SKILL.md",
-      "sha256": "426b632330d0a67268829dea1c5ac6d6b3372d5673fb149c279e1908c24bd88f",
+      "sha256": "06dc34c3bd2f129939582c753b79dd647b7d86c4be2a5be35243b0ae252f52af",
       "kind": "CHOMS original skill",
       "origin": "CHOMS Memory Governance v1 operator requirements; no ECC memory code",
       "activation": "user-authorized-native-discovery"
@@ -124,7 +124,7 @@
   "excluded": [
     "ECC memory of every kind",
     "Memory Vault",
-    "all new MCP servers",
+    "unapproved MCP servers",
     "automatic hooks",
     "instincts and automatic learning",
     "agents",
@@ -136,7 +136,7 @@
     "codex": "Native user skills discovery and skills/list; individual links only.",
     "hermes": "Native catalog and explicit slash loading; existing toolset unchanged. No skills management bundle."
   },
-  "version": "1.2.0",
+  "version": "1.3.0",
   "activation": {
     "selected": [
       "choms-frontend-direction",
@@ -157,10 +157,11 @@
   "provenance_scope": "ECC lock applies only to ECC-derived entries; context, prompt caching and governance are original CHOMS works.",
   "governance": {
     "schema_version": "choms-memory-v1",
-    "central_persistence": false,
-    "queue": "synthetic temporary fixtures only",
-    "backend": "disabled until CRUD/CAS/purge verified",
+    "central_persistence": "synthetic-only",
+    "queue": "temporary synthetic fixtures only; no real fallback",
+    "backend": "choms-memory authenticated MCP; eight tools; backup gate closed",
     "hooks": false,
-    "automatic_flush": false
+    "automatic_flush": false,
+    "real_memories": false
   }
 }

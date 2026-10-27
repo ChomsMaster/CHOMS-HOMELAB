@@ -1,0 +1,256 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: choms-memory-adapter
+  namespace: choms-memory
+  labels:
+    app.kubernetes.io/name: choms-memory
+    app.kubernetes.io/part-of: choms-memory
+automountServiceAccountToken: false
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: choms-memory-state
+  namespace: choms-memory
+  labels:
+    app.kubernetes.io/name: choms-memory
+    app.kubernetes.io/part-of: choms-memory
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: choms-memory-local
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: choms-memory
+  namespace: choms-memory
+  labels: &id001
+    app.kubernetes.io/name: choms-memory
+    app.kubernetes.io/part-of: choms-memory
+spec:
+  type: ClusterIP
+  selector: *id001
+  ports:
+  - name: mcp
+    port: 8080
+    targetPort: mcp
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: choms-memory
+  namespace: choms-memory
+  labels: &id001
+    app.kubernetes.io/name: choms-memory
+    app.kubernetes.io/part-of: choms-memory
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels: *id001
+  template:
+    metadata:
+      labels: *id001
+      annotations:
+        choms.platforms/source-sha256: 646657870b5200d9f2c5c4a21563d70a317c40fb27d813f553dd2ed71b413eed
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: choms-node-02
+      serviceAccountName: choms-memory-adapter
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 45
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: choms-memory
+        image: sha256:8ceaeca731beb3c888384e3837c9232de05c1090e935dbb1997f76049e037d4d
+        imagePullPolicy: Never
+        command:
+        - /src/.venv/bin/python
+        - /app/server.py
+        workingDir: /src
+        env:
+        - name: DB_PROVIDER
+          value: postgres
+        - name: DB_HOST
+          value: postgresql.choms-memory.svc.cluster.local
+        - name: DB_PORT
+          value: '5432'
+        - name: DB_NAME
+          value: cognee
+        - name: DB_USERNAME
+          value: choms_memory_adapter
+        - name: VECTOR_DB_PROVIDER
+          value: pgvector
+        - name: VECTOR_DATASET_DATABASE_HANDLER
+          value: pgvector_shared
+        - name: ENABLE_BACKEND_ACCESS_CONTROL
+          value: 'true'
+        - name: GRAPH_DATABASE_PROVIDER
+          value: kuzu
+        - name: SYSTEM_ROOT_DIRECTORY
+          value: /state/system
+        - name: DATA_ROOT_DIRECTORY
+          value: /state/data
+        - name: MEMORY_BACKUP_POLICY_ACKNOWLEDGED
+          value: 'false'
+        - name: MEMORY_ALLOW_REAL
+          value: 'false'
+        - name: MEMORY_AUTOMATIC_CAPTURE
+          value: 'false'
+        - name: TELEMETRY_DISABLED
+          value: 'true'
+        - name: LITELLM_LOCAL_MODEL_COST_MAP
+          value: 'True'
+        - name: HF_HUB_OFFLINE
+          value: '1'
+        - name: TRANSFORMERS_OFFLINE
+          value: '1'
+        - name: HF_HOME
+          value: /models
+        - name: HF_HUB_CACHE
+          value: /models/hub
+        - name: ALLOW_HTTP_REQUESTS
+          value: 'false'
+        - name: MEMORY_EMBEDDING_PATH
+          value: /models/hub/models--qdrant--bge-small-en-v1.5-onnx-q/snapshots/aa8f8b060edb00e03bfdd08813a2949946c8ba55
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: choms-memory-runtime
+              key: database-password
+        ports:
+        - name: mcp
+          containerPort: 8080
+        resources:
+          requests:
+            cpu: 250m
+            memory: 1Gi
+          limits:
+            cpu: '1'
+            memory: 3Gi
+        securityContext:
+          runAsNonRoot: true
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+        startupProbe:
+          httpGet:
+            path: /ready
+            port: mcp
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 36
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: mcp
+          periodSeconds: 10
+          timeoutSeconds: 3
+        volumeMounts:
+        - name: code
+          mountPath: /app
+          readOnly: true
+        - name: auth
+          mountPath: /auth
+          readOnly: true
+        - name: state
+          mountPath: /state
+        - name: tmp
+          mountPath: /tmp
+        - name: models
+          mountPath: /models
+          subPath: models-76fb6636f317812a
+          readOnly: true
+      volumes:
+      - name: code
+        configMap:
+          name: choms-memory-code-646657870b52
+      - name: auth
+        secret:
+          secretName: choms-memory-runtime
+          defaultMode: 288
+      - name: state
+        persistentVolumeClaim:
+          claimName: choms-memory-state
+      - name: tmp
+        emptyDir:
+          sizeLimit: 128Mi
+      - name: models
+        persistentVolumeClaim:
+          claimName: cognee-data
+          readOnly: true
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-memory-isolation
+  namespace: choms-memory
+  labels: &id001
+    app.kubernetes.io/name: choms-memory
+    app.kubernetes.io/part-of: choms-memory
+spec:
+  podSelector:
+    matchLabels: *id001
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress: []
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: postgresql
+          app.kubernetes.io/part-of: choms-memory
+    ports:
+    - protocol: TCP
+      port: 5432
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+      podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-memory-to-postgresql
+  namespace: choms-memory
+  labels: &id001
+    app.kubernetes.io/name: choms-memory
+    app.kubernetes.io/part-of: choms-memory
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: postgresql
+      app.kubernetes.io/part-of: choms-memory
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels: *id001
+    ports:
+    - protocol: TCP
+      port: 5432
