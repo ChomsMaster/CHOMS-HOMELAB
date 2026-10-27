@@ -1591,3 +1591,18 @@ MCP 0.12.1 (17 tools), sin escrituras: ADR/index/trazas no cubren el contrato
 central. Backend deshabilitado con error explícito; no se guardan datos reales.
 Se añaden solo dos enlaces reversibles; configuraciones/allowlist Hermes y las
 ocho skills previas permanecen intactas. Sin Kubernetes, OAuth ni inferencias.
+
+### 2026-10-27 — Gate de purga lógica Ladybug aislado
+
+Fuente oficial Ladybug v0.19.0/c934f673 y handler efectivo Cognee 1.6.5 fijados
+por hashes. Allowlist añade tmp, wal.checkpoint y locks intent/apply; subgrafos
+no registrados bloquean la operación. Compensación tras handler oficial, lstat,
+raíz privada, exclusividad, estabilidad, fsync y reconciliación purge_pending.
+27 tests offline PASS. Gate real autenticado sobre rol/esquemas temporales de
+PostgreSQL existente, pgvector_shared y raíz de grafo propia: escritura/lectura/
+búsqueda semántica local PASS; borrado sin contenido, vector, archivos ni caché;
+tombstone opaca única; reinicio sin resurrección y doble forget PASS. Reproducción
+real del handler deja shadow y wrapper lo retira. Limpieza del entorno completo;
+Cognee/PostgreSQL Ready, sin memorias reales ni cambios de clientes. Se corrigieron
+solo defectos del harness (orden imports, DB_PORT y señal PID 1). No borrado físico,
+no backup/restore. MCP productivo completo aún pendiente; no se registra en clientes.

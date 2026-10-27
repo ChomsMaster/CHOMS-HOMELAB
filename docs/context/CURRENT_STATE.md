@@ -1,3 +1,14 @@
+## Gate de purga choms-memory — 27-10-2026
+
+Compensación aislada Cognee 1.6.5/Ladybug 0.19.0 y 27 regresiones offline.
+Gate live sintético PASS: canónico PostgreSQL + pgvector_shared + grafo exclusivo;
+forget deja cero contenido/vector/artefactos/caché y una tombstone opaca.
+Reinicio del contenedor sin resurrección; entorno sintético, rol y esquemas retirados.
+Cognee/PostgreSQL existentes Ready. Sin parche global, datasets reales ni clientes MCP.
+[Contrato, evidencia, límites y rollback](../architecture/memory/PURGE_COMPENSATION.md).
+Pendiente: adaptador MCP productivo completo, CAS/ámbitos y su E2E; persistencia real
+continúa deshabilitada. Esto no acredita sobrescritura física ni purga de backups.
+
 ## CHOMS Memory Governance v1 — 27-10-2026
 
 Perfil CHOMS Skills 1.2.0: nueve skills por enlaces individuales Codex/Hermes;

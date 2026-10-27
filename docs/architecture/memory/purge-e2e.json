@@ -1,0 +1,55 @@
+{
+  "observed_at": "2026-10-27T00:26:36.835753+00:00",
+  "project": "choms-memory-e2e-test",
+  "status": "PASS",
+  "synthetic_only": true,
+  "authentication": {
+    "anonymous_http": 401,
+    "authenticated_health": "ready"
+  },
+  "official_handler_regression": {
+    "left_shadow": true,
+    "wrapper_remaining": 0,
+    "second_execution": "PASS"
+  },
+  "before": {
+    "canonical_memories": 1,
+    "semantic_matches": 1,
+    "graph_nodes": 1,
+    "embeddings": 1
+  },
+  "after_forget": {
+    "canonical_rows": 0,
+    "vector_schemas": 0,
+    "graph_artifacts": 0,
+    "cache_entries": 0,
+    "tombstones": 1
+  },
+  "after_container_restart": {
+    "same_pod_emptydir_preserved": true,
+    "restart_signal": "SIGINT",
+    "search_matches": 0,
+    "read_result": null,
+    "canonical_rows": 0,
+    "graph_artifacts": 0,
+    "cache_entries": 0,
+    "tombstones": 1,
+    "second_forget": "forgotten",
+    "vector_schemas": 0
+  },
+  "runtime_imageID": "docker.io/library/choms-cognee-local-tokenizer@sha256:a56ec10ad5624ffdfccc8dc6de7f14c857914001c4ba8c68b4dabcd1acc51df9",
+  "cleanup": {
+    "synthetic_resources_remaining": false,
+    "role_and_schemas_removed": true,
+    "existing_services_ready": true
+  },
+  "production_mcp_registered": false,
+  "physical_secure_erasure": false,
+  "offline_tests": 27,
+  "artifact_sha256": {
+    "tools/choms-memory/purge.py": "c1eab7c2e06df93524faea7a0664d341ef2d032f2b932879c9f8dcf98868e101",
+    "tools/choms-memory/gate_adapter.py": "c0a0e887e25167965ccdb87327e125ac818e2180397ac5c452211ae23d0d3668",
+    "tools/choms-memory/purge-contract.json": "692baf1d4c68cb1038945d473bd4e3ff9a71788b55ff5582871481c25a66e47d",
+    "scripts/memory/memory_purge_e2e.py": "bb02805cd29483a9b579f40ac6c0d7b8cdb9f9a2b68037cbc3c2ebaeee8eb83a"
+  }
+}

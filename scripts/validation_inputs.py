@@ -77,6 +77,14 @@ def safe_source(name):
     return path.suffix in ('.sh', '.py', '.yaml', '.yml', '.json', '.tf', '.md', '.toml') or path.name in ('.yamllint', '.gitleaks.toml')
 
 
+def validate_memory_purge(root):
+    """Only deterministic stdlib fixtures; never imports the live gate server."""
+    env = dict(os.environ, PYTHONDONTWRITEBYTECODE='1')
+    run('memory purge regression tests',
+        [sys.executable, '-m', 'unittest', 'discover', '-s', 'scripts/tests',
+         '-p', 'test_memory_purge.py'], cwd=root, env=env)
+
+
 def main():
     if sys.argv[1:] == ['--local-changes']:
         return validate_local_changes()
@@ -157,6 +165,7 @@ def main():
         if available('trivy'):
             run('trivy config', ['trivy', 'config', '--exit-code', '1', '--severity', 'HIGH,CRITICAL',
                                  '--format', 'json', '--quiet', str(stage)], blocking=False)
+    validate_memory_purge(ROOT)
     detail_file = ROOT / '.cache/devops/validation-findings.json'
     detail_file.parent.mkdir(parents=True, exist_ok=True)
     detail_file.write_text(json.dumps(DETAILS, indent=2) + '\n')
@@ -286,6 +295,7 @@ def validate_local_changes():
             shutil.copyfile(file, target)
         if available('gitleaks'):
             run('gitleaks', ['gitleaks', 'dir', str(snapshot), '--redact=100', '--no-banner'])
+    validate_memory_purge(ROOT)
     detail_file = ROOT / '.cache/devops/local-change-findings.json'
     detail_file.parent.mkdir(parents=True, exist_ok=True)
     detail_file.write_text(json.dumps(DETAILS, indent=2) + '\n')

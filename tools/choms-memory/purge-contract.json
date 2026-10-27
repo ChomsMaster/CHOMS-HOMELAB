@@ -1,0 +1,28 @@
+{
+  "contract": "cognee-1.6.5-ladybug-0.19.0-v1",
+  "cognee": "1.6.5",
+  "ladybug": "0.19.0",
+  "handler_sha256": "5ad7da3737c4dc56fe1864a324274077b24be206c71668a56eca86a5e31b5d48",
+  "native_sha256": "61e5ab375d294a0c09ed975e66b20d03e30db092e16843689f721c8215a21585",
+  "repository": "https://github.com/LadybugDB/ladybug",
+  "tag": "v0.19.0",
+  "commit": "c934f673b6b1c5b680bdae3295cbd909b5855cef",
+  "source_sha256": {
+    "src/include/common/constants.h": "2ab70fed0476557626449946c646f1b5fdbc186289297153d4b4d2b217e94ca9",
+    "src/include/storage/storage_utils.h": "2fd9df2e3a612a2d6c484a0d4e72415572e956b5ac04f5038dbf5b0012085a9c",
+    "src/common/file_system/local_file_system.cpp": "dd02f6018a2065d67d8c637cc2a5fb19b0c8c57998488d0a8bdad2a210d752ad",
+    "src/main/database_manager.cpp": "2088e60d1c29d57a82df34cdfff3f47c39bd0150c31b07a6cf3adbbf90e6687d"
+  },
+  "suffixes": [
+    "",
+    ".wal",
+    ".lock",
+    ".shadow",
+    ".tmp",
+    ".wal.checkpoint",
+    ".checkpoint.intent.lock",
+    ".checkpoint.apply.lock"
+  ],
+  "subgraphs": "not allowed; any unregistered directory entry blocks purge",
+  "physical_secure_erasure": false
+}
