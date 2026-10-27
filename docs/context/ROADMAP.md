@@ -8,6 +8,8 @@ Cognee/PostgreSQL existentes Ready. Sin parche global, datasets reales ni client
 [Contrato, evidencia, límites y rollback](../architecture/memory/PURGE_COMPENSATION.md).
 Pendiente: adaptador MCP productivo completo, CAS/ámbitos y su E2E; persistencia real
 continúa deshabilitada. Esto no acredita sobrescritura física ni purga de backups.
+CI detectó cinco referencias preexistentes al tag OCI público como API key;
+excepción acotada a ese valor exacto y rutas demostradas, sin modificar workloads.
 
 ## CHOMS Memory Governance v1 — 27-10-2026
 

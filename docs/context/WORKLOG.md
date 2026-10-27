@@ -1606,3 +1606,11 @@ real del handler deja shadow y wrapper lo retira. Limpieza del entorno completo;
 Cognee/PostgreSQL Ready, sin memorias reales ni cambios de clientes. Se corrigieron
 solo defectos del harness (orden imports, DB_PORT y señal PID 1). No borrado físico,
 no backup/restore. MCP productivo completo aún pendiente; no se registra en clientes.
+
+### 2026-10-27 — Corrección CI de falso positivo OCI preexistente
+
+Actions de 0b77620: regresiones de purga PASS; Gitleaks detectó el tag público de
+Cognee en cinco archivos cuyos blobs son idénticos a 7230418. Se amplía únicamente
+la lista explícita de rutas del allowlist ya existente, conservando condición AND
+y regex del valor exacto público. No se modifica ningún manifiesto ni secreto.
+Se reproduce el escaneo completo de fuentes de CI con metadatos redactados.

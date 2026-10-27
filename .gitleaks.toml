@@ -7,8 +7,13 @@ useDefault = true
 id = "generic-api-key"
 
 [[rules.allowlists]]
-description = "Verified public OCI tag in three historical context documents; not a credential"
+description = "Verified public Cognee OCI tag in explicit context, lock, manifest and runbook paths; not a credential"
 condition = "AND"
-paths = ['''(^|/)docs/context/(CURRENT_STATE|ROADMAP|WORKLOG)\.md$''']
+paths = [
+  '''(^|/)docs/context/(CURRENT_STATE|ROADMAP|WORKLOG)\.md$''',
+  '''(^|/)docs/operations/(COGNEE_LOCAL_TOKENIZER_PATCH|MEMORY_PLATFORM)\.md$''',
+  '''(^|/)docs/architecture/memory/release-lock\.json$''',
+  '''(^|/)stacks/kubernetes/choms-memory/(README\.md|api\.yaml)$'''
+]
 regexTarget = "secret"
 regexes = ['''^1\.6\.5\-p204a2a7e1d17$''']
