@@ -1,3 +1,14 @@
+## Figma MCP — OAuth verificado, 29-10-2026
+
+choms_figma persistente y reversible en Codex de node-dev-02: URL oficial y
+activación, sin tokens en Git ni copiados. Tres conexiones nativas nuevas con
+OAuth, Figma MCP Server 1.0.0 y 45 herramientas; whoami de solo lectura PASS con
+identidad descartada. Metadatos de archivo sintético inexistente: rechazo esperado,
+sin acreditar lectura de un diseño real. Sin escrituras, inferencias ni servicios.
+[Catálogo, evidencia y rollback](../../tools/choms-skills/FIGMA_VALIDATION.json).
+Hermes no recibe OAuth ni credenciales. Los dos nombres sin fuente y contenido sin
+licencia acreditada conservan sus exclusiones. Memory y producción intactos.
+
 ## CHOMS Skills/MCP — promoción node-dev-02, 29-10-2026
 
 Perfil 1.4.1: cuatro módulos activados más nueve skills canónicas intactas,

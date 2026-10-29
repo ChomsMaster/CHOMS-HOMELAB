@@ -205,14 +205,16 @@
       "module": "MCP-tooling",
       "overlap": "design context via official remote endpoint",
       "keywords": "figma oauth design mcp",
-      "state": "prepared-authentication-gate",
+      "state": "authenticated-persistent-native-codex",
       "source": {
         "url": "https://developers.figma.com/docs/figma-mcp-server/",
         "endpoint": "https://mcp.figma.com/mcp",
         "version": "remote service: not locally pinnable",
         "license": "hosted service terms; no server code redistributed",
         "sha256": null
-      }
+      },
+      "verification": "FIGMA_VALIDATION.json",
+      "scope": "handshake, catalog, account read with discarded identity and synthetic nonexistent-file rejection; no real design read"
     },
     {
       "name": "MCP Playwright",

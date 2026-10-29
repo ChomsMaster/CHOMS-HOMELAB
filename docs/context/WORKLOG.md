@@ -1672,3 +1672,20 @@ MCP Playwright conserva uso local bajo demanda sin registro global; Figma queda
 preparado pendiente de intervención OAuth. Dos nombres no identificados siguen
 sin activar ni cubrir. Detalle actual en ACTIVATION_VALIDATION.json; recibos previos
 conservados. Salud/drift productivos no consultados por aislamiento expreso.
+
+### 2026-10-29 — Cierre OAuth Figma nativo
+
+Confirmación del operador; main d8b7dbd limpio y 0/0 tras fetch. Faltaba la entrada
+persistente (el login anterior usó override); añadida únicamente URL oficial y
+enabled=true en config nativa, resto semánticamente intacto y sin tocar credenciales.
+Tres procesos Codex app-server nuevos conectan con OAuth y sin override/login:
+Figma MCP Server 1.0.0, capabilities tools/resources/prompts, 45 tools (26 read-only
+anotadas) y 121 recursos. whoami {} devuelve éxito, identidad descartada; get_metadata
+sobre clave sintética inexistente devuelve el rechazo esperado. No se acredita
+lectura de diseño real ni se crea fixture remoto. Catálogo y recibo agregados sin
+cuerpos de respuesta, tokens o datos de usuario en FIGMA_VALIDATION.json.
+Desactivación por enabled=false o retirada de esa única entrada con mcp remove,
+sin logout/restauración global. Templates portables conservados inertes. Solo
+cambia evidencia/documentación/catalogación del perfil y SHA256SUMS; sin scripts,
+skills canónicas, modelos, Hermes OAuth, Memory, producción o servicios permanentes.
+Validaciones de integridad, diff y Gitleaks acotado requeridas antes de publicar.
