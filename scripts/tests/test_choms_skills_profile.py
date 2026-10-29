@@ -17,6 +17,17 @@ class ProfileTests(unittest.TestCase):
     def test_valid_profile(self):
         self.assertEqual(v.validate(self.root)['selected'],9)
 
+    def test_module_tamper_rejected(self):
+        p=next((self.root/'modules').glob('*/*/SKILL.md'));p.write_text(p.read_text()+'synthetic tamper')
+        with self.assertRaises(AssertionError):v.validate(self.root)
+
+    def test_duplicate_module_name_rejected(self):
+        import json
+        p=self.root/'PROFILE.json';profile=json.loads(p.read_text())
+        profile['modular_profiles']['frontend']['name']='choms-design-system'
+        p.write_text(json.dumps(profile))
+        with self.assertRaises(AssertionError):v.validate(self.root)
+
     def test_modified_script_rejected(self):
         p=self.root/'skills/choms-memory-governance/scripts/governance.py';p.write_text(p.read_text()+'\n# synthetic tamper\n')
         with self.assertRaises(AssertionError):v.validate(self.root)

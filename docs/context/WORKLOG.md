@@ -1632,3 +1632,43 @@ Cobertura backup completa/expiry NO acreditados; PVC nuevo sin captura y script
 node-01 difiere de Git. Propuesta 7 días+24h no aplicada. Sin backup/restore/prune.
 Memorias reales/captura OFF; seguimos skill no almacenada. Perfil 1.3.0 y runbook
 con autorización explícita futura, rollback dry-run y límites de borrado lógico.
+
+### 2026-10-29 — CHOMS Skills/MCP next: bloque local aislado
+
+Base limpia 69a2f4b, fetch y divergencia 0/0 respecto a origin/main; trabajo solo
+en feat/skills-mcp-next, sin merge. Perfil 1.4.0: cuatro módulos originales
+preparados, nueve skills canónicas/optional intactas. Revisión y deduplicación
+Emil/Impeccable/Taste/ECC/Browser/MCP/Find/design-guidelines/awesome-design-md/
+Image to Code/Playwright/Figma, commits/licencias/hashes y lock npm.
+Scripts locales para briefs, lint HTML, búsqueda offline, medición YUV por género,
+exportación fit-and-pad sin sobrescritura y fixture/probe MCP sin persistencia.
+Codex discovery 13/13 y parser Hermes nativo 13/13, sin catálogo/slash completo.
+Veinte comprobaciones browser, smoke Agent Browser/playwright-cli y MCP Playwright
+25 tools/about:blank/cierre PASS. Media sintética medida/exportada y verificada.
+Excepción Chromium sin sandbox solo en fixtures por restricción del host.
+Figma initialize anónimo 401: gate OAuth real, sin credenciales ni archivos.
+Dos nombres sin fuente, confirmados por usuario: identificación pendiente,
+no activados ni cubiertos; contrato CHOMS separado. Sin redistribuir contenido
+Vercel agent-skills al no acreditar licencia por archivo. Detalles y verificaciones
+finales en tools/choms-skills/NEXT_VALIDATION.json. No activación global en este host
+(cero enlaces CHOMS), cambios Memory, producción, OAuth ni publicación social.
+No se consulta salud ni drift Kubernetes por aislamiento; cierre Git solo contra
+la rama autorizada. Dependencias de prueba portables bajo /tmp, sin upgrades del sistema.
+
+### 2026-10-29 — Integración Skills/MCP y activación node-dev-02
+
+Autorización posterior sustituye el límite previo de no merge: origin/main sigue
+en 69a2f4b, rama 04d7036 limpia y 0/0 remota al inicio. Diff completo sin rutas
+protegidas y nueve skills canónicas/optional intactas. Perfil 1.4.1; 26 enlaces
+reversibles sin sobrescritura, herramientas fijadas persistidas en usuario.
+Codex real desde raíz de usuario 13/13; Hermes skills_list, skill_view completo y
+expansión slash nativa 13/13, sin chat/modelos/gateway. Aviso Hermes por symlinks
+fuera de raíz conservado, destinos verificados y sin relajar confianza; plugins
+auth opcionales sin httpx fuera del subsistema probado. Browser 20 checks PASS;
+25 tests incluyendo colisiones y rollback, integridad y Gitleaks acotado sin hallazgos.
+Se prepara merge trazable y push normal a main, sin modificaciones a servicios,
+Memory, Kubernetes, Terraform, Restic, NAS, OmniRoute, secretos o publicación social.
+MCP Playwright conserva uso local bajo demanda sin registro global; Figma queda
+preparado pendiente de intervención OAuth. Dos nombres no identificados siguen
+sin activar ni cubrir. Detalle actual en ACTIVATION_VALIDATION.json; recibos previos
+conservados. Salud/drift productivos no consultados por aislamiento expreso.

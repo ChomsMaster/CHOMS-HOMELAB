@@ -1,0 +1,7 @@
+# Inert template: importing this file registers no server.
+# After checking the installed Hermes transport/OAuth support and completing
+# the real authentication gate, merge an enabled URL entry explicitly.
+mcp_servers: {}
+# choms_figma:
+#   url: https://mcp.figma.com/mcp
+# No bearer token, auth headers or session state belong in this file.

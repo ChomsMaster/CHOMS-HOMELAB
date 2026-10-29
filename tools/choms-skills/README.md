@@ -1,7 +1,8 @@
 # CHOMS Skills
 
-Perfil 1.3.0: seis adaptaciones de ECC v2.2.3 y tres skills originales CHOMS,
-con procedencia y SHA-256 por entrada.
+Perfil 1.4.1: seis adaptaciones de ECC v2.2.3 y tres skills originales CHOMS,
+con procedencia y SHA-256 por entrada. Añade cuatro módulos locales,
+activados en node-dev-02 para Codex y Hermes; [estado, uso y bloqueos](NEXT.md).
 Instrucciones y un helper Python stdlib para pruebas sintéticas de gobernanza;
 sin hooks ni captura automática. Gobernanza usa el MCP independiente choms-memory;
 E2E central sintético acreditado, memorias reales bloqueadas por gate de backups.

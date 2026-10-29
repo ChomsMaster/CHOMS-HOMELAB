@@ -1,0 +1,118 @@
+{
+  "date": "2026-10-29",
+  "base_commit": "69a2f4b",
+  "branch": "feat/skills-mcp-next",
+  "native_activation_changes": false,
+  "production_access": false,
+  "inferences": 0,
+  "codex": {
+    "version": "codex-cli 0.164.0",
+    "discovered": 13,
+    "errors": 0,
+    "scope": "temporary project native skills/list; canonical paths matched"
+  },
+  "hermes": {
+    "commit": "a938f00f0f3cdf00fdb93d9a82a9ae447e9b857f",
+    "parsed": 13,
+    "scope": "native parse_frontmatter and yaml_load only; full catalog/slash not tested"
+  },
+  "browser": {
+    "checks": 20,
+    "viewports": [
+      390,
+      1440
+    ],
+    "screenshot_repeat_equal": true,
+    "intentional_mutation_detected": true,
+    "chromium_sandbox": false,
+    "scope": "local synthetic fixture only"
+  },
+  "cli_smoke": {
+    "playwright_cli": [
+      "open",
+      "snapshot",
+      "eval",
+      "form",
+      "close"
+    ],
+    "agent_browser": [
+      "open",
+      "snapshot",
+      "fill",
+      "click",
+      "wait",
+      "get",
+      "close"
+    ],
+    "status": "PASS"
+  },
+  "design_mcp": {
+    "tools": 1,
+    "protocol": "2025-11-25",
+    "valid_and_invalid_calls": "PASS",
+    "unknown_method": "PASS"
+  },
+  "playwright_mcp": {
+    "tools": 25,
+    "protocol": "2025-11-25",
+    "navigation": "about:blank",
+    "close": "PASS",
+    "chromium_sandbox": false
+  },
+  "figma": {
+    "anonymous_initialize_status": 401,
+    "oauth_started": false,
+    "credentials_sent": false,
+    "state": "authentication-gate"
+  },
+  "media": {
+    "synthetic_input": {
+      "width": 360,
+      "height": 640,
+      "duration_seconds": 1,
+      "audio_streams": 1
+    },
+    "measurements": {
+      "sample_fps": 1,
+      "YAVG": 41,
+      "UAVG": 240,
+      "VAVG": 110
+    },
+    "export": {
+      "width": 640,
+      "height": 640,
+      "duration_seconds": 1.002,
+      "audio_streams": 1,
+      "framing": "fit-and-pad",
+      "publication": false
+    }
+  },
+  "binary_sha256": {
+    "node_modules/agent-browser/bin/agent-browser-linux-x64": "399c7e9f06bd29aa933fdf25c0bd958eea06927fc0ce6f536ba6347aabd64628",
+    "browsers/chromium-1248/chrome-linux64/chrome": "377a9fc07b495c3b8d0ab8ec1fdfd153641759f9756fea34d8dfce4de82f5025",
+    "browsers/chromium-1247/chrome-linux64/chrome": "adf078f8f80eb9e980a07b4418af23b0f4008a83bc5756d5588055bc4d76c5a0"
+  },
+  "git_diff_check": "PASS",
+  "scoped_gitleaks": {
+    "version": "8.30.1",
+    "mode": "dir, redacted, current block only",
+    "findings": 0,
+    "status": "PASS"
+  },
+  "unit_tests": {
+    "local_helpers_and_mcp": 16,
+    "profile_failure_paths": 6,
+    "total": 22,
+    "status": "PASS"
+  },
+  "profile_integrity": "PASS",
+  "limitations": [
+    "Not a production service health or Kubernetes drift check",
+    "No global CHOMS links on this host; historical nine on node-dev-01 not rechecked",
+    "No fidelity certification of a real app or full WCAG audit",
+    "No perceptual LUT/cadence/provider pipeline imported",
+    "Two original candidate names remain unidentified, inactive and uncovered",
+    "No Figma file access before real OAuth",
+    "Vercel agent-skills license file not obtained; no content redistributed"
+  ]
+}

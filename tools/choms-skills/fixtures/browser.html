@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="es">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CHOMS fixture local</title>
+<style>
+body{font:18px system-ui;margin:0;background:#f8fafc;color:#172033}main{max-width:44rem;margin:auto;padding:24px;overflow-wrap:anywhere}label,input,button{display:block;margin:12px 0}input{max-width:100%;box-sizing:border-box}button{padding:12px 18px;background:#173d74;color:white;border:0;border-radius:4px}button:focus-visible,input:focus-visible{outline:3px solid #b44800;outline-offset:3px}#status{min-height:2rem;transition:opacity .15s} @media(prefers-reduced-motion:reduce){#status{transition:none}}
+</style>
+<main><h1>Validación sintética</h1><p>Fixture sin datos personales ni conexiones externas.</p>
+<form id="form"><label for="name">Nombre del fixture</label><input id="name" required autocomplete="off"><button>Validar</button></form>
+<p id="status" role="status">Sin validar</p></main>
+<script>
+form.addEventListener('submit',async event=>{event.preventDefault();const status=document.getElementById('status');status.textContent='Validando';await new Promise(resolve=>setTimeout(resolve,30));status.textContent=document.getElementById('name').value==='error'?'Error sintético':'Fixture válido';});
+</script>
+</html>
