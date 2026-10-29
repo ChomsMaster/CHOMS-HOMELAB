@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "choms_playwright": {
+      "command": "node",
+      "args": [
+        "./tools/choms-skills/toolchain/node_modules/@playwright/mcp/cli.js",
+        "--headless",
+        "--isolated",
+        "--host",
+        "127.0.0.1",
+        "--allowed-origins",
+        "http://127.0.0.1:*"
+      ],
+      "disabled": true
+    }
+  }
+}

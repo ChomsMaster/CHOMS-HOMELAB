@@ -1,0 +1,17 @@
+{
+  "purpose": "Consultar el estado sintético de una tarea",
+  "audience": "Operador local",
+  "primary_action": "Validar fixture",
+  "preserve": [
+    "HTML nativo",
+    "Sin fuentes remotas"
+  ],
+  "references": [
+    "browser.html"
+  ],
+  "acceptance": [
+    "Flujo por teclado",
+    "Sin overflow a 390 px",
+    "Reduced motion"
+  ]
+}

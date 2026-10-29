@@ -47,3 +47,21 @@ Se conecta únicamente la gobernanza original al MCP choms-memory autenticado,
 tras E2E sintético Codex/Hermes, CAS y purga con reinicio. No cambia código ECC
 ni las otras ocho skills. La persistencia real continúa bloqueada por backups;
 la cola de prueba no es un fallback. No se activan captura, hooks ni aprendizaje.
+
+## Bloque local original CHOMS — perfil 1.4.0
+
+Cuatro módulos originales MIT y scripts locales; no se reemplazan las nueve skills
+canónicas. SOURCES_NEXT.lock.json fija fuentes revisadas, licencias obtenidas y
+SHA-256; licenses/ conserva los avisos de las fuentes, sin redistribuir bundles
+upstream. CANDIDATES.json registra duplicados y límites de adaptación. No se
+importan instaladores, scripts, proveedores, memoria ni hooks de terceros.
+La licencia del repositorio Vercel agent-skills queda sin acreditar por archivo;
+no se copia su contenido. Figma es un servicio alojado, sin hash de servidor local.
+Dos nombres del operador siguen sin fuente: identificación pendiente, no activados
+ni cubiertos. El contrato de diseño es original CHOMS, sin atribuirlo a esos nombres.
+Los locks npm de toolchain/ son de prueba aislada, no versiones del sistema ni una
+promoción a los runtimes de node-dev-01. NEXT_VALIDATION.json separa prueba actual
+de DISCOVERY_VALIDATION.json histórico. Ver límites de hashes/firma en NEXT.md.
+
+Licencias con formato upstream CRLF/espacios finales se normalizan a LF; el lock
+conserva upstream_sha256 y sha256 canónico distintos, sin cambiar el texto legal.

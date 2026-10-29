@@ -136,7 +136,7 @@
     "codex": "Native user skills discovery and skills/list; individual links only.",
     "hermes": "Native catalog and explicit slash loading; existing toolset unchanged. No skills management bundle."
   },
-  "version": "1.3.0",
+  "version": "1.4.0",
   "activation": {
     "selected": [
       "choms-frontend-direction",
@@ -163,5 +163,51 @@
     "hooks": false,
     "automatic_flush": false,
     "real_memories": false
-  }
+  },
+  "modular_profiles": {
+    "frontend": {
+      "path": "modules/frontend/choms-frontend-craft/SKILL.md",
+      "name": "choms-frontend-craft",
+      "sha256": "09488d5e256af7c5fe42abdcf9a9dfc477512327ae3e1540052ad85061b1aabc",
+      "state": "prepared-and-locally-tested",
+      "native_activation": false,
+      "reuse_existing": [
+        "choms-frontend-direction",
+        "choms-design-system",
+        "choms-seo"
+      ]
+    },
+    "browser-QA": {
+      "path": "modules/browser-QA/choms-browser-qa/SKILL.md",
+      "name": "choms-browser-qa",
+      "sha256": "8120c48344eaf7dcbd9bd17c7d0d1de002f99ecdc0ff5bd74f80c34343ae6f5e",
+      "state": "prepared-and-locally-tested",
+      "native_activation": false,
+      "reuse_existing": [
+        "choms-security-review"
+      ]
+    },
+    "MCP-tooling": {
+      "path": "modules/MCP-tooling/choms-mcp-tooling/SKILL.md",
+      "name": "choms-mcp-tooling",
+      "sha256": "dbc7f463166c5f9032b83b1509071a8fbc0b5bf7992f639505255730ba06f083",
+      "state": "prepared-and-locally-tested",
+      "native_activation": false,
+      "reuse_existing": [
+        "choms-mcp-server-patterns",
+        "choms-security-review"
+      ]
+    },
+    "video-social": {
+      "path": "modules/video-social/choms-video-social/SKILL.md",
+      "name": "choms-video-social",
+      "sha256": "21f2aed07c74dfbcdae312df24fc530eb475254b1127688d264baa16a879df1e",
+      "state": "prepared-and-locally-tested",
+      "native_activation": false,
+      "reuse_existing": [
+        "choms-context-budget"
+      ]
+    }
+  },
+  "local_toolchain": "toolchain/package-lock.json; isolated install only, no global packages"
 }

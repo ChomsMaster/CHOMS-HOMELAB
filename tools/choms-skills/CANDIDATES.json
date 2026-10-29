@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "principle": [
+    "LOCAL-FIRST",
+    "DETERMINISTIC-FIRST",
+    "AI-LAST"
+  ],
+  "candidates": [
+    {
+      "name": "AI Skills for Design Engineers",
+      "module": "frontend",
+      "overlap": "choms-frontend-direction + choms-design-system",
+      "keywords": "motion focus keyboard reduced-motion polish",
+      "state": "reviewed-gap-adapted",
+      "source": {
+        "repository": "https://github.com/emilkowalski/skills",
+        "commit": "a81dbca07f2217b7103e510c0f13f8d5b017afc9",
+        "path": "skills/emil-design-eng/SKILL.md",
+        "sha256": "ffbe68e6007fb42cb8149f089b400a1ca007d59ba23e8948e2be4476f3175939",
+        "license": "MIT"
+      }
+    },
+    {
+      "name": "Impeccable",
+      "module": "frontend",
+      "overlap": "choms-frontend-direction + choms-design-system",
+      "keywords": "audit typography hierarchy polish",
+      "state": "reviewed-gap-adapted",
+      "source": {
+        "repository": "https://github.com/pbakaus/impeccable",
+        "commit": "5e745ace7e151feb2a93d360d0281fe39448b857",
+        "path": "plugin/skills/impeccable/SKILL.md",
+        "sha256": "068987f99e59dfaa78288e0927b2a985a1237c4154de93baf03efbc544d06cb8",
+        "license": "Apache-2.0"
+      }
+    },
+    {
+      "name": "Taste Skill frontend",
+      "module": "frontend",
+      "overlap": "choms-frontend-direction",
+      "keywords": "taste frontend art direction",
+      "state": "reviewed-gap-adapted",
+      "source": {
+        "repository": "https://github.com/Leonxlnx/taste-skill",
+        "commit": "12af471f627f866411b4bd785b19646d3672784c",
+        "path": "skills/taste-skill/SKILL.md",
+        "sha256": "3435ed963b15a1b6447746ec8844ab2cd38d8d2e8ead3451937f42df01e408c4",
+        "license": "MIT"
+      }
+    },
+    {
+      "name": "Taste audiovisual/ECC",
+      "module": "video-social",
+      "overlap": "none: new local media gate",
+      "keywords": "video social audiovisual editorial",
+      "state": "reviewed-gap-adapted",
+      "source": {
+        "repository": "https://github.com/affaan-m/ECC",
+        "commit": "c05b2d6614f62f6db0047669aa4eefb223d478f9",
+        "path": "skills/content-engine/SKILL.md",
+        "sha256": "a1ccc0ecfe30ae53db26a73159a80ecad8c63a6a96c461a297789d889bf9ad2c",
+        "license": "MIT"
+      },
+      "additional_sources": [
+        {
+          "path": "skills/video-editing/SKILL.md",
+          "sha256": "4ab8c9ef5a511e8a0de9ed375b9edbbfa74f23a0881519d2aceea67e7252b197"
+        },
+        {
+          "path": "skills/taste-distillation/SKILL.md",
+          "sha256": "7aa53f4a4cc7a959da5b60d77a6f43e5541cb3a95aa982fea73a2b706d9cd408"
+        },
+        {
+          "path": "skills/taste-application/SKILL.md",
+          "sha256": "422a07f05e0dfc16a1bcc14895ff6f34891473ddec28981c4fa7986591165d2e"
+        }
+      ],
+      "implemented": "original CHOMS sampled signal measurements, metadata gate and local fit-and-pad export",
+      "not_implemented": "ECC LUT matching, cadence editing and provider pipelines are not imported or claimed"
+    },
+    {
+      "name": "Agent Browser",
+      "module": "browser-QA",
+      "overlap": "browser runner: alternative CLI",
+      "keywords": "browser QA automation snapshot",
+      "state": "local-cli",
+      "source": {
+        "repository": "https://github.com/vercel-labs/agent-browser",
+        "commit": "1453dd37a40c730fe00f592bc32198a896ff8747",
+        "path": "skills/agent-browser/SKILL.md",
+        "sha256": "3a7520e64de2dfaa516b6721c001e84e06e3c06a187b82af029ae721540ebfac",
+        "license": "Apache-2.0"
+      }
+    },
+    {
+      "name": "MCP Builder",
+      "module": "MCP-tooling",
+      "overlap": "choms-mcp-server-patterns",
+      "keywords": "mcp builder schemas contracts",
+      "state": "duplicate-core-local-probe-added",
+      "source": {
+        "repository": "https://github.com/anthropics/skills",
+        "commit": "ca45fc496a3436251f191354091d557da31c15b5",
+        "path": "skills/mcp-builder/SKILL.md",
+        "sha256": "b483b56d6673134497e45489c317f26ae0f1429c194db0297e43073e17e6748c",
+        "license": "Apache-2.0"
+      }
+    },
+    {
+      "name": "Prompt de Diseño",
+      "module": "frontend",
+      "overlap": "none asserted; original CHOMS contract is separate",
+      "keywords": "design brief prompt diseño",
+      "state": "identification-pending",
+      "source": {
+        "status": "ambiguous identity; no source, version, license or hash asserted"
+      },
+      "covered": false,
+      "activation": false
+    },
+    {
+      "name": "Regla de Diseño de Bercer",
+      "module": "frontend",
+      "overlap": "none asserted; original CHOMS contract is separate",
+      "keywords": "bercer design diseño regla",
+      "state": "identification-pending",
+      "source": {
+        "status": "ambiguous identity; no source, version, license or hash asserted"
+      },
+      "covered": false,
+      "activation": false
+    },
+    {
+      "name": "Find Skill",
+      "module": "MCP-tooling",
+      "overlap": "offline catalog instead of auto-install",
+      "keywords": "find skills discovery buscar",
+      "state": "offline-implemented",
+      "source": {
+        "repository": "https://github.com/vercel-labs/skills",
+        "commit": "92a9a34ac3bf88e695e468b90c7bf32f163d32c8",
+        "path": "skills/find-skills/SKILL.md",
+        "sha256": "c00eeea0e13e74fe4a9d84ba0a8542205a1b736d65f13134fe1a6647eb14976f",
+        "license": "MIT"
+      }
+    },
+    {
+      "name": "web-design-guidelines",
+      "module": "frontend",
+      "overlap": "choms-design-system + structural lint + browser QA",
+      "keywords": "web design accessibility guidelines html",
+      "state": "reference-only-license-unconfirmed",
+      "source": {
+        "repository": "https://github.com/vercel-labs/agent-skills",
+        "commit": "1a2c79d4e6c4a2283dc2c614b6538cbe1ed5ca62",
+        "path": "skills/web-design-guidelines/SKILL.md",
+        "sha256": "f4647ca866a3accf763777f83e7682954f0187cd6bea7eea0399796652414e8f",
+        "license": "unconfirmed: no license file obtained; no content redistributed"
+      }
+    },
+    {
+      "name": "awesome-design-md",
+      "module": "frontend",
+      "overlap": "choms-design-system",
+      "keywords": "design md tokens inspiration",
+      "state": "reviewed-reference-only",
+      "source": {
+        "repository": "https://github.com/VoltAgent/awesome-design-md",
+        "commit": "fcc70284932276d085f01ef9f83edde90b1258cb",
+        "path": "README.md",
+        "sha256": "ba50d84d7cfb4b607958e75549eec2cc0db8ef27bd6ce768de1a64c2d51d7e85",
+        "license": "MIT"
+      }
+    },
+    {
+      "name": "Image to Code",
+      "module": "frontend",
+      "overlap": "frontend craft plus browser comparison",
+      "keywords": "image code screenshot visual reference",
+      "state": "original-workflow-implemented",
+      "source": {
+        "repository": "https://github.com/Leonxlnx/taste-skill",
+        "commit": "12af471f627f866411b4bd785b19646d3672784c",
+        "path": "skills/taste-skill/SKILL.md",
+        "sha256": "3435ed963b15a1b6447746ec8844ab2cd38d8d2e8ead3451937f42df01e408c4",
+        "license": "MIT"
+      }
+    },
+    {
+      "name": "playwright-cli",
+      "module": "browser-QA",
+      "overlap": "browser runner: alternative CLI",
+      "keywords": "browser playwright cli QA",
+      "state": "local-cli",
+      "source": {
+        "repository": "https://github.com/microsoft/playwright-cli",
+        "commit": "b1a5903c5b633b8c9f843ad7b629c2a78437040c",
+        "path": "skills/playwright-cli/SKILL.md",
+        "sha256": "9bba755285a4c9ad72a4a41b9c7baef6fb516d329c0b44ed0573715f4479b906",
+        "license": "Apache-2.0"
+      }
+    },
+    {
+      "name": "MCP Figma",
+      "module": "MCP-tooling",
+      "overlap": "design context via official remote endpoint",
+      "keywords": "figma oauth design mcp",
+      "state": "prepared-authentication-gate",
+      "source": {
+        "url": "https://developers.figma.com/docs/figma-mcp-server/",
+        "endpoint": "https://mcp.figma.com/mcp",
+        "version": "remote service: not locally pinnable",
+        "license": "hosted service terms; no server code redistributed",
+        "sha256": null
+      }
+    },
+    {
+      "name": "MCP Playwright",
+      "module": "browser-QA",
+      "overlap": "CLI first; MCP for introspection",
+      "keywords": "playwright mcp browser QA",
+      "state": "local-mcp",
+      "source": {
+        "repository": "https://github.com/microsoft/playwright-mcp",
+        "commit": "0c4107acbecb75472b23c05c0e42471a0011874f",
+        "path": "package.json",
+        "sha256": "624f0ba4d387028bbc734520142fbebb7075a88da8b623f4760adf76aa212f8b",
+        "license": "Apache-2.0"
+      }
+    }
+  ]
+}

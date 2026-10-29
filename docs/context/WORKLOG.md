@@ -1632,3 +1632,25 @@ Cobertura backup completa/expiry NO acreditados; PVC nuevo sin captura y script
 node-01 difiere de Git. Propuesta 7 días+24h no aplicada. Sin backup/restore/prune.
 Memorias reales/captura OFF; seguimos skill no almacenada. Perfil 1.3.0 y runbook
 con autorización explícita futura, rollback dry-run y límites de borrado lógico.
+
+### 2026-10-29 — CHOMS Skills/MCP next: bloque local aislado
+
+Base limpia 69a2f4b, fetch y divergencia 0/0 respecto a origin/main; trabajo solo
+en feat/skills-mcp-next, sin merge. Perfil 1.4.0: cuatro módulos originales
+preparados, nueve skills canónicas/optional intactas. Revisión y deduplicación
+Emil/Impeccable/Taste/ECC/Browser/MCP/Find/design-guidelines/awesome-design-md/
+Image to Code/Playwright/Figma, commits/licencias/hashes y lock npm.
+Scripts locales para briefs, lint HTML, búsqueda offline, medición YUV por género,
+exportación fit-and-pad sin sobrescritura y fixture/probe MCP sin persistencia.
+Codex discovery 13/13 y parser Hermes nativo 13/13, sin catálogo/slash completo.
+Veinte comprobaciones browser, smoke Agent Browser/playwright-cli y MCP Playwright
+25 tools/about:blank/cierre PASS. Media sintética medida/exportada y verificada.
+Excepción Chromium sin sandbox solo en fixtures por restricción del host.
+Figma initialize anónimo 401: gate OAuth real, sin credenciales ni archivos.
+Dos nombres sin fuente, confirmados por usuario: identificación pendiente,
+no activados ni cubiertos; contrato CHOMS separado. Sin redistribuir contenido
+Vercel agent-skills al no acreditar licencia por archivo. Detalles y verificaciones
+finales en tools/choms-skills/NEXT_VALIDATION.json. No activación global en este host
+(cero enlaces CHOMS), cambios Memory, producción, OAuth ni publicación social.
+No se consulta salud ni drift Kubernetes por aislamiento; cierre Git solo contra
+la rama autorizada. Dependencias de prueba portables bajo /tmp, sin upgrades del sistema.

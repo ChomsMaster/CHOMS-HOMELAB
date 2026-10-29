@@ -1,0 +1,59 @@
+{
+  "node": {
+    "version": "v24.22.2",
+    "sha256": "48cc0e21e048790e54c0cf5749c2725005313d652651c40b7a21feb9697aaf75"
+  },
+  "packages": {
+    "@playwright/cli": {
+      "version": "0.1.22",
+      "integrity": "sha512-6WMkQNM4VEzqMkdr/l60X9Cr7i+tI/arK87IWz2K7pB6j8I2ZJ8KN+1JfhJDLnK+SXnab6Op8xGt4adcGLsyfA==",
+      "tarball": "https://registry.npmjs.org/@playwright/cli/-/cli-0.1.22.tgz",
+      "license": "Apache-2.0"
+    },
+    "@playwright/mcp": {
+      "version": "0.0.83",
+      "integrity": "sha512-oNcl+Ae2/IAjhfPeP46BfIkSakfmprY+aOtkv5MjrQ4lPav4/yNtPhL0iq8SlIM90oApWgBDUxaNKvktazUKOg==",
+      "tarball": "https://registry.npmjs.org/@playwright/mcp/-/mcp-0.0.83.tgz",
+      "license": "Apache-2.0"
+    },
+    "agent-browser": {
+      "version": "0.41.0",
+      "integrity": "sha512-XJtBouE5+gGUKyZU1COSmnxU6MKIlmLE2oEyHzl0ohLVOhuRjx9kqQ9vOqxiiW/Gbvi4JPF4Oz777Mn3FGiHAA==",
+      "tarball": "https://registry.npmjs.org/agent-browser/-/agent-browser-0.41.0.tgz",
+      "license": "Apache-2.0"
+    },
+    "@playwright/test": {
+      "version": "1.64.1",
+      "integrity": "sha512-IaYGml/nSOiZWROfPtuIL7neuu9qDOZ3TNvNljUIrhDMxiGTgPjzj/g9p9RxpS2tSepPDRY+UwAaEeiKtUvIAg==",
+      "tarball": "https://registry.npmjs.org/@playwright/test/-/test-1.64.1.tgz",
+      "license": "Apache-2.0"
+    }
+  },
+  "gitleaks": {
+    "version": "v8.30.1",
+    "sha256": "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb"
+  },
+  "hermes": {
+    "commit": "a938f00f0f3cdf00fdb93d9a82a9ae447e9b857f",
+    "files": {
+      "hermes_yaml.py": "f97f0f08b6474c52434d0cffaa7ba0ecaa5b9279c4abcbb35c11d15f9c89db76",
+      "hermes_constants.py": "74d849629c176703d48f9aa43a245fd8819545ac908c805e347db7d691976510",
+      "agent/skill_utils.py": "88489bcd7a3b431be39e36c8239336e7d6b425e2bef30499efbf9563d7a6c096",
+      "agent/__init__.py": "21cdce89e9ffdb847634bf498b087410cd191a1e375db43928735846fb7ddc86"
+    }
+  },
+  "ffmpeg-linux-x64": {
+    "release": "b6.1.1",
+    "sha256": "e7e7fb30477f717e6f55f9180a70386c62677ef8a4d4d1a5d948f4098aa3eb99",
+    "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/ffmpeg-linux-x64"
+  },
+  "ffprobe-linux-x64": {
+    "release": "b6.1.1",
+    "sha256": "4f231a1960d83e403d08f7971e271707bec278a9ae18e21b8b5b03186668450d",
+    "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/ffprobe-linux-x64"
+  },
+  "ruamel.yaml": {
+    "version": "0.18.16",
+    "sha256": "048f26d64245bae57a4f9ef6feb5b552a386830ef7a826f235ffb804c59efbba"
+  }
+}

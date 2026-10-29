@@ -1,0 +1,219 @@
+{
+  "scope": "reviewed source snapshots, not installed upstream bundles",
+  "sources": [
+    {
+      "repository": "emilkowalski/skills",
+      "commit": "a81dbca07f2217b7103e510c0f13f8d5b017afc9",
+      "license": "MIT",
+      "reviewed_files": [
+        {
+          "path": "skills/emil-design-eng/SKILL.md",
+          "sha256": "ffbe68e6007fb42cb8149f089b400a1ca007d59ba23e8948e2be4476f3175939"
+        }
+      ],
+      "redistributed_skill_content": false,
+      "license_files": [
+        {
+          "path": "licenses/emilkowalski--skills/LICENSE",
+          "sha256": "4ff5bdb7887ec1435c9cab0e8d1a7caee704d894d65c2a008ccc68b1cc2f260b"
+        }
+      ]
+    },
+    {
+      "repository": "pbakaus/impeccable",
+      "commit": "5e745ace7e151feb2a93d360d0281fe39448b857",
+      "license": "Apache-2.0",
+      "reviewed_files": [
+        {
+          "path": "plugin/skills/impeccable/SKILL.md",
+          "sha256": "068987f99e59dfaa78288e0927b2a985a1237c4154de93baf03efbc544d06cb8"
+        }
+      ],
+      "redistributed_skill_content": false,
+      "license_files": [
+        {
+          "path": "licenses/pbakaus--impeccable/LICENSE",
+          "sha256": "02bb8c3b4e70190e3986c0404ad2fd8d639b4f534252d82379cc1b502b6d1812"
+        }
+      ]
+    },
+    {
+      "repository": "Leonxlnx/taste-skill",
+      "commit": "12af471f627f866411b4bd785b19646d3672784c",
+      "license": "MIT",
+      "reviewed_files": [
+        {
+          "path": "skills/taste-skill/SKILL.md",
+          "sha256": "3435ed963b15a1b6447746ec8844ab2cd38d8d2e8ead3451937f42df01e408c4"
+        },
+        {
+          "path": "skills/taste-skill/SKILL.md",
+          "sha256": "3435ed963b15a1b6447746ec8844ab2cd38d8d2e8ead3451937f42df01e408c4"
+        }
+      ],
+      "redistributed_skill_content": false,
+      "license_files": [
+        {
+          "path": "licenses/Leonxlnx--taste-skill/LICENSE",
+          "sha256": "4575a543ab88dad12ccea7d97e563d0bce5b448b06072e65d3264497dad326df"
+        }
+      ]
+    },
+    {
+      "repository": "affaan-m/ECC",
+      "commit": "c05b2d6614f62f6db0047669aa4eefb223d478f9",
+      "license": "MIT",
+      "reviewed_files": [
+        {
+          "path": "skills/content-engine/SKILL.md",
+          "sha256": "a1ccc0ecfe30ae53db26a73159a80ecad8c63a6a96c461a297789d889bf9ad2c"
+        },
+        {
+          "path": "skills/video-editing/SKILL.md",
+          "sha256": "4ab8c9ef5a511e8a0de9ed375b9edbbfa74f23a0881519d2aceea67e7252b197"
+        },
+        {
+          "path": "skills/taste-distillation/SKILL.md",
+          "sha256": "7aa53f4a4cc7a959da5b60d77a6f43e5541cb3a95aa982fea73a2b706d9cd408"
+        },
+        {
+          "path": "skills/taste-application/SKILL.md",
+          "sha256": "422a07f05e0dfc16a1bcc14895ff6f34891473ddec28981c4fa7986591165d2e"
+        }
+      ],
+      "redistributed_skill_content": false,
+      "license_files": [
+        {
+          "path": "licenses/affaan-m--ECC/LICENSE",
+          "sha256": "326146379f01bb137c0a5d3c54770c1aa31076705c8b88a7f6b26a460f6221b2"
+        }
+      ]
+    },
+    {
+      "repository": "vercel-labs/agent-browser",
+      "commit": "1453dd37a40c730fe00f592bc32198a896ff8747",
+      "license": "Apache-2.0",
+      "reviewed_files": [
+        {
+          "path": "skills/agent-browser/SKILL.md",
+          "sha256": "3a7520e64de2dfaa516b6721c001e84e06e3c06a187b82af029ae721540ebfac"
+        }
+      ],
+      "redistributed_skill_content": false,
+      "license_files": [
+        {
+          "path": "licenses/vercel-labs--agent-browser/LICENSE",
+          "sha256": "014bb31e83d5c2e76aea1cc6e82217346ab41362f32cb355ad0f5c10aa0aeaff"
+        }
+      ]
+    },
+    {
+      "repository": "anthropics/skills",
+      "commit": "ca45fc496a3436251f191354091d557da31c15b5",
+      "license": "Apache-2.0",
+      "reviewed_files": [
+        {
+          "path": "skills/mcp-builder/SKILL.md",
+          "sha256": "b483b56d6673134497e45489c317f26ae0f1429c194db0297e43073e17e6748c"
+        }
+      ],
+      "redistributed_skill_content": false,
+      "license_files": [
+        {
+          "path": "licenses/anthropics--skills/skills/mcp-builder/LICENSE.txt",
+          "sha256": "14099b9c79d031b9d4b32c736a4e20f2b941f52dd79500532d62d26dd716110c",
+          "upstream_sha256": "bc6b3af2f331cbc7fb0da1344efb2cbe5877a31498b4d70dbc7000f3405a1362",
+          "normalization": "LF, trailing whitespace and final newline only; license text retained"
+        }
+      ]
+    },
+    {
+      "repository": "vercel-labs/skills",
+      "commit": "92a9a34ac3bf88e695e468b90c7bf32f163d32c8",
+      "license": "MIT",
+      "reviewed_files": [
+        {
+          "path": "skills/find-skills/SKILL.md",
+          "sha256": "c00eeea0e13e74fe4a9d84ba0a8542205a1b736d65f13134fe1a6647eb14976f"
+        }
+      ],
+      "redistributed_skill_content": false,
+      "license_files": [
+        {
+          "path": "licenses/vercel-labs--skills/LICENSE",
+          "sha256": "661142e53c313d2bb5e1b055f5c0a39001450ff1b5e27b89dc4bc7de9a6352ca"
+        }
+      ]
+    },
+    {
+      "repository": "vercel-labs/agent-skills",
+      "commit": "1a2c79d4e6c4a2283dc2c614b6538cbe1ed5ca62",
+      "license": "unconfirmed: no license file obtained; no content redistributed",
+      "reviewed_files": [
+        {
+          "path": "skills/web-design-guidelines/SKILL.md",
+          "sha256": "f4647ca866a3accf763777f83e7682954f0187cd6bea7eea0399796652414e8f"
+        }
+      ],
+      "redistributed_skill_content": false
+    },
+    {
+      "repository": "VoltAgent/awesome-design-md",
+      "commit": "fcc70284932276d085f01ef9f83edde90b1258cb",
+      "license": "MIT",
+      "reviewed_files": [
+        {
+          "path": "README.md",
+          "sha256": "ba50d84d7cfb4b607958e75549eec2cc0db8ef27bd6ce768de1a64c2d51d7e85"
+        }
+      ],
+      "redistributed_skill_content": false,
+      "license_files": [
+        {
+          "path": "licenses/VoltAgent--awesome-design-md/LICENSE",
+          "sha256": "6d4bdc9a9cf30e7beb593475fdcdbf29f981ea6bd7923f202866145409f87b44"
+        }
+      ]
+    },
+    {
+      "repository": "microsoft/playwright-cli",
+      "commit": "b1a5903c5b633b8c9f843ad7b629c2a78437040c",
+      "license": "Apache-2.0",
+      "reviewed_files": [
+        {
+          "path": "skills/playwright-cli/SKILL.md",
+          "sha256": "9bba755285a4c9ad72a4a41b9c7baef6fb516d329c0b44ed0573715f4479b906"
+        }
+      ],
+      "redistributed_skill_content": false,
+      "license_files": [
+        {
+          "path": "licenses/microsoft--playwright-cli/LICENSE",
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b",
+          "upstream_sha256": "9a7110fc2d2f964038e5dc49128f908f29f47a574c961cba16085914e879cbda",
+          "normalization": "LF, trailing whitespace and final newline only; license text retained"
+        }
+      ]
+    },
+    {
+      "repository": "microsoft/playwright-mcp",
+      "commit": "0c4107acbecb75472b23c05c0e42471a0011874f",
+      "license": "Apache-2.0",
+      "reviewed_files": [
+        {
+          "path": "package.json",
+          "sha256": "624f0ba4d387028bbc734520142fbebb7075a88da8b623f4760adf76aa212f8b"
+        }
+      ],
+      "redistributed_skill_content": false,
+      "license_files": [
+        {
+          "path": "licenses/microsoft--playwright-mcp/LICENSE",
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b",
+          "upstream_sha256": "9a7110fc2d2f964038e5dc49128f908f29f47a574c961cba16085914e879cbda",
+          "normalization": "LF, trailing whitespace and final newline only; license text retained"
+        }
+      ]
+    }
+  ]
+}

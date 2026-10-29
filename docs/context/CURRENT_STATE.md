@@ -1,3 +1,18 @@
+## CHOMS Skills/MCP next — 29-10-2026 (rama aislada)
+
+Perfil local 1.4.0 en `feat/skills-mcp-next`: cuatro módulos preparados (frontend,
+browser-QA, MCP-tooling y vídeo-social), nueve skills canónicas intactas y sin
+promoción global. Codex descubre 13 entradas temporales; parser Hermes nativo 13/13.
+Browser, ambas CLIs, MCP stdio/Playwright y medición/exportación de vídeo sintéticos
+probados sin inferencias. Figma anónimo devuelve 401; OAuth real pendiente.
+«Prompt de Diseño» y «Regla de Diseño de Bercer»: identificación pendiente,
+no activados ni cubiertos; contrato CHOMS original separado. Procedencia/licencias,
+locks y hashes versionados; límites y evidencia en
+[estado del bloque](../../tools/choms-skills/NEXT.md).
+Sin cambios Memory, Kubernetes, servicios, credenciales ni publicación social.
+La salud/drift productivos no se consultan por aislamiento expreso. No mergear main;
+la sincronización de cierre corresponde únicamente a la rama autorizada.
+
 ## CHOMS Memory v1 — 27-10-2026
 
 MCP choms-memory interno operativo; PostgreSQL canónico aislado, pgvector_shared
