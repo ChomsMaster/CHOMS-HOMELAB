@@ -1654,3 +1654,21 @@ finales en tools/choms-skills/NEXT_VALIDATION.json. No activación global en est
 (cero enlaces CHOMS), cambios Memory, producción, OAuth ni publicación social.
 No se consulta salud ni drift Kubernetes por aislamiento; cierre Git solo contra
 la rama autorizada. Dependencias de prueba portables bajo /tmp, sin upgrades del sistema.
+
+### 2026-10-29 — Integración Skills/MCP y activación node-dev-02
+
+Autorización posterior sustituye el límite previo de no merge: origin/main sigue
+en 69a2f4b, rama 04d7036 limpia y 0/0 remota al inicio. Diff completo sin rutas
+protegidas y nueve skills canónicas/optional intactas. Perfil 1.4.1; 26 enlaces
+reversibles sin sobrescritura, herramientas fijadas persistidas en usuario.
+Codex real desde raíz de usuario 13/13; Hermes skills_list, skill_view completo y
+expansión slash nativa 13/13, sin chat/modelos/gateway. Aviso Hermes por symlinks
+fuera de raíz conservado, destinos verificados y sin relajar confianza; plugins
+auth opcionales sin httpx fuera del subsistema probado. Browser 20 checks PASS;
+25 tests incluyendo colisiones y rollback, integridad y Gitleaks acotado sin hallazgos.
+Se prepara merge trazable y push normal a main, sin modificaciones a servicios,
+Memory, Kubernetes, Terraform, Restic, NAS, OmniRoute, secretos o publicación social.
+MCP Playwright conserva uso local bajo demanda sin registro global; Figma queda
+preparado pendiente de intervención OAuth. Dos nombres no identificados siguen
+sin activar ni cubrir. Detalle actual en ACTIVATION_VALIDATION.json; recibos previos
+conservados. Salud/drift productivos no consultados por aislamiento expreso.

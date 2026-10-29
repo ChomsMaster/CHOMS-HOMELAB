@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-29",
+  "host": "node-dev-02",
+  "source_branch_commit": "04d7036",
+  "main_before_integration": "69a2f4b",
+  "main_changed_since_branch_creation": false,
+  "native_activation": {
+    "created_links": 26,
+    "overwritten": 0,
+    "baseline_skills": 9,
+    "new_modules": 4,
+    "canonical_baseline_content_unchanged": true,
+    "optional_activated": false,
+    "rollback_receipt": "~/.local/share/choms-skills/activation-node-dev-02.json"
+  },
+  "codex": {
+    "version": "0.164.0",
+    "native_user_root_discovered": 13,
+    "enabled": 13,
+    "canonical_content_reads": 13,
+    "parse_errors": 0,
+    "inference_turns": 0
+  },
+  "hermes": {
+    "source_commit": "a938f00f0f3cdf00fdb93d9a82a9ae447e9b857f",
+    "archive_sha256": "a76691307dd482e2360e02b700f41113a5e3655787cd8cf37c72638134a550c7",
+    "native_catalog": 13,
+    "native_skill_view_full_content": 13,
+    "native_slash_payloads": 13,
+    "inference_turns": 0,
+    "scope": "upstream native skills subsystem; full interactive model CLI not installed",
+    "warnings": "native warning for symlink targets outside skills root; exact canonical destinations verified; trust policy unchanged; optional auth plugins without httpx not initialized"
+  },
+  "local_runtime": "~/.local/share/choms-skills/runtime-v1",
+  "system_package_upgrades": false,
+  "configuration_or_credentials_changed": false,
+  "mcp_servers_registered": false,
+  "persistent_services": false,
+  "publication": false,
+  "browser": {
+    "checks": 20,
+    "viewports": [
+      390,
+      1440
+    ],
+    "scope": "fixture via persisted pinned tools",
+    "status": "PASS"
+  },
+  "unit_tests": {
+    "helpers_and_mcp": 16,
+    "profile": 6,
+    "activation_collision_rollback": 3,
+    "total": 25
+  },
+  "integrity": "SHA256SUMS and profile PASS",
+  "git_diff_check": "PASS",
+  "gitleaks": "scoped current integration files, redacted, zero findings",
+  "protected_paths_changed": false,
+  "production_access": false,
+  "figma": {
+    "status": "OAuth required; not started",
+    "previous_anonymous_initialize_status": 401
+  },
+  "unidentified_candidates": [
+    "Prompt de Diseño",
+    "Regla de Diseño de Bercer"
+  ],
+  "unidentified_candidates_activated_or_covered": false,
+  "license_unconfirmed_source_content_redistributed": false,
+  "status": "PASS"
+}

@@ -65,3 +65,12 @@ de DISCOVERY_VALIDATION.json histórico. Ver límites de hashes/firma en NEXT.md
 
 Licencias con formato upstream CRLF/espacios finales se normalizan a LF; el lock
 conserva upstream_sha256 y sha256 canónico distintos, sin cambiar el texto legal.
+
+## Promoción local 1.4.1
+
+Las cuatro skills de modules/ y las nueve skills canónicas conservan su contenido.
+Activación reversible por enlaces individuales en node-dev-02, validación nativa
+Codex y catálogo/lectura/slash del subsistema Hermes fijado. No se redistribuye
+fuente Hermes en Git; su copia MIT queda en almacenamiento local con commit y
+hash de archivo comprimido registrados en ACTIVATION_VALIDATION.json. No se instala
+chat, gateway, SDK de proveedor ni autenticación. Los locks previos se conservan.

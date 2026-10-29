@@ -1,8 +1,9 @@
-# CHOMS Skills/MCP next — bloque local 1.4.0
+# CHOMS Skills/MCP — integración y activación local 1.4.1
 
-Rama exclusiva `feat/skills-mcp-next`, base `69a2f4b`; no merge ni despliegue.
+Preparado en `feat/skills-mcp-next` desde `69a2f4b`; integración en main
+mediante merge trazable autorizada por el operador el 29-10-2026, sin despliegue.
 Principio: LOCAL-FIRST, DETERMINISTIC-FIRST, AI-LAST. Cuatro módulos originales
-MIT en modules/, fuera del descubrimiento global. Las nueve skills canónicas y
+MIT en modules/, activados en node-dev-02 mediante enlaces individuales. Las nueve skills canónicas y
 verification-loop permanecen byte a byte intactas. ECC sigue fijado a v2.2.3;
 no se instala su bundle, memoria, hooks ni proveedores.
 
@@ -10,10 +11,10 @@ no se instala su bundle, memoria, hooks ni proveedores.
 
 | Capacidad | Resultado de este bloque |
 |---|---|
-| frontend | Módulo preparado: complemento de dirección/sistema existentes; detalle Emil/Impeccable/Taste, contrato CHOMS, flujo Image to Code y lint HTML local |
-| browser-QA | Módulo preparado; runner real Chromium, CLI Playwright y Agent Browser probados con fixture local |
-| MCP-tooling | Módulo preparado; búsqueda offline, servidor stdio de validación de briefs y probe ejecutados |
-| vídeo-social | Módulo preparado; medición YUV por género, metadatos y exportación fit-and-pad locales probados; publicación OFF |
+| frontend | Módulo activado: complemento de dirección/sistema existentes; detalle Emil/Impeccable/Taste, contrato CHOMS, flujo Image to Code y lint HTML local |
+| browser-QA | Módulo activado; runner real Chromium, CLI Playwright y Agent Browser probados con fixture local |
+| MCP-tooling | Módulo activado; búsqueda offline, servidor stdio de validación de briefs y probe ejecutados |
+| vídeo-social | Módulo activado; medición YUV por género, metadatos y exportación fit-and-pad locales probados; publicación OFF |
 | MCP Playwright | Handshake, 25 tools, navegación about:blank y cierre PASS; template sin registrar |
 | MCP Figma | Templates inertes; initialize anónimo devuelve **401**; OAuth real pendiente, sin iniciar ni solicitar tokens |
 | Prompt de Diseño | **Identificación pendiente**, nombre original, no activado y no cubierto |
@@ -30,26 +31,46 @@ No se implementan LUT perceptual, montaje por cadencia o generación de vídeo.
 
 ## Activación y alcance real
 
-El perfil 1.3.0 documentaba nueve enlaces en **node-dev-01**. Este checkout se ejecuta
-en otro entorno: aquí se observaron **cero** enlaces CHOMS esperados en las raíces
-nativas Codex/Hermes. No se modifica ese estado ni se afirma promoción global.
-Los trece SKILL.md pasan descubrimiento Codex en un proyecto temporal y parseo
-Hermes nativo. No se probó catálogo/slash Hermes completo: no está instalado aquí.
-DISCOVERY_VALIDATION.json conserva evidencia histórica; NEXT_VALIDATION.json describe
-solo esta ejecución. No se inicia ningún turno de modelo ni gateway.
+El perfil 1.3.0 documentaba nueve enlaces en node-dev-01. En node-dev-02 no había
+enlaces CHOMS: se crearon 26 enlaces (13 por cliente), sin sobrescrituras, conservando
+las nueve fuentes canónicas y añadiendo los cuatro módulos. verification-loop sigue
+sin enlace. Codex descubre 13/13 desde la raíz de usuario real y se comprueba el
+contenido completo de sus rutas. Hermes ejecuta skills_list, skill_view sin
+preprocesamiento y build_skill_invocation_message: catálogo/lectura/slash 13/13.
 
-PROFILE.json declara por módulo las skills existentes que reutiliza (reuse_existing).
-Para usar un módulo, cargar explícitamente su SKILL.md desde este checkout.
-Los comandos se ejecutan desde la raíz del repositorio. Para una promoción futura,
-resolver raíces del runtime y comprobar colisiones antes de enlaces individuales;
-no enlazar tools/choms-skills completo ni importar configs sin revisar.
+Se usa el subsistema nativo de skills de Hermes en el commit fijado, persistido bajo
+~/.local/share/choms-skills/runtime-v1/hermes; no se instala la interfaz de chat,
+proveedores ni gateway. Su aviso sobre destinos de symlink fuera de la raíz de
+skills se conserva: destinos exactos y hashes comprobados, sin relajar la confianza.
+Plugins de autenticación opcionales sin httpx no se inicializan; no afectan las
+funciones nativas de skills probadas. No se habilita skill_manage ni aprendizaje.
+
+PROFILE.json declara la composición reuse_existing y activación de cada módulo.
+ACTIVATION_VALIDATION.json es la evidencia actual. NEXT_VALIDATION.json y
+DISCOVERY_VALIDATION.json conservan sus fases históricas sin reescritura.
+Los comandos siguen ejecutándose desde la raíz del repositorio; no hay turnos de IA.
+
+Reversión exacta, solo de los enlaces creados por esta promoción:
+`python3 scripts/skills/activate_native.py --rollback --receipt ~/.local/share/choms-skills/activation-node-dev-02.json`.
+El helper comprueba todas las colisiones antes de crear enlaces y todos los
+destinos antes de retirar alguno; no sobrescribe paths ni elimina skill sources.
+
+Verificación real desde raíces instaladas:
+`PYTHONPATH=~/.local/share/choms-skills/runtime-v1/pydeps PYTHONDONTWRITEBYTECODE=1 python3 scripts/skills/verify_native_activation.py --hermes-source ~/.local/share/choms-skills/runtime-v1/hermes`.
+
 Los templates Figma no registran conexiones; el JSON Playwright es un ejemplo
 para adaptar al cliente, fuera de cualquier configuración activa. OAuth real es
 el siguiente gate Figma; después harían falta tools/list y lectura del nodo autorizado.
+La intervención preparada usa el cliente nativo, sin tokens por chat ni registro permanente:
+`codex -c 'mcp_servers.choms_figma.url="https://mcp.figma.com/mcp"' mcp login choms_figma`.
+Ejecutar en la sesión local del operador en node-dev-02; la autenticación ocurre
+con Figma y el almacén nativo de Codex. No se ha ejecutado este login. Registrar
+la conexión permanente solo después de completar OAuth y verificar la lectura autorizada.
 
 ## Herramientas fijadas y reproducción
 
-Toolchain **temporal**, no instalada globalmente. toolchain/package-lock.json fija
+Toolchain de usuario **persistente** en `~/.local/share/choms-skills/runtime-v1`,
+sin instalación global. La ruta /tmp original solo conserva evidencia de preparación. toolchain/package-lock.json fija
 también transitivas con integridad npm; ejecutar `npm ci --ignore-scripts --no-audit
 --no-fund` en una copia temporal de package.json y package-lock.json. Requiere Node
 24 según Agent Browser. Las versiones exactas, hashes de Node/Gitleaks/FFmpeg/ffprobe,
@@ -108,7 +129,8 @@ del bloque, sin recorrer históricos, credenciales ni directorios personales.
 
 ## Evidencia y límites
 
-NEXT_VALIDATION.json registra resultados agregados sin datos personales.
+ACTIVATION_VALIDATION.json registra los resultados actuales; NEXT_VALIDATION.json
+conserva la fase previa. No se incluyen datos personales.
 Lint estructural no certifica accesibilidad; la captura estable y su mutación
 prueban la comparación visual, no fidelidad de una app real sin referencia suministrada.
 El MCP stdio es un fixture acotado, no un SDK completo ni un servicio productivo.
@@ -119,6 +141,6 @@ Figma remoto no tiene una versión/binario con hash que pueda fijarse aquí.
 No se tocó scripts/memory, stacks/kubernetes/choms-memory, aceptación Memory,
 Terraform, Kubernetes, Restic, NAS, OmniRoute ni servicios. Salud de servicios y
 drift Kubernetes **no consultados por aislamiento explícito**, no se declara Ready
-actual ni drift cero productivo. Cierre Git contra la rama publicada; origin/main
-es solo la base, sin merge. Rollback: abandonar esta rama o revertir el único
-commit; no hay enlaces globales, servidores persistentes ni credenciales que retirar.
+actual ni drift cero productivo. Cierre Git contra origin/main tras el merge normal autorizado. Rollback Git mediante
+revert del merge revisando su primer padre; rollback de activación con el recibo
+exacto indicado arriba. No hay servicios permanentes ni credenciales nuevas.

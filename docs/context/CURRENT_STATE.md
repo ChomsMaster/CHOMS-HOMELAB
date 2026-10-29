@@ -1,3 +1,15 @@
+## CHOMS Skills/MCP — promoción node-dev-02, 29-10-2026
+
+Perfil 1.4.1: cuatro módulos activados más nueve skills canónicas intactas,
+26 enlaces reversibles Codex/Hermes sin sobrescrituras. Codex usuario 13/13;
+Hermes nativo catálogo/lectura/slash 13/13 sin modelos ni gateway. Runtime fijado
+persistente de usuario; browser 20 checks y 25 tests offline. Main no cambió desde
+la base 69a2f4b; integración por merge --no-ff autorizada, sin esperar a Memory.
+[Evidencia y rollback](../../tools/choms-skills/NEXT.md).
+Figma OAuth pendiente; los dos nombres sin fuente siguen sin activar ni cubrir.
+Sin archivos Memory, producción, Kubernetes, Terraform, Restic, NAS, OmniRoute,
+credenciales ni publicación social; salud/drift live no se consultan por aislamiento.
+
 ## CHOMS Skills/MCP next — 29-10-2026 (rama aislada)
 
 Perfil local 1.4.0 en `feat/skills-mcp-next`: cuatro módulos preparados (frontend,

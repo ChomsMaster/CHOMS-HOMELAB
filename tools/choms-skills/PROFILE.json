@@ -136,7 +136,7 @@
     "codex": "Native user skills discovery and skills/list; individual links only.",
     "hermes": "Native catalog and explicit slash loading; existing toolset unchanged. No skills management bundle."
   },
-  "version": "1.4.0",
+  "version": "1.4.1",
   "activation": {
     "selected": [
       "choms-frontend-direction",
@@ -169,8 +169,8 @@
       "path": "modules/frontend/choms-frontend-craft/SKILL.md",
       "name": "choms-frontend-craft",
       "sha256": "09488d5e256af7c5fe42abdcf9a9dfc477512327ae3e1540052ad85061b1aabc",
-      "state": "prepared-and-locally-tested",
-      "native_activation": false,
+      "state": "promoted-native-node-dev-02",
+      "native_activation": true,
       "reuse_existing": [
         "choms-frontend-direction",
         "choms-design-system",
@@ -181,8 +181,8 @@
       "path": "modules/browser-QA/choms-browser-qa/SKILL.md",
       "name": "choms-browser-qa",
       "sha256": "8120c48344eaf7dcbd9bd17c7d0d1de002f99ecdc0ff5bd74f80c34343ae6f5e",
-      "state": "prepared-and-locally-tested",
-      "native_activation": false,
+      "state": "promoted-native-node-dev-02",
+      "native_activation": true,
       "reuse_existing": [
         "choms-security-review"
       ]
@@ -191,8 +191,8 @@
       "path": "modules/MCP-tooling/choms-mcp-tooling/SKILL.md",
       "name": "choms-mcp-tooling",
       "sha256": "dbc7f463166c5f9032b83b1509071a8fbc0b5bf7992f639505255730ba06f083",
-      "state": "prepared-and-locally-tested",
-      "native_activation": false,
+      "state": "promoted-native-node-dev-02",
+      "native_activation": true,
       "reuse_existing": [
         "choms-mcp-server-patterns",
         "choms-security-review"
@@ -202,12 +202,25 @@
       "path": "modules/video-social/choms-video-social/SKILL.md",
       "name": "choms-video-social",
       "sha256": "21f2aed07c74dfbcdae312df24fc530eb475254b1127688d264baa16a879df1e",
-      "state": "prepared-and-locally-tested",
-      "native_activation": false,
+      "state": "promoted-native-node-dev-02",
+      "native_activation": true,
       "reuse_existing": [
         "choms-context-budget"
       ]
     }
   },
-  "local_toolchain": "toolchain/package-lock.json; isolated install only, no global packages"
+  "local_toolchain": "toolchain/package-lock.json; isolated install only, no global packages",
+  "native_node_dev_02": {
+    "mechanism": "individual reversible symlinks",
+    "baseline_skills": 9,
+    "modules": 4,
+    "clients": [
+      "Codex",
+      "Hermes native skills subsystem"
+    ],
+    "receipt": "~/.local/share/choms-skills/activation-node-dev-02.json",
+    "runtime": "~/.local/share/choms-skills/runtime-v1",
+    "model_or_gateway_installed": false,
+    "persistent_services": false
+  }
 }

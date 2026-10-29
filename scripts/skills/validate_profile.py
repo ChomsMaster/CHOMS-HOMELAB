@@ -8,7 +8,7 @@ import yaml
 
 def validate(root):
     profile=json.loads((root/'PROFILE.json').read_text())
-    assert profile['version']=='1.4.0','profile_version'
+    assert profile['version']=='1.4.1','profile_version'
     names=profile['activation']['selected']
     assert len(names)==len(set(names))==9,'selected_count'
     assert profile['governance']['central_persistence']=='synthetic-only' and profile['governance']['real_memories'] is False,'real_memory_gate'
@@ -28,7 +28,7 @@ def validate(root):
         assert set(e['reuse_existing']) <= set(names),'module_reuse_unknown'
         path=root/e['path']
         assert path.resolve().is_relative_to((root/'modules'/module).resolve()),'module_scope'
-        assert not path.is_symlink() and e['native_activation'] is False,'module_activation'
+        assert not path.is_symlink() and e['native_activation'] is True,'module_activation'
         meta=yaml.safe_load(path.read_text().split('---',2)[1])
         assert meta['name']==e['name'] and meta['description'],'module_metadata'
         assert hashlib.sha256(path.read_bytes()).hexdigest()==e['sha256'],'module_hash'
