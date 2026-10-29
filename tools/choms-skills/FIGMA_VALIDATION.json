@@ -1,0 +1,321 @@
+{
+  "date": "2026-10-29",
+  "host": "node-dev-02",
+  "client": {
+    "name": "Codex app-server",
+    "version": "codex-cli 0.164.0",
+    "transport": "native MCP Streamable HTTP; app-server stdio control",
+    "model_turns": 0,
+    "ephemeral_threads": true
+  },
+  "configuration": {
+    "path": "~/.codex/config.toml",
+    "table": "mcp_servers.choms_figma",
+    "url": "https://mcp.figma.com/mcp",
+    "enabled": true,
+    "persistent": true,
+    "other_settings_preserved": true,
+    "new_config_keys": [
+      "url",
+      "enabled"
+    ],
+    "auth": "native OAuth credential store; never extracted",
+    "reversal": "set only this entry enabled=false; or codex mcp remove choms_figma",
+    "permanent_services": false
+  },
+  "handshake": {
+    "status": "PASS",
+    "runtime_status": "connected",
+    "auth_status": "oAuth",
+    "server_info": {
+      "name": "Figma MCP Server",
+      "version": "1.0.0"
+    },
+    "capabilities": [
+      "prompts",
+      "resources",
+      "tools"
+    ],
+    "fresh_native_processes_connected": 3,
+    "tools_error": null,
+    "negotiated_mcp_protocol": "not exposed by the native status API; no version invented"
+  },
+  "catalog": {
+    "tools": 45,
+    "read_only_annotated": 26,
+    "other_tools_not_invoked": 19,
+    "resources": 121,
+    "names_and_annotations_sha256": "13320770efaeb5890436cf7563d247aa6a3fd6e9f09bf2d04e3d68de112505a5",
+    "names_and_annotations": {
+      "add_code_connect_map": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "authorize_mcp_app": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "create_generative_plugin": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "create_new_file": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "create_session": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "create_shader": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "download_assets": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "export_video": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "generate_diagram": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "generate_figma_design": {
+        "destructiveHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "generate_image": {
+        "destructiveHint": false,
+        "openWorldHint": true,
+        "readOnlyHint": false
+      },
+      "get_code_connect_map": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "get_code_connect_suggestions": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "get_context_for_code_connect": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "get_design_context": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "get_figjam": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "get_generative_plugin": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "get_libraries": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "get_metadata": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "get_motion_context": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "get_screenshot": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "get_shader": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "get_variable_defs": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "list_file_shaders": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "list_generative_plugins": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "list_shaders": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "open_figma_mcp_app": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "open_figma_mcp_app_in_thread": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "search_design_system": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "send_code_connect_mappings": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "send_code_to_figma": {
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true,
+        "readOnlyHint": false
+      },
+      "update_generative_plugin": {
+        "destructiveHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "update_shader": {
+        "destructiveHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "upload_assets": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "use_figma": {
+        "destructiveHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "weave_cancel_tool_run": {
+        "destructiveHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "weave_find_model": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "weave_get_model_run_output": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "weave_get_tool_inputs": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "weave_get_tool_run_output": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "weave_list_tools": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "weave_run_model": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "weave_run_tool": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "weave_upload_asset": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "whoami": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      }
+    }
+  },
+  "authenticated_read": {
+    "tool": "whoami",
+    "arguments": {},
+    "readOnlyHint": true,
+    "isError": false,
+    "content_blocks": 1,
+    "structured_response": true,
+    "identity_values_retained_or_printed": false
+  },
+  "synthetic_read": {
+    "tool": "get_metadata",
+    "readOnlyHint": true,
+    "expected": "tool error for nonexistent synthetic file",
+    "isError": true,
+    "expected_rejection": true,
+    "content_blocks": 2,
+    "response_body_retained_or_printed": false,
+    "real_file_read_proven": false,
+    "arguments_sha256": "73704d0e654f0b3b34bad07c1342ce7319d9e61d53c4ec28c96e7ee77fcf29e4",
+    "fixture": "constant nonexistent synthetic file key, root node 0:0",
+    "arguments_omitted_from_evidence": "synthetic fileKey matches generic credential heuristics; no scanner exception added"
+  },
+  "privacy": {
+    "token_values_read_by_harness": false,
+    "token_values_copied_or_printed": false,
+    "identity_or_design_content_in_evidence": false,
+    "raw_result_bodies_written_by_harness": false
+  },
+  "limits": [
+    "Remote server version is self-reported; no binary digest is asserted",
+    "No read of a user design, no real file key supplied",
+    "No writes, create_session, generation or model calls",
+    "No Hermes OAuth configuration or credentials transferred",
+    "Previous evidence retained as history"
+  ],
+  "checks": {
+    "persistent_config_parse": "PASS",
+    "native_reconnect": "PASS",
+    "profile_integrity": "PASS",
+    "diff_check": "PASS",
+    "scoped_gitleaks_findings": 0
+  },
+  "status": "PASS"
+}

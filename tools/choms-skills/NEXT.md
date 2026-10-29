@@ -16,7 +16,7 @@ no se instala su bundle, memoria, hooks ni proveedores.
 | MCP-tooling | Módulo activado; búsqueda offline, servidor stdio de validación de briefs y probe ejecutados |
 | vídeo-social | Módulo activado; medición YUV por género, metadatos y exportación fit-and-pad locales probados; publicación OFF |
 | MCP Playwright | Handshake, 25 tools, navegación about:blank y cierre PASS; template sin registrar |
-| MCP Figma | Templates inertes; initialize anónimo devuelve **401**; OAuth real pendiente, sin iniciar ni solicitar tokens |
+| MCP Figma | OAuth acreditado en Codex, conexión persistente y reversible; 45 tools, whoami y rechazo de lectura sintética PASS. Sin lectura de diseños reales |
 | Prompt de Diseño | **Identificación pendiente**, nombre original, no activado y no cubierto |
 | Regla de Diseño de Bercer | **Identificación pendiente**, nombre original, no activada y no cubierta |
 | web-design-guidelines | Fuente y hash revisados; licencia del repo no acreditada por archivo. Sin redistribuir instrucciones; lint/revisión CHOMS propios, sin afirmar conformidad completa |
@@ -58,14 +58,32 @@ destinos antes de retirar alguno; no sobrescribe paths ni elimina skill sources.
 Verificación real desde raíces instaladas:
 `PYTHONPATH=~/.local/share/choms-skills/runtime-v1/pydeps PYTHONDONTWRITEBYTECODE=1 python3 scripts/skills/verify_native_activation.py --hermes-source ~/.local/share/choms-skills/runtime-v1/hermes`.
 
-Los templates Figma no registran conexiones; el JSON Playwright es un ejemplo
-para adaptar al cliente, fuera de cualquier configuración activa. OAuth real es
-el siguiente gate Figma; después harían falta tools/list y lectura del nodo autorizado.
-La intervención preparada usa el cliente nativo, sin tokens por chat ni registro permanente:
-`codex -c 'mcp_servers.choms_figma.url="https://mcp.figma.com/mcp"' mcp login choms_figma`.
-Ejecutar en la sesión local del operador en node-dev-02; la autenticación ocurre
-con Figma y el almacén nativo de Codex. No se ha ejecutado este login. Registrar
-la conexión permanente solo después de completar OAuth y verificar la lectura autorizada.
+Figma está conectado de forma persistente en Codex de node-dev-02 mediante la
+entrada `mcp_servers.choms_figma` de `~/.codex/config.toml`, solo URL oficial y
+enabled=true. OAuth completado por el operador y consumido exclusivamente por el
+cliente nativo, sin extraer ni copiar tokens. Tres procesos nuevos conectaron
+sin overrides de configuración ni nuevo login. [Evidencia Figma](FIGMA_VALIDATION.json).
+
+El servidor declara Figma MCP Server 1.0.0, 45 herramientas (26 anotadas readOnlyHint),
+121 recursos y capacidades tools/resources/prompts. Es una foto del servicio remoto,
+no un digest de binario ni garantía de catálogo futuro. El catálogo se enumera en
+la evidencia por nombre/anotaciones, sin contenido de usuario. No se ejecutan las
+herramientas de escritura ni generación disponibles.
+
+La lectura autenticada whoami {} devuelve éxito; identidad descartada sin imprimir.
+get_metadata con fileKey CHOMSSYNTHETICFIXTURE0001/nodeId 0:0 devuelve isError=true,
+rechazo esperado para el archivo inexistente. Esto acredita dispatch y rechazo
+sintéticos, **no lectura de un diseño real**. No se crea una sesión remota Figma,
+archivo, asset o fixture para conseguir una lectura positiva.
+
+Para desactivar de forma persistente, cambiar **solo** enabled a false dentro de
+esa entrada. Para retirar el registro, `codex mcp remove choms_figma`; no restaurar
+configuraciones completas ni ejecutar logout como parte de esa reversión.
+Se puede reponer la entrada con la misma URL y enabled=true; el cliente nativo
+gestiona la vigencia OAuth y cualquier renovación necesaria, sin copiar credenciales.
+Los templates de config/ siguen inertes para otros equipos. Hermes no recibe
+credenciales ni una conexión Figma por esta validación. MCP Playwright conserva
+su uso bajo demanda y su template sin registrar.
 
 ## Herramientas fijadas y reproducción
 
