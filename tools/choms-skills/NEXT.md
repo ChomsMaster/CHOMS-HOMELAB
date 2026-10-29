@@ -1,3 +1,12 @@
+## Runtime administrado 1.5.0 — rama feat/skills-runtime
+
+El runtime de herramientas pasa a `~/.local/share/choms-skills/runtime`, con receta,
+bootstrap, integridad, pruebas y rollback en [runtime/README.md](runtime/README.md).
+La copia runtime-v1 se conserva para Hermes; la descripción inferior de esa copia
+y su promoción conserva el contexto histórico. Las cuatro skills ya apuntan al
+launcher estable; no se modifican las nueve canónicas ni Figma. Este bloque se
+publica solo en feat/skills-runtime: no se integra ni publica en main.
+
 # CHOMS Skills/MCP — integración y activación local 1.4.1
 
 Preparado en `feat/skills-mcp-next` desde `69a2f4b`; integración en main

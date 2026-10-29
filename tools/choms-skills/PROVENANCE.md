@@ -74,3 +74,14 @@ Codex y catálogo/lectura/slash del subsistema Hermes fijado. No se redistribuye
 fuente Hermes en Git; su copia MIT queda en almacenamiento local con commit y
 hash de archivo comprimido registrados en ACTIVATION_VALIDATION.json. No se instala
 chat, gateway, SDK de proveedor ni autenticación. Los locks previos se conservan.
+
+## Runtime administrado 1.5.0
+
+Controlador/bootstrap y validación originales CHOMS; artifacts fijados en
+runtime/RUNTIME.lock.json y transitivas del lock npm existente, sin cambios de
+versiones ni ejecución de lifecycle scripts. Los binarios, navegadores, cachés,
+seals y recibos privados permanecen exclusivamente bajo almacenamiento de usuario.
+La extracción y primera validación de dependencias preceden al sellado; los hashes
+instalados, permisos y symlinks se comprueban antes de ejecutar o promover.
+La receta 2 incorpora avisos MIT y procedencia revisada a los snapshots locales;
+la procedencia del servicio Figma y sus credenciales no se modifica ni traslada.

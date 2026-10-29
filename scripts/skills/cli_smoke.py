@@ -26,7 +26,7 @@ def run(tool_root, node):
     url = f'http://127.0.0.1:{server.server_port}/browser.html'
     with tempfile.TemporaryDirectory(prefix='choms-cli-fixtures-') as tmp:
         work = Path(tmp)
-        env |= {'AGENT_BROWSER_SOCKET_DIR': str(work / 's'), 'XDG_CACHE_HOME': str(work / 'cache')}
+        env |= {'AGENT_BROWSER_SOCKET_DIR': os.environ.get('AGENT_BROWSER_SOCKET_DIR', str(work / 's')), 'XDG_CACHE_HOME': str(work / 'cache')}
         (work / 's').mkdir()
         (work / 'agent.json').write_text('{}')
         env['AGENT_BROWSER_CONFIG'] = str(work / 'agent.json')

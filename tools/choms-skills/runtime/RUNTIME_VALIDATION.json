@@ -1,0 +1,223 @@
+{
+  "date": "2026-10-29",
+  "host": "node-dev-02",
+  "branch": "feat/skills-runtime",
+  "base_commit": "8c2d568",
+  "main_modified_or_published": false,
+  "runtime_root": "~/.local/share/choms-skills/runtime",
+  "launcher": "~/.local/share/choms-skills/runtime/bin/choms-runtime",
+  "current_release": "48ec2035eaa1f7d232bac4f03efaabcb",
+  "previous_release": "451ec06f9578c65c51febe117f99f316",
+  "recipe_sha256": "48ec2035eaa1f7d232bac4f03efaabcb7f281be62f833d44b007ebd0ed946e1b",
+  "manifest_sha256": "add62e4de12c276759909dca2f80e387604555f90681b09c75a0d6643a414abf",
+  "files_and_links_verified": 6482,
+  "versions": {
+    "agent-browser": "agent-browser 0.41.0",
+    "chromium": "Google Chrome for Testing 155.0.8059.12",
+    "ffmpeg": "ffmpeg version 7.0.2-static https://johnvansickle.com/ffmpeg/  Copyright (c) 2000-2024 the FFmpeg developers",
+    "ffprobe": "ffprobe version 7.0.2-static https://johnvansickle.com/ffmpeg/  Copyright (c) 2007-2024 the FFmpeg developers",
+    "node": "v24.22.2",
+    "playwright-cli": "0.1.22",
+    "playwright-mcp": "Version 0.0.83",
+    "chromium_qa": "156.0.8078.4 / headless revision 1248",
+    "playwright_test": "1.64.1",
+    "gitleaks": "8.30.1",
+    "pyyaml": "6.0.3 (pure Python)"
+  },
+  "bootstrap": {
+    "pinned_public_artifacts": 7,
+    "npm_transitive_entries": 8,
+    "npm_lifecycle_scripts_executed": false,
+    "node_global_required": false,
+    "host_python": "Python 3.14.4",
+    "system_packages_changed": false,
+    "sudo_used": false,
+    "cold_release_rebuilt_from_persistent_cache_offline": true,
+    "source_of_recipe": "runtime/RUNTIME.lock.json and toolchain/package-lock.json"
+  },
+  "four_skills_fresh_processes": {
+    "frontend": {
+      "acceptance_checks": 3,
+      "valid": true
+    },
+    "frontend_html": {
+      "findings": [],
+      "scope": "structural HTML only; browser/manual review required"
+    },
+    "browser_QA": {
+      "checks": 20,
+      "inferences": 0,
+      "network": "loopback-only",
+      "status": "PASS",
+      "viewports": [
+        390,
+        1440
+      ]
+    },
+    "browser_interfaces": {
+      "agent_browser": [
+        "open",
+        "snapshot",
+        "fill",
+        "click",
+        "get",
+        "close"
+      ],
+      "inferences": 0,
+      "playwright_cli": [
+        "open",
+        "snapshot",
+        "eval",
+        "form",
+        "close"
+      ],
+      "status": "PASS"
+    },
+    "MCP_tooling": {
+      "inferences": 0,
+      "protocol": "2025-11-25",
+      "scope": "local design fixture",
+      "status": "PASS",
+      "tools": 1
+    },
+    "playwright_MCP": {
+      "inferences": 0,
+      "protocol": "2025-11-25",
+      "scope": "Playwright about:blank",
+      "status": "PASS",
+      "tools": 25
+    },
+    "video_social_measurement": {
+      "duration_seconds": 1.0,
+      "genre": "synthetic-blue",
+      "inferences": 0,
+      "publication": false,
+      "sample_fps": 1,
+      "schema": "choms-video-measurements-v1",
+      "scope": "sampled encoded YUV statistics; no perceptual grade, LUT or cadence inferred",
+      "signalstats": {
+        "UAVG": {
+          "mean": 240.0,
+          "samples": 1
+        },
+        "VAVG": {
+          "mean": 110.0,
+          "samples": 1
+        },
+        "YAVG": {
+          "mean": 41.0,
+          "samples": 1
+        }
+      },
+      "source_sha256": "e89e8a7b4b846fe9171d1d6d7635a3fc783edffccbfab97f34fdf4b28150b85a"
+    },
+    "video_social_export": {
+      "audio_streams": 1,
+      "duration_seconds": 1.002,
+      "exported": true,
+      "fps": "25/1",
+      "framing": "fit-and-pad; no crop",
+      "height": 640,
+      "publication": false,
+      "valid": true,
+      "width": 640
+    },
+    "launcher_invocation": "absolute managed launcher path, no session PATH modification",
+    "video_tools_discovered_via_managed_PATH": {
+      "audio_streams": 1,
+      "duration_seconds": 1.002,
+      "exported": true,
+      "fps": "25/1",
+      "framing": "fit-and-pad; no crop",
+      "height": 640,
+      "publication": false,
+      "valid": true,
+      "width": 640
+    },
+    "nested_launcher_playwright_MCP": {
+      "inferences": 0,
+      "protocol": "2025-11-25",
+      "scope": "Playwright about:blank",
+      "status": "PASS",
+      "tools": 25
+    }
+  },
+  "controlled_update_and_rollback": {
+    "from_release": "451ec06f9578c65c51febe117f99f316",
+    "to_release": "48ec2035eaa1f7d232bac4f03efaabcb",
+    "both_acceptance_receipts": "PASS",
+    "actual_sequence": [
+      "activate candidate",
+      "rollback to previous",
+      "verify previous integrity",
+      "activate final candidate"
+    ],
+    "tool_versions_upgraded": false,
+    "recipe_revision_change": "license and reviewed provenance snapshots only",
+    "releases_deleted": false
+  },
+  "integrity_failure_tests": {
+    "count": 11,
+    "cases": [
+      "modified content",
+      "added file",
+      "changed executable mode",
+      "rewritten manifest vs seal",
+      "external symlink",
+      "archive traversal",
+      "missing offline cache",
+      "corrupt cache",
+      "untested activation",
+      "incomplete retest invalidates acceptance",
+      "pointer promotion/rollback and launcher collision"
+    ],
+    "status": "PASS"
+  },
+  "first_launch_correction": "Playwright dependency marker detected as post-test drift; activation rejected; actual empty-browser validation moved before sealing, no integrity exemption",
+  "no_tmp_dependency": {
+    "executables_downloads_caches_and_fixtures": "managed root",
+    "TMPDIR_of_children": "managed root/work",
+    "agent_sockets": "managed root/sockets",
+    "legacy_runtime_v1_preserved": true
+  },
+  "figma": {
+    "configuration_hash_unchanged": true,
+    "oauth_store_not_opened_or_modified": true,
+    "tokens_copied_or_printed": false
+  },
+  "production_access": false,
+  "cluster_access": false,
+  "node_dev_01_access": false,
+  "persistent_services": false,
+  "remaining_managed_processes": 0,
+  "automatic_social_publication": false,
+  "inferences": 0,
+  "canonical_nine_skills_unchanged": true,
+  "checks": {
+    "offline_tests": 36,
+    "profile_integrity": "PASS",
+    "diff_check": "PASS",
+    "gitleaks": "scoped, redacted, zero findings"
+  },
+  "limits": [
+    "Linux x86_64 and existing host libraries; no system dependency installer",
+    "Canonical Git checkout remains needed for controller/bootstrap and current profile validation",
+    "Chromium sandbox exception used only for trusted local fixtures",
+    "Remote Figma runtime and OAuth are outside this managed toolchain; unchanged",
+    "Integrity seals are user-owned drift detection, not independent signing"
+  ],
+  "status": "PASS",
+  "blockers": [],
+  "native_skills_discovery": {
+    "codex_enabled": 13,
+    "codex_full_content_reads": 13,
+    "hermes_catalog": 13,
+    "hermes_full_content_and_slash": 13,
+    "new_module_bodies_loaded": 4,
+    "status": "PASS"
+  },
+  "validators_yaml": {
+    "version": "6.0.3",
+    "module_is_managed": true
+  }
+}

@@ -1689,3 +1689,25 @@ sin logout/restauración global. Templates portables conservados inertes. Solo
 cambia evidencia/documentación/catalogación del perfil y SHA256SUMS; sin scripts,
 skills canónicas, modelos, Hermes OAuth, Memory, producción o servicios permanentes.
 Validaciones de integridad, diff y Gitleaks acotado requeridas antes de publicar.
+
+### 2026-10-29 — Runtime Skills/MCP reproducible y reversible
+
+Base origin/main 8c2d568 limpia y 0/0; trabajo exclusivo en feat/skills-runtime.
+La copia manual runtime-v1 queda intacta para Hermes. Nuevo gestor de usuario con
+Node 24.22.2, CLI/MCP Playwright, Agent Browser, dos Chromium, FFmpeg/ffprobe 7.0.2,
+Gitleaks y PyYAML fijados por URLs/hashes; sin upgrades, npm lifecycle ni sudo.
+Snapshots de helpers/fixtures, caché persistente verificable, releases selladas por
+archivo/permisos/symlinks y recibos de aceptación. Reconstrucción offline real y
+launcher sin modificar PATH global. Se detectó el marcador Playwright creado en
+primer arranque: se rechazó activación y se movió la validación real de host antes
+del sellado, sin excepciones de integridad. Once regresiones de fallos, promoción
+y rollback; 36 tests offline en total. Las cuatro skills incorporan la ruta estable;
+las nueve canónicas no cambian. Browser 20 checks, formulario por ambas CLIs, MCP
+25 tools/about:blank/cierre y fixture MCP local PASS. Medición y exportación con
+audio a 640x640 PASS desde procesos nuevos, temporales en managed work, sin /tmp.
+Promoción de receta 1 a 2 (solo snapshots de licencia/procedencia), rollback real,
+verificación y restauración final. Sin procesos administrados remanentes.
+Figma config hash intacto, sin abrir almacenes OAuth ni copiar tokens. Sin cambios
+Memory, clúster, Terraform, NAS, OmniRoute, node-dev-01 o servicios productivos.
+Receta/evidencia en tools/choms-skills/runtime; publicación únicamente de la rama,
+sin merge/push a main. Locks npm previos y evidencia histórica conservados.

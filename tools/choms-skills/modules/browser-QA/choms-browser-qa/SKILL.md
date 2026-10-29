@@ -15,3 +15,12 @@ El fixture del repo demuestra mecánica y fallos detectables, no calidad de una 
 Solo usa MCP Playwright si aporta estado/introspección necesarios; emplea el template deshabilitado y
 las restricciones locales documentadas. No navegues a producción por ejecutar esta skill.
 No publicar, comprar ni enviar formularios externos sin el alcance correspondiente.
+
+## Runtime CHOMS local
+
+En node-dev-02 usa `~/.local/share/choms-skills/runtime/bin/choms-runtime run browser-qa --output ./evidencia-nueva`.
+El launcher resuelve la release activa, verifica su integridad y usa herramientas fijadas;
+no depende de /tmp ni requiere paquetes globales. `choms-runtime` aquí significa ese
+launcher por ruta completa: no se modifica PATH del usuario. Para bootstrap, actualización
+controlada y rollback consulta runtime/README.md en la raíz del perfil. Los temporales
+y capturas sintéticos quedan en la ubicación administrada; nunca datos personales.

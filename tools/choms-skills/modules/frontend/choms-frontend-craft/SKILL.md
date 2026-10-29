@@ -16,3 +16,12 @@ Ejecuta el lint HTML local y las pruebas browser-QA; el lint estructural no acre
 Lee CANDIDATES.json solo para procedencia o búsqueda; awesome-design-md es inspiración, no identidad de marca.
 La regla atribuida a Bercer y el prompt externo no tienen fuente inequívoca: no inventes una atribución.
 Prioridad LOCAL-FIRST, DETERMINISTIC-FIRST, AI-LAST: infiere solo decisiones visuales que no resuelvan fuentes locales.
+
+## Runtime CHOMS local
+
+En node-dev-02 usa `~/.local/share/choms-skills/runtime/bin/choms-runtime run local-tools brief ruta/brief.json`.
+El launcher resuelve la release activa, verifica su integridad y usa herramientas fijadas;
+no depende de /tmp ni requiere paquetes globales. `choms-runtime` aquí significa ese
+launcher por ruta completa: no se modifica PATH del usuario. Para bootstrap, actualización
+controlada y rollback consulta runtime/README.md en la raíz del perfil. Los temporales
+y capturas sintéticos quedan en la ubicación administrada; nunca datos personales.

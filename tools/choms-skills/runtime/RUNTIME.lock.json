@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "recipe_revision": 2,
+  "platform": "linux-x86_64",
+  "python_minimum": "3.12",
+  "node_directory": "node-v24.22.2-linux-x64",
+  "browser_executable": "browsers/chromium-1247/chrome-linux64/chrome",
+  "artifacts": [
+    {
+      "name": "node",
+      "version": "v24.22.2",
+      "url": "https://nodejs.org/dist/v24.22.2/node-v24.22.2-linux-x64.tar.xz",
+      "sha256": "48cc0e21e048790e54c0cf5749c2725005313d652651c40b7a21feb9697aaf75",
+      "kind": "tar",
+      "destination": ".",
+      "license": "MIT and bundled notices",
+      "bytes": 32039312
+    },
+    {
+      "name": "chromium-cli",
+      "version": "155.0.8059.12 / revision 1247",
+      "url": "https://cdn.playwright.dev/builds/cft/155.0.8059.12/linux64/chrome-linux64.zip",
+      "kind": "zip",
+      "destination": "browsers/chromium-1247",
+      "license": "Chrome for Testing terms; bundled notices",
+      "sha256": "a24546e0e6c763bf864861ce50498f38783663e24cd2af2a16798c25dc3a9489",
+      "bytes": 198335306
+    },
+    {
+      "name": "chromium-qa",
+      "version": "156.0.8078.4 / revision 1248",
+      "url": "https://cdn.playwright.dev/builds/cft/156.0.8078.4/linux64/chrome-headless-shell-linux64.zip",
+      "kind": "zip",
+      "destination": "browsers/chromium_headless_shell-1248",
+      "license": "Chrome for Testing terms; bundled notices",
+      "sha256": "c3e50596aef52c58f8fda3c6b3411c33d34c88b177b3ed1c2243359fd3b8ba20",
+      "bytes": 125797539
+    },
+    {
+      "name": "gitleaks",
+      "version": "v8.30.1",
+      "url": "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz",
+      "sha256": "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb",
+      "kind": "tar",
+      "destination": "gitleaks",
+      "license": "MIT",
+      "bytes": 8230402
+    },
+    {
+      "name": "ffmpeg-linux-x64",
+      "version": "7.0.2-static; distributor release b6.1.1",
+      "release": "b6.1.1",
+      "sha256": "e7e7fb30477f717e6f55f9180a70386c62677ef8a4d4d1a5d948f4098aa3eb99",
+      "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/ffmpeg-linux-x64",
+      "kind": "file",
+      "destination": "ffmpeg-linux-x64",
+      "license": "GPLv3 static builds; binaries not redistributed in Git",
+      "bytes": 79826272
+    },
+    {
+      "name": "ffprobe-linux-x64",
+      "version": "7.0.2-static; distributor release b6.1.1",
+      "release": "b6.1.1",
+      "sha256": "4f231a1960d83e403d08f7971e271707bec278a9ae18e21b8b5b03186668450d",
+      "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/ffprobe-linux-x64",
+      "kind": "file",
+      "destination": "ffprobe-linux-x64",
+      "license": "GPLv3 static builds; binaries not redistributed in Git",
+      "bytes": 79665792
+    },
+    {
+      "name": "pyyaml",
+      "version": "6.0.3",
+      "url": "https://files.pythonhosted.org/packages/05/8e/961c0007c59b8dd7729d542c61a4d537767a59645b82a0b521206e1e25c2/pyyaml-6.0.3.tar.gz",
+      "sha256": "d76623373421df22fb4cf8817020cbb7ef15c725b9d5e45f17e189bfc384190f",
+      "kind": "tar",
+      "destination": "vendor",
+      "license": "MIT",
+      "bytes": 130960
+    }
+  ],
+  "npm_package_lock_sha256": "bc92968a30375b242854c8b9575a496d548914af9856c1eef952071d0c1c8768",
+  "npm_package_json_sha256": "e8efc8ca1ad8a7e85d7a90a88b852ab116ae6d5eaa47b88ea59eddcbb8fefc04",
+  "npm_install_scripts": false,
+  "helpers": {
+    "scripts/skills/runtime.py": "f552638b1b35d32bed508c9b31330c7c6691713d60a790c443903a273dbc0148",
+    "scripts/skills/local_tools.py": "8c74006f6ac7bc92888352fc6b57a299f14f31cebfd009685dcd43b875d3e618",
+    "scripts/skills/design_mcp.py": "a17377417087b3a04b10747058971b3889e67accfd35effd032fdc2906b71c07",
+    "scripts/skills/mcp_probe.py": "80cd1a5888d592408d98298434eb1e3ef9fa0739093dcb0b29f4024f1176e823",
+    "scripts/skills/browser_qa.cjs": "104403f72043313b21ec5efef5729d0f3e6adce838d3491a9da979bca0f16055",
+    "scripts/skills/cli_smoke.py": "2a2c6e176e01df4e1729a2010b338c41a2220c674a51adf6cc49765b612fed53",
+    "scripts/skills/validate_profile.py": "2d699732c36b2e72f7ece4d45da33471aedbab9106d67b96c807a451ea10d235",
+    "tools/choms-skills/fixtures/design-brief.json": "2041d167152fa7125b49328abd5ee8fbed9c8d96a866adeee3465943a1dbb3e8",
+    "tools/choms-skills/fixtures/browser.html": "ad99612fc4eefe2e323477d01b3721bed3ce178ea5c3d8ebcf7342d947b85670",
+    "tools/choms-skills/CANDIDATES.json": "1f03e16302722069e3eaf3c431d49a339e8d23b365097da200a10337c6d90a07",
+    "tools/choms-skills/LICENSE": "326146379f01bb137c0a5d3c54770c1aa31076705c8b88a7f6b26a460f6221b2",
+    "tools/choms-skills/SOURCES_NEXT.lock.json": "7181b0452a93246131be4963556bdf418281e34eadfa0a939aa11ba5c9ee7be6"
+  },
+  "provenance": {
+    "reviewed_sources": "app/tools/choms-skills/SOURCES_NEXT.lock.json",
+    "npm": "exact package-lock.json tarball URLs and SHA512 integrity; no lifecycle scripts",
+    "artifacts": "fixed public HTTPS URLs and SHA256; not an independent signature verification",
+    "local_helpers": "original CHOMS plus preserved MIT notice in app/tools/choms-skills/LICENSE",
+    "revision_change": "add license and reviewed source snapshots; no tool or dependency version upgrade"
+  }
+}

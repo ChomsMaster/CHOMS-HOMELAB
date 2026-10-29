@@ -17,7 +17,7 @@ normalización/exportación solo tras elegir encuadre, fps, subtítulos y loudne
 La entrega es un archivo local y un checklist de revisión humana. Publicación automática permanece OFF.
 
 Exportación local sin recorte ni sobrescritura:
-`python3 scripts/skills/local_tools.py export origen.mp4 /tmp/nueva-salida.mp4 --width 1080 --height 1920 --ffmpeg /ruta/ffmpeg --ffprobe /ruta/ffprobe`.
+`python3 scripts/skills/local_tools.py export origen.mp4 ./salida-nueva.mp4 --width 1080 --height 1920 --ffmpeg /ruta/ffmpeg --ffprobe /ruta/ffprobe`.
 Dimensiones explícitas pares, fit-and-pad, metadatos retirados y comprobación posterior del archivo.
 Un fallo puede dejar salida parcial: revisarla, no publicarla ni reintentar sobrescribiendo.
 
@@ -26,3 +26,12 @@ El recibo conserva hash del asset, género separado y medias Y/U/V muestreadas a
 Reutiliza de ECC taste-distillation/taste-application el enfoque medido; esta implementación CHOMS
 no incorpora sus proveedores, scripts, LUT, montaje por cadencia ni resultados de experimentos ajenos.
 Las estadísticas de señal no equivalen a igualar un look perceptual; cero medido y campo ausente son distintos.
+
+## Runtime CHOMS local
+
+En node-dev-02 usa `~/.local/share/choms-skills/runtime/bin/choms-runtime run local-tools export origen.mp4 ./salida-nueva.mp4 --width 640 --height 640`.
+El launcher resuelve la release activa, verifica su integridad y usa herramientas fijadas;
+no depende de /tmp ni requiere paquetes globales. `choms-runtime` aquí significa ese
+launcher por ruta completa: no se modifica PATH del usuario. Para bootstrap, actualización
+controlada y rollback consulta runtime/README.md en la raíz del perfil. Los temporales
+y capturas sintéticos quedan en la ubicación administrada; nunca datos personales.
