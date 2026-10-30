@@ -3,8 +3,9 @@
 Runtime local de usuario en `~/.local/share/choms-skills/runtime`, Linux x86_64.
 Requiere Python >=3.12 del host; se verifica en node-dev-02 con Python 3.14.4.
 No instala paquetes del sistema, modifica PATH del usuario, configura servicios ni
-accede a credenciales. El checkout canónico debe conservar su ubicación: el launcher
-apunta al controlador versionado, como los enlaces de skills existentes.
+accede a credenciales. En uso standalone el launcher conserva el controlador del checkout. El coordinador
+de puestos puede suministrar source_root inmutable: controlador, helpers y perfil
+quedan vinculados al snapshot publicado sin modificar el checkout del usuario.
 
 ## Versiones y procedencia
 
@@ -147,3 +148,12 @@ ningún paquete. Ambas se probaron para demostrar promoción y rollback reales.
 La autorización de integración posterior sustituye el límite inicial de publicar
 solo la rama. 6ba3b93 y sus fallos/gates Memory se conservan sin cambios.
 [Validación focal contra ese main](INTEGRATION_VALIDATION.json).
+
+## Gestión de puestos
+
+`Runtime(root, source_root=..., create=False)` permite inspección sin crear carpetas.
+El coordinador de [puestos](../../choms-workstations/README.md) usa prepare/test/
+activate del mismo gestor; no instala por otra vía. El launcher puede pasar a una
+fuente inmutable solo si el controlador anterior/nuevo coincide con hashes de sus
+releases; un controlador ajeno o editado no se sobrescribe. La receta 3 actualiza
+solo esta API y su hash de helper, conservando todas las versiones de herramientas.

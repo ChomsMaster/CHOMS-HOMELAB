@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "name": "CHOMS development workstation base",
+  "common": {
+    "platform": "linux-x86_64",
+    "runtime_lock_sha256": "b654b6953f08bf1fea294afb75586bd748f878c3303fa87b6eb4d87ff2079032",
+    "profile_sha256": "0eb1eac5ddc494be0f940bf761fc83c1c4f9f057c44128291eaf0871acda7186",
+    "skill_count": 13,
+    "tools": {
+      "node": "v24.22.2",
+      "chromium-cli": "155.0.8059.12 / revision 1247",
+      "chromium-qa": "156.0.8078.4 / revision 1248",
+      "gitleaks": "v8.30.1",
+      "ffmpeg-linux-x64": "7.0.2-static; distributor release b6.1.1",
+      "ffprobe-linux-x64": "7.0.2-static; distributor release b6.1.1",
+      "pyyaml": "6.0.3"
+    },
+    "npm_lock": "tools/choms-skills/toolchain/package-lock.json",
+    "skills_profile": "tools/choms-skills/PROFILE.json",
+    "mcp": {
+      "choms_playwright": {
+        "tool": "playwright-mcp",
+        "enabled": true
+      }
+    },
+    "npm": {
+      "@playwright/cli": "0.1.22",
+      "@playwright/mcp": "0.0.83",
+      "@playwright/test": "1.64.1",
+      "agent-browser": "0.41.0"
+    }
+  },
+  "hosts": {
+    "node-dev-01": {
+      "optional": {
+        "comfyui": "preserve",
+        "figma": "preserve"
+      },
+      "execution": "local only; A2141 not contacted by this task"
+    },
+    "node-dev-02": {
+      "optional": {
+        "comfyui": "preserve",
+        "figma": "preserve"
+      },
+      "execution": "local only; iMac"
+    },
+    "default": {
+      "optional": {
+        "comfyui": "preserve",
+        "figma": "preserve"
+      },
+      "execution": "local only"
+    }
+  },
+  "optional": {
+    "comfyui": {
+      "managed": false,
+      "install": false,
+      "download_models": false,
+      "policy": "preserve local installation; requires a separate authorized capability implementation"
+    },
+    "figma": {
+      "managed": false,
+      "oauth": "local only; never copied or replaced"
+    },
+    "client_applications": {
+      "managed": false,
+      "policy": "Codex/Hermes binaries, models, sessions and settings outside the single CHOMS MCP entry are preserved"
+    }
+  },
+  "policy": {
+    "source": "immutable commit reachable from an explicit origin ref, remote head rechecked by apply",
+    "git_operations_forbidden": [
+      "pull",
+      "reset",
+      "stash"
+    ],
+    "installation": "existing scripts/skills/runtime.py only",
+    "foreign_configuration": "preserve; conflicts fail closed",
+    "unpublished_changes": "never read as install input or rewritten"
+  }
+}

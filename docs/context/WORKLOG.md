@@ -1739,3 +1739,19 @@ Gitleaks acotado y diff check antes de publicar. Sin servidores, systemd, clúst
 Restic/NAS, OAuth ni modelo; Figma config hash intacto. Evidencia actual en
 runtime/INTEGRATION_VALIDATION.json; recibos previos conservan su alcance histórico.
 Integración trazable y push normal, con nueva comprobación de origin/main.
+
+### 2026-10-30 — Gestión bajo demanda de puestos CHOMS
+
+Rama feat/dev-workstation-sync desde main limpio y sincronizado 03adec3.
+Coordinador check/plan/apply sobre el bootstrap existente, no instalador paralelo.
+Manifiesto común con hashes de runtime/perfil, versiones npm y MCP sin secretos;
+perfiles node-dev-01/node-dev-02/default y capacidades externas preserve.
+Fuente inmutable desde objetos Git publicados; comprobación remota de referencia
+antes de apply, sin pull/reset/stash ni lectura de borradores como instalación.
+Read-only real para check/plan; snapshots acotados, enlace de controlador estable,
+propiedad por recibos y compensación/rollback sin copias de hogares o credenciales.
+Pruebas aisladas con homes y orígenes Git locales: idempotencia, deriva, colisiones,
+OAuth ajeno preservado, fallo parcial, snapshots y cambios Git sin publicar.
+Verificación real del iMac queda para después de publicar el primer commit validado.
+A2141/servidores/Memory/clúster/NAS/OmniRoute no accedidos; sin servicios, sudo,
+ComfyUI, modelos ni publicación en main. No se cambia el estado pendiente de Memory.

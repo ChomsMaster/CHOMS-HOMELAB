@@ -71,8 +71,11 @@ def manifest(root):
 
 
 class Runtime:
-    def __init__(self, root=DEFAULT_ROOT):
+    def __init__(self, root=DEFAULT_ROOT, source_root=None, create=True):
         self.root = root.resolve()
+        self.source_root = (source_root or REPO).resolve()
+        if not create:
+            return
         for name in ('downloads', 'releases', 'seals', 'receipts', 'work', 'sockets', 'bin'):
             (self.root / name).mkdir(parents=True, exist_ok=True)
 
@@ -158,12 +161,12 @@ class Runtime:
         if final.exists():
             self.verify(ident)
             return ident
-        package_lock = REPO / 'tools/choms-skills/toolchain/package-lock.json'
-        package_json = REPO / 'tools/choms-skills/toolchain/package.json'
+        package_lock = self.source_root / 'tools/choms-skills/toolchain/package-lock.json'
+        package_json = self.source_root / 'tools/choms-skills/toolchain/package.json'
         if digest(package_lock) != lock['npm_package_lock_sha256'] or digest(package_json) != lock['npm_package_json_sha256']:
             raise ValueError('npm_lock_changed')
         for name, sha in lock['helpers'].items():
-            if digest(inside(REPO, name)) != sha:
+            if digest(inside(self.source_root, name)) != sha:
                 raise ValueError('helper_changed:' + name)
         # Failed stages remain under the managed root for diagnosis, never promoted.
         stage = Path(tempfile.mkdtemp(prefix='.stage-', dir=self.root / 'releases'))
@@ -190,7 +193,7 @@ class Runtime:
         (stage / 'node_modules/agent-browser/bin/agent-browser-linux-x64').chmod(0o755)
         for name in lock['helpers']:
             target = inside(stage / 'app', name); target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copyfile(REPO / name, target); target.chmod(0o644)
+            shutil.copyfile(self.source_root / name, target); target.chmod(0o644)
         (stage / 'bin').mkdir()
         for name, target in {'node': '../' + lock['node_directory'] + '/bin/node', 'ffmpeg': '../ffmpeg-linux-x64', 'ffprobe': '../ffprobe-linux-x64'}.items():
             (stage / 'bin' / name).symlink_to(target)
@@ -254,7 +257,7 @@ class Runtime:
             'mcp-probe': [sys.executable, str(app / 'mcp_probe.py')],
             'browser-qa': [node, str(app / 'browser_qa.cjs'), '--tool-root', str(release)],
             'cli-smoke': [sys.executable, str(app / 'cli_smoke.py'), '--tool-root', str(release), '--node', node],
-            'validate-profile': [sys.executable, str(app / 'validate_profile.py'), '--root', str(REPO / 'tools/choms-skills')]}
+            'validate-profile': [sys.executable, str(app / 'validate_profile.py'), '--root', str(self.source_root / 'tools/choms-skills')]}
         if tool not in commands:
             raise ValueError('unknown_runtime_tool')
         return commands[tool] + args
@@ -298,17 +301,23 @@ class Runtime:
         if report['status'] != 'PASS' or report['manifest_sha256'] != digest(self.release(ident) / 'MANIFEST.json'):
             raise ValueError('acceptance_receipt_required')
         old = self.current() if (self.root / 'current').is_symlink() else None
-        if old == ident:
-            return {'status': 'PASS', 'current': ident, 'changed': False}
         if old:
             self.verify(old)
         launcher = self.root / 'bin/choms-runtime'
-        controller = Path(__file__).resolve()
+        controller = self.source_root / 'scripts/skills/runtime.py'
+        rebound = False
         if launcher.exists() or launcher.is_symlink():
-            if not launcher.is_symlink() or launcher.resolve() != controller:
+            if not launcher.is_symlink():
                 raise ValueError('launcher_collision')
+            if launcher.resolve() != controller:
+                allowed = {json.loads((self.release(i) / 'LOCK.json').read_text()).get('helpers', {}).get('scripts/skills/runtime.py') for i in {old, ident} if i}
+                if not launcher.is_file() or digest(launcher.resolve()) not in allowed or digest(controller) not in allowed:
+                    raise ValueError('launcher_collision')
+                atomic_link(launcher, controller); rebound = True
         else:
-            launcher.symlink_to(controller)
+            launcher.symlink_to(controller); rebound = True
+        if old == ident:
+            return {'status': 'PASS', 'current': ident, 'changed': rebound}
         if old:
             atomic_link(self.root / 'previous', 'releases/' + old)
         atomic_link(self.root / 'current', 'releases/' + ident)

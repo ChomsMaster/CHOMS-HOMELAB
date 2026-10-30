@@ -15,22 +15,25 @@ def entries():
     return result
 
 
-def activate(roots, receipt):
-    targets = entries()
+def activate(roots, receipt, targets=None, previous=None):
+    targets = entries() if targets is None else targets
+    previous = previous or {}
     plans = [(root / name, target.resolve()) for root in roots for name, target in targets.items()]
     for path, target in plans:
         if path.exists() or path.is_symlink():
-            if not path.is_symlink() or path.resolve() != target:
+            if (not path.is_symlink() or path.resolve() != target) and not (path.is_symlink() and str(path) in previous and os.readlink(path) == previous[str(path)]):
                 raise ValueError('native_skill_collision:' + path.name)
     if receipt.exists():
         raise ValueError('activation_receipt_exists; verify or rollback before reactivation')
     created = []
     try:
         for path, target in plans:
-            if not path.is_symlink():
+            if not path.is_symlink() or path.resolve() != target:
+                old = os.readlink(path) if path.is_symlink() else None
                 path.parent.mkdir(parents=True, exist_ok=True)
-                path.symlink_to(target, target_is_directory=True)
-                created.append({'path': str(path), 'target': str(target)})
+                from runtime import atomic_link
+                atomic_link(path, target)
+                created.append({'path': str(path), 'target': str(target), 'previous': old})
         receipt.parent.mkdir(parents=True, exist_ok=True)
         with receipt.open('x') as output:
             os.chmod(receipt, 0o600)
@@ -40,7 +43,11 @@ def activate(roots, receipt):
         for entry in reversed(created):
             path = Path(entry['path'])
             if path.is_symlink() and path.resolve() == Path(entry['target']):
-                path.unlink()
+                if entry.get('previous') is None:
+                    path.unlink()
+                else:
+                    from runtime import atomic_link
+                    atomic_link(path, entry['previous'])
         raise
     return {'status': 'PASS', 'skills_per_runtime': len(targets), 'created_links': len(created), 'overwritten': 0}
 
@@ -52,7 +59,11 @@ def rollback(receipt):
         if not path.is_symlink() or path.resolve() != Path(entry['target']):
             raise ValueError('rollback_target_changed:' + path.name)
     for entry in reversed(value['created']):
-        Path(entry['path']).unlink()
+        if entry.get('previous') is None:
+            Path(entry['path']).unlink()
+        else:
+            from runtime import atomic_link
+            atomic_link(Path(entry['path']), entry['previous'])
     receipt.rename(receipt.with_suffix('.rolled-back.json'))
     return {'status': 'PASS', 'removed_links': len(value['created'])}
 
