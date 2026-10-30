@@ -4,6 +4,19 @@ Estado 27-10-2026: MCP independiente operativo y validado con fixtures desde Cod
 CLI y Hermes nativos, sin inferencias. Memorias reales y captura automática OFF.
 Codebase Memory conserva su función de índice de código y su allowlist anterior.
 
+## CHOMS Memory — intento de captura en node-01, 2026-10-30
+
+Lectura de systemd: el servicio instalado ejecuta `--scheduled-capture`, inició a
+las 07:15:00 CET y terminó a las 07:16:14 CET con `ExecMainStatus=1`. Fue un
+intento de backup; no hay evidencia de restore ni de backup completo. El timer
+figura ahora `disabled/inactive`, sin última ni próxima activación registrada.
+La coincidencia horaria no prueba que el timer iniciara el servicio. No se
+recuperó la etapa del fallo ni se consultaron snapshots/marker; el journal de la
+invocación requiere sudo interactivo. No se repitió ninguna operación ni se
+modificó el servicio, el timer o los datos. Memorias reales y captura automática
+no se habilitaron; los gates no se revalidaron en esta consulta.
+
+
 ## Arquitectura y contrato real
 
 Endpoint del Service `choms-memory.choms-memory.svc.cluster.local:8080/mcp`.

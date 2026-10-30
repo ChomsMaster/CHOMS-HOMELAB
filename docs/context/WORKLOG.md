@@ -1689,3 +1689,16 @@ sin logout/restauración global. Templates portables conservados inertes. Solo
 cambia evidencia/documentación/catalogación del perfil y SHA256SUMS; sin scripts,
 skills canónicas, modelos, Hermes OAuth, Memory, producción o servicios permanentes.
 Validaciones de integridad, diff y Gitleaks acotado requeridas antes de publicar.
+
+
+## 2026-10-30 — intento de captura programada fallido, causa pendiente
+
+Consulta remota de solo lectura: el servicio efectivo de node-01 ejecuta
+`--scheduled-capture`, con inicio 07:15:00 CET, fin 07:16:14 CET y exit 1.
+Acredita un intento de backup, no restore ni backup válido. El timer está
+`disabled/inactive` y no hay LastTrigger/NextElapse; la coincidencia horaria no
+demuestra que lo disparara. El journal root-only no fue legible sin sudo
+interactivo y no se consultó el inventario Restic: etapa, streams parciales y
+marker quedan sin verificar. No se repitió ni se modificó live. Validación local:
+69 pruebas focales de captura/protocolo PASS, 1 SKIP; suite Memory completa
+468 pruebas, 7 FAIL, 24 ERROR y 36 SKIP. No se declara aceptación.
