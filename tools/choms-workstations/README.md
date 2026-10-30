@@ -127,3 +127,20 @@ toca sesiones. Conservar la fuente aprobada para ejecutar su mismo coordinador.
 El A2141 no se contacta ni aplica desde node-dev-02. Su aplicación local queda para
 después de su trabajo actual. [VALIDATION.json](VALIDATION.json) distingue pruebas
 con hogares/orígenes aislados de las observaciones reales del iMac.
+
+## Resultado real del iMac — 2026-10-30
+
+Contra la fuente publicada 1173d0b, check/plan identifican 29 acciones y ningún
+conflicto: receta/controlador 1 (sin upgrade de herramientas), 26 enlaces CHOMS
+con propiedad acreditada para binding a la fuente inmutable y dos entradas MCP
+choms_playwright (Codex y Hermes). Los fingerprints de configuraciones y enlaces
+no cambian durante check/plan. El informe privado se guardó con la autorización
+del entorno; no se cambiaron permisos del sistema.
+
+No se aplicó la base a la instalación real. Figma y configuraciones ajenas se
+conservaron; ComfyUI y el A2141 no se inspeccionaron ni provisionaron. apply y su
+segunda ejecución sin cambios, bootstrap funcional y rollback se acreditaron en
+un hogar aislado con el instalador existente (20 checks browser, 25 tools MCP y
+exportación sintética con audio). Los 57 tests ya aprobados no se repitieron para
+resolver el guardado. Para usar el plan guardado, fijar --revision 1173d0b; si se
+elige otro commit o cambian inputs locales, generar y revisar un plan nuevo.

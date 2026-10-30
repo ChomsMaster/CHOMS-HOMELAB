@@ -1755,3 +1755,18 @@ OAuth ajeno preservado, fallo parcial, snapshots y cambios Git sin publicar.
 Verificación real del iMac queda para después de publicar el primer commit validado.
 A2141/servidores/Memory/clúster/NAS/OmniRoute no accedidos; sin servicios, sudo,
 ComfyUI, modelos ni publicación en main. No se cambia el estado pendiente de Memory.
+
+### 2026-10-30 — Check/plan real del iMac e informe guardado
+
+Implementación publicada 1173d0b en feat/dev-workstation-sync. Check/plan reales
+frente a esa fuente: runtime 48ec2035... -> receta b654b695..., 26 enlaces CHOMS
+con recibo y dos entradas MCP; 29 acciones, cero conflictos. Fingerprints nativos
+intactos; no apply sobre la instalación real. Se resolvió únicamente el bloqueo
+de escritura de imac-workstation-plan.json con la escalación autorizada del entorno,
+sin cambiar permisos del sistema. Guardado bajo managed runtime/work, sin valores
+de configuración ni credenciales. No se repitieron las suites ya aprobadas.
+La prueba real aislada iniciada previamente terminó PASS: bootstrap existente,
+20 checks browser, MCP 25 tools, vídeo con audio a 640x640, segunda aplicación
+sin cambios y rollback. Pruebas unitarias ya aprobadas: 19 coordinador + 38 base.
+Cierre documental únicamente en la rama; no merge/push a main, acceso al A2141,
+servidores, Memory, clúster, NAS u OmniRoute ni instalación ComfyUI/modelos.
