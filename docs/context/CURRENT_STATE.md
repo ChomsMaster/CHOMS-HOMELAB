@@ -1,3 +1,24 @@
+## CHOMS Memory — intento de captura en node-01, 2026-10-30
+
+Lectura de systemd: el servicio instalado ejecuta `--scheduled-capture`, inició a
+las 07:15:00 CET y terminó a las 07:16:14 CET con `ExecMainStatus=1`. Fue un
+intento de backup; no hay evidencia de restore ni de backup completo. El timer
+figura ahora `disabled/inactive`, sin última ni próxima activación registrada.
+La coincidencia horaria no prueba que el timer iniciara el servicio. No se
+recuperó la etapa del fallo ni se consultaron snapshots/marker; el journal de la
+invocación requiere sudo interactivo. No se repitió ninguna operación ni se
+modificó el servicio, el timer o los datos. Memorias reales y captura automática
+no se habilitaron; los gates no se revalidaron en esta consulta.
+
+## Skills runtime — integración autorizada, 2026-10-30
+
+Se integra feat/skills-runtime preservando 6ba3b93 y su historial. Runtime local
+PASS: 36 tests, integridad, browser 20 checks, CLI, MCP Playwright 25 tools,
+vídeo sintético y Codex/Hermes 13/13. Memory continúa pendiente: este bloque no
+corrige sus fallos ni cambia su aceptación. Resolución compartida solo aditiva.
+[Evidencia focal](../../tools/choms-skills/runtime/INTEGRATION_VALIDATION.json).
+Sin servidores, clúster, systemd o cambios funcionales Memory; Figma intacto.
+
 ## CHOMS Skills runtime — node-dev-02, 29-10-2026 (rama aislada)
 
 Perfil 1.5.0 y runtime administrado bajo ~/.local/share/choms-skills/runtime.

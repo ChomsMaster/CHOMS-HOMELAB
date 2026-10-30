@@ -1,3 +1,10 @@
+## Integración del runtime — 2026-10-30
+
+Autorizada tras publicar 6ba3b93. Memory sigue pendiente y su cierre se conserva
+literalmente; solo se integra Skills/MCP con sus validaciones focales.
+[Evidencia actual](runtime/INTEGRATION_VALIDATION.json). Los bloques inferiores
+conservan el alcance y límites de sus fases anteriores.
+
 ## Runtime administrado 1.5.0 — rama feat/skills-runtime
 
 El runtime de herramientas pasa a `~/.local/share/choms-skills/runtime`, con receta,

@@ -1711,3 +1711,31 @@ Figma config hash intacto, sin abrir almacenes OAuth ni copiar tokens. Sin cambi
 Memory, clúster, Terraform, NAS, OmniRoute, node-dev-01 o servicios productivos.
 Receta/evidencia en tools/choms-skills/runtime; publicación únicamente de la rama,
 sin merge/push a main. Locks npm previos y evidencia histórica conservados.
+
+
+## 2026-10-30 — intento de captura programada fallido, causa pendiente
+
+Consulta remota de solo lectura: el servicio efectivo de node-01 ejecuta
+`--scheduled-capture`, con inicio 07:15:00 CET, fin 07:16:14 CET y exit 1.
+Acredita un intento de backup, no restore ni backup válido. El timer está
+`disabled/inactive` y no hay LastTrigger/NextElapse; la coincidencia horaria no
+demuestra que lo disparara. El journal root-only no fue legible sin sudo
+interactivo y no se consultó el inventario Restic: etapa, streams parciales y
+marker quedan sin verificar. No se repitió ni se modificó live. Validación local:
+69 pruebas focales de captura/protocolo PASS, 1 SKIP; suite Memory completa
+468 pruebas, 7 FAIL, 24 ERROR y 36 SKIP. No se declara aceptación.
+
+### 2026-10-30 — Integración focal del runtime Skills/MCP
+
+Autorización posterior permite integrar main: fetch confirma 6ba3b93 publicado.
+Se preserva su cierre Memory sin cambios ni aceptación; sus fallos conocidos no
+se ejecutan ni corrigen desde este bloque. Conflictos solo CURRENT_STATE, ROADMAP
+y WORKLOG, resueltos conservando literalmente ambas adiciones y todo el historial.
+CHOMS_MEMORY.md y contenido funcional protegido iguales al main publicado.
+Runtime release 48ec2035eaa1f7d232bac4f03efaabcb: 36 tests PASS, 6482 archivos/enlaces
+verificados, browser 20 checks, ambas CLIs, MCP Playwright 25 tools/about:blank,
+fixture MCP propio, exportación sintética con audio a 640x640 y Codex/Hermes 13/13.
+Gitleaks acotado y diff check antes de publicar. Sin servidores, systemd, clúster,
+Restic/NAS, OAuth ni modelo; Figma config hash intacto. Evidencia actual en
+runtime/INTEGRATION_VALIDATION.json; recibos previos conservan su alcance histórico.
+Integración trazable y push normal, con nueva comprobación de origin/main.

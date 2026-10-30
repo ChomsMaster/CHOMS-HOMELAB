@@ -1,0 +1,98 @@
+{
+  "date": "2026-10-30",
+  "source_branch": "feat/skills-runtime",
+  "runtime_commit": "7fa760a",
+  "main_preserved": "6ba3b93975059bb8e8cc27e4ad698791366ca9e9",
+  "merge_strategy": "merge commits; no rebase, squash or force push",
+  "scope": "Skills/MCP runtime only relative to published main",
+  "memory_status": "pending; scheduled capture failure and reported Memory suite failures from 6ba3b93 retained unchanged; no acceptance asserted",
+  "memory_tests_run_or_modified": false,
+  "memory_functional_files_changed": false,
+  "shared_conflicts": [
+    "docs/context/CURRENT_STATE.md",
+    "docs/context/ROADMAP.md",
+    "docs/context/WORKLOG.md"
+  ],
+  "resolution": "exact additive upstream and branch blocks; historical entries not rewritten",
+  "runtime_release": "48ec2035eaa1f7d232bac4f03efaabcb",
+  "runtime_integrity": {
+    "status": "PASS",
+    "files_and_links": 6482,
+    "manifest_sha256": "add62e4de12c276759909dca2f80e387604555f90681b09c75a0d6643a414abf"
+  },
+  "runtime_unit_tests": {
+    "passed": 36,
+    "status": "PASS"
+  },
+  "browser": {
+    "checks": 20,
+    "inferences": 0,
+    "network": "loopback-only",
+    "status": "PASS",
+    "viewports": [
+      390,
+      1440
+    ]
+  },
+  "cli_smoke": {
+    "agent_browser": [
+      "open",
+      "snapshot",
+      "fill",
+      "click",
+      "get",
+      "close"
+    ],
+    "inferences": 0,
+    "playwright_cli": [
+      "open",
+      "snapshot",
+      "eval",
+      "form",
+      "close"
+    ],
+    "status": "PASS"
+  },
+  "playwright_mcp": {
+    "inferences": 0,
+    "protocol": "2025-11-25",
+    "scope": "Playwright about:blank",
+    "status": "PASS",
+    "tools": 25
+  },
+  "design_mcp": {
+    "inferences": 0,
+    "protocol": "2025-11-25",
+    "scope": "local design fixture",
+    "status": "PASS",
+    "tools": 1
+  },
+  "video": {
+    "audio_streams": 1,
+    "duration_seconds": 1.002,
+    "exported": true,
+    "fps": "25/1",
+    "framing": "fit-and-pad; no crop",
+    "height": 640,
+    "publication": false,
+    "valid": true,
+    "width": 640
+  },
+  "codex_hermes": {
+    "native_discovery": 13,
+    "native_full_content_reads": 13,
+    "hermes_slash_payloads": 13,
+    "status": "PASS"
+  },
+  "figma_config_hash_unchanged": true,
+  "oauth_tokens_read_or_copied": false,
+  "server_or_cluster_access": false,
+  "systemd_access": false,
+  "inferences": 0,
+  "checks": {
+    "profile_integrity": "PASS",
+    "scoped_gitleaks_findings": 0,
+    "diff_check": "PASS"
+  },
+  "status": "PASS"
+}

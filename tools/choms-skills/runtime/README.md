@@ -141,3 +141,9 @@ verificar su destino; no se elimina el runtime-v1 ni otros enlaces de skills.
 La revisión 2 añade snapshots de licencia/procedencia a la revisión 1, sin cambiar
 ningún paquete. Ambas se probaron para demostrar promoción y rollback reales.
 [RUNTIME_VALIDATION.json](RUNTIME_VALIDATION.json) recoge IDs, hashes y resultados.
+
+## Integración 2026-10-30
+
+La autorización de integración posterior sustituye el límite inicial de publicar
+solo la rama. 6ba3b93 y sus fallos/gates Memory se conservan sin cambios.
+[Validación focal contra ese main](INTEGRATION_VALIDATION.json).
