@@ -16,3 +16,12 @@ Para Figma usa [configuración y gate](references/figma-gate.md): template prepa
 No extraigas credenciales de clientes existentes. No inicies OAuth ni escrituras Figma automáticamente.
 Una vez que el operador autentique, prueba lista de tools y una lectura del nodo autorizado; no marques
 conectado por disponer de un URL. El servidor remoto no ofrece un hash binario verificable localmente.
+
+## Runtime CHOMS local
+
+En node-dev-02 usa `~/.local/share/choms-skills/runtime/bin/choms-runtime run design-mcp`.
+El launcher resuelve la release activa, verifica su integridad y usa herramientas fijadas;
+no depende de /tmp ni requiere paquetes globales. `choms-runtime` aquí significa ese
+launcher por ruta completa: no se modifica PATH del usuario. Para bootstrap, actualización
+controlada y rollback consulta runtime/README.md en la raíz del perfil. Los temporales
+y capturas sintéticos quedan en la ubicación administrada; nunca datos personales.

@@ -1,6 +1,6 @@
 # CHOMS Skills
 
-Perfil 1.4.1: seis adaptaciones de ECC v2.2.3 y tres skills originales CHOMS,
+Perfil 1.5.0: seis adaptaciones de ECC v2.2.3 y tres skills originales CHOMS,
 con procedencia y SHA-256 por entrada. Añade cuatro módulos locales,
 activados en node-dev-02 para Codex y Hermes; [estado, uso y bloqueos](NEXT.md).
 Instrucciones y un helper Python stdlib para pruebas sintéticas de gobernanza;
@@ -67,3 +67,7 @@ por el gate de backups; el helper local solo escribe fixtures en mktemp, nunca
 datos reales ni Cognee, y no es otra memoria oficial.
 Validador: `python3 scripts/skills/validate_profile.py` desde la raíz del repo.
 Pruebas: `PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s scripts/tests -p test_memory_governance.py`.
+
+Runtime administrado y bootstrap reproducible: [runtime/README.md](runtime/README.md).
+Las herramientas se encuentran por el launcher de usuario, con integridad y rollback;
+las nueve skills canónicas y Figma permanecen intactos.

@@ -10,6 +10,27 @@ invocación requiere sudo interactivo. No se repitió ninguna operación ni se
 modificó el servicio, el timer o los datos. Memorias reales y captura automática
 no se habilitaron; los gates no se revalidaron en esta consulta.
 
+## Skills runtime — integración autorizada, 2026-10-30
+
+Se integra feat/skills-runtime preservando 6ba3b93 y su historial. Runtime local
+PASS: 36 tests, integridad, browser 20 checks, CLI, MCP Playwright 25 tools,
+vídeo sintético y Codex/Hermes 13/13. Memory continúa pendiente: este bloque no
+corrige sus fallos ni cambia su aceptación. Resolución compartida solo aditiva.
+[Evidencia focal](../../tools/choms-skills/runtime/INTEGRATION_VALIDATION.json).
+Sin servidores, clúster, systemd o cambios funcionales Memory; Figma intacto.
+
+## CHOMS Skills runtime — node-dev-02, 29-10-2026 (rama aislada)
+
+Perfil 1.5.0 y runtime administrado bajo ~/.local/share/choms-skills/runtime.
+Bootstrap fijado y reconstrucción offline desde caché, integridad por archivo/permisos/
+symlinks, promoción atómica y rollback real entre dos recetas aceptadas. Sin upgrades
+ni sudo; las cuatro skills encuentran herramientas por launcher estable desde procesos
+nuevos. Browser 20 checks, CLIs, MCP Playwright 25 tools/about:blank y exportación
+sintética con audio a 640x640 PASS. Nueve skills canónicas y Figma intactos.
+[Receta, hashes, evidencia y rollback](../../tools/choms-skills/runtime/README.md).
+Solo feat/skills-runtime; no merge/push a main ni espera a Memory. Sin accesos a
+node-dev-01, Memory, Kubernetes, Terraform, NAS, OmniRoute o producción.
+
 ## Figma MCP — OAuth verificado, 29-10-2026
 
 choms_figma persistente y reversible en Codex de node-dev-02: URL oficial y

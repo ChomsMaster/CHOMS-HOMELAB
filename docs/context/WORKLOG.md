@@ -1690,6 +1690,28 @@ cambia evidencia/documentación/catalogación del perfil y SHA256SUMS; sin scrip
 skills canónicas, modelos, Hermes OAuth, Memory, producción o servicios permanentes.
 Validaciones de integridad, diff y Gitleaks acotado requeridas antes de publicar.
 
+### 2026-10-29 — Runtime Skills/MCP reproducible y reversible
+
+Base origin/main 8c2d568 limpia y 0/0; trabajo exclusivo en feat/skills-runtime.
+La copia manual runtime-v1 queda intacta para Hermes. Nuevo gestor de usuario con
+Node 24.22.2, CLI/MCP Playwright, Agent Browser, dos Chromium, FFmpeg/ffprobe 7.0.2,
+Gitleaks y PyYAML fijados por URLs/hashes; sin upgrades, npm lifecycle ni sudo.
+Snapshots de helpers/fixtures, caché persistente verificable, releases selladas por
+archivo/permisos/symlinks y recibos de aceptación. Reconstrucción offline real y
+launcher sin modificar PATH global. Se detectó el marcador Playwright creado en
+primer arranque: se rechazó activación y se movió la validación real de host antes
+del sellado, sin excepciones de integridad. Once regresiones de fallos, promoción
+y rollback; 36 tests offline en total. Las cuatro skills incorporan la ruta estable;
+las nueve canónicas no cambian. Browser 20 checks, formulario por ambas CLIs, MCP
+25 tools/about:blank/cierre y fixture MCP local PASS. Medición y exportación con
+audio a 640x640 PASS desde procesos nuevos, temporales en managed work, sin /tmp.
+Promoción de receta 1 a 2 (solo snapshots de licencia/procedencia), rollback real,
+verificación y restauración final. Sin procesos administrados remanentes.
+Figma config hash intacto, sin abrir almacenes OAuth ni copiar tokens. Sin cambios
+Memory, clúster, Terraform, NAS, OmniRoute, node-dev-01 o servicios productivos.
+Receta/evidencia en tools/choms-skills/runtime; publicación únicamente de la rama,
+sin merge/push a main. Locks npm previos y evidencia histórica conservados.
+
 
 ## 2026-10-30 — intento de captura programada fallido, causa pendiente
 
@@ -1702,3 +1724,18 @@ interactivo y no se consultó el inventario Restic: etapa, streams parciales y
 marker quedan sin verificar. No se repitió ni se modificó live. Validación local:
 69 pruebas focales de captura/protocolo PASS, 1 SKIP; suite Memory completa
 468 pruebas, 7 FAIL, 24 ERROR y 36 SKIP. No se declara aceptación.
+
+### 2026-10-30 — Integración focal del runtime Skills/MCP
+
+Autorización posterior permite integrar main: fetch confirma 6ba3b93 publicado.
+Se preserva su cierre Memory sin cambios ni aceptación; sus fallos conocidos no
+se ejecutan ni corrigen desde este bloque. Conflictos solo CURRENT_STATE, ROADMAP
+y WORKLOG, resueltos conservando literalmente ambas adiciones y todo el historial.
+CHOMS_MEMORY.md y contenido funcional protegido iguales al main publicado.
+Runtime release 48ec2035eaa1f7d232bac4f03efaabcb: 36 tests PASS, 6482 archivos/enlaces
+verificados, browser 20 checks, ambas CLIs, MCP Playwright 25 tools/about:blank,
+fixture MCP propio, exportación sintética con audio a 640x640 y Codex/Hermes 13/13.
+Gitleaks acotado y diff check antes de publicar. Sin servidores, systemd, clúster,
+Restic/NAS, OAuth ni modelo; Figma config hash intacto. Evidencia actual en
+runtime/INTEGRATION_VALIDATION.json; recibos previos conservan su alcance histórico.
+Integración trazable y push normal, con nueva comprobación de origin/main.

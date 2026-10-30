@@ -1,3 +1,19 @@
+## Integración del runtime — 2026-10-30
+
+Autorizada tras publicar 6ba3b93. Memory sigue pendiente y su cierre se conserva
+literalmente; solo se integra Skills/MCP con sus validaciones focales.
+[Evidencia actual](runtime/INTEGRATION_VALIDATION.json). Los bloques inferiores
+conservan el alcance y límites de sus fases anteriores.
+
+## Runtime administrado 1.5.0 — rama feat/skills-runtime
+
+El runtime de herramientas pasa a `~/.local/share/choms-skills/runtime`, con receta,
+bootstrap, integridad, pruebas y rollback en [runtime/README.md](runtime/README.md).
+La copia runtime-v1 se conserva para Hermes; la descripción inferior de esa copia
+y su promoción conserva el contexto histórico. Las cuatro skills ya apuntan al
+launcher estable; no se modifican las nueve canónicas ni Figma. Este bloque se
+publica solo en feat/skills-runtime: no se integra ni publica en main.
+
 # CHOMS Skills/MCP — integración y activación local 1.4.1
 
 Preparado en `feat/skills-mcp-next` desde `69a2f4b`; integración en main

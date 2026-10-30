@@ -8,7 +8,7 @@ import yaml
 
 def validate(root):
     profile=json.loads((root/'PROFILE.json').read_text())
-    assert profile['version']=='1.4.1','profile_version'
+    assert profile['version']=='1.5.0','profile_version'
     names=profile['activation']['selected']
     assert len(names)==len(set(names))==9,'selected_count'
     assert profile['governance']['central_persistence']=='synthetic-only' and profile['governance']['real_memories'] is False,'real_memory_gate'
@@ -43,5 +43,8 @@ def validate(root):
     return {'profile_version':profile['version'],'selected':len(names),'files_hashed':len(expected),'status':'PASS'}
 
 if __name__=='__main__':
-    root=Path(__file__).resolve().parents[2]/'tools/choms-skills'
+    import argparse
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--root',type=Path,default=Path(__file__).resolve().parents[2]/'tools/choms-skills')
+    root=parser.parse_args().root
     print(json.dumps(validate(root),sort_keys=True))
