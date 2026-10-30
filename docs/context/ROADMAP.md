@@ -1,3 +1,13 @@
+## Puestos CHOMS — aplicación local node-dev-02, 2026-10-30
+
+Merge publicado 026e77d conserva 1173d0b/5795a4f y todo main anterior. Plan
+inmutable: receta 1, enlaces administrados 26, entradas MCP 2; cero conflictos.
+Apply PASS y check sin acciones pendientes. Codex/Hermes carga 13/13; ambos
+MCP Playwright: 25 tools y about:blank PASS. Configuración ajena preservada,
+OAuth intacto; sin permisos ampliados. A2141 no accedido: aplicación pendiente.
+[Evidencia y rollback](../../tools/choms-workstations/APPLY_VALIDATION.json).
+No cambia la aceptación pendiente de Memory ni se accede a servidores.
+
 ## Puestos CHOMS — comprobación del iMac, 2026-10-30
 
 Fuente publicada 1173d0b: 57 tests aprobados y prueba real aislada de bootstrap,

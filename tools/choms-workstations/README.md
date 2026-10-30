@@ -144,3 +144,22 @@ un hogar aislado con el instalador existente (20 checks browser, 25 tools MCP y
 exportación sintética con audio). Los 57 tests ya aprobados no se repitieron para
 resolver el guardado. Para usar el plan guardado, fijar --revision 1173d0b; si se
 elige otro commit o cambian inputs locales, generar y revisar un plan nuevo.
+
+## Aplicación autorizada node-dev-02 — 2026-10-30
+
+El resultado anterior queda como historial. Merge publicado `026e77d` aplicado
+localmente: receta b654b695..., 26 enlaces y dos MCP; check sin diferencias.
+Codex/Hermes 13/13 y cada MCP 25 tools/about:blank. A2141 sigue pendiente.
+[Evidencia actual](APPLY_VALIDATION.json). Fuente instalada inmutable:
+`~/.local/share/choms-workstation/sources/026e77daf3e2d8e42782cd792d32fd9ee6ea4a4e`.
+
+```sh
+python3 scripts/skills/workstation.py check --ref origin/main --revision 026e77d
+python3 scripts/skills/workstation.py plan --ref origin/main --revision 026e77d
+python3 scripts/skills/workstation.py rollback --ref origin/main --revision 026e77d
+```
+
+Rollback restaura únicamente la transacción administrada; rechaza deriva propia.
+No se ejecutó sobre la instalación real. Prueba aislada previa acredita reversión.
+Para futuras actualizaciones, generar plan nuevo desde el commit publicado elegido;
+no reutilizar el hash anterior ni sincronizar automáticamente otros puestos.

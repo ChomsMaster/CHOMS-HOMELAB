@@ -1,0 +1,130 @@
+{
+  "date": "2026-10-30",
+  "integration_commit": "026e77daf3e2d8e42782cd792d32fd9ee6ea4a4e",
+  "apply": {
+    "source_commit": "026e77daf3e2d8e42782cd792d32fd9ee6ea4a4e",
+    "apply": {
+      "status": "PASS",
+      "changed": true,
+      "converged": true,
+      "transaction": "f44c2fe200ee4e5ca89ebe2b6287c89c",
+      "runtime_release": "b654b6953f08bf1fea294afb75586bd7"
+    },
+    "check": {
+      "converged": true,
+      "actions": [],
+      "conflicts": []
+    },
+    "foreign_config_semantics_unchanged": true,
+    "changes": {
+      "runtime": 1,
+      "adopt_skill": 26,
+      "mcp": 2
+    },
+    "A2141_applied": false
+  },
+  "postcheck": {
+    "source_commit": "026e77daf3e2d8e42782cd792d32fd9ee6ea4a4e",
+    "native": {
+      "status": "PASS",
+      "host": "node-dev-02",
+      "codex": {
+        "native_user_discovery": 13,
+        "full_content_reads": 13,
+        "parse_errors": 0,
+        "inferences": 0
+      },
+      "hermes": {
+        "native_catalog": 13,
+        "skill_view_full_content": 13,
+        "slash_payloads": 13,
+        "inferences": 0,
+        "source_commit": "a938f00f0f3cdf00fdb93d9a82a9ae447e9b857f",
+        "scope": "actual upstream skills subsystem; no chat/model/gateway"
+      },
+      "baseline_skills": 9,
+      "new_modules": 4,
+      "optional_activated": false,
+      "publication": false
+    },
+    "mcp": {
+      "codex": {
+        "status": "PASS",
+        "tools": 25,
+        "protocol": "2025-11-25",
+        "inferences": 0,
+        "scope": "Playwright about:blank"
+      },
+      "hermes": {
+        "status": "PASS",
+        "tools": 25,
+        "protocol": "2025-11-25",
+        "inferences": 0,
+        "scope": "Playwright about:blank"
+      }
+    },
+    "check": {
+      "converged": true,
+      "actions": [],
+      "conflicts": []
+    }
+  },
+  "runtime_acceptance": {
+    "status": "PASS",
+    "files_verified": 6482,
+    "browser": {
+      "checks": 20,
+      "inferences": 0,
+      "network": "loopback-only",
+      "status": "PASS",
+      "viewports": [
+        390,
+        1440
+      ]
+    },
+    "playwright_mcp": {
+      "inferences": 0,
+      "protocol": "2025-11-25",
+      "scope": "Playwright about:blank",
+      "status": "PASS",
+      "tools": 25
+    },
+    "video_export": {
+      "audio_streams": 1,
+      "duration_seconds": 1.002,
+      "exported": true,
+      "fps": "25/1",
+      "framing": "fit-and-pad; no crop",
+      "height": 640,
+      "publication": false,
+      "valid": true,
+      "width": 640
+    }
+  },
+  "prior_evidence_reused": {
+    "unit_tests": 57,
+    "isolated_real_apply_idempotence_rollback": "PASS",
+    "code_unchanged": true
+  },
+  "warnings": [
+    "Hermes optional external provider plugins: missing httpx; no dependencies installed",
+    "Hermes symlink trust warnings; native catalog/content/slash loading 13/13 PASS; no trust/tool permission changes"
+  ],
+  "scope": {
+    "A2141": "not accessed; application pending",
+    "Memory": "not accessed or modified",
+    "OAuth": "no credential stores read or copied; foreign configuration semantics unchanged",
+    "services": "no permanent services"
+  },
+  "rollback": {
+    "source_commit": "026e77daf3e2d8e42782cd792d32fd9ee6ea4a4e",
+    "command": "python3 scripts/skills/workstation.py rollback --ref origin/main --revision 026e77d",
+    "executed_on_real_host": false,
+    "scope": "restore prior runtime controller/pointers, 26 prior skill links and own MCP entries; rejects managed resource drift"
+  },
+  "final_publication_checks": {
+    "git_diff_check": "PASS",
+    "scoped_gitleaks": "PASS; zero findings using existing repository .gitleaks.toml",
+    "scan_note": "Default-config scan flagged 3 historical public OCI tag references; existing exact repository allowlist applied unchanged"
+  }
+}

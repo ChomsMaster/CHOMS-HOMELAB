@@ -1770,3 +1770,20 @@ La prueba real aislada iniciada previamente terminó PASS: bootstrap existente,
 sin cambios y rollback. Pruebas unitarias ya aprobadas: 19 coordinador + 38 base.
 Cierre documental únicamente en la rama; no merge/push a main, acceso al A2141,
 servidores, Memory, clúster, NAS u OmniRoute ni instalación ComfyUI/modelos.
+
+### 2026-10-30 — Integración y apply autorizado del gestor en node-dev-02
+
+Fetch: main sin avances desde 03adec3; merge --no-ff 026e77d publicado sin force.
+Diff limitado a gestor/runtime, tests y documentación, sin cambios funcionales
+Memory. Fuente fijada a ese merge publicado: plan coincide con 29 acciones
+aprobadas y cero conflictos. Apply real PASS: receta b654b695..., 26 enlaces y
+choms_playwright en Codex/Hermes. Check final converge, cero acciones/conflictos.
+Configuraciones ajenas semánticamente iguales; almacenes OAuth no leídos ni copiados.
+Bootstrap exige nueva aceptación local: 6482 archivos/enlaces, browser 20 checks,
+MCP 25 tools, vídeo 640x640+audio PASS. Carga nativa 13/13 en ambos clientes y
+probe de cada entrada MCP PASS. Se reutilizan los 57 tests y E2E aislado vigentes.
+Avisos Hermes de plugins externos sin httpx y confianza de symlinks registrados;
+no bloquean skills ni se amplían permisos o instalan dependencias ajenas.
+Rollback disponible por journal; no se ejecuta sobre el host ya convergido.
+A2141 sigue pendiente, sin contacto; sin servidores, Memory ni servicios permanentes.
+Evidencia saneada en tools/choms-workstations/APPLY_VALIDATION.json.
