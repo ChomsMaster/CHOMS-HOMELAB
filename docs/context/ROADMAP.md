@@ -1,3 +1,21 @@
+## Puestos CHOMS — comprobación del iMac, 2026-10-30
+
+Fuente publicada 1173d0b: 57 tests aprobados y prueba real aislada de bootstrap,
+apply idempotente y rollback. check/plan del iMac sin escrituras: 29 acciones,
+cero conflictos; informe privado guardado con permisos autorizados del entorno.
+No se aplicó al iMac ni al A2141; capacidades y OAuth ajenos preservados.
+[Evidencia y diferencias](../../tools/choms-workstations/VALIDATION.json).
+Publicación exclusiva de feat/dev-workstation-sync, sin merge ni push a main.
+
+## Puestos de desarrollo — coordinación reproducible (rama), 2026-10-30
+
+feat/dev-workstation-sync añade check/plan sin escrituras y apply con fuente Git
+publicada, hashes, precondiciones y rollback. Reutiliza runtime/locks/activador
+nativo; no crea otro instalador. Base común y opcionales preserve por equipo;
+ComfyUI no se instala y OAuth no se sincroniza. Pruebas aisladas previas a la
+verificación del iMac contra un commit publicado. A2141 no contactado ni aplicado.
+[Procedimiento](../../tools/choms-workstations/README.md). Sin servidores ni Memory.
+
 ## CHOMS Memory — intento de captura en node-01, 2026-10-30
 
 Lectura de systemd: el servicio instalado ejecuta `--scheduled-capture`, inició a

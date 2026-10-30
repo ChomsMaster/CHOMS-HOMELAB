@@ -1,0 +1,69 @@
+{
+  "date": "2026-10-30",
+  "branch": "feat/dev-workstation-sync",
+  "validated_source_commit": "1173d0bda9313aeb1ae78fae8c461a0ebf85462f",
+  "unit_tests": {
+    "workstation_isolated": 19,
+    "existing_skills_and_runtime": 38,
+    "total": 57,
+    "status": "PASS",
+    "rerun_after_final_scope_limit": false
+  },
+  "isolated_real_bootstrap": {
+    "status": "PASS",
+    "runtime_release": "b654b6953f08bf1fea294afb75586bd7",
+    "browser_checks": 20,
+    "playwright_mcp_tools": 25,
+    "video": {
+      "audio_streams": 1,
+      "duration_seconds": 1.002,
+      "exported": true,
+      "fps": "25/1",
+      "framing": "fit-and-pad; no crop",
+      "height": 640,
+      "publication": false,
+      "valid": true,
+      "width": 640
+    },
+    "second_apply_changed": false,
+    "rollback": "PASS",
+    "scope": "isolated home and native configs; existing bootstrap and local verified cache; already running before final instruction"
+  },
+  "imac": {
+    "source_commit": "1173d0bda9313aeb1ae78fae8c461a0ebf85462f",
+    "host": "node-dev-02",
+    "runtime_current": "48ec2035eaa1f7d232bac4f03efaabcb",
+    "runtime_target": "b654b6953f08bf1fea294afb75586bd7",
+    "action_counts": {
+      "adopt_skill": 26,
+      "mcp": 2,
+      "runtime": 1
+    },
+    "conflicts": [],
+    "read_only_fingerprint_unchanged": true,
+    "converged": false,
+    "optional_selection": {
+      "comfyui": "preserve",
+      "figma": "preserve"
+    },
+    "real_apply_executed": false
+  },
+  "private_report": {
+    "saved": true,
+    "path": "~/.local/share/choms-skills/runtime/work/imac-workstation-plan.json",
+    "permission_handling": "authorized environment escalation only; no chmod or system permission changes",
+    "contains_native_config_values": false
+  },
+  "preservation": {
+    "real_apply_performed": false,
+    "A2141_accessed_or_applied": false,
+    "ComfyUI_installed_or_models_downloaded": false,
+    "servers_cluster_Memory_NAS_OmniRoute_accessed": false,
+    "OAuth_copied_or_modified": false,
+    "whole_home_or_cache_sync": false,
+    "user_git_pull_reset_stash": false,
+    "main_modified_or_published": false
+  },
+  "status": "PASS",
+  "remaining_scope": "apply on real workstations remains on-demand; iMac currently has 29 planned actions and zero conflicts; A2141 deferred"
+}

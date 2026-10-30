@@ -18,13 +18,28 @@ class RuntimeTests(unittest.TestCase):
         self.root=Path(self.temp.name);self.runtime=r.Runtime(self.root/'managed')
 
     def release(self,revision=1,accepted=True):
-        raw=json.dumps({'revision':revision}).encode();ident=hashlib.sha256(raw).hexdigest()[:32]
+        raw=json.dumps({'revision':revision,'helpers':{'scripts/skills/runtime.py':r.digest(SOURCE)}}).encode();ident=hashlib.sha256(raw).hexdigest()[:32]
         path=self.runtime.release(ident);path.mkdir();(path/'LOCK.json').write_bytes(raw)
         (path/'tool').write_text('synthetic executable fixture');(path/'tool').chmod(0o755)
         r.write_json(path/'MANIFEST.json',r.manifest(path))
         r.write_json(self.runtime.root/'seals'/f'{ident}.json',{'manifest_sha256':r.digest(path/'MANIFEST.json'),'lock_sha256':hashlib.sha256(raw).hexdigest()})
         if accepted:r.write_json(self.runtime.root/'receipts'/f'{ident}.json',{'status':'PASS','manifest_sha256':r.digest(path/'MANIFEST.json')})
         return ident,path
+
+    def test_immutable_source_rebinding_preserves_checkout(self):
+        ident,_=self.release();self.runtime.activate(ident)
+        snapshot=self.root/'published-source';controller=snapshot/'scripts/skills/runtime.py';controller.parent.mkdir(parents=True);controller.write_bytes(SOURCE.read_bytes())
+        updated=r.Runtime(self.runtime.root,source_root=snapshot);self.assertTrue(updated.activate(ident)['changed'])
+        self.assertEqual((self.runtime.root/'bin/choms-runtime').resolve(),controller)
+        self.assertEqual(self.runtime.current(),ident)
+
+    def test_modified_foreign_controller_prevents_rebinding(self):
+        ident,_=self.release();self.runtime.activate(ident)
+        foreign=self.root/'user-script';foreign.write_text('unpublished')
+        launcher=self.runtime.root/'bin/choms-runtime';launcher.unlink();launcher.symlink_to(foreign)
+        snapshot=self.root/'source';target=snapshot/'scripts/skills/runtime.py';target.parent.mkdir(parents=True);target.write_bytes(SOURCE.read_bytes())
+        with self.assertRaisesRegex(ValueError,'collision'):r.Runtime(self.runtime.root,source_root=snapshot).activate(ident)
+        self.assertEqual(launcher.resolve(),foreign);self.assertEqual(foreign.read_text(),'unpublished')
 
     def test_content_tamper_rejected(self):
         ident,path=self.release();(path/'tool').write_text('tamper')

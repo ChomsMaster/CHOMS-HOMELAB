@@ -1739,3 +1739,34 @@ Gitleaks acotado y diff check antes de publicar. Sin servidores, systemd, clúst
 Restic/NAS, OAuth ni modelo; Figma config hash intacto. Evidencia actual en
 runtime/INTEGRATION_VALIDATION.json; recibos previos conservan su alcance histórico.
 Integración trazable y push normal, con nueva comprobación de origin/main.
+
+### 2026-10-30 — Gestión bajo demanda de puestos CHOMS
+
+Rama feat/dev-workstation-sync desde main limpio y sincronizado 03adec3.
+Coordinador check/plan/apply sobre el bootstrap existente, no instalador paralelo.
+Manifiesto común con hashes de runtime/perfil, versiones npm y MCP sin secretos;
+perfiles node-dev-01/node-dev-02/default y capacidades externas preserve.
+Fuente inmutable desde objetos Git publicados; comprobación remota de referencia
+antes de apply, sin pull/reset/stash ni lectura de borradores como instalación.
+Read-only real para check/plan; snapshots acotados, enlace de controlador estable,
+propiedad por recibos y compensación/rollback sin copias de hogares o credenciales.
+Pruebas aisladas con homes y orígenes Git locales: idempotencia, deriva, colisiones,
+OAuth ajeno preservado, fallo parcial, snapshots y cambios Git sin publicar.
+Verificación real del iMac queda para después de publicar el primer commit validado.
+A2141/servidores/Memory/clúster/NAS/OmniRoute no accedidos; sin servicios, sudo,
+ComfyUI, modelos ni publicación en main. No se cambia el estado pendiente de Memory.
+
+### 2026-10-30 — Check/plan real del iMac e informe guardado
+
+Implementación publicada 1173d0b en feat/dev-workstation-sync. Check/plan reales
+frente a esa fuente: runtime 48ec2035... -> receta b654b695..., 26 enlaces CHOMS
+con recibo y dos entradas MCP; 29 acciones, cero conflictos. Fingerprints nativos
+intactos; no apply sobre la instalación real. Se resolvió únicamente el bloqueo
+de escritura de imac-workstation-plan.json con la escalación autorizada del entorno,
+sin cambiar permisos del sistema. Guardado bajo managed runtime/work, sin valores
+de configuración ni credenciales. No se repitieron las suites ya aprobadas.
+La prueba real aislada iniciada previamente terminó PASS: bootstrap existente,
+20 checks browser, MCP 25 tools, vídeo con audio a 640x640, segunda aplicación
+sin cambios y rollback. Pruebas unitarias ya aprobadas: 19 coordinador + 38 base.
+Cierre documental únicamente en la rama; no merge/push a main, acceso al A2141,
+servidores, Memory, clúster, NAS u OmniRoute ni instalación ComfyUI/modelos.

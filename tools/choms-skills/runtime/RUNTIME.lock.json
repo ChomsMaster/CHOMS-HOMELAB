@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "recipe_revision": 2,
+  "recipe_revision": 3,
   "platform": "linux-x86_64",
   "python_minimum": "3.12",
   "node_directory": "node-v24.22.2-linux-x64",
@@ -83,7 +83,7 @@
   "npm_package_json_sha256": "e8efc8ca1ad8a7e85d7a90a88b852ab116ae6d5eaa47b88ea59eddcbb8fefc04",
   "npm_install_scripts": false,
   "helpers": {
-    "scripts/skills/runtime.py": "f552638b1b35d32bed508c9b31330c7c6691713d60a790c443903a273dbc0148",
+    "scripts/skills/runtime.py": "1ff500ad2decd66267e824c99faa1f6019dbcadc143dc7d2feaf7cf9995b1e3a",
     "scripts/skills/local_tools.py": "8c74006f6ac7bc92888352fc6b57a299f14f31cebfd009685dcd43b875d3e618",
     "scripts/skills/design_mcp.py": "a17377417087b3a04b10747058971b3889e67accfd35effd032fdc2906b71c07",
     "scripts/skills/mcp_probe.py": "80cd1a5888d592408d98298434eb1e3ef9fa0739093dcb0b29f4024f1176e823",
@@ -101,6 +101,6 @@
     "npm": "exact package-lock.json tarball URLs and SHA512 integrity; no lifecycle scripts",
     "artifacts": "fixed public HTTPS URLs and SHA256; not an independent signature verification",
     "local_helpers": "original CHOMS plus preserved MIT notice in app/tools/choms-skills/LICENSE",
-    "revision_change": "add license and reviewed source snapshots; no tool or dependency version upgrade"
+    "revision_change": "existing manager gains read-only inspection and immutable source binding; no dependency upgrade"
   }
 }
