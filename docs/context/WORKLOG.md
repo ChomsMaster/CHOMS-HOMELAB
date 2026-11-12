@@ -1787,3 +1787,23 @@ no bloquean skills ni se amplían permisos o instalan dependencias ajenas.
 Rollback disponible por journal; no se ejecuta sobre el host ya convergido.
 A2141 sigue pendiente, sin contacto; sin servidores, Memory ni servicios permanentes.
 Evidencia saneada en tools/choms-workstations/APPLY_VALIDATION.json.
+
+### 2026-11-13 — Preparación de coordinación Hermes/Codex en node-dev-02
+
+Fetch completado; main limpio y 0/0 antes de editar. Health y E2E sintético de CHOMS
+Memory PASS (propose/remember/read/search/checkpoint/recover/forget; sin contenido ni
+proyecciones posteriores); memoria real y captura automática siguen OFF. CodeBase
+Memory tenía cero proyectos; un fixture temporal dentro del repo indexó 20 nodos/19
+aristas, devolvió source readback, se eliminó y dejó el índice vacío. Añadido un
+coordinador stdio acotado con `codex exec --ephemeral` y perfil obligatorio `omniroute`,
+más un lector de auditoría de skills. Seis pruebas offline PASS. Auditoría verificó
+228 fuentes/213 nombres y 15 grupos idénticos por bytes; fuentes originales intactas,
+ninguna copia ni activación. Skill auditada `codex` bloqueada por recomendar acceso
+completo/bypass de aprobación y publicación. Hermes conserva Nous Portal; Codex no
+declara perfiles. Inspección OmniRoute live imposible: no hay contexto/API Kubernetes
+utilizable. Se reparó el verificador Hermes para YAML/clave existente; discovery
+registró 0/8 tools porque la política safe-worker evita iniciar MCP. No se anuló la
+guarda ni hubo escrituras desde Hermes. Sin registro MCP Hermes, inferencia real Codex,
+publicación/cuenta Work, ni checkpoint de memoria real. OpenHands sigue
+BLOCKED_ISOLATION_CONTRACT; BIOS/BoardView intactos. Runbook:
+docs/operations/HERMES_CODEX_COORDINATION.md.

@@ -1,3 +1,30 @@
+## Coordinación Hermes → Codex node-dev-02 — 2026-11-13
+
+Implementación local preparada en `scripts/coordination/` y `tools/choms-coordinator/`:
+MCP stdio para delegación, estado, recuperación, limpieza acotada y checkpoint con
+consentimiento. El ejecutor exige el perfil Codex `omniroute`; el `config.toml`
+actual no declara perfiles, por lo que no se activó ni probó con inferencia real.
+Hermes sigue configurado con Nous Portal; no se modificaron configuración, sesiones
+ni credenciales. Runtime OmniRoute no verificable: kubectl no tiene contexto/API
+utilizable en esta ejecución.
+
+CHOMS Memory: health `ready`; captura automática y memoria real siguen OFF. E2E
+sintético desde el conector Codex PASS, con purga verificada. CodeBase Memory: índice
+inicialmente vacío; fixture temporal indexado/leído/eliminado, sin proyecto residual.
+Unified Skills: 228 fuentes/213 nombres, 15 grupos idénticos por SHA verificados;
+originales intactos y ninguna skill del catálogo activada. Skill `codex` bloqueada
+por sus instrucciones de acceso completo, bypass y publicación.
+
+Seis pruebas locales del coordinador/inventario PASS. Verificador Hermes corregido
+para YAML y el nombre MCP existente; discovery no registró herramientas porque la
+política activa `safe_worker` prohíbe iniciar MCP en este proceso (0/8). No se
+desactivó esa guarda ni se escribieron fixtures desde Hermes. No se registró el MCP en
+Hermes, no se ejecutó Codex contra OmniRoute ni se conectó ChatGPT Work. Faltan perfil
+autorizado, acceso/configuración live de OmniRoute, gate de backups para checkpoints
+reales y decisión de cuenta/hosting para el plugin Work. OpenHands continúa
+`BLOCKED_ISOLATION_CONTRACT`; CHOMS-Bios y CHOMS BoardView sin modificaciones.
+Detalle y pasos de recuperación: [runbook](../operations/HERMES_CODEX_COORDINATION.md).
+
 ## Puestos CHOMS — aplicación local node-dev-02, 2026-10-30
 
 Merge publicado 026e77d conserva 1173d0b/5795a4f y todo main anterior. Plan

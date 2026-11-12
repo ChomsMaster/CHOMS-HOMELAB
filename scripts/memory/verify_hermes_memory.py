@@ -10,6 +10,7 @@ parser.add_argument('--verify-only')
 parser.add_argument('--report')
 options=parser.parse_args()
 import sys,os,site,json,contextlib,io,logging,pathlib
+import yaml
 sys.dont_write_bytecode=True
 os.environ['HERMES_DISABLE_LAZY_INSTALLS']='1'
 root=pathlib.Path.home()/'.hermes/hermes-agent';sys.path.insert(0,str(root))
@@ -26,18 +27,22 @@ from tools.mcp_tool_schema import mcp_prefixed_tool_name
 from tools.registry import registry
 config={'command':'python3','args':['-I',str(repo/'scripts/memory/choms_memory_mcp.py'),'--ssh-target',options.ssh_target,'--client','hermes'],
         'cwd':str(repo),'tools':{'include':sorted(TOOLS),'resources':False,'prompts':False},'timeout':120}
+server_name='choms-memory'
 if options.registered:
- config=json.loads((pathlib.Path.home()/'.hermes/config.yaml').read_text())['mcp_servers']['choms-memory']
+ servers=yaml.safe_load((pathlib.Path.home()/'.hermes/config.yaml').read_text()).get('mcp_servers',{})
+ server_name=next((name for name in ('choms-memory','choms_memory') if name in servers),None)
+ if server_name is None:raise SystemExit('registered choms-memory MCP entry missing')
+ config=servers[server_name]
 # Never changes existing MCP allowlists.
 try:
  with contextlib.redirect_stdout(io.StringIO()),contextlib.redirect_stderr(io.StringIO()):
-  names=register_mcp_servers({'choms-memory':config})
- expected={mcp_prefixed_tool_name('choms-memory',n) for n in TOOLS}
+  names=register_mcp_servers({server_name:config})
+ expected={mcp_prefixed_tool_name(server_name,n) for n in TOOLS}
  assert set(names)==expected,(len(names),len(expected))
  print('HERMES_NATIVE_DISCOVERY_PASS tools=8',flush=True)
  def call(name,args):
   with contextlib.redirect_stdout(io.StringIO()),contextlib.redirect_stderr(io.StringIO()):
-   raw=registry.dispatch(mcp_prefixed_tool_name('choms-memory',name),args)
+   raw=registry.dispatch(mcp_prefixed_tool_name(server_name,name),args)
   return unwrap(raw)
  if options.discover_only:
   h=call('health',{});assert h['ok'] and h['data']['status']=='ready'

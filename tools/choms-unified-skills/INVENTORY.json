@@ -1,0 +1,3482 @@
+{
+  "counts": {
+    "exact_duplicate_groups": 15,
+    "skills": 213,
+    "source_records": 228,
+    "unverified_source_records": 0,
+    "verified_source_records": 228
+  },
+  "deduplication": "group-by-sha256; originals remain at their source locations",
+  "exact_duplicate_groups": [
+    {
+      "sha256": "06dc34c3bd2f129939582c753b79dd647b7d86c4be2a5be35243b0ae252f52af",
+      "sources": [
+        {
+          "host": "node-dev-01",
+          "name": "choms-memory-governance"
+        },
+        {
+          "host": "node-dev-02",
+          "name": "choms-memory-governance"
+        }
+      ]
+    },
+    {
+      "sha256": "07079efd0dc76f05fade424e5dfb048dce1de2df7626e1a4f56292a4f3f92228",
+      "sources": [
+        {
+          "host": "node-dev-01",
+          "name": "review-agent"
+        },
+        {
+          "host": "node-dev-02",
+          "name": "review-agent"
+        }
+      ]
+    },
+    {
+      "sha256": "15d86cd879ccac5abf089fb62440ea3e2a39e8c8a3d65e57871f3670c7a5fdf5",
+      "sources": [
+        {
+          "host": "node-dev-01",
+          "name": "choms-security-review"
+        },
+        {
+          "host": "node-dev-02",
+          "name": "choms-security-review"
+        }
+      ]
+    },
+    {
+      "sha256": "335a310d9396c75ab9c096df01b231ec663371202b8fcc5e7759f3e3ddaf5b51",
+      "sources": [
+        {
+          "host": "node-dev-01",
+          "name": "choms-mcp-server-patterns"
+        },
+        {
+          "host": "node-dev-02",
+          "name": "choms-mcp-server-patterns"
+        }
+      ]
+    },
+    {
+      "sha256": "483924be49262c4ef0dac1a86cf49c1571a630f90c27f7729ca1e95129c1eec0",
+      "sources": [
+        {
+          "host": "node-dev-01",
+          "name": "choms-context-budget"
+        },
+        {
+          "host": "node-dev-02",
+          "name": "choms-context-budget"
+        }
+      ]
+    },
+    {
+      "sha256": "6656e54755638e8efcf275a472b9672eaa8a9a1b9e59dc210e275b03b59e1e66",
+      "sources": [
+        {
+          "host": "node-dev-01",
+          "name": "skill-creator"
+        },
+        {
+          "host": "node-dev-02",
+          "name": "skill-creator"
+        }
+      ]
+    },
+    {
+      "sha256": "67ada9b8299e71578e60a8d3af7e44729ab0e92ccdaa081ab014b2f3365ee1c7",
+      "sources": [
+        {
+          "host": "node-dev-01",
+          "name": "choms-verification-loop"
+        },
+        {
+          "host": "node-dev-02",
+          "name": "choms-verification-loop"
+        }
+      ]
+    },
+    {
+      "sha256": "681ddb4ad6d06a2acc78a3535b583f8d0c1ea800ecda3d56370d3310fd2cd4ba",
+      "sources": [
+        {
+          "host": "node-dev-01",
+          "name": "imagegen"
+        },
+        {
+          "host": "node-dev-02",
+          "name": "imagegen"
+        }
+      ]
+    },
+    {
+      "sha256": "93368f9b05b7715ae17bc5880d4137086ad6ff11c9423a8d217180d3d98e57b9",
+      "sources": [
+        {
+          "host": "node-dev-01",
+          "name": "choms-seo"
+        },
+        {
+          "host": "node-dev-02",
+          "name": "choms-seo"
+        }
+      ]
+    },
+    {
+      "sha256": "aa6829e21df2223167c85d2e49b6337a7345c84c1033f1ec10182c7882b36d45",
+      "sources": [
+        {
+          "host": "node-dev-01",
+          "name": "openai-docs"
+        },
+        {
+          "host": "node-dev-02",
+          "name": "openai-docs"
+        }
+      ]
+    },
+    {
+      "sha256": "b15767b144d8e63ad7a9e40ae6f22cc0d811bd19847dc25234b1e0f3f51aebeb",
+      "sources": [
+        {
+          "host": "node-dev-01",
+          "name": "choms-design-system"
+        },
+        {
+          "host": "node-dev-02",
+          "name": "choms-design-system"
+        }
+      ]
+    },
+    {
+      "sha256": "c55cd5711e4fad4fcc4d697d7d6a4e5cf4cbfe7d6ef8e56171c9bec396e29f8c",
+      "sources": [
+        {
+          "host": "node-dev-01",
+          "name": "choms-frontend-direction"
+        },
+        {
+          "host": "node-dev-02",
+          "name": "choms-frontend-direction"
+        }
+      ]
+    },
+    {
+      "sha256": "d68b77e5bbb34dedab89d134da52855f140fc4b4299b80104f534e3b9e98f8ee",
+      "sources": [
+        {
+          "host": "node-dev-01",
+          "name": "skill-installer"
+        },
+        {
+          "host": "node-dev-02",
+          "name": "skill-installer"
+        }
+      ]
+    },
+    {
+      "sha256": "e9d2dc14d2c2ff94967e21345361ed1e5168269983da825bebfcf7201454cdd3",
+      "sources": [
+        {
+          "host": "node-dev-01",
+          "name": "choms-kubernetes-patterns"
+        },
+        {
+          "host": "node-dev-02",
+          "name": "choms-kubernetes-patterns"
+        }
+      ]
+    },
+    {
+      "sha256": "f43cde4b732151833eeaa061ab3e1c0b6d3346e4b2c755c2a8f69e559a14019b",
+      "sources": [
+        {
+          "host": "node-dev-01",
+          "name": "choms-prompt-caching-strategy"
+        },
+        {
+          "host": "node-dev-02",
+          "name": "choms-prompt-caching-strategy"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "skills": [
+    {
+      "activation": "blocked",
+      "bytes": 4690,
+      "functional_review": "pending",
+      "name": "1password",
+      "security_review": "pending",
+      "sha256": "55270738bd61fb1e45aa5e79b4fe0a2cfabd22e8679d5510d08b192bcacb4e60",
+      "sources": [
+        {
+          "bytes": 4690,
+          "sha256": "55270738bd61fb1e45aa5e79b4fe0a2cfabd22e8679d5510d08b192bcacb4e60",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 21595,
+      "functional_review": "pending",
+      "name": "3-statement-model",
+      "security_review": "pending",
+      "sha256": "157f7c8a3ffce31280853d31dc4dcb5af0872165a8b6f5dd340c328e9190a85d",
+      "sources": [
+        {
+          "bytes": 21595,
+          "sha256": "157f7c8a3ffce31280853d31dc4dcb5af0872165a8b6f5dd340c328e9190a85d",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 9175,
+      "functional_review": "pending",
+      "name": "accelerate",
+      "security_review": "pending",
+      "sha256": "eb28b6e06c1e7a3b14304ff94f28197ea1bddbb3ade674dc8a17a1c25809f972",
+      "sources": [
+        {
+          "bytes": 9175,
+          "sha256": "eb28b6e06c1e7a3b14304ff94f28197ea1bddbb3ade674dc8a17a1c25809f972",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 6767,
+      "functional_review": "pending",
+      "name": "actual-setup",
+      "security_review": "pending",
+      "sha256": "1b9e6bbfc5f45be775efff004471b48285a7a56cf177dd1ed73dc5d596be617d",
+      "sources": [
+        {
+          "bytes": 6767,
+          "sha256": "1b9e6bbfc5f45be775efff004471b48285a7a56cf177dd1ed73dc5d596be617d",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8960,
+      "functional_review": "pending",
+      "name": "adversarial-ux-test",
+      "security_review": "pending",
+      "sha256": "d687ee7727174fd58acbe638038b207f7fb86ea27603a34cb3b0f1b0889b0dd7",
+      "sources": [
+        {
+          "bytes": 8960,
+          "sha256": "d687ee7727174fd58acbe638038b207f7fb86ea27603a34cb3b0f1b0889b0dd7",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 7629,
+      "functional_review": "pending",
+      "name": "agent-merge-conflict-arbiter",
+      "security_review": "pending",
+      "sha256": "f8b1a0cf2392a1da0d3890e1ebc6429b1edb83a8f076e104b8f7c8cb7465d1be",
+      "sources": [
+        {
+          "bytes": 7629,
+          "sha256": "f8b1a0cf2392a1da0d3890e1ebc6429b1edb83a8f076e104b8f7c8cb7465d1be",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 3126,
+      "functional_review": "pending",
+      "name": "agentmail",
+      "security_review": "pending",
+      "sha256": "9d7f5cb6ff4271c713bf30c37957fbe0a2a07cee92f5c8b638ee0d4f89448dd1",
+      "sources": [
+        {
+          "bytes": 3126,
+          "sha256": "9d7f5cb6ff4271c713bf30c37957fbe0a2a07cee92f5c8b638ee0d4f89448dd1",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 9304,
+      "functional_review": "pending",
+      "name": "ai-presenter-video",
+      "security_review": "pending",
+      "sha256": "243d99e90872c7b27de40d31332d17687dcc6fe0a06a53f15f18077cd23c5f47",
+      "sources": [
+        {
+          "bytes": 9304,
+          "sha256": "243d99e90872c7b27de40d31332d17687dcc6fe0a06a53f15f18077cd23c5f47",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 11310,
+      "functional_review": "pending",
+      "name": "airtable",
+      "security_review": "pending",
+      "sha256": "fd4dd94b2474126e2f57e72ee943b9bfed07e88cc04388522debdfc0f04c3c6b",
+      "sources": [
+        {
+          "bytes": 11310,
+          "sha256": "fd4dd94b2474126e2f57e72ee943b9bfed07e88cc04388522debdfc0f04c3c6b",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 33780,
+      "functional_review": "pending",
+      "name": "anatomy",
+      "security_review": "pending",
+      "sha256": "1ebf9b727367fd99a62f6c5182b62254e1eb3f28f6574853a277f2fddfac5f81",
+      "sources": [
+        {
+          "bytes": 33780,
+          "sha256": "1ebf9b727367fd99a62f6c5182b62254e1eb3f28f6574853a277f2fddfac5f81",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 9485,
+      "functional_review": "pending",
+      "name": "antigravity-cli",
+      "security_review": "pending",
+      "sha256": "d697957e832c0c17c807464d106a471b8be15f573049b1f008c700ff89506e4a",
+      "sources": [
+        {
+          "bytes": 9485,
+          "sha256": "d697957e832c0c17c807464d106a471b8be15f573049b1f008c700ff89506e4a",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 2394,
+      "functional_review": "pending",
+      "name": "apple-notes",
+      "security_review": "pending",
+      "sha256": "1ba042cb17e3aca06a68415526e926ada464bf873c8592c3326125cd72cb397f",
+      "sources": [
+        {
+          "bytes": 2394,
+          "sha256": "1ba042cb17e3aca06a68415526e926ada464bf873c8592c3326125cd72cb397f",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 3606,
+      "functional_review": "pending",
+      "name": "apple-reminders",
+      "security_review": "pending",
+      "sha256": "ee5084f2d7ec196488bef2c74248fb3d8328d1b2e3277ddda3f0de9da6fc7131",
+      "sources": [
+        {
+          "bytes": 3606,
+          "sha256": "ee5084f2d7ec196488bef2c74248fb3d8328d1b2e3277ddda3f0de9da6fc7131",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 2449,
+      "functional_review": "pending",
+      "name": "archify",
+      "security_review": "pending",
+      "sha256": "34fb98942ef067cfe4acfb78a80fcd04e75c5e20d7b5de06f0433aa5f6aa523b",
+      "sources": [
+        {
+          "bytes": 2449,
+          "sha256": "34fb98942ef067cfe4acfb78a80fcd04e75c5e20d7b5de06f0433aa5f6aa523b",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 5830,
+      "functional_review": "pending",
+      "name": "architecture-diagram",
+      "security_review": "pending",
+      "sha256": "0e7e2736aafe052e409c2ad27863d51ef3007c116711e584033787ccb5d99d3f",
+      "sources": [
+        {
+          "bytes": 5830,
+          "sha256": "0e7e2736aafe052e409c2ad27863d51ef3007c116711e584033787ccb5d99d3f",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 10061,
+      "functional_review": "pending",
+      "name": "arxiv",
+      "security_review": "pending",
+      "sha256": "9b41877bcb64166dc2355a43aedd3198c3e5214af67f09e1d1b717a989d92f72",
+      "sources": [
+        {
+          "bytes": 10061,
+          "sha256": "9b41877bcb64166dc2355a43aedd3198c3e5214af67f09e1d1b717a989d92f72",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 10614,
+      "functional_review": "pending",
+      "name": "ascii-art",
+      "security_review": "pending",
+      "sha256": "4863e641e63ce1e2fee28b623a82264e1ad1699bc67af46f0eb4b02716a346b2",
+      "sources": [
+        {
+          "bytes": 10614,
+          "sha256": "4863e641e63ce1e2fee28b623a82264e1ad1699bc67af46f0eb4b02716a346b2",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 15011,
+      "functional_review": "pending",
+      "name": "ascii-video",
+      "security_review": "pending",
+      "sha256": "3bd3f39985a52954e2693866608bd8105f4dc0efbca5b6baa3045c2b641bda26",
+      "sources": [
+        {
+          "bytes": 15011,
+          "sha256": "3bd3f39985a52954e2693866608bd8105f4dc0efbca5b6baa3045c2b641bda26",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 13081,
+      "functional_review": "pending",
+      "name": "ast-grep",
+      "security_review": "pending",
+      "sha256": "e5404b443ee1b74da558d1ea6d3bfac888061a93561138adf500c0a4b124fe47",
+      "sources": [
+        {
+          "bytes": 13081,
+          "sha256": "e5404b443ee1b74da558d1ea6d3bfac888061a93561138adf500c0a4b124fe47",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 22780,
+      "functional_review": "pending",
+      "name": "auteur",
+      "security_review": "pending",
+      "sha256": "51988bc97cf00b15fcde05294f71c71402a4ef3dd469325711523517d13e98a8",
+      "sources": [
+        {
+          "bytes": 22780,
+          "sha256": "51988bc97cf00b15fcde05294f71c71402a4ef3dd469325711523517d13e98a8",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 4907,
+      "functional_review": "pending",
+      "name": "axolotl",
+      "security_review": "pending",
+      "sha256": "10fcf7cb9234818373d21df7cb50e9f089adc2d9d335fc45a149b18dbefbd3ad",
+      "sources": [
+        {
+          "bytes": 4907,
+          "sha256": "10fcf7cb9234818373d21df7cb50e9f089adc2d9d335fc45a149b18dbefbd3ad",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 10086,
+      "functional_review": "pending",
+      "name": "baoyu-article-illustrator",
+      "security_review": "pending",
+      "sha256": "a35f48b18cc561511af570c0ddcc50e270de02951bc99892ef298c86365927fc",
+      "sources": [
+        {
+          "bytes": 10086,
+          "sha256": "a35f48b18cc561511af570c0ddcc50e270de02951bc99892ef298c86365927fc",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 14542,
+      "functional_review": "pending",
+      "name": "baoyu-comic",
+      "security_review": "pending",
+      "sha256": "f90f4d8eb7f05563dcdfca928a2691cfb4f061bafb369d3ffb06bd49f80f9565",
+      "sources": [
+        {
+          "bytes": 14542,
+          "sha256": "f90f4d8eb7f05563dcdfca928a2691cfb4f061bafb369d3ffb06bd49f80f9565",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 10490,
+      "functional_review": "pending",
+      "name": "baoyu-infographic",
+      "security_review": "pending",
+      "sha256": "2922677ca6d3c75646cc7bc455ea4f5f6314fc148060ca84d679d624bfdc52ee",
+      "sources": [
+        {
+          "bytes": 10490,
+          "sha256": "2922677ca6d3c75646cc7bc455ea4f5f6314fc148060ca84d679d624bfdc52ee",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 13866,
+      "functional_review": "pending",
+      "name": "bioinformatics",
+      "security_review": "pending",
+      "sha256": "49cd910728b4e36f77636cfd028e59ebe91b193ac59fb1d7ea2a218baac76cf6",
+      "sources": [
+        {
+          "bytes": 13866,
+          "sha256": "49cd910728b4e36f77636cfd028e59ebe91b193ac59fb1d7ea2a218baac76cf6",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 5526,
+      "functional_review": "pending",
+      "name": "blackbox",
+      "security_review": "pending",
+      "sha256": "6cd96ccabb85c4abd7a325ecf7d12678f7e7ce39194920136865bb69ad98cd3c",
+      "sources": [
+        {
+          "bytes": 5526,
+          "sha256": "6cd96ccabb85c4abd7a325ecf7d12678f7e7ce39194920136865bb69ad98cd3c",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 5175,
+      "functional_review": "pending",
+      "name": "blocked-page-recovery",
+      "security_review": "pending",
+      "sha256": "b71179e82ff27c002e6593e792d9a64dad9a444901b8938f30204fa115592061",
+      "sources": [
+        {
+          "bytes": 5175,
+          "sha256": "b71179e82ff27c002e6593e792d9a64dad9a444901b8938f30204fa115592061",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 6423,
+      "functional_review": "pending",
+      "name": "blogwatcher",
+      "security_review": "pending",
+      "sha256": "5f77f5d2e0405d7b6ccf7882bff40ae6b4fe1d3960308d39113b114009631805",
+      "sources": [
+        {
+          "bytes": 6423,
+          "sha256": "5f77f5d2e0405d7b6ccf7882bff40ae6b4fe1d3960308d39113b114009631805",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 11697,
+      "functional_review": "pending",
+      "name": "box",
+      "security_review": "pending",
+      "sha256": "e9672412333de4feff348e6dc387d9022d32005247360347a10a7131fb87eb13",
+      "sources": [
+        {
+          "bytes": 11697,
+          "sha256": "e9672412333de4feff348e6dc387d9022d32005247360347a10a7131fb87eb13",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 2861,
+      "functional_review": "pending",
+      "name": "brag",
+      "security_review": "pending",
+      "sha256": "4dffb3e3d053bb8ab0abcd0973731adf259e2a1ba2cd07d4ad7b28ab19d166d8",
+      "sources": [
+        {
+          "bytes": 2861,
+          "sha256": "4dffb3e3d053bb8ab0abcd0973731adf259e2a1ba2cd07d4ad7b28ab19d166d8",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 1987,
+      "functional_review": "pending",
+      "name": "brag-slim",
+      "security_review": "pending",
+      "sha256": "3726b48278409ec62ba0a480ad0bf0edc3f429beed053714faa5c7010278613b",
+      "sources": [
+        {
+          "bytes": 1987,
+          "sha256": "3726b48278409ec62ba0a480ad0bf0edc3f429beed053714faa5c7010278613b",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 3228,
+      "functional_review": "pending",
+      "name": "canvas",
+      "security_review": "pending",
+      "sha256": "e2335a4e635a018dab2918eb3ad9dd3450203e885b4582aa2670d46607c56130",
+      "sources": [
+        {
+          "bytes": 3228,
+          "sha256": "e2335a4e635a018dab2918eb3ad9dd3450203e885b4582aa2670d46607c56130",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 1868,
+      "functional_review": "pending",
+      "name": "choms-browser-qa",
+      "security_review": "pending",
+      "sha256": "fd2f02524b4ac4ed7654c6d9a3e74f3943805270b101bc3070b5b1db70938da5",
+      "sources": [
+        {
+          "bytes": 1868,
+          "sha256": "fd2f02524b4ac4ed7654c6d9a3e74f3943805270b101bc3070b5b1db70938da5",
+          "source_class": "choms-platforms"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 2092,
+      "functional_review": "pending",
+      "name": "choms-context-budget",
+      "security_review": "pending",
+      "sha256": "483924be49262c4ef0dac1a86cf49c1571a630f90c27f7729ca1e95129c1eec0",
+      "sources": [
+        {
+          "bytes": 2092,
+          "sha256": "483924be49262c4ef0dac1a86cf49c1571a630f90c27f7729ca1e95129c1eec0",
+          "source_class": "choms-platforms"
+        },
+        {
+          "bytes": 2092,
+          "sha256": "483924be49262c4ef0dac1a86cf49c1571a630f90c27f7729ca1e95129c1eec0",
+          "source_class": "choms-platforms"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 1343,
+      "functional_review": "pending",
+      "name": "choms-design-system",
+      "security_review": "pending",
+      "sha256": "b15767b144d8e63ad7a9e40ae6f22cc0d811bd19847dc25234b1e0f3f51aebeb",
+      "sources": [
+        {
+          "bytes": 1343,
+          "sha256": "b15767b144d8e63ad7a9e40ae6f22cc0d811bd19847dc25234b1e0f3f51aebeb",
+          "source_class": "choms-platforms"
+        },
+        {
+          "bytes": 1343,
+          "sha256": "b15767b144d8e63ad7a9e40ae6f22cc0d811bd19847dc25234b1e0f3f51aebeb",
+          "source_class": "choms-platforms"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 2064,
+      "functional_review": "pending",
+      "name": "choms-frontend-craft",
+      "security_review": "pending",
+      "sha256": "d24ad69e132af4175b7d6b6950ae13265cb382c010ec0fa780a455d1f704d7d0",
+      "sources": [
+        {
+          "bytes": 2064,
+          "sha256": "d24ad69e132af4175b7d6b6950ae13265cb382c010ec0fa780a455d1f704d7d0",
+          "source_class": "choms-platforms"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 1409,
+      "functional_review": "pending",
+      "name": "choms-frontend-direction",
+      "security_review": "pending",
+      "sha256": "c55cd5711e4fad4fcc4d697d7d6a4e5cf4cbfe7d6ef8e56171c9bec396e29f8c",
+      "sources": [
+        {
+          "bytes": 1409,
+          "sha256": "c55cd5711e4fad4fcc4d697d7d6a4e5cf4cbfe7d6ef8e56171c9bec396e29f8c",
+          "source_class": "choms-platforms"
+        },
+        {
+          "bytes": 1409,
+          "sha256": "c55cd5711e4fad4fcc4d697d7d6a4e5cf4cbfe7d6ef8e56171c9bec396e29f8c",
+          "source_class": "choms-platforms"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 1705,
+      "functional_review": "pending",
+      "name": "choms-kubernetes-patterns",
+      "security_review": "pending",
+      "sha256": "e9d2dc14d2c2ff94967e21345361ed1e5168269983da825bebfcf7201454cdd3",
+      "sources": [
+        {
+          "bytes": 1705,
+          "sha256": "e9d2dc14d2c2ff94967e21345361ed1e5168269983da825bebfcf7201454cdd3",
+          "source_class": "choms-platforms"
+        },
+        {
+          "bytes": 1705,
+          "sha256": "e9d2dc14d2c2ff94967e21345361ed1e5168269983da825bebfcf7201454cdd3",
+          "source_class": "choms-platforms"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 1629,
+      "functional_review": "pending",
+      "name": "choms-mcp-server-patterns",
+      "security_review": "pending",
+      "sha256": "335a310d9396c75ab9c096df01b231ec663371202b8fcc5e7759f3e3ddaf5b51",
+      "sources": [
+        {
+          "bytes": 1629,
+          "sha256": "335a310d9396c75ab9c096df01b231ec663371202b8fcc5e7759f3e3ddaf5b51",
+          "source_class": "choms-platforms"
+        },
+        {
+          "bytes": 1629,
+          "sha256": "335a310d9396c75ab9c096df01b231ec663371202b8fcc5e7759f3e3ddaf5b51",
+          "source_class": "choms-platforms"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 2001,
+      "functional_review": "pending",
+      "name": "choms-mcp-tooling",
+      "security_review": "pending",
+      "sha256": "3c72b2c26daa27abaca45dd975c20d36061fffec80a4f8c38467457a63aecbc8",
+      "sources": [
+        {
+          "bytes": 2001,
+          "sha256": "3c72b2c26daa27abaca45dd975c20d36061fffec80a4f8c38467457a63aecbc8",
+          "source_class": "choms-platforms"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 4588,
+      "functional_review": "pending",
+      "name": "choms-memory-governance",
+      "security_review": "pending",
+      "sha256": "06dc34c3bd2f129939582c753b79dd647b7d86c4be2a5be35243b0ae252f52af",
+      "sources": [
+        {
+          "bytes": 4588,
+          "sha256": "06dc34c3bd2f129939582c753b79dd647b7d86c4be2a5be35243b0ae252f52af",
+          "source_class": "choms-platforms"
+        },
+        {
+          "bytes": 4588,
+          "sha256": "06dc34c3bd2f129939582c753b79dd647b7d86c4be2a5be35243b0ae252f52af",
+          "source_class": "choms-platforms"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 2306,
+      "functional_review": "pending",
+      "name": "choms-prompt-caching-strategy",
+      "security_review": "pending",
+      "sha256": "f43cde4b732151833eeaa061ab3e1c0b6d3346e4b2c755c2a8f69e559a14019b",
+      "sources": [
+        {
+          "bytes": 2306,
+          "sha256": "f43cde4b732151833eeaa061ab3e1c0b6d3346e4b2c755c2a8f69e559a14019b",
+          "source_class": "choms-platforms"
+        },
+        {
+          "bytes": 2306,
+          "sha256": "f43cde4b732151833eeaa061ab3e1c0b6d3346e4b2c755c2a8f69e559a14019b",
+          "source_class": "choms-platforms"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 1603,
+      "functional_review": "pending",
+      "name": "choms-security-review",
+      "security_review": "pending",
+      "sha256": "15d86cd879ccac5abf089fb62440ea3e2a39e8c8a3d65e57871f3670c7a5fdf5",
+      "sources": [
+        {
+          "bytes": 1603,
+          "sha256": "15d86cd879ccac5abf089fb62440ea3e2a39e8c8a3d65e57871f3670c7a5fdf5",
+          "source_class": "choms-platforms"
+        },
+        {
+          "bytes": 1603,
+          "sha256": "15d86cd879ccac5abf089fb62440ea3e2a39e8c8a3d65e57871f3670c7a5fdf5",
+          "source_class": "choms-platforms"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 1419,
+      "functional_review": "pending",
+      "name": "choms-seo",
+      "security_review": "pending",
+      "sha256": "93368f9b05b7715ae17bc5880d4137086ad6ff11c9423a8d217180d3d98e57b9",
+      "sources": [
+        {
+          "bytes": 1419,
+          "sha256": "93368f9b05b7715ae17bc5880d4137086ad6ff11c9423a8d217180d3d98e57b9",
+          "source_class": "choms-platforms"
+        },
+        {
+          "bytes": 1419,
+          "sha256": "93368f9b05b7715ae17bc5880d4137086ad6ff11c9423a8d217180d3d98e57b9",
+          "source_class": "choms-platforms"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 1479,
+      "functional_review": "pending",
+      "name": "choms-verification-loop",
+      "security_review": "pending",
+      "sha256": "67ada9b8299e71578e60a8d3af7e44729ab0e92ccdaa081ab014b2f3365ee1c7",
+      "sources": [
+        {
+          "bytes": 1479,
+          "sha256": "67ada9b8299e71578e60a8d3af7e44729ab0e92ccdaa081ab014b2f3365ee1c7",
+          "source_class": "choms-platforms"
+        },
+        {
+          "bytes": 1479,
+          "sha256": "67ada9b8299e71578e60a8d3af7e44729ab0e92ccdaa081ab014b2f3365ee1c7",
+          "source_class": "choms-platforms"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 2904,
+      "functional_review": "pending",
+      "name": "choms-video-social",
+      "security_review": "pending",
+      "sha256": "f4ff335822d8222ee193e922d938139d567580499afc8254841a36c93b3f4243",
+      "sources": [
+        {
+          "bytes": 2904,
+          "sha256": "f4ff335822d8222ee193e922d938139d567580499afc8254841a36c93b3f4243",
+          "source_class": "choms-platforms"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8945,
+      "functional_review": "pending",
+      "name": "chroma",
+      "security_review": "pending",
+      "sha256": "c51f4db1e6f4888d22815e01a1cdc86e421940b0a2af6012df10ff40454115c0",
+      "sources": [
+        {
+          "bytes": 8945,
+          "sha256": "c51f4db1e6f4888d22815e01a1cdc86e421940b0a2af6012df10ff40454115c0",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 35175,
+      "functional_review": "pending",
+      "name": "claude-code",
+      "security_review": "pending",
+      "sha256": "9cf9b448e9272335d90dc8552126b4d82022ae0cdc783a6d206a657c7254ae54",
+      "sources": [
+        {
+          "bytes": 35175,
+          "sha256": "9cf9b448e9272335d90dc8552126b4d82022ae0cdc783a6d206a657c7254ae54",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 25204,
+      "functional_review": "pending",
+      "name": "claude-design",
+      "security_review": "pending",
+      "sha256": "7f298ce7f6b6c8bec086821fde283f41b02b10b15caa587c739ad0fe80e96ce7",
+      "sources": [
+        {
+          "bytes": 25204,
+          "sha256": "7f298ce7f6b6c8bec086821fde283f41b02b10b15caa587c739ad0fe80e96ce7",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 7459,
+      "functional_review": "pending",
+      "name": "cloudflare-temporary-deploy",
+      "security_review": "pending",
+      "sha256": "ec695df0ee006fac524fed07dd3ab0c47c5d4419cbf503525d3b325153c3ac53",
+      "sources": [
+        {
+          "bytes": 7459,
+          "sha256": "ec695df0ee006fac524fed07dd3ab0c47c5d4419cbf503525d3b325153c3ac53",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 14115,
+      "functional_review": "pending",
+      "name": "code-wiki",
+      "security_review": "pending",
+      "sha256": "5d3e5b93dfd188483f45e75f00a7d4f16d044681f41c36b785aae900c7397576",
+      "sources": [
+        {
+          "bytes": 14115,
+          "sha256": "5d3e5b93dfd188483f45e75f00a7d4f16d044681f41c36b785aae900c7397576",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 3612,
+      "functional_review": "pending",
+      "name": "codebase-inspection",
+      "security_review": "pending",
+      "sha256": "d62554263461919dff7d77c3c0c284c2190c894f312a84d7a770a030dab642dc",
+      "sources": [
+        {
+          "bytes": 3612,
+          "sha256": "d62554263461919dff7d77c3c0c284c2190c894f312a84d7a770a030dab642dc",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 5852,
+      "functional_review": "pending",
+      "name": "codex",
+      "security_review": "pending",
+      "sha256": "1b15b57bcaba128b83ebe9f050b6873958198a1570bc801d4ca0406fb7e3271d",
+      "sources": [
+        {
+          "bytes": 5852,
+          "sha256": "1b15b57bcaba128b83ebe9f050b6873958198a1570bc801d4ca0406fb7e3271d",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 24036,
+      "functional_review": "pending",
+      "name": "comfyui",
+      "security_review": "pending",
+      "sha256": "93023bf8435b8ff3f60b3d226ccc7cf7aa1cf444d3d4362696418234f872c758",
+      "sources": [
+        {
+          "bytes": 24036,
+          "sha256": "93023bf8435b8ff3f60b3d226ccc7cf7aa1cf444d3d4362696418234f872c758",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 4619,
+      "functional_review": "pending",
+      "name": "competitor-news-monitor",
+      "security_review": "pending",
+      "sha256": "d8fd2a3a26ff45455709595132a092825a48f6c9dd3bcc98b06c1a43eaa7fcca",
+      "sources": [
+        {
+          "bytes": 4619,
+          "sha256": "d8fd2a3a26ff45455709595132a092825a48f6c9dd3bcc98b06c1a43eaa7fcca",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 30926,
+      "functional_review": "pending",
+      "name": "comps-analysis",
+      "security_review": "pending",
+      "sha256": "e2f8bef4c256c053e0a482704a5c4dfed5df2a1f37dffb1c663a3fd0c90273d7",
+      "sources": [
+        {
+          "bytes": 30926,
+          "sha256": "e2f8bef4c256c053e0a482704a5c4dfed5df2a1f37dffb1c663a3fd0c90273d7",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 17989,
+      "functional_review": "pending",
+      "name": "computer-use",
+      "security_review": "pending",
+      "sha256": "1285c93412beed3b8851595d71f49346aca99b1192b10d913b539035fedd2056",
+      "sources": [
+        {
+          "bytes": 17989,
+          "sha256": "1285c93412beed3b8851595d71f49346aca99b1192b10d913b539035fedd2056",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 16463,
+      "functional_review": "pending",
+      "name": "concept-diagrams",
+      "security_review": "pending",
+      "sha256": "ae9bea1de66fb6e10a03520356458f7b3abf10fee5bd74d056f9ffce408bd558",
+      "sources": [
+        {
+          "bytes": 16463,
+          "sha256": "ae9bea1de66fb6e10a03520356458f7b3abf10fee5bd74d056f9ffce408bd558",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 10434,
+      "functional_review": "pending",
+      "name": "creative-ideation",
+      "security_review": "pending",
+      "sha256": "b0b2a36387ecdf363550a341ee6941fe4fae0443564d730c0121a6a66114f36c",
+      "sources": [
+        {
+          "bytes": 10434,
+          "sha256": "b0b2a36387ecdf363550a341ee6941fe4fae0443564d730c0121a6a66114f36c",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8576,
+      "functional_review": "pending",
+      "name": "darwinian-evolver",
+      "security_review": "pending",
+      "sha256": "1039b9559f13f90d9b413a4b442f600366c6b580fbdac80a2167df2cab9ac6e3",
+      "sources": [
+        {
+          "bytes": 8576,
+          "sha256": "1039b9559f13f90d9b413a4b442f600366c6b580fbdac80a2167df2cab9ac6e3",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 49238,
+      "functional_review": "pending",
+      "name": "dcf-model",
+      "security_review": "pending",
+      "sha256": "280d0ac364df6d0d0da6bd8b1c12f5db62ea4d36507e13c5cd25fc09169c09a2",
+      "sources": [
+        {
+          "bytes": 49238,
+          "sha256": "280d0ac364df6d0d0da6bd8b1c12f5db62ea4d36507e13c5cd25fc09169c09a2",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 4171,
+      "functional_review": "pending",
+      "name": "decision-questionnaire",
+      "security_review": "pending",
+      "sha256": "84a781708b86a797e41d4a0b9234d4da48f95d14fc9cee23a0eb2cf8574e8ca2",
+      "sources": [
+        {
+          "bytes": 4171,
+          "sha256": "84a781708b86a797e41d4a0b9234d4da48f95d14fc9cee23a0eb2cf8574e8ca2",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8477,
+      "functional_review": "pending",
+      "name": "design-md",
+      "security_review": "pending",
+      "sha256": "7ed56bba40ffc9573fa51b33b2424f37fb5f774e9ecb7e76e737797afd0b62ae",
+      "sources": [
+        {
+          "bytes": 8477,
+          "sha256": "7ed56bba40ffc9573fa51b33b2424f37fb5f774e9ecb7e76e737797afd0b62ae",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 10426,
+      "functional_review": "pending",
+      "name": "docker-management",
+      "security_review": "pending",
+      "sha256": "6425a2cf3f682f4b6812522dcb7ceaea7dab9ba0fbf159fb900280edc5f69e50",
+      "sources": [
+        {
+          "bytes": 10426,
+          "sha256": "6425a2cf3f682f4b6812522dcb7ceaea7dab9ba0fbf159fb900280edc5f69e50",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 3913,
+      "functional_review": "pending",
+      "name": "document-to-action-items",
+      "security_review": "pending",
+      "sha256": "033f65062760ad4a58e6e4fc12340d4fef1c9556dbb075ad93fb4edb333a80ad",
+      "sources": [
+        {
+          "bytes": 3913,
+          "sha256": "033f65062760ad4a58e6e4fc12340d4fef1c9556dbb075ad93fb4edb333a80ad",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8652,
+      "functional_review": "pending",
+      "name": "dogfood",
+      "security_review": "pending",
+      "sha256": "b0c93d87d160da63ad489743880bdcee634ccb7f5b68c15a668ef80048b37916",
+      "sources": [
+        {
+          "bytes": 8652,
+          "sha256": "b0c93d87d160da63ad489743880bdcee634ccb7f5b68c15a668ef80048b37916",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 4535,
+      "functional_review": "pending",
+      "name": "domain-intel",
+      "security_review": "pending",
+      "sha256": "a212e30bced6fd3260f94d9a4c3de8d2e305371629ffb8551da3b526daf56556",
+      "sources": [
+        {
+          "bytes": 4535,
+          "sha256": "a212e30bced6fd3260f94d9a4c3de8d2e305371629ffb8551da3b526daf56556",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 6978,
+      "functional_review": "pending",
+      "name": "draw-your-font",
+      "security_review": "pending",
+      "sha256": "4af4d74f055d789b4b8a1bf770f0e9633e709dfeef64a5b77e2097d9ffca6ea2",
+      "sources": [
+        {
+          "bytes": 6978,
+          "sha256": "4af4d74f055d789b4b8a1bf770f0e9633e709dfeef64a5b77e2097d9ffca6ea2",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 13931,
+      "functional_review": "pending",
+      "name": "dream-loop",
+      "security_review": "pending",
+      "sha256": "188dac5e2989504115152585737de670b470eb4e09f1816ccf2847fb1080c42c",
+      "sources": [
+        {
+          "bytes": 13931,
+          "sha256": "188dac5e2989504115152585737de670b470eb4e09f1816ccf2847fb1080c42c",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8925,
+      "functional_review": "pending",
+      "name": "drug-discovery",
+      "security_review": "pending",
+      "sha256": "83ce85111e3a5bf2ca140866450717c5a432a8396b021d030440611ce09f3bda",
+      "sources": [
+        {
+          "bytes": 8925,
+          "sha256": "83ce85111e3a5bf2ca140866450717c5a432a8396b021d030440611ce09f3bda",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 15220,
+      "functional_review": "pending",
+      "name": "dspy",
+      "security_review": "pending",
+      "sha256": "67410a6b216d79eb257eba1c5d0fa945080b98998ffc131e2cf873bee77e3dd0",
+      "sources": [
+        {
+          "bytes": 15220,
+          "sha256": "67410a6b216d79eb257eba1c5d0fa945080b98998ffc131e2cf873bee77e3dd0",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8280,
+      "functional_review": "pending",
+      "name": "duckduckgo-search",
+      "security_review": "pending",
+      "sha256": "ea5ee32dee8ba94efc7e733086c0c71d23135850ca3dd8d377822c0c6fe31939",
+      "sources": [
+        {
+          "bytes": 8280,
+          "sha256": "ea5ee32dee8ba94efc7e733086c0c71d23135850ca3dd8d377822c0c6fe31939",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 11229,
+      "functional_review": "pending",
+      "name": "dynamic-workflow",
+      "security_review": "pending",
+      "sha256": "a030cce5a966e68b5b283fd530416adbebd6c1dc10c7592edc8d96bcffb2edc6",
+      "sources": [
+        {
+          "bytes": 11229,
+          "sha256": "a030cce5a966e68b5b283fd530416adbebd6c1dc10c7592edc8d96bcffb2edc6",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 5447,
+      "functional_review": "pending",
+      "name": "email-inbox-triage",
+      "security_review": "pending",
+      "sha256": "deeade1bb70f8835b2f3158980030b8aa41bb1ea6f798631451c89cfd632bcc8",
+      "sources": [
+        {
+          "bytes": 5447,
+          "sha256": "deeade1bb70f8835b2f3158980030b8aa41bb1ea6f798631451c89cfd632bcc8",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 12215,
+      "functional_review": "pending",
+      "name": "evaluating-llms-harness",
+      "security_review": "pending",
+      "sha256": "9a021e8e64fdc2f76f734d6e4ec99eda4624971720b5f52a90e6938ebeb5f3fc",
+      "sources": [
+        {
+          "bytes": 12215,
+          "sha256": "9a021e8e64fdc2f76f734d6e4ec99eda4624971720b5f52a90e6938ebeb5f3fc",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8371,
+      "functional_review": "pending",
+      "name": "evm",
+      "security_review": "pending",
+      "sha256": "11a5ad5e76a00594347810c7fc61a52a5b166be963a51e0599c7f37966856538",
+      "sources": [
+        {
+          "bytes": 8371,
+          "sha256": "11a5ad5e76a00594347810c7fc61a52a5b166be963a51e0599c7f37966856538",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 7297,
+      "functional_review": "pending",
+      "name": "excalidraw",
+      "security_review": "pending",
+      "sha256": "cb0558445251fc1087a99dd85b445b83565a98aef6d3e0874641000f7e89e253",
+      "sources": [
+        {
+          "bytes": 7297,
+          "sha256": "cb0558445251fc1087a99dd85b445b83565a98aef6d3e0874641000f7e89e253",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 10840,
+      "functional_review": "pending",
+      "name": "excel-author",
+      "security_review": "pending",
+      "sha256": "7db91d39ee7a4a936cff8a765276d33d6f8e1cf947628593f0d7cb3af01d2b1f",
+      "sources": [
+        {
+          "bytes": 10840,
+          "sha256": "7db91d39ee7a4a936cff8a765276d33d6f8e1cf947628593f0d7cb3af01d2b1f",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 4818,
+      "functional_review": "pending",
+      "name": "faiss",
+      "security_review": "pending",
+      "sha256": "b85efbef93c4885b25ca97a0b461449d65fddc58973377af23ce742a9f6b6dfb",
+      "sources": [
+        {
+          "bytes": 4818,
+          "sha256": "b85efbef93c4885b25ca97a0b461449d65fddc58973377af23ce742a9f6b6dfb",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8152,
+      "functional_review": "pending",
+      "name": "fastmcp",
+      "security_review": "pending",
+      "sha256": "f4072408b8b5e4bf170deae0db48534ea838f45200f86c8735f595331180cc08",
+      "sources": [
+        {
+          "bytes": 8152,
+          "sha256": "f4072408b8b5e4bf170deae0db48534ea838f45200f86c8735f595331180cc08",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 3823,
+      "functional_review": "pending",
+      "name": "findmy",
+      "security_review": "pending",
+      "sha256": "e35d4d165daadfd066661df59a202a4159c5df41b77642884d3656830054d6bc",
+      "sources": [
+        {
+          "bytes": 3823,
+          "sha256": "e35d4d165daadfd066661df59a202a4159c5df41b77642884d3656830054d6bc",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 9822,
+      "functional_review": "pending",
+      "name": "fitness-nutrition",
+      "security_review": "pending",
+      "sha256": "cadfe2928cef65fb6f41836c96741eeee571c433f1bce822569f9f4abaf15532",
+      "sources": [
+        {
+          "bytes": 9822,
+          "sha256": "cadfe2928cef65fb6f41836c96741eeee571c433f1bce822569f9f4abaf15532",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 10648,
+      "functional_review": "pending",
+      "name": "flash-attention",
+      "security_review": "pending",
+      "sha256": "d45849457af34ac332f2748b76b5dc530c422f9fd50263d5024c6857e7eb5e2c",
+      "sources": [
+        {
+          "bytes": 10648,
+          "sha256": "d45849457af34ac332f2748b76b5dc530c422f9fd50263d5024c6857e7eb5e2c",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 2720,
+      "functional_review": "pending",
+      "name": "gif-search",
+      "security_review": "pending",
+      "sha256": "a8349043740a8805d4ebfeb3a21f67ec0e9a9733a84f96403ca142c88a312b5d",
+      "sources": [
+        {
+          "bytes": 2720,
+          "sha256": "a8349043740a8805d4ebfeb3a21f67ec0e9a9733a84f96403ca142c88a312b5d",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 2446,
+      "functional_review": "pending",
+      "name": "github",
+      "security_review": "pending",
+      "sha256": "9d70e7c842fe7db75b5a50526552a69862f5bcfc1e59aa93785241649a09d5a3",
+      "sources": [
+        {
+          "bytes": 2446,
+          "sha256": "9d70e7c842fe7db75b5a50526552a69862f5bcfc1e59aa93785241649a09d5a3",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 7143,
+      "functional_review": "pending",
+      "name": "gitnexus-explorer",
+      "security_review": "pending",
+      "sha256": "332f66417f1fb47f7374c16210b42ff481bcbf18fa1f55b404e4c5ac14aa1601",
+      "sources": [
+        {
+          "bytes": 7143,
+          "sha256": "332f66417f1fb47f7374c16210b42ff481bcbf18fa1f55b404e4c5ac14aa1601",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 20239,
+      "functional_review": "pending",
+      "name": "godmode",
+      "security_review": "pending",
+      "sha256": "f68b2f329580f40bad1af024af884530e77f098eeddbfeefc2b00b1016e2ab9d",
+      "sources": [
+        {
+          "bytes": 20239,
+          "sha256": "f68b2f329580f40bad1af024af884530e77f098eeddbfeefc2b00b1016e2ab9d",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 14241,
+      "functional_review": "pending",
+      "name": "google-workspace",
+      "security_review": "pending",
+      "sha256": "4ab062fe5131d123a6c4f1297e58c7f75b8d517fd282b68547da7ebfabb2a0b9",
+      "sources": [
+        {
+          "bytes": 14241,
+          "sha256": "4ab062fe5131d123a6c4f1297e58c7f75b8d517fd282b68547da7ebfabb2a0b9",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 4689,
+      "functional_review": "pending",
+      "name": "grill-me",
+      "security_review": "pending",
+      "sha256": "6e3b3b81c1ad3a0b3ba3d36ec725e376d225e7867bfbf23a5129cf245e94bb0c",
+      "sources": [
+        {
+          "bytes": 4689,
+          "sha256": "6e3b3b81c1ad3a0b3ba3d36ec725e376d225e7867bfbf23a5129cf245e94bb0c",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 13874,
+      "functional_review": "pending",
+      "name": "grok",
+      "security_review": "pending",
+      "sha256": "51623f5627eb62c739497f158267f6192c952a2ba73c6ed4591856561f3b207b",
+      "sources": [
+        {
+          "bytes": 13874,
+          "sha256": "51623f5627eb62c739497f158267f6192c952a2ba73c6ed4591856561f3b207b",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 12644,
+      "functional_review": "pending",
+      "name": "grounded-citations",
+      "security_review": "pending",
+      "sha256": "1e022ba6244fc68825127183d4632263f47d64dc857ea8d65c5e86d605b74f38",
+      "sources": [
+        {
+          "bytes": 12644,
+          "sha256": "1e022ba6244fc68825127183d4632263f47d64dc857ea8d65c5e86d605b74f38",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 10424,
+      "functional_review": "pending",
+      "name": "har-derived-api-client",
+      "security_review": "pending",
+      "sha256": "f1bae3c06d447293e1d1e53dedc16ad7ae0214046e468fedbaeb87c773b05dc0",
+      "sources": [
+        {
+          "bytes": 10424,
+          "sha256": "f1bae3c06d447293e1d1e53dedc16ad7ae0214046e468fedbaeb87c773b05dc0",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 6471,
+      "functional_review": "pending",
+      "name": "heartmula",
+      "security_review": "pending",
+      "sha256": "0254c28d19fa9ae209fee0f224b120a050623a27f5fb5680237d3778c9459d50",
+      "sources": [
+        {
+          "bytes": 6471,
+          "sha256": "0254c28d19fa9ae209fee0f224b120a050623a27f5fb5680237d3778c9459d50",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8782,
+      "functional_review": "pending",
+      "name": "here-now",
+      "security_review": "pending",
+      "sha256": "f684f55fed57e0cdbe8bef4c6fc4d58bd97079056b15d30d37b3fa6dd2c1505b",
+      "sources": [
+        {
+          "bytes": 8782,
+          "sha256": "f684f55fed57e0cdbe8bef4c6fc4d58bd97079056b15d30d37b3fa6dd2c1505b",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 15952,
+      "functional_review": "pending",
+      "name": "hermes-agent",
+      "security_review": "pending",
+      "sha256": "c14f545a0a0dd00cb009408faedad563878d78039a7c7a80369aac847cdfb7f8",
+      "sources": [
+        {
+          "bytes": 15952,
+          "sha256": "c14f545a0a0dd00cb009408faedad563878d78039a7c7a80369aac847cdfb7f8",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 14650,
+      "functional_review": "pending",
+      "name": "hermes-agent-skill-authoring",
+      "security_review": "pending",
+      "sha256": "9cfb1341d276908fbced52e1e8ff81b4dc95aa92361684dec98e9a5cb5fc3db5",
+      "sources": [
+        {
+          "bytes": 14650,
+          "sha256": "9cfb1341d276908fbced52e1e8ff81b4dc95aa92361684dec98e9a5cb5fc3db5",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 11991,
+      "functional_review": "pending",
+      "name": "hermes-s6-container-supervision",
+      "security_review": "pending",
+      "sha256": "b9b65b6d74ef9d9fee60813700bf93da7bb2f28d1f952686c82c178ebe158246",
+      "sources": [
+        {
+          "bytes": 11991,
+          "sha256": "b9b65b6d74ef9d9fee60813700bf93da7bb2f28d1f952686c82c178ebe158246",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 7272,
+      "functional_review": "pending",
+      "name": "himalaya",
+      "security_review": "pending",
+      "sha256": "0f6c9bb4c0a5c4f4627e139b6beb2b1ba0addd7145895196528b8125929e3837",
+      "sources": [
+        {
+          "bytes": 7272,
+          "sha256": "0f6c9bb4c0a5c4f4627e139b6beb2b1ba0addd7145895196528b8125929e3837",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 19507,
+      "functional_review": "pending",
+      "name": "honcho",
+      "security_review": "pending",
+      "sha256": "1264edc366860d17ff5fb520f36893c59ce9bb0082e91268ee82a0ecf6d57517",
+      "sources": [
+        {
+          "bytes": 19507,
+          "sha256": "1264edc366860d17ff5fb520f36893c59ce9bb0082e91268ee82a0ecf6d57517",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 34463,
+      "functional_review": "pending",
+      "name": "humanizer",
+      "security_review": "pending",
+      "sha256": "887d5e3467a682da9b166e5293007f8bbbc299f8a6718ae00f26161b7d062b04",
+      "sources": [
+        {
+          "bytes": 34463,
+          "sha256": "887d5e3467a682da9b166e5293007f8bbbc299f8a6718ae00f26161b7d062b04",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 15650,
+      "functional_review": "pending",
+      "name": "hyperframes",
+      "security_review": "pending",
+      "sha256": "65f32ac7049ce5cf2fd6f70290597f13a17817e093dbc6d2c3bc020355693728",
+      "sources": [
+        {
+          "bytes": 15650,
+          "sha256": "65f32ac7049ce5cf2fd6f70290597f13a17817e093dbc6d2c3bc020355693728",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 6925,
+      "functional_review": "pending",
+      "name": "hyperliquid",
+      "security_review": "pending",
+      "sha256": "34a8fbb3da27c634420539b47d4773c65ddbaac925ed02b25497e91795e8dfdd",
+      "sources": [
+        {
+          "bytes": 6925,
+          "sha256": "34a8fbb3da27c634420539b47d4773c65ddbaac925ed02b25497e91795e8dfdd",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 19201,
+      "functional_review": "pending",
+      "name": "imagegen",
+      "security_review": "pending",
+      "sha256": "681ddb4ad6d06a2acc78a3535b583f8d0c1ea800ecda3d56370d3310fd2cd4ba",
+      "sources": [
+        {
+          "bytes": 19201,
+          "sha256": "681ddb4ad6d06a2acc78a3535b583f8d0c1ea800ecda3d56370d3310fd2cd4ba",
+          "source_class": "codex"
+        },
+        {
+          "bytes": 19201,
+          "sha256": "681ddb4ad6d06a2acc78a3535b583f8d0c1ea800ecda3d56370d3310fd2cd4ba",
+          "source_class": "codex"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 2442,
+      "functional_review": "pending",
+      "name": "imessage",
+      "security_review": "pending",
+      "sha256": "bc68b1648e301409bc25b1084ec26766213ca9f3c1b2fd3d3d6ebe3dbde9e967",
+      "sources": [
+        {
+          "bytes": 2442,
+          "sha256": "bc68b1648e301409bc25b1084ec26766213ca9f3c1b2fd3d3d6ebe3dbde9e967",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 1549,
+      "functional_review": "pending",
+      "name": "impeccable",
+      "security_review": "pending",
+      "sha256": "c4dae781ecd9c850f514c9327eea6fa7aff2136c87be47454861ac3ce921164d",
+      "sources": [
+        {
+          "bytes": 1549,
+          "sha256": "c4dae781ecd9c850f514c9327eea6fa7aff2136c87be47454861ac3ce921164d",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 4489,
+      "functional_review": "pending",
+      "name": "inference-sh-cli",
+      "security_review": "pending",
+      "sha256": "85fba85372930c17ce35d87e1d07fc4b7758078725ff649add1cebb61a6ca39e",
+      "sources": [
+        {
+          "bytes": 4489,
+          "sha256": "85fba85372930c17ce35d87e1d07fc4b7758078725ff649add1cebb61a6ca39e",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 6250,
+      "functional_review": "pending",
+      "name": "inspecting-hermes-desktop-dom",
+      "security_review": "pending",
+      "sha256": "8dfdcf2fe3797beec4297ce629e62395d7a69ec2691fc00ef25bc6273139cbc4",
+      "sources": [
+        {
+          "bytes": 6250,
+          "sha256": "8dfdcf2fe3797beec4297ce629e62395d7a69ec2691fc00ef25bc6273139cbc4",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 18880,
+      "functional_review": "pending",
+      "name": "ip-as-logo",
+      "security_review": "pending",
+      "sha256": "70089da302baaadf9f6f9e250970e656acc0a58f746ce1a1b550eb32db41b931",
+      "sources": [
+        {
+          "bytes": 18880,
+          "sha256": "70089da302baaadf9f6f9e250970e656acc0a58f746ce1a1b550eb32db41b931",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 6003,
+      "functional_review": "pending",
+      "name": "jupyter-notebook",
+      "security_review": "pending",
+      "sha256": "d6cde84618f8c741f8f61eeb3100afdbd2a8b5485ea2e0b1a28d8b6880eefa37",
+      "sources": [
+        {
+          "bytes": 6003,
+          "sha256": "d6cde84618f8c741f8f61eeb3100afdbd2a8b5485ea2e0b1a28d8b6880eefa37",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 9777,
+      "functional_review": "pending",
+      "name": "kanban-video-orchestrator",
+      "security_review": "pending",
+      "sha256": "a30d5a1f4267ceebb054a79a25d985875141bf5e11bf72c36ace5d19daaaf499",
+      "sources": [
+        {
+          "bytes": 9777,
+          "sha256": "a30d5a1f4267ceebb054a79a25d985875141bf5e11bf72c36ace5d19daaaf499",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 12011,
+      "functional_review": "pending",
+      "name": "lambda-labs",
+      "security_review": "pending",
+      "sha256": "7cfe3a21940cfc299664461b52553ea4605c66c0fa73b5d1663a6d66e6e562bd",
+      "sources": [
+        {
+          "bytes": 12011,
+          "sha256": "7cfe3a21940cfc299664461b52553ea4605c66c0fa73b5d1663a6d66e6e562bd",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 16900,
+      "functional_review": "pending",
+      "name": "lbo-model",
+      "security_review": "pending",
+      "sha256": "57e90190be3c405d8eb4b30698180aaeed82f5d10469ba507534a1e4730b7099",
+      "sources": [
+        {
+          "bytes": 16900,
+          "sha256": "57e90190be3c405d8eb4b30698180aaeed82f5d10469ba507534a1e4730b7099",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8328,
+      "functional_review": "pending",
+      "name": "live-dashboard",
+      "security_review": "pending",
+      "sha256": "0d360f3122b3fe5775b31d40ab651304fe93fd6ea73211f6f618b5907b6d2fc9",
+      "sources": [
+        {
+          "bytes": 8328,
+          "sha256": "0d360f3122b3fe5775b31d40ab651304fe93fd6ea73211f6f618b5907b6d2fc9",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8880,
+      "functional_review": "pending",
+      "name": "llama-cpp",
+      "security_review": "pending",
+      "sha256": "9c1ef45f6197fbc08b643416d5f2c2e5469dbd45fb01e17cf48a0406ffacf8c2",
+      "sources": [
+        {
+          "bytes": 8880,
+          "sha256": "9c1ef45f6197fbc08b643416d5f2c2e5469dbd45fb01e17cf48a0406ffacf8c2",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 20121,
+      "functional_review": "pending",
+      "name": "llm-wiki",
+      "security_review": "pending",
+      "sha256": "0229e37c1783fcac5b77cfb3242703666cf4aa472d2ae85b6bd5279756b515b6",
+      "sources": [
+        {
+          "bytes": 20121,
+          "sha256": "0229e37c1783fcac5b77cfb3242703666cf4aa472d2ae85b6bd5279756b515b6",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 12150,
+      "functional_review": "pending",
+      "name": "manim-video",
+      "security_review": "pending",
+      "sha256": "467376469fc2043e2674a843509f8eea52660791e76fb2e142074ecd4abc7e69",
+      "sources": [
+        {
+          "bytes": 12150,
+          "sha256": "467376469fc2043e2674a843509f8eea52660791e76fb2e142074ecd4abc7e69",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 6705,
+      "functional_review": "pending",
+      "name": "maps",
+      "security_review": "pending",
+      "sha256": "775ef9f79be9cd147bc81e0c4a4ef952230a04736a6082f44dbac78554ef89ab",
+      "sources": [
+        {
+          "bytes": 6705,
+          "sha256": "775ef9f79be9cd147bc81e0c4a4ef952230a04736a6082f44dbac78554ef89ab",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 23987,
+      "functional_review": "pending",
+      "name": "mcp-oauth-remote-gateway",
+      "security_review": "pending",
+      "sha256": "a96e1e3a8c909265fb854b1dc20c067ddc752305cce866ec155f3b343550e840",
+      "sources": [
+        {
+          "bytes": 23987,
+          "sha256": "a96e1e3a8c909265fb854b1dc20c067ddc752305cce866ec155f3b343550e840",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 3080,
+      "functional_review": "pending",
+      "name": "mcporter",
+      "security_review": "pending",
+      "sha256": "39be15caad8f01f0e32ace926807876c772796d04e128739b250a442f5772305",
+      "sources": [
+        {
+          "bytes": 3080,
+          "sha256": "39be15caad8f01f0e32ace926807876c772796d04e128739b250a442f5772305",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 3798,
+      "functional_review": "pending",
+      "name": "meeting-action-items",
+      "security_review": "pending",
+      "sha256": "aeeb8fee863a9fc43682d846e39ad35246f891c8b9f84e2696caf5b0f841aeaf",
+      "sources": [
+        {
+          "bytes": 3798,
+          "sha256": "aeeb8fee863a9fc43682d846e39ad35246f891c8b9f84e2696caf5b0f841aeaf",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 5559,
+      "functional_review": "pending",
+      "name": "meme-generation",
+      "security_review": "pending",
+      "sha256": "bd43e558ebca6d31d87a0eba0bacd39e0f02f750596ede59b1a10fe0f967a669",
+      "sources": [
+        {
+          "bytes": 5559,
+          "sha256": "bd43e558ebca6d31d87a0eba0bacd39e0f02f750596ede59b1a10fe0f967a669",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 13622,
+      "functional_review": "pending",
+      "name": "memento-flashcards",
+      "security_review": "pending",
+      "sha256": "2d2e97cea8a89e8c7f6a01a513374e877d2624fd192dea0cf655e0da10c43b71",
+      "sources": [
+        {
+          "bytes": 13622,
+          "sha256": "2d2e97cea8a89e8c7f6a01a513374e877d2624fd192dea0cf655e0da10c43b71",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 5293,
+      "functional_review": "pending",
+      "name": "merger-model",
+      "security_review": "pending",
+      "sha256": "947c68f8e9d31c124ae37fc5da95a794c0e206e4a4f577f26ca2fe0512e44755",
+      "sources": [
+        {
+          "bytes": 5293,
+          "sha256": "947c68f8e9d31c124ae37fc5da95a794c0e206e4a4f577f26ca2fe0512e44755",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8073,
+      "functional_review": "pending",
+      "name": "microsoft-office",
+      "security_review": "pending",
+      "sha256": "4480fab452a19e4342a753f05d0a8036a65260023695ea7b7764d22b6a98dd22",
+      "sources": [
+        {
+          "bytes": 8073,
+          "sha256": "4480fab452a19e4342a753f05d0a8036a65260023695ea7b7764d22b6a98dd22",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 6644,
+      "functional_review": "pending",
+      "name": "minecraft-modpack-server",
+      "security_review": "pending",
+      "sha256": "beed24b7b0da2c3fec570c1db40e0c31b9ded59f9ca1b57bf9d7d8ddb35d4cdd",
+      "sources": [
+        {
+          "bytes": 6644,
+          "sha256": "beed24b7b0da2c3fec570c1db40e0c31b9ded59f9ca1b57bf9d7d8ddb35d4cdd",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 9023,
+      "functional_review": "pending",
+      "name": "modal",
+      "security_review": "pending",
+      "sha256": "93da9443caef0605769d727c308b8b9fb48d4159e330db5f2a74fdd16d1fe68e",
+      "sources": [
+        {
+          "bytes": 9023,
+          "sha256": "93da9443caef0605769d727c308b8b9fb48d4159e330db5f2a74fdd16d1fe68e",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 11854,
+      "functional_review": "pending",
+      "name": "mono-color",
+      "security_review": "pending",
+      "sha256": "71c7b67ffc20732f0ef69f6250780effe20667b65bb2285330a071503e5a7cb5",
+      "sources": [
+        {
+          "bytes": 11854,
+          "sha256": "71c7b67ffc20732f0ef69f6250780effe20667b65bb2285330a071503e5a7cb5",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 5053,
+      "functional_review": "pending",
+      "name": "mpp-agent",
+      "security_review": "pending",
+      "sha256": "f44db1c9d2d0a4d49a5051aa16b4e92e18ba4ce3db611b92e5a7fd8e3b204445",
+      "sources": [
+        {
+          "bytes": 5053,
+          "sha256": "f44db1c9d2d0a4d49a5051aa16b4e92e18ba4ce3db611b92e5a7fd8e3b204445",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 10387,
+      "functional_review": "pending",
+      "name": "nemo-curator",
+      "security_review": "pending",
+      "sha256": "f77bfa870bca7253aeb56bc16b6df2327dece5980f4b1842671ba34eec620ebf",
+      "sources": [
+        {
+          "bytes": 10387,
+          "sha256": "f77bfa870bca7253aeb56bc16b6df2327dece5980f4b1842671ba34eec620ebf",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 16401,
+      "functional_review": "pending",
+      "name": "neuroskill-bci",
+      "security_review": "pending",
+      "sha256": "0b7aad0d0987928c973eb24a6504bf27e0264c7485606ae2b0e029825856d917",
+      "sources": [
+        {
+          "bytes": 16401,
+          "sha256": "0b7aad0d0987928c973eb24a6504bf27e0264c7485606ae2b0e029825856d917",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 11065,
+      "functional_review": "pending",
+      "name": "node-inspect-debugger",
+      "security_review": "pending",
+      "sha256": "422eed9a0997182c5b197a8879ab194647799d69e573000e53b65b8708cf3a77",
+      "sources": [
+        {
+          "bytes": 11065,
+          "sha256": "422eed9a0997182c5b197a8879ab194647799d69e573000e53b65b8708cf3a77",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 14621,
+      "functional_review": "pending",
+      "name": "notion",
+      "security_review": "pending",
+      "sha256": "e5aaf194f2688223890cb2eb6cf5ce866e6390082f1dff845c9e37a25fe0bfee",
+      "sources": [
+        {
+          "bytes": 14621,
+          "sha256": "e5aaf194f2688223890cb2eb6cf5ce866e6390082f1dff845c9e37a25fe0bfee",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 15458,
+      "functional_review": "pending",
+      "name": "obliteratus",
+      "security_review": "pending",
+      "sha256": "df3a0dc110723dbb9d2f5bb1beaaf61e7fb3dbef0d615df5a814cc5a0af4aac9",
+      "sources": [
+        {
+          "bytes": 15458,
+          "sha256": "df3a0dc110723dbb9d2f5bb1beaaf61e7fb3dbef0d615df5a814cc5a0af4aac9",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 3092,
+      "functional_review": "pending",
+      "name": "obsidian",
+      "security_review": "pending",
+      "sha256": "7aea4e8f89f94ab2876d79898d10a5d4cdab31390c53f72ad6934b071179f826",
+      "sources": [
+        {
+          "bytes": 3092,
+          "sha256": "7aea4e8f89f94ab2876d79898d10a5d4cdab31390c53f72ad6934b071179f826",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 4579,
+      "functional_review": "pending",
+      "name": "one-three-one-rule",
+      "security_review": "pending",
+      "sha256": "31ae7d7c5fc127d7f49d3282c3f93e3e3c3afa295f9bbd6660cc88ca9248248b",
+      "sources": [
+        {
+          "bytes": 4579,
+          "sha256": "31ae7d7c5fc127d7f49d3282c3f93e3e3c3afa295f9bbd6660cc88ca9248248b",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 5437,
+      "functional_review": "pending",
+      "name": "openai-docs",
+      "security_review": "pending",
+      "sha256": "aa6829e21df2223167c85d2e49b6337a7345c84c1033f1ec10182c7882b36d45",
+      "sources": [
+        {
+          "bytes": 5437,
+          "sha256": "aa6829e21df2223167c85d2e49b6337a7345c84c1033f1ec10182c7882b36d45",
+          "source_class": "codex"
+        },
+        {
+          "bytes": 5437,
+          "sha256": "aa6829e21df2223167c85d2e49b6337a7345c84c1033f1ec10182c7882b36d45",
+          "source_class": "codex"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 7297,
+      "functional_review": "pending",
+      "name": "opencode",
+      "security_review": "pending",
+      "sha256": "885582e6f2d5b88f431c5a0bc3b69b88f5aab701774f91572487a6f4e4679a0b",
+      "sources": [
+        {
+          "bytes": 7297,
+          "sha256": "885582e6f2d5b88f431c5a0bc3b69b88f5aab701774f91572487a6f4e4679a0b",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8319,
+      "functional_review": "pending",
+      "name": "openhands",
+      "security_review": "pending",
+      "sha256": "7abd61ab5c9be09f20c7f15caace5f7ee95722bc179fcca4bc4c730ea64dc598",
+      "sources": [
+        {
+          "bytes": 8319,
+          "sha256": "7abd61ab5c9be09f20c7f15caace5f7ee95722bc179fcca4bc4c730ea64dc598",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 2881,
+      "functional_review": "pending",
+      "name": "openhue",
+      "security_review": "pending",
+      "sha256": "252844f95f6a4b4dec7fffc593ca187d51bc1216882fadd2f5e5d86634f749d9",
+      "sources": [
+        {
+          "bytes": 2881,
+          "sha256": "252844f95f6a4b4dec7fffc593ca187d51bc1216882fadd2f5e5d86634f749d9",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 11678,
+      "functional_review": "pending",
+      "name": "osint-investigation",
+      "security_review": "pending",
+      "sha256": "1e480fc9f76a14aa948d43668f18fdab6dda79245a45d3d7012dac2ab214b72f",
+      "sources": [
+        {
+          "bytes": 11678,
+          "sha256": "1e480fc9f76a14aa948d43668f18fdab6dda79245a45d3d7012dac2ab214b72f",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 19852,
+      "functional_review": "pending",
+      "name": "oss-forensics",
+      "security_review": "pending",
+      "sha256": "be59e5d09ac5cef311c3c3f310381a2f96c636b8f4025890f28b15ffac6160c4",
+      "sources": [
+        {
+          "bytes": 19852,
+          "sha256": "be59e5d09ac5cef311c3c3f310381a2f96c636b8f4025890f28b15ffac6160c4",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 27534,
+      "functional_review": "pending",
+      "name": "p5js",
+      "security_review": "pending",
+      "sha256": "3b39b75303e082af69b3f4e2deab7a55b27d60293eff6a561fb627188194a33e",
+      "sources": [
+        {
+          "bytes": 27534,
+          "sha256": "3b39b75303e082af69b3f4e2deab7a55b27d60293eff6a561fb627188194a33e",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8563,
+      "functional_review": "pending",
+      "name": "page-agent",
+      "security_review": "pending",
+      "sha256": "310a6179c09de9202787eb009a5a066acc81c0e98746011f2d55885dd7d0eb8f",
+      "sources": [
+        {
+          "bytes": 8563,
+          "sha256": "310a6179c09de9202787eb009a5a066acc81c0e98746011f2d55885dd7d0eb8f",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 10915,
+      "functional_review": "pending",
+      "name": "parallel-cli",
+      "security_review": "pending",
+      "sha256": "255305b5c636feeeef90d41d9d4ffedc1a90b7dedc42489053342772b339f159",
+      "sources": [
+        {
+          "bytes": 10915,
+          "sha256": "255305b5c636feeeef90d41d9d4ffedc1a90b7dedc42489053342772b339f159",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 15308,
+      "functional_review": "pending",
+      "name": "pdf",
+      "security_review": "pending",
+      "sha256": "11126ee5460ff6b0699514198a46ac7c2ff2dd4c6c03ac99b81ac3f5b9d37cf3",
+      "sources": [
+        {
+          "bytes": 15308,
+          "sha256": "11126ee5460ff6b0699514198a46ac7c2ff2dd4c6c03ac99b81ac3f5b9d37cf3",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 11997,
+      "functional_review": "pending",
+      "name": "peft",
+      "security_review": "pending",
+      "sha256": "9c9dea66a3e774e0821ef50765dbaec2bc561111a0b87ebb09c93ea504bf6d22",
+      "sources": [
+        {
+          "bytes": 11997,
+          "sha256": "9c9dea66a3e774e0821ef50765dbaec2bc561111a0b87ebb09c93ea504bf6d22",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 14071,
+      "functional_review": "pending",
+      "name": "pinggy-tunnel",
+      "security_review": "pending",
+      "sha256": "8c490b70421a4610aae3e402f55f5d82765e8e1d7efaa3e7cbb0673b4c3f97c7",
+      "sources": [
+        {
+          "bytes": 14071,
+          "sha256": "8c490b70421a4610aae3e402f55f5d82765e8e1d7efaa3e7cbb0673b4c3f97c7",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 7645,
+      "functional_review": "pending",
+      "name": "pixel-art",
+      "security_review": "pending",
+      "sha256": "eae06833ec560c7061e5c168a83fb564832c58f14c13c836c585fa013fd07aed",
+      "sources": [
+        {
+          "bytes": 7645,
+          "sha256": "eae06833ec560c7061e5c168a83fb564832c58f14c13c836c585fa013fd07aed",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8876,
+      "functional_review": "pending",
+      "name": "pokemon-player",
+      "security_review": "pending",
+      "sha256": "034d12e6c8142041e48728dddf389de4693b1e2af1e677ebfb0494ee06bfbc10",
+      "sources": [
+        {
+          "bytes": 8876,
+          "sha256": "034d12e6c8142041e48728dddf389de4693b1e2af1e677ebfb0494ee06bfbc10",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 2998,
+      "functional_review": "pending",
+      "name": "polymarket",
+      "security_review": "pending",
+      "sha256": "6a7288650ad7c40cd590703b67502b63a90e7ff98820b142600a46cfd021c287",
+      "sources": [
+        {
+          "bytes": 2998,
+          "sha256": "6a7288650ad7c40cd590703b67502b63a90e7ff98820b142600a46cfd021c287",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 9869,
+      "functional_review": "pending",
+      "name": "popular-web-designs",
+      "security_review": "pending",
+      "sha256": "3551eba639022a414cce013b96458bd595bfd6fa1d4c71ad819d36ae8b03edfc",
+      "sources": [
+        {
+          "bytes": 9869,
+          "sha256": "3551eba639022a414cce013b96458bd595bfd6fa1d4c71ad819d36ae8b03edfc",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8438,
+      "functional_review": "pending",
+      "name": "pptx-author",
+      "security_review": "pending",
+      "sha256": "68160d4c852f51017568ba87178f8519a147b5a3bb1d2fb1f4617c35df7973f2",
+      "sources": [
+        {
+          "bytes": 8438,
+          "sha256": "68160d4c852f51017568ba87178f8519a147b5a3bb1d2fb1f4617c35df7973f2",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 9764,
+      "functional_review": "pending",
+      "name": "pr-lens",
+      "security_review": "pending",
+      "sha256": "b11e1eba1f74fd91d8b7c4d4462dde741b1883332c7059fcded88c986a1f19b5",
+      "sources": [
+        {
+          "bytes": 9764,
+          "sha256": "b11e1eba1f74fd91d8b7c4d4462dde741b1883332c7059fcded88c986a1f19b5",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 13978,
+      "functional_review": "pending",
+      "name": "pretext",
+      "security_review": "pending",
+      "sha256": "8c8e1ab1be9da016a787024d7a171ea66d0723145d922304ff6a5052a146df16",
+      "sources": [
+        {
+          "bytes": 13978,
+          "sha256": "8c8e1ab1be9da016a787024d7a171ea66d0723145d922304ff6a5052a146df16",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 4396,
+      "functional_review": "pending",
+      "name": "product-price-monitor",
+      "security_review": "pending",
+      "sha256": "34f52bd40d41e9713918fd88a831d2b457f147e51e1f67a0a07d1d2e05a6917a",
+      "sources": [
+        {
+          "bytes": 4396,
+          "sha256": "34f52bd40d41e9713918fd88a831d2b457f147e51e1f67a0a07d1d2e05a6917a",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 4818,
+      "functional_review": "pending",
+      "name": "property-listings",
+      "security_review": "pending",
+      "sha256": "5f701fc0837997ed2b0d34f2d2b14cff8ef027388d970afa3b3cb577e52e4070",
+      "sources": [
+        {
+          "bytes": 4818,
+          "sha256": "5f701fc0837997ed2b0d34f2d2b14cff8ef027388d970afa3b3cb577e52e4070",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8642,
+      "functional_review": "pending",
+      "name": "publish-site",
+      "security_review": "pending",
+      "sha256": "d6c66ce995d2392be9b8dd56d1305afc5bf643839bfb23a67e0fe21f4a854d93",
+      "sources": [
+        {
+          "bytes": 8642,
+          "sha256": "d6c66ce995d2392be9b8dd56d1305afc5bf643839bfb23a67e0fe21f4a854d93",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 14984,
+      "functional_review": "pending",
+      "name": "python-debugpy",
+      "security_review": "pending",
+      "sha256": "cb1b8b0795a56fa0fd79f80f3363f1ad79d404a6757d6cf547971cf89f21155e",
+      "sources": [
+        {
+          "bytes": 14984,
+          "sha256": "cb1b8b0795a56fa0fd79f80f3363f1ad79d404a6757d6cf547971cf89f21155e",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 2476,
+      "functional_review": "pending",
+      "name": "pytorch-fsdp",
+      "security_review": "pending",
+      "sha256": "b83b96daf42281fa96faa860e9d828826e7912b45cfcd53a1a86344abae41e41",
+      "sources": [
+        {
+          "bytes": 2476,
+          "sha256": "b83b96daf42281fa96faa860e9d828826e7912b45cfcd53a1a86344abae41e41",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8971,
+      "functional_review": "pending",
+      "name": "pytorch-lightning",
+      "security_review": "pending",
+      "sha256": "7f35d8b7bed8dde58a13616c26b7128de305e5ab532bce45ad74c150bd875b54",
+      "sources": [
+        {
+          "bytes": 8971,
+          "sha256": "7f35d8b7bed8dde58a13616c26b7128de305e5ab532bce45ad74c150bd875b54",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 12978,
+      "functional_review": "pending",
+      "name": "qmd",
+      "security_review": "pending",
+      "sha256": "9ee7a5c501db706960e768754fe1536419b39e585180c2a64ed9e19d9a5799a6",
+      "sources": [
+        {
+          "bytes": 12978,
+          "sha256": "9ee7a5c501db706960e768754fe1536419b39e585180c2a64ed9e19d9a5799a6",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 6271,
+      "functional_review": "pending",
+      "name": "reddit-reading",
+      "security_review": "pending",
+      "sha256": "e97bc4c1bae5302ed1e00c18e2f60181e9ea29489705ed979cdac077c2955cc6",
+      "sources": [
+        {
+          "bytes": 6271,
+          "sha256": "e97bc4c1bae5302ed1e00c18e2f60181e9ea29489705ed979cdac077c2955cc6",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8781,
+      "functional_review": "pending",
+      "name": "requesting-code-review",
+      "security_review": "pending",
+      "sha256": "1e26ced9f05e357950e035b93ad1a937dd8a9e578a44d3c8d4fa734a09b7f814",
+      "sources": [
+        {
+          "bytes": 8781,
+          "sha256": "1e26ced9f05e357950e035b93ad1a937dd8a9e578a44d3c8d4fa734a09b7f814",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 72164,
+      "functional_review": "pending",
+      "name": "research-paper-writing",
+      "security_review": "pending",
+      "sha256": "ad6b059c628f8dbac24a4603e62185927352f8b42fe183ff50265976165469b1",
+      "sources": [
+        {
+          "bytes": 72164,
+          "sha256": "ad6b059c628f8dbac24a4603e62185927352f8b42fe183ff50265976165469b1",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 15636,
+      "functional_review": "pending",
+      "name": "rest-graphql-debug",
+      "security_review": "pending",
+      "sha256": "18228139612c555dbb4a53b74039dadb53cb1163507dd9325a4fcfa3326e475d",
+      "sources": [
+        {
+          "bytes": 15636,
+          "sha256": "18228139612c555dbb4a53b74039dadb53cb1163507dd9325a4fcfa3326e475d",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 38786,
+      "functional_review": "pending",
+      "name": "reverse-engineer-anything",
+      "security_review": "pending",
+      "sha256": "b4dc0acb76b0c2bee7acb72a5909d3121f586814a55715a92a03b23a800e8a50",
+      "sources": [
+        {
+          "bytes": 38786,
+          "sha256": "b4dc0acb76b0c2bee7acb72a5909d3121f586814a55715a92a03b23a800e8a50",
+          "source_class": "agents"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 2661,
+      "functional_review": "pending",
+      "name": "review-agent",
+      "security_review": "pending",
+      "sha256": "07079efd0dc76f05fade424e5dfb048dce1de2df7626e1a4f56292a4f3f92228",
+      "sources": [
+        {
+          "bytes": 2661,
+          "sha256": "07079efd0dc76f05fade424e5dfb048dce1de2df7626e1a4f56292a4f3f92228",
+          "source_class": "codex"
+        },
+        {
+          "bytes": 2661,
+          "sha256": "07079efd0dc76f05fade424e5dfb048dce1de2df7626e1a4f56292a4f3f92228",
+          "source_class": "codex"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 4557,
+      "functional_review": "pending",
+      "name": "rss-feeds",
+      "security_review": "pending",
+      "sha256": "bdd3a7c1005cb7f1a5266b31fb464fc50d6c7b3389ad888a1e4341467be82ff8",
+      "sources": [
+        {
+          "bytes": 4557,
+          "sha256": "bdd3a7c1005cb7f1a5266b31fb464fc50d6c7b3389ad888a1e4341467be82ff8",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 15003,
+      "functional_review": "pending",
+      "name": "saelens",
+      "security_review": "pending",
+      "sha256": "3824d601010487764e8c1bd22689d490a8481a1a042f4e0a58ff84e2b52726e9",
+      "sources": [
+        {
+          "bytes": 15003,
+          "sha256": "3824d601010487764e8c1bd22689d490a8481a1a042f4e0a58ff84e2b52726e9",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8993,
+      "functional_review": "pending",
+      "name": "scrapling",
+      "security_review": "pending",
+      "sha256": "ae44f6f4813c292eb37e83c9f3f545d749b863e68fd7fecb4cc0e0579c81751a",
+      "sources": [
+        {
+          "bytes": 8993,
+          "sha256": "ae44f6f4813c292eb37e83c9f3f545d749b863e68fd7fecb4cc0e0579c81751a",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 11987,
+      "functional_review": "pending",
+      "name": "scrollcraft",
+      "security_review": "pending",
+      "sha256": "c148e88bb7bbca73a73e827ab8c2cf3f7546006f22cacf513fdcbb2228e80f32",
+      "sources": [
+        {
+          "bytes": 11987,
+          "sha256": "c148e88bb7bbca73a73e827ab8c2cf3f7546006f22cacf513fdcbb2228e80f32",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 9073,
+      "functional_review": "pending",
+      "name": "sdlc-review",
+      "security_review": "pending",
+      "sha256": "ce90e8a3e145cce69c62880dc85921700110879f9290952d6cec28218503155f",
+      "sources": [
+        {
+          "bytes": 9073,
+          "sha256": "ce90e8a3e145cce69c62880dc85921700110879f9290952d6cec28218503155f",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 6744,
+      "functional_review": "pending",
+      "name": "searxng-search",
+      "security_review": "pending",
+      "sha256": "263b151f4277aaae24025ec98737a060cd272bd7deb6d10da85e4717bba2365f",
+      "sources": [
+        {
+          "bytes": 6744,
+          "sha256": "263b151f4277aaae24025ec98737a060cd272bd7deb6d10da85e4717bba2365f",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 13358,
+      "functional_review": "pending",
+      "name": "segment-anything-model",
+      "security_review": "pending",
+      "sha256": "fd89c3c5b477141d13afd5fa1e2f829891d92cdeda9f0a7339a954a6899c9f4f",
+      "sources": [
+        {
+          "bytes": 13358,
+          "sha256": "fd89c3c5b477141d13afd5fa1e2f829891d92cdeda9f0a7339a954a6899c9f4f",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 9335,
+      "functional_review": "pending",
+      "name": "serving-llms-vllm",
+      "security_review": "pending",
+      "sha256": "1c64cbeec7e77ffc682da5fcf06d03741f1ecd7055a8f5c2fa12408716644c17",
+      "sources": [
+        {
+          "bytes": 9335,
+          "sha256": "1c64cbeec7e77ffc682da5fcf06d03741f1ecd7055a8f5c2fa12408716644c17",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 4967,
+      "functional_review": "pending",
+      "name": "setup-wizard-generator",
+      "security_review": "pending",
+      "sha256": "987c638600e6ba05cd91a1c5bd8a771980f5e2a83844d7ea7329ad222717b5f5",
+      "sources": [
+        {
+          "bytes": 4967,
+          "sha256": "987c638600e6ba05cd91a1c5bd8a771980f5e2a83844d7ea7329ad222717b5f5",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 6021,
+      "functional_review": "pending",
+      "name": "sherlock",
+      "security_review": "pending",
+      "sha256": "2438794f4699d7f3758b8c82dfd2f8509196f7968aeb670cb0eecedf656564f1",
+      "sources": [
+        {
+          "bytes": 6021,
+          "sha256": "2438794f4699d7f3758b8c82dfd2f8509196f7968aeb670cb0eecedf656564f1",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 16705,
+      "functional_review": "pending",
+      "name": "shop",
+      "security_review": "pending",
+      "sha256": "11cebb959f2f4d1edbb145178194d6cc33aeb3389678de08697d5da8ec6d6358",
+      "sources": [
+        {
+          "bytes": 16705,
+          "sha256": "11cebb959f2f4d1edbb145178194d6cc33aeb3389678de08697d5da8ec6d6358",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 15159,
+      "functional_review": "pending",
+      "name": "shopify",
+      "security_review": "pending",
+      "sha256": "f7669570b5e69870607f715466035ec41792c180b0aba444c7719c619fed2388",
+      "sources": [
+        {
+          "bytes": 15159,
+          "sha256": "f7669570b5e69870607f715466035ec41792c180b0aba444c7719c619fed2388",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 20542,
+      "functional_review": "pending",
+      "name": "simple-english",
+      "security_review": "pending",
+      "sha256": "9d43d7ce95a09e9e65e04e9f99d46f223d3f0d4ec620f37fd8495536bca87a42",
+      "sources": [
+        {
+          "bytes": 20542,
+          "sha256": "9d43d7ce95a09e9e65e04e9f99d46f223d3f0d4ec620f37fd8495536bca87a42",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 14696,
+      "functional_review": "pending",
+      "name": "simplify-code",
+      "security_review": "pending",
+      "sha256": "9ee977c3362a1c07f2e327198e066ddb3c0ed67709706fc410165ee820b2ca01",
+      "sources": [
+        {
+          "bytes": 14696,
+          "sha256": "9ee977c3362a1c07f2e327198e066ddb3c0ed67709706fc410165ee820b2ca01",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 5751,
+      "functional_review": "pending",
+      "name": "simpo",
+      "security_review": "pending",
+      "sha256": "b17535b2c78605a0ba70ed18fec9bf6326273410286c7a8fc38358cd97d96b03",
+      "sources": [
+        {
+          "bytes": 5751,
+          "sha256": "b17535b2c78605a0ba70ed18fec9bf6326273410286c7a8fc38358cd97d96b03",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 9237,
+      "functional_review": "pending",
+      "name": "siyuan",
+      "security_review": "pending",
+      "sha256": "e62436e6a814e88ba6fa1f3e985ecceead41cbd81b293a4d096d2a72f22d8bbe",
+      "sources": [
+        {
+          "bytes": 9237,
+          "sha256": "e62436e6a814e88ba6fa1f3e985ecceead41cbd81b293a4d096d2a72f22d8bbe",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 9932,
+      "functional_review": "pending",
+      "name": "sketch",
+      "security_review": "pending",
+      "sha256": "4137245d0dcdd69c477d35ae30d10ddce6411f9c411aee68301b43644a31b008",
+      "sources": [
+        {
+          "bytes": 9932,
+          "sha256": "4137245d0dcdd69c477d35ae30d10ddce6411f9c411aee68301b43644a31b008",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 15311,
+      "functional_review": "pending",
+      "name": "skill-creator",
+      "security_review": "pending",
+      "sha256": "6656e54755638e8efcf275a472b9672eaa8a9a1b9e59dc210e275b03b59e1e66",
+      "sources": [
+        {
+          "bytes": 15311,
+          "sha256": "6656e54755638e8efcf275a472b9672eaa8a9a1b9e59dc210e275b03b59e1e66",
+          "source_class": "codex"
+        },
+        {
+          "bytes": 15311,
+          "sha256": "6656e54755638e8efcf275a472b9672eaa8a9a1b9e59dc210e275b03b59e1e66",
+          "source_class": "codex"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 3367,
+      "functional_review": "pending",
+      "name": "skill-installer",
+      "security_review": "pending",
+      "sha256": "d68b77e5bbb34dedab89d134da52855f140fc4b4299b80104f534e3b9e98f8ee",
+      "sources": [
+        {
+          "bytes": 3367,
+          "sha256": "d68b77e5bbb34dedab89d134da52855f140fc4b4299b80104f534e3b9e98f8ee",
+          "source_class": "codex"
+        },
+        {
+          "bytes": 3367,
+          "sha256": "d68b77e5bbb34dedab89d134da52855f140fc4b4299b80104f534e3b9e98f8ee",
+          "source_class": "codex"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 11467,
+      "functional_review": "pending",
+      "name": "slime",
+      "security_review": "pending",
+      "sha256": "2ce3104dce3072af78a1e8460cef787baedba14351fc11f3e6daad0f2b928a68",
+      "sources": [
+        {
+          "bytes": 11467,
+          "sha256": "2ce3104dce3072af78a1e8460cef787baedba14351fc11f3e6daad0f2b928a68",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 3970,
+      "functional_review": "pending",
+      "name": "social-media-content-calendar",
+      "security_review": "pending",
+      "sha256": "f12b235ea3eedf611022c0a89a967f08a5dc25bbd1531572f1c37f7545177298",
+      "sources": [
+        {
+          "bytes": 3970,
+          "sha256": "f12b235ea3eedf611022c0a89a967f08a5dc25bbd1531572f1c37f7545177298",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 6407,
+      "functional_review": "pending",
+      "name": "solana",
+      "security_review": "pending",
+      "sha256": "d6b383f6932800f9efda0311f51778fed4cac85f788235d30d1745e272f940d0",
+      "sources": [
+        {
+          "bytes": 6407,
+          "sha256": "d6b383f6932800f9efda0311f51778fed4cac85f788235d30d1745e272f940d0",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 2336,
+      "functional_review": "pending",
+      "name": "songsee",
+      "security_review": "pending",
+      "sha256": "d9d8d1394c630bd83329cd54cd8f18e0e3cd140debe31c3ccf5d9667f054de07",
+      "sources": [
+        {
+          "bytes": 2336,
+          "sha256": "d9d8d1394c630bd83329cd54cd8f18e0e3cd140debe31c3ccf5d9667f054de07",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 10963,
+      "functional_review": "pending",
+      "name": "songwriting-and-ai-music",
+      "security_review": "pending",
+      "sha256": "5dbf92dc336e9b17be45c35c92a5bb307e4655e39a86617f07b7654678f92583",
+      "sources": [
+        {
+          "bytes": 10963,
+          "sha256": "5dbf92dc336e9b17be45c35c92a5bb307e4655e39a86617f07b7654678f92583",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8723,
+      "functional_review": "pending",
+      "name": "spike",
+      "security_review": "pending",
+      "sha256": "573d8fc0d6699eaf5308e742402bc02c883152ffeebe14607f164c6c538495c2",
+      "sources": [
+        {
+          "bytes": 8723,
+          "sha256": "573d8fc0d6699eaf5308e742402bc02c883152ffeebe14607f164c6c538495c2",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 2747,
+      "functional_review": "pending",
+      "name": "stocks",
+      "security_review": "pending",
+      "sha256": "6321095d5501cdd22a90e17ccae09efccbf9ad3d435961272bdd7c5947f73c64",
+      "sources": [
+        {
+          "bytes": 2747,
+          "sha256": "6321095d5501cdd22a90e17ccae09efccbf9ad3d435961272bdd7c5947f73c64",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 6790,
+      "functional_review": "pending",
+      "name": "stripe-link-cli",
+      "security_review": "pending",
+      "sha256": "4b84f2be0a8ed6e72751f4c6ff04c6145ed632855986371621bd731fae9397af",
+      "sources": [
+        {
+          "bytes": 6790,
+          "sha256": "4b84f2be0a8ed6e72751f4c6ff04c6145ed632855986371621bd731fae9397af",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 4521,
+      "functional_review": "pending",
+      "name": "stripe-projects",
+      "security_review": "pending",
+      "sha256": "e290eb0073ea3ce364e62019bbf257571b58caacc029543999e96071b98e222e",
+      "sources": [
+        {
+          "bytes": 4521,
+          "sha256": "e290eb0073ea3ce364e62019bbf257571b58caacc029543999e96071b98e222e",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 10699,
+      "functional_review": "pending",
+      "name": "subagent-driven-development",
+      "security_review": "pending",
+      "sha256": "52bf4892e66d9307fcbfa0c6e524be7f562273ba91921fc213e3b418d26082c9",
+      "sources": [
+        {
+          "bytes": 10699,
+          "sha256": "52bf4892e66d9307fcbfa0c6e524be7f562273ba91921fc213e3b418d26082c9",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 8863,
+      "functional_review": "pending",
+      "name": "system-atlas",
+      "security_review": "pending",
+      "sha256": "981aaa2f4eb7610cda7e528413891d3c227966d69241ada4587648d05c7f4fab",
+      "sources": [
+        {
+          "bytes": 8863,
+          "sha256": "981aaa2f4eb7610cda7e528413891d3c227966d69241ada4587648d05c7f4fab",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 14059,
+      "functional_review": "pending",
+      "name": "systematic-debugging",
+      "security_review": "pending",
+      "sha256": "bd480f51a2e9969c88544003c30b7539b7df0b7358703f99b0495514c2dd878a",
+      "sources": [
+        {
+          "bytes": 14059,
+          "sha256": "bd480f51a2e9969c88544003c30b7539b7df0b7358703f99b0495514c2dd878a",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 7206,
+      "functional_review": "pending",
+      "name": "teams-meeting-pipeline",
+      "security_review": "pending",
+      "sha256": "ae1b08f044d7dfd9abb01c643cac3b69e4a3a1cbe7fd5782dd17785964cdc441",
+      "sources": [
+        {
+          "bytes": 7206,
+          "sha256": "ae1b08f044d7dfd9abb01c643cac3b69e4a3a1cbe7fd5782dd17785964cdc441",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 12796,
+      "functional_review": "pending",
+      "name": "telephony",
+      "security_review": "pending",
+      "sha256": "41ec6380adce44ffe76259a6642412b121ca1de0fd5381acc6d501f1f4334d12",
+      "sources": [
+        {
+          "bytes": 12796,
+          "sha256": "41ec6380adce44ffe76259a6642412b121ca1de0fd5381acc6d501f1f4334d12",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 5049,
+      "functional_review": "pending",
+      "name": "tensorrt-llm",
+      "security_review": "pending",
+      "sha256": "97b60d50ae7e74598ce831098d26e71661addb26e6e2b83e41e87bec4898808f",
+      "sources": [
+        {
+          "bytes": 5049,
+          "sha256": "97b60d50ae7e74598ce831098d26e71661addb26e6e2b83e41e87bec4898808f",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 10300,
+      "functional_review": "pending",
+      "name": "test-driven-development",
+      "security_review": "pending",
+      "sha256": "649e6ab89bd8aaad2f9b162c60321f227cff8a8cda56393f07a81d1c6825a692",
+      "sources": [
+        {
+          "bytes": 10300,
+          "sha256": "649e6ab89bd8aaad2f9b162c60321f227cff8a8cda56393f07a81d1c6825a692",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 14991,
+      "functional_review": "pending",
+      "name": "tldraw-offline",
+      "security_review": "pending",
+      "sha256": "a3c4ce28121ef2c76dc853ae91a69658cd66e07c62c6e4caf033a7c52568af27",
+      "sources": [
+        {
+          "bytes": 14991,
+          "sha256": "a3c4ce28121ef2c76dc853ae91a69658cd66e07c62c6e4caf033a7c52568af27",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 10342,
+      "functional_review": "pending",
+      "name": "torchtitan",
+      "security_review": "pending",
+      "sha256": "9457edf13839b0f273bedcff4d57aef1dbd2d01c83794b0dbcd4e208b7e4c680",
+      "sources": [
+        {
+          "bytes": 10342,
+          "sha256": "9457edf13839b0f273bedcff4d57aef1dbd2d01c83794b0dbcd4e208b7e4c680",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 28436,
+      "functional_review": "pending",
+      "name": "unbroker",
+      "security_review": "pending",
+      "sha256": "510b760b2134e6a75ce7b734471e86c6dd81ef93bcdac628c9f79a7ccc59f81a",
+      "sources": [
+        {
+          "bytes": 28436,
+          "sha256": "510b760b2134e6a75ce7b734471e86c6dd81ef93bcdac628c9f79a7ccc59f81a",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 13893,
+      "functional_review": "pending",
+      "name": "unreal-mcp",
+      "security_review": "pending",
+      "sha256": "0313d8761479a8b8a458b83bb6c563f63294245096139dfe52045691ef2aa610",
+      "sources": [
+        {
+          "bytes": 13893,
+          "sha256": "0313d8761479a8b8a458b83bb6c563f63294245096139dfe52045691ef2aa610",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 2275,
+      "functional_review": "pending",
+      "name": "unsloth",
+      "security_review": "pending",
+      "sha256": "967497adab1910c2d1bdb3ff54526e84beb362ab4933fbf9d6aee01fb7e7299a",
+      "sources": [
+        {
+          "bytes": 2275,
+          "sha256": "967497adab1910c2d1bdb3ff54526e84beb362ab4933fbf9d6aee01fb7e7299a",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 4500,
+      "functional_review": "pending",
+      "name": "watchers",
+      "security_review": "pending",
+      "sha256": "29c01df1882d6e15c36a4c0af5a854a3c4fab5cf1c6657c02a0979315e8c606a",
+      "sources": [
+        {
+          "bytes": 4500,
+          "sha256": "29c01df1882d6e15c36a4c0af5a854a3c4fab5cf1c6657c02a0979315e8c606a",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 13153,
+      "functional_review": "pending",
+      "name": "web-pentest",
+      "security_review": "pending",
+      "sha256": "d9633f78dcb284edb5a1a15f7c70fdd6e181b9ddf455e5e87fdc439c30b5b2d4",
+      "sources": [
+        {
+          "bytes": 13153,
+          "sha256": "d9633f78dcb284edb5a1a15f7c70fdd6e181b9ddf455e5e87fdc439c30b5b2d4",
+          "source_class": "choms-runtime"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 3955,
+      "functional_review": "pending",
+      "name": "weekly-review-planning",
+      "security_review": "pending",
+      "sha256": "4c940236f93e3b23f131f776e0f020af2728fe41e06161b327517899a67716e6",
+      "sources": [
+        {
+          "bytes": 3955,
+          "sha256": "4c940236f93e3b23f131f776e0f020af2728fe41e06161b327517899a67716e6",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 16345,
+      "functional_review": "pending",
+      "name": "xurl",
+      "security_review": "pending",
+      "sha256": "5457319ee337284b1152dc9f60146c72685ade489299afed08e0b46ca5a97080",
+      "sources": [
+        {
+          "bytes": 16345,
+          "sha256": "5457319ee337284b1152dc9f60146c72685ade489299afed08e0b46ca5a97080",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 4377,
+      "functional_review": "pending",
+      "name": "youtube-content",
+      "security_review": "pending",
+      "sha256": "b556a0d2a220b46b80eb011619f0c951404f4d6e2edcc8b4847faec512b55132",
+      "sources": [
+        {
+          "bytes": 4377,
+          "sha256": "b556a0d2a220b46b80eb011619f0c951404f4d6e2edcc8b4847faec512b55132",
+          "source_class": "hermes"
+        }
+      ]
+    },
+    {
+      "activation": "blocked",
+      "bytes": 3853,
+      "functional_review": "pending",
+      "name": "yuanbao",
+      "security_review": "pending",
+      "sha256": "6636244d779f103fc47c874b44d7a75c94aa62226aa200cfa41d38198cb49124",
+      "sources": [
+        {
+          "bytes": 3853,
+          "sha256": "6636244d779f103fc47c874b44d7a75c94aa62226aa200cfa41d38198cb49124",
+          "source_class": "choms-runtime"
+        }
+      ]
+    }
+  ],
+  "source_audit": "~/choms-skill-audit/{node-dev-01-skills.json,node-dev-02-skills.json,choms-unified-skills-comparison.json,CHOMS_SKILLS_FUNCTIONAL_ANALYSIS.json}",
+  "source_preservation": "read-only; source files are not copied, linked, rewritten, or activated"
+}

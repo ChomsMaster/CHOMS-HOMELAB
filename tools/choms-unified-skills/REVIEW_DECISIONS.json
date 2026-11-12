@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "review_policy": "A source is not activated until its exact content hash has functional and security review evidence.",
+  "decisions": [
+    {
+      "name": "codex",
+      "sha256": "1b15b57bcaba128b83ebe9f050b6873958198a1570bc801d4ca0406fb7e3271d",
+      "functional_review": "not_run",
+      "security_review": "blocked",
+      "activation": "prohibited",
+      "reason_codes": [
+        "recommends_approval_bypass",
+        "recommends_danger_full_access",
+        "encourages_external_publish_without_choms_gate",
+        "suggests_broad_destructive_cleanup"
+      ]
+    }
+  ]
+}

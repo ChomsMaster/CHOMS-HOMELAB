@@ -218,6 +218,7 @@ Status values are `pending`, `in_progress`, `blocked`, `completed`, and
 | Work | Status | Closure criteria |
 |---|---|---|
 | Service-by-service Kubernetes hardening | `in_progress` | Complete the ordered direct-workload sequence with one reviewed change per workload, functional validation, consumer health, and drift zero. |
+| Hermes → Codex coordination on node-dev-02 | `in_progress` | Verify live OmniRoute and establish the authorized Codex profile without exposing credentials; apply the reversible Hermes MCP entry from a published source; complete real Hermes→Codex delegation/result verification; enable only consented checkpoints after the CHOMS Memory backup gate; decide the authenticated ChatGPT Work account/hosting route without publishing internal services. The local coordinator and synthetic Memory/CodeBase Memory checks are prepared; see [runbook](../operations/HERMES_CODEX_COORDINATION.md). |
 
 ## Next action exact
 
