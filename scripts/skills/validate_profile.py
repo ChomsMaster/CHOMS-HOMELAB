@@ -8,10 +8,13 @@ import yaml
 
 def validate(root):
     profile=json.loads((root/'PROFILE.json').read_text())
-    assert profile['version']=='1.5.0','profile_version'
+    assert profile['version']=='1.5.1','profile_version'
     names=profile['activation']['selected']
     assert len(names)==len(set(names))==9,'selected_count'
-    assert profile['governance']['central_persistence']=='synthetic-only' and profile['governance']['real_memories'] is False,'real_memory_gate'
+    governance=profile['governance']
+    assert governance['central_persistence']=='synthetic-only by default; exact one-shot checkpoint exception separately gated','central_memory_policy'
+    assert governance['real_memories'] is False and governance['automatic_flush'] is False,'global_real_memory_gate'
+    assert governance['temporary_checkpoint_exception']=='one explicit pre-authorized project checkpoint only when health flag is true; no general write bypass','temporary_checkpoint_scope'
     assert profile['activation']['optional']==['choms-verification-loop'],'optional_unchanged'
     indexed={e['name']:e for e in profile['skills']}
     for name in names:

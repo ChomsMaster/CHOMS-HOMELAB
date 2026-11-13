@@ -85,3 +85,13 @@ La extracción y primera validación de dependencias preceden al sellado; los ha
 instalados, permisos y symlinks se comprueban antes de ejecutar o promover.
 La receta 2 incorpora avisos MIT y procedencia revisada a los snapshots locales;
 la procedencia del servicio Figma y sus credenciales no se modifica ni traslada.
+
+## Corrección de gobernanza de memoria — perfil 1.5.1
+
+La skill original `choms-memory-governance` y sus referencias documentan la
+excepción de checkpoint one-shot prevista por el contrato CHOMS Memory. La
+excepción exige `health.temporary_checkpoint_configured=true`, consentimiento y
+el par de autorización exacto; no abre `real_memory_allowed`, el gate de backup,
+ni captura automática. La descripción alinea el flujo del agente con el contrato
+servidor y el runbook, y añade parada ante errores/resultado ambiguo. No cambia el
+MCP, las credenciales, RBAC, memoria persistida ni los enlaces activos.

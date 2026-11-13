@@ -65,6 +65,29 @@ actual. En 1.3.0, choms-memory independiente acredita CRUD/CAS/purga y reinicio
 con datos sintéticos desde ambos clientes. choms-codebase-memory conserva sus
 cuatro herramientas permitidas en Hermes y no almacena memorias personales.
 
-Memorias reales siguen bloqueadas hasta aprobar el gate de backups. forget-live
-no acredita backup-expiry ni sobrescritura física. No almacenar «seguimos skill»
-aún. El fixture mcp-capabilities.json conserva la evidencia histórica del índice.
+Memorias reales están bloqueadas por defecto hasta aprobar el gate de backups.
+La excepción operativa one-shot del runbook permite solo un `checkpoint` de
+proyecto, con los gates globales y la captura automática aún desactivados. El
+agente puede usarla únicamente cuando coincidan todas estas condiciones:
+
+- `health` responde ready y `temporary_checkpoint_configured=true` en la sesión.
+- Hay autorización explícita vigente para el trabajo y request UUID exactos; no
+  inferir ni reutilizar otro trabajo, request o propósito.
+- El payload satisface el proyecto, topic, source reference, tipo, consentimiento,
+  sensibilidad e importancia fijos que especifica el runbook; `expires_at` es
+  futuro y no supera 24 horas.
+- No existe un recibo previo ni una señal de que la excepción ya se consumió.
+
+Esta excepción no habilita `remember`, `propose` de datos reales, operaciones
+globales/personales, otros checkpoints ni captura automática. Haz una llamada
+única. Ante rechazo de auth/configuración, error no reintentable o resultado de
+transporte ambiguo, detente; no repitas la escritura ni inventes un recibo. Si hay
+recibo, recupera solo su ID con `review` en el mismo proyecto. Después de cerrar
+el permiso, conserva el checkpoint de prueba hasta su expiración natural salvo
+una instrucción explícita distinta. El runbook contempla que la expiración lógica
+no purga físicamente PostgreSQL, WAL, MVCC o backups.
+
+Fuera de la excepción, las escrituras reales siguen bloqueadas hasta aprobar el
+gate global de backups. `forget-live` no acredita backup-expiry ni sobrescritura
+física. No almacenar «seguimos skill» aún. El fixture mcp-capabilities.json
+conserva la evidencia histórica del índice.

@@ -44,13 +44,30 @@ El contrato real y los recibos están en [el esquema](references/memory-schema.m
 No uses ADR, trazas ni indexación de choms-codebase-memory como memoria personal.
 Su allowlist permanece intacta; no habilites captura, hooks ni flush automático.
 
-El E2E central solo usa fixtures. **Memorias reales bloqueadas por política de
-backups pendiente**: health.real_memory_allowed=false. No falsifiques source_reference
-fixture: para eludirlo ni guardes «seguimos skill» todavía. Ante petición real,
-resume en la respuesta y confirma «preparado; no persistido: gate de backups».
-Solo con autorización explícita y gate operativo abierto, remember puede activar
-una instrucción no ambigua; exige recibo y review de comprobación. Nunca anuncies
-una escritura o borrado que no ocurrió. Fallo central no autoriza una cola alternativa.
+El E2E central usa fixtures; la persistencia real queda bloqueada por defecto
+mientras `health.real_memory_allowed=false`. No falsifiques `source_reference`
+como `fixture:` ni uses `propose` como alternativa persistente. Ante una petición
+real sin gate aplicable, resume en la respuesta y confirma «preparado; no
+persistido: gate de backups».
+
+Excepción: el runbook puede autorizar un único checkpoint de proyecto con
+`user_explicit` aunque los gates globales sigan cerrados. Antes de esa llamada,
+consulta `health` y exige `temporary_checkpoint_configured=true` además de la
+autorización explícita vigente con su par job/request y todos los campos exactos
+definidos en [la política](references/memory-policy.md). Ese indicador solo
+confirma que hay una configuración temporal vigente; no demuestra que siga sin
+consumirse. La excepción no autoriza `remember`, otros checkpoints, proyectos,
+topics, trabajos ni captura automática. Haz una sola llamada con el request ID
+preautorizado; ante error de autenticación/configuración o respuesta ambigua,
+detente y no reintentes automáticamente. Solo comunica éxito si recibes el
+recibo; después recupera el ID mediante `review` en el mismo scope/proyecto.
+Sigue el runbook para retirar la autorización y conserva el checkpoint hasta su
+expiración natural; no lo borres como limpieza implícita.
+
+Solo con autorización explícita y el gate global operativo, `remember` puede
+activar una instrucción no ambigua; exige recibo y `review` de comprobación.
+Nunca anuncies una escritura o borrado que no ocurrió. Fallo central no autoriza
+una cola alternativa.
 
 Cada mutación usa request_id UUID estable en reintentos; actualizaciones requieren
 expected_revision. CAS conflict exige recuperar/reconciliar, no sobrescribir.

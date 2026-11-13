@@ -89,7 +89,7 @@
     "scripts/skills/mcp_probe.py": "80cd1a5888d592408d98298434eb1e3ef9fa0739093dcb0b29f4024f1176e823",
     "scripts/skills/browser_qa.cjs": "104403f72043313b21ec5efef5729d0f3e6adce838d3491a9da979bca0f16055",
     "scripts/skills/cli_smoke.py": "2a2c6e176e01df4e1729a2010b338c41a2220c674a51adf6cc49765b612fed53",
-    "scripts/skills/validate_profile.py": "2d699732c36b2e72f7ece4d45da33471aedbab9106d67b96c807a451ea10d235",
+    "scripts/skills/validate_profile.py": "3a36c3ac2ead6c5a50a7667fa3ad0d0311607100b30e40d777a309f53f4032e2",
     "tools/choms-skills/fixtures/design-brief.json": "2041d167152fa7125b49328abd5ee8fbed9c8d96a866adeee3465943a1dbb3e8",
     "tools/choms-skills/fixtures/browser.html": "ad99612fc4eefe2e323477d01b3721bed3ce178ea5c3d8ebcf7342d947b85670",
     "tools/choms-skills/CANDIDATES.json": "1f03e16302722069e3eaf3c431d49a339e8d23b365097da200a10337c6d90a07",

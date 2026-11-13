@@ -105,7 +105,7 @@
     {
       "name": "choms-memory-governance",
       "path": "skills/choms-memory-governance/SKILL.md",
-      "sha256": "06dc34c3bd2f129939582c753b79dd647b7d86c4be2a5be35243b0ae252f52af",
+      "sha256": "201217fd9d3bd3f9577c09444bd5acd845ef08a1d3b8bedcf414bf3cca6c271a",
       "kind": "CHOMS original skill",
       "origin": "CHOMS Memory Governance v1 operator requirements; no ECC memory code",
       "activation": "user-authorized-native-discovery"
@@ -136,7 +136,7 @@
     "codex": "Native user skills discovery and skills/list; individual links only.",
     "hermes": "Native catalog and explicit slash loading; existing toolset unchanged. No skills management bundle."
   },
-  "version": "1.5.0",
+  "version": "1.5.1",
   "activation": {
     "selected": [
       "choms-frontend-direction",
@@ -157,9 +157,10 @@
   "provenance_scope": "ECC lock applies only to ECC-derived entries; context, prompt caching and governance are original CHOMS works.",
   "governance": {
     "schema_version": "choms-memory-v1",
-    "central_persistence": "synthetic-only",
+    "central_persistence": "synthetic-only by default; exact one-shot checkpoint exception separately gated",
     "queue": "temporary synthetic fixtures only; no real fallback",
-    "backend": "choms-memory authenticated MCP; eight tools; backup gate closed",
+    "backend": "choms-memory authenticated MCP; eight tools; global real/backup gates default closed",
+    "temporary_checkpoint_exception": "one explicit pre-authorized project checkpoint only when health flag is true; no general write bypass",
     "hooks": false,
     "automatic_flush": false,
     "real_memories": false

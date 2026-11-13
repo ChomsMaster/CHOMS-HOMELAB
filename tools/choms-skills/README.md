@@ -1,11 +1,12 @@
 # CHOMS Skills
 
-Perfil 1.5.0: seis adaptaciones de ECC v2.2.3 y tres skills originales CHOMS,
+Perfil 1.5.1: seis adaptaciones de ECC v2.2.3 y tres skills originales CHOMS,
 con procedencia y SHA-256 por entrada. Añade cuatro módulos locales,
 activados en node-dev-02 para Codex y Hermes; [estado, uso y bloqueos](NEXT.md).
 Instrucciones y un helper Python stdlib para pruebas sintéticas de gobernanza;
 sin hooks ni captura automática. Gobernanza usa el MCP independiente choms-memory;
-E2E central sintético acreditado, memorias reales bloqueadas por gate de backups.
+E2E central sintético acreditado; escrituras reales bloqueadas por defecto y un
+checkpoint one-shot del runbook separado, sin abrir los gates globales.
 
 ## Selección activa
 
@@ -62,8 +63,10 @@ para Codex y Hermes, sin scripts ni dependencias adicionales.
 La nueva skill aplica consentimiento, clasificación, conflictos, olvido y checkpoints.
 Consulta su política/esquema solo cuando corresponda. El MCP choms-memory ofrece
 ocho operaciones autenticadas, E2E sintético y purga acreditados desde ambos clientes.
-La allowlist de choms-codebase-memory permanece intacta. Memorias reales bloqueadas
-por el gate de backups; el helper local solo escribe fixtures en mktemp, nunca
+La allowlist de choms-codebase-memory permanece intacta. El gate global de backups
+bloquea escrituras reales por defecto; solo la excepción exacta de checkpoint del
+runbook puede operar si `health.temporary_checkpoint_configured=true` y existe
+autorización explícita. El helper local solo escribe fixtures en mktemp, nunca
 datos reales ni Cognee, y no es otra memoria oficial.
 Validador: `python3 scripts/skills/validate_profile.py` desde la raíz del repo.
 Pruebas: `PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s scripts/tests -p test_memory_governance.py`.

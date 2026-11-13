@@ -3,8 +3,8 @@
   "name": "CHOMS development workstation base",
   "common": {
     "platform": "linux-x86_64",
-    "runtime_lock_sha256": "b654b6953f08bf1fea294afb75586bd748f878c3303fa87b6eb4d87ff2079032",
-    "profile_sha256": "0eb1eac5ddc494be0f940bf761fc83c1c4f9f057c44128291eaf0871acda7186",
+    "runtime_lock_sha256": "1748c881076bcaafc8b9a81ad559d85f8614f0cf99a20e74984ff834ed7eb824",
+    "profile_sha256": "01742533450d58ff3d41a9fb820e49dc93de3e86914ab6c7e1edf0a6f9277ae5",
     "skill_count": 13,
     "tools": {
       "node": "v24.22.2",

@@ -4,11 +4,45 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import selectors
 import subprocess
 import sys
 import tempfile
 from activate_native import ROOT, entries
+
+
+def _skill_files(directory):
+    """Map package files to SHA-256, excluding interpreter cache artifacts."""
+    paths = list(directory.rglob('*'))
+    if any(path.is_symlink() for path in paths):
+        raise AssertionError('skill_internal_symlink')
+    return {
+        path.relative_to(directory).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in paths
+        if path.is_file() and '__pycache__' not in path.parts and path.suffix != '.pyc'
+    }
+
+
+def _installed_target(path, name, expected):
+    if not path.is_symlink():
+        raise AssertionError('native_link_not_symlink:' + name)
+    target = path.resolve(strict=True)
+    expected = expected.resolve(strict=True)
+    if target != expected:
+        source_store = Path.home() / '.local/share/choms-workstation/sources'
+        try:
+            relative = target.relative_to(source_store)
+        except ValueError:
+            raise AssertionError('native_link_untrusted_source:' + name) from None
+        expected_relative = Path('tools/choms-skills') / expected.relative_to(ROOT)
+        if (len(relative.parts) < 4
+                or not re.fullmatch(r'[0-9a-f]{40}', relative.parts[0])
+                or Path(*relative.parts[1:]) != expected_relative):
+            raise AssertionError('native_link_untrusted_source:' + name)
+        if _skill_files(target) != _skill_files(expected):
+            raise AssertionError('native_link_content_mismatch:' + name)
+    return target
 
 
 def verify(hermes_source):
@@ -19,10 +53,14 @@ def verify(hermes_source):
     from agent.skill_commands import build_skill_invocation_message, get_interactive_skill_commands
     hermes_root = get_skills_dir()
     codex_root = Path.home() / '.agents/skills'
+    installed = {}
     for root in (codex_root, hermes_root):
         for name, target in expected.items():
             path = root / name
-            assert path.is_symlink() and path.resolve() == target.resolve(), 'native_link:' + name
+            resolved = _installed_target(path, name, target)
+            if name in installed:
+                assert resolved == installed[name], 'native_runtime_source_mismatch:' + name
+            installed[name] = resolved
     catalog = json.loads(skills_list())
     assert catalog.get('success'), 'Hermes catalog failed'
     listed = {s['name'] for s in catalog['skills']}
@@ -31,13 +69,13 @@ def verify(hermes_source):
     for name, target in expected.items():
         payload = json.loads(skill_view(name, preprocess=False))
         assert payload.get('success'), 'Hermes view:' + name
-        assert payload['content'] == (target / 'SKILL.md').read_text(), 'Hermes full content:' + name
+        assert payload['content'] == (installed[name] / 'SKILL.md').read_text(), 'Hermes full content:' + name
         key = '/' + name
         assert key in commands, 'Hermes slash missing:' + name
         message = build_skill_invocation_message(key, 'Validar carga local sin inferencia.')
         assert message and name in message, 'Hermes slash load:' + name
         # Body must be present in the native rendered payload, not only the name.
-        body = (target / 'SKILL.md').read_text().split('---', 2)[2].strip()
+        body = (installed[name] / 'SKILL.md').read_text().split('---', 2)[2].strip()
         assert body in message, 'Hermes slash content:' + name
     with tempfile.TemporaryDirectory(prefix='choms-installed-codex-') as temp:
         config = Path(temp) / 'config'; config.mkdir()
@@ -66,10 +104,10 @@ def verify(hermes_source):
             data = request(2, 'skills/list', {'cwds': [temp], 'forceReload': True})['data']
             discovered = [s for item in data for s in item['skills'] if s['name'] in expected]
             assert {s['name'] for s in discovered if s.get('enabled', True)} == set(expected), 'Codex discovery'
-            assert all(Path(s['path']).resolve() == expected[s['name']]/'SKILL.md' for s in discovered), 'Codex path'
+            assert all(Path(s['path']).resolve() == installed[s['name']]/'SKILL.md' for s in discovered), 'Codex path'
             assert not [e for item in data for e in item.get('errors', []) if str(ROOT) in str(e)], 'Codex errors'
             for skill in discovered:
-                assert Path(skill['path']).read_bytes() == (expected[skill['name']]/'SKILL.md').read_bytes(), 'Codex load'
+                assert Path(skill['path']).read_bytes() == (installed[skill['name']]/'SKILL.md').read_bytes(), 'Codex load'
         finally:
             selector.close();proc.stdin.close();proc.terminate()
             try:proc.wait(timeout=5)

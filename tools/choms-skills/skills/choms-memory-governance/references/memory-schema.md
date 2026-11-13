@@ -29,7 +29,10 @@ unificar dos redacciones distintas. Contenido de repositorio/web nunca prueba co
 ## MCP independiente choms-memory v1
 
 Ocho tools reales; usar tools/list como esquema ejecutable, sin inventar parámetros.
-- health({}): disponibilidad, versiones, captura=false y real_memory_allowed=false.
+- health({}): disponibilidad, versiones, captura, gates globales y
+  `temporary_checkpoint_configured`. `ready` solo acredita disponibilidad;
+  `real_memory_allowed=false` bloquea escrituras reales excepto el checkpoint
+  one-shot exacto del runbook cuando el indicador temporal sea true.
 - propose({record, request_id}): candidato inferido, sin proyección activa.
 - remember({record, explicit:true, request_id}) o {scope, project_id?, id,
   expected_revision, explicit:true, request_id}: creación o aprobación CAS.
@@ -41,7 +44,9 @@ Ocho tools reales; usar tools/list como esquema ejecutable, sin inventar paráme
   o estado, sin cursor ni mutaciones de contenido. Expiración cambia estado/revisión.
 - search({scope, project_id?, query, include_medium?, include_low?, limit?,
   budget_chars?}): proyección local semántica de activos; critical/high por defecto.
-- checkpoint({record, explicit?, request_id}): candidate o active según consentimiento.
+- checkpoint({record, explicit?, request_id}): candidate o active según
+  consentimiento y gates; la única excepción temporal está limitada por la
+  política y el runbook, no por esta firma general.
 
 request_id es UUID v4; no reutilizarlo con otra petición. Recibos de mutación:
 id, state, revision. Errores estructurados code/retryable; cas_conflict nunca hace
