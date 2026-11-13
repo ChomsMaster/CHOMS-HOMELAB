@@ -202,7 +202,7 @@ class Workstation:
 
     def state(self):return json.loads(self.state_path.read_text()) if self.state_path.is_file() else {'links':{},'mcp':{}}
 
-    def plan(self):
+    def plan(self, preserve_mcp=False):
         state=self.state();actions=[];conflicts=[];tokens={};packages=self.source.packages()
         runtime=rt.Runtime(self.runtime_root,create=False);ident=sha(self.source.read('tools/choms-skills/runtime/RUNTIME.lock.json'))[:32]
         try:
@@ -231,6 +231,13 @@ class Workstation:
         desired={'command':str(self.runtime_root/'bin/choms-runtime'),'args':['run','playwright-mcp'],'enabled':True}
         for kind,path in self.configs.items():
             key=str(path.relative_to(self.home))
+            if preserve_mcp:
+                if path.is_symlink():
+                    tokens[key]={'symlink':os.readlink(path)}
+                else:
+                    text=path.read_text() if path.is_file() else ''
+                    tokens[key]=sha(text.encode()) if path.exists() else None
+                continue
             if path.is_symlink():conflicts.append('config_symlink:'+kind);continue
             text=path.read_text() if path.is_file() else ''
             tokens[key]=sha(text.encode()) if path.exists() else None
@@ -245,10 +252,10 @@ class Workstation:
         if platform.system()!='Linux' or platform.machine()!='x86_64':conflicts.append('runtime_platform_unsupported')
         manifest_hash=sha(self.source.read(MANIFEST))
         preconditions={'source':self.source.commit,'manifest_sha256':manifest_hash,'runtime':current,'inputs':tokens,'state':sha(self.state_path.read_bytes()) if self.state_path.is_file() else None}
-        return {'schema':1,'host':self.host,'profile':self.host if self.host in self.source.spec['hosts'] else 'default','source_commit':self.source.commit,'source_ref':self.source.ref,'manifest_sha256':manifest_hash,'runtime_target':ident,'runtime_current':current,'actions':actions,'conflicts':conflicts,'converged':not actions and not conflicts,'plan_sha256':sha(json.dumps(preconditions,sort_keys=True).encode()),'optional_capabilities':self.source.spec['optional'],'optional_selection':self.source.spec['hosts'].get(self.host,self.source.spec['hosts']['default'])['optional'],'read_only':True}
+        return {'schema':1,'host':self.host,'profile':self.host if self.host in self.source.spec['hosts'] else 'default','source_commit':self.source.commit,'source_ref':self.source.ref,'manifest_sha256':manifest_hash,'runtime_target':ident,'runtime_current':current,'actions':actions,'conflicts':conflicts,'converged':not actions and not conflicts,'plan_sha256':sha(json.dumps(preconditions,sort_keys=True).encode()),'preserve_mcp':preserve_mcp,'optional_capabilities':self.source.spec['optional'],'optional_selection':self.source.spec['hosts'].get(self.host,self.source.spec['hosts']['default'])['optional'],'read_only':True}
 
-    def apply(self, expected_plan):
-        plan=self.plan()
+    def apply(self, expected_plan, preserve_mcp=False):
+        plan=self.plan(preserve_mcp=preserve_mcp)
         if plan['conflicts']:raise ValueError('unresolved_plan_conflicts')
         if plan['plan_sha256']!=expected_plan:raise ValueError('plan_changed_replan_required')
         self.source.publication()
@@ -260,7 +267,7 @@ class Workstation:
         with (self.root/'.lock').open('a') as handle:
             import fcntl
             fcntl.flock(handle,fcntl.LOCK_EX)
-            if self.plan()['plan_sha256']!=expected_plan:raise ValueError('plan_changed_replan_required')
+            if self.plan(preserve_mcp=preserve_mcp)['plan_sha256']!=expected_plan:raise ValueError('plan_changed_replan_required')
             snapshot=self.source.materialize(self.root)
             runtime=rt.Runtime(self.runtime_root,source_root=snapshot)
             old_runtime=runtime.current() if (self.runtime_root/'current').is_symlink() else None
@@ -271,7 +278,7 @@ class Workstation:
             subprocess.run([sys.executable,str(snapshot/'scripts/skills/validate_profile.py'),'--root',str(snapshot/'tools/choms-skills')],env=env,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,check=True)
             receipt=self.runtime_root/'receipts'/f'{ident}.json'
             if not receipt.is_file() or json.loads(receipt.read_text()).get('status')!='PASS':runtime.test(ident)
-            if self.plan()['plan_sha256']!=expected_plan:raise ValueError('plan_changed_during_preparation')
+            if self.plan(preserve_mcp=preserve_mcp)['plan_sha256']!=expected_plan:raise ValueError('plan_changed_during_preparation')
             transaction=self.root/'transactions'/uuid.uuid4().hex;transaction.mkdir(parents=True)
             journal={'schema':1,'status':'applying','old_state':old,'old_runtime':old_runtime,'source_root':str(snapshot),'old_activation':json.loads((self.runtime_root/'activation.json').read_text()) if (self.runtime_root/'activation.json').is_file() else None,'old_launcher':old_launcher,'old_previous':os.readlink(self.runtime_root/'previous') if (self.runtime_root/'previous').is_symlink() else None,'new_runtime':ident,'mcp':{},'native_receipt':str(transaction/'native-links.json')}
             rt.write_json(transaction/'journal.json',journal)
@@ -292,14 +299,15 @@ class Workstation:
                     journal['native_receipts']=list(receipts);rt.write_json(transaction/'journal.json',journal)
                 journal['native_receipts']=receipts;native_applied=True
                 desired={'command':str(self.runtime_root/'bin/choms-runtime'),'args':['run','playwright-mcp'],'enabled':True}
-                for kind,path in self.configs.items():
-                    text=path.read_text() if path.is_file() else '';before=config_entry(text,kind,self.home)
-                    if before==desired:continue
-                    after=config_render(text,kind,desired,self.home)
-                    if before is not None and set(before)-{'command','args','enabled'}:raise ValueError('managed_entry_contains_unexpected_fields')
-                    journal['mcp'][kind]={'before':before,'after':desired,'file_existed':path.exists()}
-                    rt.write_json(transaction/'journal.json',journal)
-                    self.write_config(path,text,after);changed_configs.append(kind)
+                if not preserve_mcp:
+                    for kind,path in self.configs.items():
+                        text=path.read_text() if path.is_file() else '';before=config_entry(text,kind,self.home)
+                        if before==desired:continue
+                        after=config_render(text,kind,desired,self.home)
+                        if before is not None and set(before)-{'command','args','enabled'}:raise ValueError('managed_entry_contains_unexpected_fields')
+                        journal['mcp'][kind]={'before':before,'after':desired,'file_existed':path.exists()}
+                        rt.write_json(transaction/'journal.json',journal)
+                        self.write_config(path,text,after);changed_configs.append(kind)
                 links=dict(old['links']);legacy=self.legacy_links()
                 for root in self.roots:
                     for name,package in packages.items():
@@ -308,7 +316,7 @@ class Workstation:
                             links[key]={'target':os.readlink(path),'files':package['files']}
                 state={'schema':1,'source_commit':self.source.commit,'manifest_sha256':plan['manifest_sha256'],'links':links,'mcp':old['mcp']|{k:desired for k in changed_configs},'transaction':str(transaction)}
                 journal['new_state']=state;journal['status']='applied';rt.write_json(transaction/'journal.json',journal);rt.write_json(self.state_path,state)
-                final=self.plan()
+                final=self.plan(preserve_mcp=preserve_mcp)
                 if not final['converged']:raise ValueError('post_apply_not_converged')
                 return {'status':'PASS','changed':True,'converged':True,'transaction':transaction.name,'runtime_release':ident}
             except Exception:
@@ -395,14 +403,15 @@ def main():
     parser.add_argument('--ref',default='origin/feat/dev-workstation-sync')
     parser.add_argument('--revision')
     parser.add_argument('--expect-plan')
+    parser.add_argument('--preserve-mcp',action='store_true',help='Do not add or modify MCP entries; include current config fingerprints in the plan preconditions.')
     args=parser.parse_args()
     source=Source(args.source,args.ref,args.revision);workstation=Workstation(source)
     if os.geteuid()==0:raise ValueError('user_only_no_sudo')
     if args.operation in ('check','plan'):
-        result=workstation.plan();result['operation']=args.operation
+        result=workstation.plan(preserve_mcp=args.preserve_mcp);result['operation']=args.operation
     elif args.operation=='apply':
         if not args.expect_plan:parser.error('--expect-plan from a reviewed plan is required')
-        result=workstation.apply(args.expect_plan)
+        result=workstation.apply(args.expect_plan,preserve_mcp=args.preserve_mcp)
     else:result=workstation.rollback()
     print(json.dumps(result,ensure_ascii=False,sort_keys=True))
     return 1 if result.get('conflicts') or args.operation=='check' and not result.get('converged') else 0

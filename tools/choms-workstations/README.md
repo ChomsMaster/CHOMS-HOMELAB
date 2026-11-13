@@ -73,6 +73,13 @@ ni instalaciones y no inician herramientas/MCP. Sus hashes de precondiciones no
 contienen valores de configuración. La referencia local puede estar desactualizada:
 solo apply exige la comprobación de publicación remota.
 
+Para actualizar skills/runtime sin gestionar ninguna entrada MCP, pasar
+`--preserve-mcp` a `plan`, `check` y `apply`. El plan captura fingerprints de
+los archivos de configuración (sin valores) y aborta si cambian entre plan y
+apply. No crea, reemplaza ni elimina entradas MCP; el recibo deja el mapa MCP
+vacío para que rollback tampoco toque esas configuraciones. Este modo conserva
+un MCP del propietario aunque el coordinador no lo reconozca como propio.
+
 apply vuelve a comprobar precondiciones antes y después de preparar herramientas,
 valida el perfil con el validador existente y exige aceptación del runtime antes
 de promocionar. Si ya converge no hace escrituras. Una nueva publicación que solo

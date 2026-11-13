@@ -94,6 +94,27 @@ class WorkstationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'conflicts'):self.apply()
         self.assertEqual(before,tree(self.home))
 
+    def test_preserve_mcp_mode_updates_skills_without_config_changes(self):
+        codex=self.home/'.codex/config.toml';codex.parent.mkdir()
+        codex_text='model="preserved"\n[mcp_servers.choms_playwright]\ncommand="owner-wrapper"\nargs=["--custom"]\ntools=["owner-tool"]\n'
+        codex.write_text(codex_text)
+        hermes=self.home/'.hermes/config.yaml';hermes.parent.mkdir()
+        hermes_text='model: preserved\nmcp_servers:\n  choms_memory:\n    command: owner-wrapper\n    args: ["--private-config"]\n'
+        hermes.write_text(hermes_text)
+        plan=self.ws.plan(preserve_mcp=True)
+        self.assertEqual(plan['conflicts'],[]);self.assertTrue(plan['preserve_mcp'])
+        self.assertFalse(any(action['kind']=='mcp' for action in plan['actions']))
+        self.assertTrue(self.ws.apply(plan['plan_sha256'],preserve_mcp=True)['converged'])
+        self.assertEqual(codex.read_text(),codex_text);self.assertEqual(hermes.read_text(),hermes_text)
+        self.assertTrue(self.ws.plan(preserve_mcp=True)['converged'])
+
+    def test_preserve_mcp_mode_replans_if_config_changes(self):
+        codex=self.home/'.codex/config.toml';codex.parent.mkdir();codex.write_text('model="before"\n')
+        plan=self.ws.plan(preserve_mcp=True);codex.write_text('model="after"\n')
+        before=tree(self.home)
+        with self.assertRaisesRegex(ValueError,'plan_changed'):self.ws.apply(plan['plan_sha256'],preserve_mcp=True)
+        self.assertEqual(before,tree(self.home));self.assertEqual(FakeInstaller.calls,[])
+
     def test_unrelated_oauth_configuration_preserved_and_rollback(self):
         p=self.home/'.codex/config.toml';p.parent.mkdir();original='model="local"\n[mcp_servers.choms_figma]\nurl="https://mcp.figma.com/mcp"\nenabled=true\n';p.write_text(original)
         token=self.home/'.codex/private-session';token.write_text('sentinel')
