@@ -1,3 +1,15 @@
+## CHOMS Project Manager — candidato 0.1.0, 2026-11-24
+
+Monolito multiproyecto con interfaz web, REST, adaptador MCP stdio y PostgreSQL.
+Planificación inicial privada fuera de Git. Pruebas de integración, persistencia
+y restauración ejecutadas en PostgreSQL aislado. E2E Chromium y revisión de
+escritorio y móvil completadas con datos sintéticos.
+
+Namespace dedicado activo y sin drift. Manifiestos de aplicación y rutas
+validados en dry-run. La publicación HTTPS está pendiente de la cobertura del
+certificado y de la regla de Authelia del dominio.
+[Operación](../../stacks/kubernetes/choms-project-manager/README.md).
+
 ## Coordinación Hermes → Codex node-dev-02 — 2026-11-13
 
 Implementación local preparada en `scripts/coordination/` y `tools/choms-coordinator/`:

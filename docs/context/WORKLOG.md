@@ -1807,3 +1807,11 @@ guarda ni hubo escrituras desde Hermes. Sin registro MCP Hermes, inferencia real
 publicación/cuenta Work, ni checkpoint de memoria real. OpenHands sigue
 BLOCKED_ISOLATION_CONTRACT; BIOS/BoardView intactos. Runbook:
 docs/operations/HERMES_CODEX_COORDINATION.md.
+
+## 2026-11-24 — CHOMS Project Manager 0.1.0
+
+Aplicación multiproyecto con PostgreSQL, importación/exportación, calendario,
+Gantt, Kanban, finanzas, informes y MCP stdio. Seed privado separado del código.
+Integración, reinicio PostgreSQL, restauración aislada y E2E Chromium PASS.
+Namespace dedicado creado con diff cero. Manifiestos aceptados en dry-run.
+Pendiente rollout y acceso privado por HTTPS con Authelia.

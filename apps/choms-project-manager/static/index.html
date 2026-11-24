@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>CHOMS Project Manager</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Saltar al contenido</a>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">C</span><div><strong>CHOMS</strong><span>Project Manager</span></div></div>
+      <label class="project-chooser">Proyecto <select id="project-select"><option value="">Todos los proyectos</option></select></label>
+      <nav aria-label="Secciones">
+        <a href="#projects">Proyectos</a>
+        <a href="#dashboard">Resumen</a>
+        <a href="#calendar">Calendario</a>
+        <a href="#tasks">Tareas</a>
+        <a href="#kanban">Kanban</a>
+        <a href="#gantt">Gantt</a>
+        <a href="#logs">Registros</a>
+        <a href="#reports">Informes</a>
+        <a href="#settings">Configuración</a>
+      </nav>
+      <a class="export" id="project-export" href="#" download hidden>Descargar datos <span aria-hidden="true">↓</span></a>
+    </aside>
+    <main id="main" tabindex="-1">
+      <div id="notice" class="notice" role="status" hidden></div>
+      <div id="view" aria-busy="true"><p>Cargando planificación…</p></div>
+    </main>
+  </div>
+  <dialog id="editor" aria-labelledby="editor-title"></dialog>
+</body>
+</html>

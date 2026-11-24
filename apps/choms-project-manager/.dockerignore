@@ -1,0 +1,13 @@
+*
+!requirements.txt
+!server.py
+!domain.py
+!project_model.py
+!seed.py
+!store.py
+!migrations/
+!migrations/*.sql
+!static/
+!static/index.html
+!static/app.js
+!static/style.css

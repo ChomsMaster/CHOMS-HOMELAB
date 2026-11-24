@@ -1,0 +1,272 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny
+  namespace: choms-project-manager
+spec:
+  podSelector: {}
+  policyTypes: [Ingress, Egress]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: choms-project-manager
+  namespace: choms-project-manager
+spec:
+  podSelector:
+    matchLabels: {app: choms-project-manager}
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels: {kubernetes.io/metadata.name: traefik}
+          podSelector:
+            matchLabels: {app.kubernetes.io/name: traefik}
+      ports:
+        - {protocol: TCP, port: 8080}
+  egress:
+    - to:
+        - podSelector:
+            matchLabels: {app: project-db}
+      ports:
+        - {protocol: TCP, port: 5432}
+    - to:
+        - namespaceSelector:
+            matchLabels: {kubernetes.io/metadata.name: kube-system}
+          podSelector:
+            matchLabels: {k8s-app: kube-dns}
+      ports:
+        - {protocol: UDP, port: 53}
+        - {protocol: TCP, port: 53}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: project-db
+  namespace: choms-project-manager
+spec:
+  podSelector:
+    matchLabels: {app: project-db}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels: {app: choms-project-manager}
+      ports:
+        - {protocol: TCP, port: 5432}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: database-init
+  namespace: choms-project-manager
+data:
+  01-career.sh: |
+    #!/bin/sh
+    set -eu
+    psql --set ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<'SQL'
+    \getenv career_password CAREER_DB_PASSWORD
+    CREATE ROLE career LOGIN PASSWORD :'career_password';
+    ALTER DATABASE career OWNER TO career;
+    REVOKE CONNECT, TEMP ON DATABASE career FROM PUBLIC;
+    REVOKE CREATE ON SCHEMA public FROM PUBLIC;
+    SQL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: project-db
+  namespace: choms-project-manager
+spec:
+  selector:
+    app: project-db
+  ports:
+    - port: 5432
+      targetPort: postgres
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: project-db
+  namespace: choms-project-manager
+spec:
+  serviceName: project-db
+  replicas: 1
+  selector:
+    matchLabels:
+      app: project-db
+  template:
+    metadata:
+      labels:
+        app: project-db
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: postgres
+          image: docker.io/pgvector/pgvector:0.8.2-pg17-bookworm@sha256:feb68f4f15446397d8cac7f4fe48fe4586de83160d1fc48b46283312d1a33966
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+          ports:
+            - name: postgres
+              containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_DB
+              value: career
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: career-db-admin
+                  key: password
+            - name: CAREER_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: career-app
+                  key: PGPASSWORD
+          startupProbe:
+            exec:
+              command: ["pg_isready", "-h", "127.0.0.1", "-d", "career"]
+            periodSeconds: 3
+            failureThreshold: 40
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-h", "127.0.0.1", "-d", "career"]
+            periodSeconds: 5
+          resources:
+            requests: {cpu: 100m, memory: 128Mi}
+            limits: {cpu: 500m, memory: 512Mi}
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+            - name: init
+              mountPath: /docker-entrypoint-initdb.d
+              readOnly: true
+      volumes:
+        - name: init
+          configMap:
+            name: database-init
+            defaultMode: 0555
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ReadWriteOnce]
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 2Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: career-config
+  namespace: choms-project-manager
+data:
+  CAREER_ORIGIN: https://career.chomsmaster.com
+  CAREER_SEED_FILE: /run/career-seed/seed.json.gz
+  PGHOST: project-db
+  PGDATABASE: career
+  PGUSER: career
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: choms-project-manager
+  namespace: choms-project-manager
+spec:
+  selector:
+    app: choms-project-manager
+  ports:
+    - port: 8080
+      targetPort: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: choms-project-manager
+  namespace: choms-project-manager
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: choms-project-manager
+  template:
+    metadata:
+      labels:
+        app: choms-project-manager
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      initContainers:
+        - name: migrate
+          image: CAREER_IMAGE_REF
+          command: ["python", "server.py", "migrate"]
+          envFrom:
+            - configMapRef: {name: career-config}
+          env:
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: career-app
+                  key: PGPASSWORD
+          securityContext: &appSecurity
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          resources: &appResources
+            requests: {cpu: 100m, memory: 96Mi}
+            limits: {cpu: 500m, memory: 256Mi}
+          volumeMounts:
+            - name: seed
+              mountPath: /run/career-seed
+              readOnly: true
+      containers:
+        - name: choms-project-manager
+          image: CAREER_IMAGE_REF
+          envFrom:
+            - configMapRef: {name: career-config}
+            - secretRef: {name: career-app}
+          securityContext: *appSecurity
+          resources: *appResources
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet: {path: /readyz, port: http}
+            periodSeconds: 5
+            timeoutSeconds: 3
+          livenessProbe:
+            httpGet: {path: /healthz, port: http}
+            periodSeconds: 15
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 16Mi
+        - name: seed
+          secret:
+            secretName: career-seed
+            defaultMode: 0440

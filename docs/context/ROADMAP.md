@@ -1,3 +1,10 @@
+## CHOMS Project Manager — 2026-11-24
+
+Candidato inicial multiproyecto implementado. Pendiente completar rollout
+del backend aislado, habilitación TLS/Authelia autorizada y aceptación en el
+Gateway. Incorporar verificación periódica de backups cuando el servicio esté
+operativo. [Operación](../../stacks/kubernetes/choms-project-manager/README.md).
+
 ## Puestos CHOMS — aplicación local node-dev-02, 2026-10-30
 
 Merge publicado 026e77d conserva 1173d0b/5795a4f y todo main anterior. Plan
