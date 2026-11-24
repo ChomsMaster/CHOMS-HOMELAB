@@ -23,7 +23,19 @@ case "$mode" in
     for secret in career-app career-db-admin career-seed; do
       kubectl -n "$namespace" get secret "$secret" -o name >/dev/null
     done
-    sed "s|CAREER_IMAGE_REF|$image|g" "$here/workload.yaml" > "$manifest"
+    pull_secret=${PROJECT_IMAGE_PULL_SECRET:-}
+    if [[ -n "$pull_secret" ]]; then
+      if [[ ! "$pull_secret" =~ ^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$ ]]; then
+        echo 'Nombre de Secret de registro inválido.' >&2
+        exit 2
+      fi
+      kubectl -n "$namespace" get secret "$pull_secret" -o name >/dev/null
+      sed -e "s|CAREER_IMAGE_REF|$image|g" \
+        -e "s|^      # PROJECT_IMAGE_PULL_SECRET$|      imagePullSecrets: [{name: $pull_secret}]|" \
+        "$here/workload.yaml" > "$manifest"
+    else
+      sed "s|CAREER_IMAGE_REF|$image|g" "$here/workload.yaml" > "$manifest"
+    fi
     ;;
 esac
 

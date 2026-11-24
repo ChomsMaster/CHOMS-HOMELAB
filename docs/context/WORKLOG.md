@@ -1815,3 +1815,12 @@ Gantt, Kanban, finanzas, informes y MCP stdio. Seed privado separado del código
 Integración, reinicio PostgreSQL, restauración aislada y E2E Chromium PASS.
 Namespace dedicado creado con diff cero. Manifiestos aceptados en dry-run.
 Pendiente rollout y acceso privado por HTTPS con Authelia.
+
+## 2026-11-24 — CHOMS Project Manager, despliegue parcial
+
+Imagen 0.1.0 verificada por contenido y publicada en GHCR privada. Smoke
+Docker con Gunicorn, restricción de token y MCP sobre REST PASS. PostgreSQL
+dedicado Ready, PVC Bound de 2 GiB, endpoint, rol mínimo y diff cero
+confirmados. El Job temporal de descarga devolvió ImagePullBackOff. No se
+activaron el Deployment ni las rutas. Pendientes credencial de lectura de GHCR
+o acceso a la imagen, certificado TLS y regla Authelia.

@@ -5,9 +5,12 @@ Planificación inicial privada fuera de Git. Pruebas de integración, persistenc
 y restauración ejecutadas en PostgreSQL aislado. E2E Chromium y revisión de
 escritorio y móvil completadas con datos sintéticos.
 
-Namespace dedicado activo y sin drift. Manifiestos de aplicación y rutas
-validados en dry-run. La publicación HTTPS está pendiente de la cobertura del
-certificado y de la regla de Authelia del dominio.
+Namespace dedicado activo. PostgreSQL 17 Ready, PVC RWO de 2 GiB Bound,
+endpoint y conexión con rol restringido verificados. Políticas y base sin
+drift. Imagen 0.1.0 publicada por digest en GHCR con visibilidad privada.
+La descarga desde K3s falló con ImagePullBackOff. El Deployment y rutas
+siguen pendientes del acceso de lectura al registro, certificado y regla
+de Authelia del dominio.
 [Operación](../../stacks/kubernetes/choms-project-manager/README.md).
 
 ## Coordinación Hermes → Codex node-dev-02 — 2026-11-13

@@ -15,8 +15,12 @@ existente. No se incluyen endpoints propios de métricas ni alertas dedicadas.
 1. Construir desde el directorio de la aplicación con `docker build`. Publicar
    su código empaquetado en un registro accesible por K3s y conservar la
    referencia con digest. Los datos iniciales y las credenciales se excluyen
-   del build. Ejecutar `deploy.sh namespace-plan` y revisar el diff antes de
-   `deploy.sh namespace-apply`.
+   del build. La referencia publicada para 0.1.0 es
+   `ghcr.io/chomsmaster/choms-project-manager@sha256:295e681bf2d0269878e23f94da21cc912bf8e375cf624da57833d4324f859c13`.
+   La descarga privada requiere un Secret `kubernetes.io/dockerconfigjson`
+   de lectura en el namespace. Usar `PROJECT_IMAGE_PULL_SECRET` para indicar
+   su nombre al script. Ejecutar `deploy.sh namespace-plan` y revisar el
+   diff antes de `deploy.sh namespace-apply`.
 2. Aprovisionar Secrets fuera de Git mediante archivos privados y
    `kubectl create secret generic --from-file`. En `career-db-admin` va
    `password`; en `career-app`, `PGPASSWORD`, `CAREER_ALLOWED_USER`

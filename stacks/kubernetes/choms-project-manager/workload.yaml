@@ -209,6 +209,7 @@ spec:
       labels:
         app: choms-project-manager
     spec:
+      # PROJECT_IMAGE_PULL_SECRET
       automountServiceAccountToken: false
       securityContext:
         runAsNonRoot: true
