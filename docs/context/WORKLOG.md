@@ -1824,3 +1824,9 @@ dedicado Ready, PVC Bound de 2 GiB, endpoint, rol mínimo y diff cero
 confirmados. El Job temporal de descarga devolvió ImagePullBackOff. No se
 activaron el Deployment ni las rutas. Pendientes credencial de lectura de GHCR
 o acceso a la imagen, certificado TLS y regla Authelia.
+
+## 2026-11-24 — Preparación de la inicialización privada
+
+Secret de planificación inicial aprovisionado en el namespace dedicado.
+PVC y PostgreSQL conservan estado Ready. Job temporal de descarga expirado.
+Migración, inicialización y rutas pendientes del acceso a la imagen.

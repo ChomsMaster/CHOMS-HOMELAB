@@ -1,7 +1,8 @@
 ## CHOMS Project Manager — candidato 0.1.0, 2026-11-24
 
 Monolito multiproyecto con interfaz web, REST, adaptador MCP stdio y PostgreSQL.
-Planificación inicial privada fuera de Git. Pruebas de integración, persistencia
+Planificación inicial en el Secret dedicado, pendiente de inicialización.
+Pruebas de integración, persistencia
 y restauración ejecutadas en PostgreSQL aislado. E2E Chromium y revisión de
 escritorio y móvil completadas con datos sintéticos.
 

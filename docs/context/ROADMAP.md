@@ -2,7 +2,8 @@
 
 Candidato inicial multiproyecto implementado y PostgreSQL dedicado operativo.
 Pendiente habilitar descarga de la imagen GHCR, completar rollout del backend,
-habilitar TLS/Authelia y ejecutar la aceptación en el Gateway. Incorporar verificación periódica de backups cuando el servicio esté
+inicializar la planificación ya aprovisionada, habilitar TLS/Authelia y
+ejecutar la aceptación en el Gateway. Incorporar verificación periódica de backups cuando el servicio esté
 operativo. [Operación](../../stacks/kubernetes/choms-project-manager/README.md).
 
 ## Puestos CHOMS — aplicación local node-dev-02, 2026-10-30
